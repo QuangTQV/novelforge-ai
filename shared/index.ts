@@ -35,3 +35,5 @@ export * from "./types/volumePlanning";
 export * from "./types/canonicalState";
 export * from "./types/creationStudio";
 export * from "./utils/bookAnalysisTimeline";
+export * from "./utils/novelLanguage";
+export * from "./utils/narrativeLength";

@@ -246,6 +246,7 @@ export class NovelDirectorConfirmRuntime {
               styleTone: resolvedInput.styleTone?.trim() || undefined,
               emotionIntensity: resolvedInput.emotionIntensity,
               aiFreedom: resolvedInput.aiFreedom,
+              novelLanguage: resolvedInput.novelLanguage,
               postGenerationStyleReviewEnabled: resolvedInput.postGenerationStyleReviewEnabled,
               defaultChapterLength: resolvedInput.defaultChapterLength,
               estimatedChapterCount: resolvedInput.estimatedChapterCount ?? bookSpec.targetChapterCount,

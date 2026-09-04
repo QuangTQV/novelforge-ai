@@ -56,6 +56,11 @@ export type NarrativePov = "first_person" | "third_person" | "mixed";
 export type PacePreference = "slow" | "balanced" | "fast";
 export type EmotionIntensity = "low" | "medium" | "high";
 export type AIFreedom = "low" | "medium" | "high";
+/**
+ * Ngôn ngữ đầu ra cho nội dung tiểu thuyết do AI sinh (chính văn, tên, mô tả...).
+ * Độc lập với ngôn ngữ giao diện. `null`/rỗng trên bản ghi cũ ⇒ coi như "zh".
+ */
+export type NovelLanguage = "zh" | "vi" | "en" | "ja" | "ko" | "fr" | "es";
 export type ProjectProgressStatus = "not_started" | "in_progress" | "completed" | "rework" | "blocked";
 
 export type StorylineVersionStatus = "draft" | "active" | "frozen";
@@ -246,6 +251,7 @@ export interface Novel {
   styleTone?: string | null;
   emotionIntensity?: EmotionIntensity | null;
   aiFreedom?: AIFreedom | null;
+  novelLanguage?: NovelLanguage | null;
   postGenerationStyleReviewEnabled: boolean;
   defaultChapterLength?: number | null;
   estimatedChapterCount?: number | null;

@@ -23,6 +23,7 @@ import {
   UpdateNovelInput,
 } from "./novelCoreShared";
 import { queueRagDelete, queueRagUpsert } from "./novelCoreSupport";
+import { invalidateNovelOutputLanguage } from "../../prompting/core/novelOutputLanguage";
 
 export class NovelCoreCrudService {
   private readonly novelContinuationService = new NovelContinuationService();
@@ -90,6 +91,7 @@ export class NovelCoreCrudService {
           styleTone: true,
           emotionIntensity: true,
           aiFreedom: true,
+          novelLanguage: true,
           postGenerationStyleReviewEnabled: true,
           defaultChapterLength: true,
           estimatedChapterCount: true,
@@ -387,6 +389,7 @@ export class NovelCoreCrudService {
         styleTone: input.styleTone,
         emotionIntensity: input.emotionIntensity,
         aiFreedom: input.aiFreedom,
+        novelLanguage: input.novelLanguage ?? null,
         postGenerationStyleReviewEnabled: input.postGenerationStyleReviewEnabled,
         defaultChapterLength: input.defaultChapterLength,
         estimatedChapterCount: input.estimatedChapterCount,
@@ -556,6 +559,9 @@ export class NovelCoreCrudService {
     queueRagUpsert("novel", id);
     if (updated.worldId) {
       queueRagUpsert("world", updated.worldId);
+    }
+    if (input.novelLanguage !== undefined) {
+      invalidateNovelOutputLanguage(id);
     }
     return normalizeNovelOutput(updated);
   }

@@ -16,6 +16,8 @@ import {
 import { openConflictService } from "../../state/OpenConflictService";
 import { normalizeScore, ruleScore } from "../novelP0Utils";
 import { detectProseQuality } from "./proseQuality/ProseQualityDetector";
+import { resolveNovelOutputLanguage } from "../../../prompting/core/novelOutputLanguage";
+import { countNarrativeLength, type NovelLanguage } from "@ai-novel/shared";
 
 export interface ChapterAcceptanceAssessmentInput {
   novelId: string;
@@ -99,8 +101,8 @@ function missingObligationToReviewIssue(obligation: ChapterExecutionMissingOblig
   };
 }
 
-function countChapterCharacters(content: string): number {
-  return content.replace(/\s+/g, "").trim().length;
+function countChapterCharacters(content: string, lang: NovelLanguage = "zh"): number {
+  return countNarrativeLength(content, lang);
 }
 
 function includesAnyMarker(text: string, markers: string[]): boolean {
@@ -141,12 +143,13 @@ function reconcileLengthAssessment(
   output: ChapterAcceptanceAssessmentOutput,
   content: string,
   targetWordCount?: number | null,
+  lang: NovelLanguage = "zh",
 ): ChapterAcceptanceAssessmentOutput {
   const range = resolveTargetWordRange(targetWordCount);
   if (range.minWordCount == null && range.maxWordCount == null) {
     return output;
   }
-  const actualWordCount = countChapterCharacters(content);
+  const actualWordCount = countChapterCharacters(content, lang);
   const blockingIssues = output.blockingIssues.filter((issue) => !shouldDropLengthIssue({
     issue,
     actualWordCount,
@@ -168,8 +171,9 @@ export function normalizeAssessment(
   output: ChapterAcceptanceAssessmentOutput,
   content: string,
   targetWordCount?: number | null,
+  lang: NovelLanguage = "zh",
 ): ChapterAcceptanceAssessmentOutput {
-  const reconciled = reconcileLengthAssessment(output, content, targetWordCount);
+  const reconciled = reconcileLengthAssessment(output, content, targetWordCount, lang);
   const score = normalizeScore(reconciled.score ?? ruleScore(content));
   const missingObligations = reconciled.missingObligations ?? [];
   const hasHighRisk = reconciled.blockingIssues.some((issue) => issue.severity === "high" || issue.severity === "critical");
@@ -239,6 +243,7 @@ function buildFallbackAssessment(content: string): ChapterAcceptanceAssessmentOu
 
 export class ChapterAcceptanceAssessmentService {
   async assess(input: ChapterAcceptanceAssessmentInput): Promise<ChapterAcceptanceAssessmentResult> {
+    const lang = await resolveNovelOutputLanguage(input.novelId);
     const assessment = await this.invokeAssessment(input).catch(() => buildFallbackAssessment(input.content));
     const proseQuality = detectProseQuality(input.content);
     const proseIssues = proseQuality.findings.slice(0, 5).map((finding) => ({
@@ -252,7 +257,7 @@ export class ChapterAcceptanceAssessmentService {
       ...assessment,
       blockingIssues: [...assessment.blockingIssues, ...proseIssues],
       riskTags: [...assessment.riskTags, ...proseQuality.findings.map((finding) => finding.code)],
-    }, input.content, input.targetWordCount);
+    }, input.content, input.targetWordCount, lang);
     const score = normalizeScore(normalized.score);
     const issues = normalized.blockingIssues.map((issue) => ({
       severity: issue.severity,

@@ -3,6 +3,11 @@ import type { PromptAsset } from "../../core/promptTypes";
 import { renderSelectedContextBlocks } from "../../core/renderContextBlocks";
 import { NOVEL_PROMPT_BUDGETS } from "./promptBudgetProfiles";
 import { CHAPTER_PROSE_QUALITY_RULES } from "@ai-novel/shared/types/chapterProseContract";
+import {
+  NOVEL_LANGUAGE_ENDONYM,
+  narrativeLengthUnitLabel,
+  type NovelLanguage,
+} from "@ai-novel/shared";
 
 export interface ChapterWriterPromptInput {
   novelTitle: string;
@@ -13,6 +18,8 @@ export interface ChapterWriterPromptInput {
   minWordCount?: number | null;
   maxWordCount?: number | null;
   missingWordGap?: number | null;
+  /** Ngôn ngữ đầu ra của novel. Không truyền ⇒ tiếng Trung (hành vi cũ). */
+  outputLanguage?: NovelLanguage;
 }
 
 export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, string> = {
@@ -87,7 +94,7 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
       description: "调整正文语气、节奏和读感倾向。",
       riskLevel: "low",
       maxLength: 600,
-      defaultValue: "使用简体中文，语言自然流畅，适合网文阅读节奏。",
+      defaultValue: "语言自然流畅，符合目标语言的阅读习惯与网文阅读节奏（默认简体中文）。",
     },
   ],
   slots: [
@@ -97,7 +104,7 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
       key: "writer.tonePreference",
       label: "语气与节奏",
       description: "调整正文语气、节奏和读感倾向。",
-      default: "使用简体中文，语言自然流畅，适合网文阅读节奏。",
+      default: "语言自然流畅，符合目标语言的阅读习惯与网文阅读节奏（默认简体中文）。",
       maxLength: 600,
     },
     {
@@ -175,10 +182,15 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
   render: (input, context) => {
     const slots = context.slots;
     const mode = input.mode ?? "draft";
+    const outputLanguage = input.outputLanguage ?? "zh";
+    const lengthUnit = narrativeLengthUnitLabel(outputLanguage);
+    const languageLine = outputLanguage === "zh"
+      ? "使用简体中文写作"
+      : `使用${NOVEL_LANGUAGE_ENDONYM[outputLanguage]}写作`;
 
     // Resolve slot values (fall back to defaults if no override)
     const tonePreference = slots?.text("writer.tonePreference")
-      ?? "使用简体中文，语言自然流畅，适合网文阅读节奏。";
+      ?? `${languageLine}，语言自然流畅，符合目标语言的阅读习惯与网文节奏。`;
     const antiAiRules = slots?.text("writer.antiAiRules")
       ?? "控制无效修饰，避免长段空洞描写或「AI感」八股表达。";
     const endingHook = slots?.text("writer.endingHookPreference")
@@ -188,14 +200,14 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
     const antiClicherEnabled = slots?.enabled("writer.antiCliché") ?? false;
     const antiClicherCopy = slots?.text("writer.antiCliché")
       ?? "避免以下网文套路：秘境/新副本突然出现打断情节、角色当场进行长串系统介绍、主角出场必打脸、每章结尾靠「突破了」作为唯一高潮。";
-    const wordCountHint = slots?.token("writer.wordCountHint") ?? "3000 字左右";
+    const wordCountHint = slots?.token("writer.wordCountHint") ?? `3000 ${lengthUnit}左右`;
 
     const hasTarget = typeof input.targetWordCount === "number" && input.targetWordCount > 0;
     const lengthBlock = hasTarget
       ? [
-          `本章目标长度：约 ${input.targetWordCount} 字。`,
+          `本章目标长度：约 ${input.targetWordCount} ${lengthUnit}。`,
           typeof input.minWordCount === "number" && typeof input.maxWordCount === "number"
-            ? `可接受区间：${input.minWordCount}-${input.maxWordCount} 字。`
+            ? `可接受区间：${input.minWordCount}-${input.maxWordCount} ${lengthUnit}。`
             : "",
           "这是写作阶段的硬性篇幅提示：正文必须尽量落在可接受区间内，不得明显低于目标，也不得明显超过上限。",
           "篇幅不够时必须继续推进新的有效情节、冲突、对话和动作，而不是草率收尾。",
@@ -216,7 +228,7 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
 
     return [
       new SystemMessage([
-        "你是中文长篇网络小说写作助手。",
+        `你是长篇网络小说写作助手。${languageLine}。`,
         "你的任务是根据当前章节任务，生成可直接阅读的正文，而不是提纲或解释。",
         "",
         "【叙事视角】",

@@ -5,6 +5,7 @@ import {
   readChapterQualityDebtDetails,
 } from "@ai-novel/shared/types/chapterQualityLoop";
 import { NOVEL_LIST_PAGE_LIMIT_DEFAULT, NOVEL_LIST_PAGE_LIMIT_MAX } from "@ai-novel/shared/types/pagination";
+import { NOVEL_LANGUAGE_VALUES } from "@ai-novel/shared";
 import { z } from "zod";
 import type { SimpleCreationShelfProjection } from "@ai-novel/shared/types/novel";
 import { parsePersistedDirectorRiskAssessment } from "@ai-novel/shared/types/directorRisk";
@@ -81,6 +82,7 @@ const createNovelSchema = z.object({
   styleTone: z.string().trim().optional(),
   emotionIntensity: z.enum(["low", "medium", "high"]).optional(),
   aiFreedom: z.enum(["low", "medium", "high"]).optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).optional(),
   postGenerationStyleReviewEnabled: z.boolean().optional(),
   defaultChapterLength: z.number().int().min(500).max(10000).optional(),
   estimatedChapterCount: z.number().int().min(1).max(2000).optional(),
@@ -118,6 +120,7 @@ const updateNovelSchema = z.object({
   styleTone: z.string().trim().nullable().optional(),
   emotionIntensity: z.enum(["low", "medium", "high"]).nullable().optional(),
   aiFreedom: z.enum(["low", "medium", "high"]).nullable().optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).nullable().optional(),
   postGenerationStyleReviewEnabled: z.boolean().optional(),
   defaultChapterLength: z.number().int().min(500).max(10000).nullable().optional(),
   estimatedChapterCount: z.number().int().min(1).max(2000).nullable().optional(),

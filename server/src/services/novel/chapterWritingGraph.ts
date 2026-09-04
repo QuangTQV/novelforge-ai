@@ -14,6 +14,12 @@ import {
   sanitizeWriterContextBlocks,
 } from "../../prompting/prompts/novel/chapterLayeredContext";
 import { chapterWriterPrompt } from "../../prompting/prompts/novel/chapterWriter.prompts";
+import { resolveNovelOutputLanguage } from "../../prompting/core/novelOutputLanguage";
+import {
+  countNarrativeLength,
+  isSpaceDelimitedLanguage,
+  type NovelLanguage,
+} from "@ai-novel/shared";
 import { NovelContinuationService } from "./NovelContinuationService";
 import { assertChapterContentNotEmpty } from "./runtime/chapterEmptyContentError";
 import { prisma } from "../../db/prisma";
@@ -86,17 +92,26 @@ export interface ChapterStreamInput {
 
 const continuationService = new NovelContinuationService();
 
-function countChapterCharacters(content: string): number {
-  return content.replace(/\s+/g, "").trim().length;
+function countChapterCharacters(content: string, lang: NovelLanguage = "zh"): number {
+  return countNarrativeLength(content, lang);
 }
 
-function buildLengthInstruction(targetWordCount?: number | null): {
+/** Đơn vị độ dài dùng trong chỉ thị tiếng Anh gửi model. */
+function lengthUnitEn(lang: NovelLanguage): string {
+  if (isSpaceDelimitedLanguage(lang)) {
+    return "words";
+  }
+  return lang === "zh" ? "Chinese characters" : "characters";
+}
+
+function buildLengthInstruction(targetWordCount: number | null | undefined, lang: NovelLanguage = "zh"): {
   targetWordCount: number | null;
   minWordCount: number | null;
   maxWordCount: number | null;
   instruction: string;
 } {
   const range = resolveTargetWordRange(targetWordCount);
+  const unit = lengthUnitEn(lang);
   if (range.targetWordCount == null) {
     return {
       ...range,
@@ -105,16 +120,22 @@ function buildLengthInstruction(targetWordCount?: number | null): {
   }
   return {
     ...range,
-    instruction: `Write about ${range.targetWordCount} Chinese characters. Acceptable range: ${range.minWordCount}-${range.maxWordCount}. Do not end clearly below the minimum.`,
+    instruction: `Write about ${range.targetWordCount} ${unit}. Acceptable range: ${range.minWordCount}-${range.maxWordCount}. Do not end clearly below the minimum.`,
   };
 }
 
-function buildDraftContinuationBlock(content: string, targetWordCount: number, minWordCount: number): string {
+function buildDraftContinuationBlock(
+  content: string,
+  targetWordCount: number,
+  minWordCount: number,
+  lang: NovelLanguage = "zh",
+): string {
   const trimmed = content.trim();
   const excerpt = trimmed.length > 1400 ? trimmed.slice(-1400) : trimmed;
+  const unit = lengthUnitEn(lang);
   return [
-    `Current saved draft length: ${countChapterCharacters(trimmed)} Chinese characters.`,
-    `Target length: about ${targetWordCount} Chinese characters. Minimum acceptable length: ${minWordCount}.`,
+    `Current saved draft length: ${countChapterCharacters(trimmed, lang)} ${unit}.`,
+    `Target length: about ${targetWordCount} ${unit}. Minimum acceptable length: ${minWordCount}.`,
     "Continue from the existing ending. Do not restart the chapter. Do not repeat already written events.",
     "Current draft tail (continue after this):",
     excerpt || "none",
@@ -171,17 +192,19 @@ export class ChapterWritingGraph {
     options: ChapterGraphLLMOptions;
   }): Promise<string> {
     const writeContext = input.contextPackage.chapterWriteContext;
+    const lang = await resolveNovelOutputLanguage(input.novelId);
     const lengthGoal = buildLengthInstruction(
       writeContext?.chapterMission.targetWordCount
       ?? input.contextPackage.chapter.targetWordCount
       ?? input.chapter.targetWordCount
       ?? null,
+      lang,
     );
     if (!writeContext || lengthGoal.targetWordCount == null || lengthGoal.minWordCount == null) {
       return input.content;
     }
 
-    const currentLength = countChapterCharacters(input.content);
+    const currentLength = countChapterCharacters(input.content, lang);
     if (currentLength >= lengthGoal.minWordCount) {
       return input.content;
     }
@@ -201,6 +224,7 @@ export class ChapterWritingGraph {
           input.content,
           lengthGoal.targetWordCount,
           lengthGoal.minWordCount,
+          lang,
         ),
       }),
       ...builtBlocks,
@@ -238,6 +262,7 @@ export class ChapterWritingGraph {
         minWordCount: lengthGoal.minWordCount,
         maxWordCount: lengthGoal.maxWordCount,
         missingWordGap,
+        outputLanguage: lang,
       },
       contextBlocks: resolvedContext.blocks,
       options: {
@@ -261,7 +286,7 @@ export class ChapterWritingGraph {
     this.deps.logInfo("Chapter draft auto-extended for target length", {
       chapterOrder: input.chapter.order,
       beforeLength: currentLength,
-      afterLength: countChapterCharacters(merged),
+      afterLength: countChapterCharacters(merged, lang),
       targetWordCount: lengthGoal.targetWordCount,
       minWordCount: lengthGoal.minWordCount,
     });
@@ -284,6 +309,7 @@ export class ChapterWritingGraph {
       throw new Error("Chapter runtime context is required before chapter generation.");
     }
     const contextPackage = input.contextPackage;
+    const outputLanguage = await resolveNovelOutputLanguage(input.novelId);
     const targetRange = resolveTargetWordRange(chapterWriteContext.chapterMission.targetWordCount);
     const builtBlocks = [await loadWritingPlatformBlock(input.novelId), ...buildChapterWriterContextBlocks(chapterWriteContext)];
     const sanitized = sanitizeWriterContextBlocks(builtBlocks);
@@ -318,6 +344,7 @@ export class ChapterWritingGraph {
         targetWordCount: chapterWriteContext.chapterMission.targetWordCount ?? null,
         minWordCount: targetRange.minWordCount,
         maxWordCount: targetRange.maxWordCount,
+        outputLanguage,
       },
       contextBlocks: resolvedContext.blocks,
       options: {

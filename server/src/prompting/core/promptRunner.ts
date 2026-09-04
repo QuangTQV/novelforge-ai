@@ -29,6 +29,7 @@ import {
   type PromptQualityFailureKind,
 } from "./promptQualityTelemetry";
 import { appendStructuredOutputHintMessages } from "./structuredOutputHint";
+import { appendOutputLanguageDirective } from "./novelOutputLanguage";
 import type {
   PromptAsset,
   PromptExecutionOptions,
@@ -735,7 +736,7 @@ export async function runStructuredPrompt<I, O, R = O>(input: {
     officialMessages: prepared.messages,
     novelId: input.options?.novelId,
   });
-  const messages = resolvedTemplateMessages === prepared.messages
+  const baseMessages = resolvedTemplateMessages === prepared.messages
     ? prepared.messages
     : appendStructuredOutputHintMessages({
     asset: input.asset,
@@ -743,6 +744,7 @@ export async function runStructuredPrompt<I, O, R = O>(input: {
     context: prepared.context,
     messages: resolvedTemplateMessages,
   });
+  const messages = await appendOutputLanguageDirective(baseMessages, input.options?.novelId);
   logPromptEvent({
     event: "started",
     asset: input.asset as PromptAsset<unknown, unknown, unknown>,
@@ -858,13 +860,14 @@ export async function runTextPrompt<I>(input: {
     resolvedSlots: overlays.resolvedSlots,
   });
   const startedAt = Date.now();
-  const messages = await resolveAdvancedPromptMessages({
+  const templateMessages = await resolveAdvancedPromptMessages({
     asset: input.asset,
     promptInput: input.promptInput,
     context: prepared.context,
     officialMessages: prepared.messages,
     novelId: input.options?.novelId,
   });
+  const messages = await appendOutputLanguageDirective(templateMessages, input.options?.novelId);
   const renderedPromptChars = estimateRenderedPromptChars(messages);
   const liveSession = beginLlmLiveSession({
     label: input.asset.id + "@" + input.asset.version,
@@ -958,13 +961,14 @@ export async function streamTextPrompt<I>(input: {
     resolvedSlots: overlays.resolvedSlots,
   });
   const startedAt = Date.now();
-  const messages = await resolveAdvancedPromptMessages({
+  const templateMessages = await resolveAdvancedPromptMessages({
     asset: input.asset,
     promptInput: input.promptInput,
     context: prepared.context,
     officialMessages: prepared.messages,
     novelId: input.options?.novelId,
   });
+  const messages = await appendOutputLanguageDirective(templateMessages, input.options?.novelId);
   const renderedPromptChars = estimateRenderedPromptChars(messages);
   const liveSession = beginLlmLiveSession({
     label: input.asset.id + "@" + input.asset.version,
@@ -1074,8 +1078,9 @@ export async function streamStructuredPrompt<I, O, R = O>(input: {
     contextBlocks: overlays.blocks,
     resolvedSlots: overlays.resolvedSlots,
   });
+  const messages = await appendOutputLanguageDirective(prepared.messages, input.options?.novelId);
   const startedAt = Date.now();
-  const renderedPromptChars = estimateRenderedPromptChars(prepared.messages);
+  const renderedPromptChars = estimateRenderedPromptChars(messages);
   const liveSession = beginLlmLiveSession({
     label: input.asset.id + "@" + input.asset.version,
     mode: "structured",
@@ -1119,7 +1124,7 @@ export async function streamStructuredPrompt<I, O, R = O>(input: {
       invokeOptions.signal = input.options.signal;
     }
     liveSession.phase("streaming", "模型正在返回结构化结果");
-    const rawStream = await llm.stream(prepared.messages, invokeOptions);
+    const rawStream = await llm.stream(messages, invokeOptions);
     captured = captureStreamOutput(rawStream as AsyncIterable<BaseMessageChunk>, (content) => liveSession.delta(content));
   } catch (error) {
     liveSession.fail(error);
@@ -1168,7 +1173,7 @@ export async function streamStructuredPrompt<I, O, R = O>(input: {
         asset: input.asset,
         promptInput: input.promptInput,
         context: prepared.context,
-        baseMessages: prepared.messages,
+        baseMessages: messages,
         outputSchema,
         initialResult: parsed,
         options: input.options,

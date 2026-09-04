@@ -15,6 +15,16 @@ interface GenreTreeBrowserProps {
   initialSelectedId?: string;
 }
 
+// Genre names come from the seeded system catalog (Chinese source text). The
+// detail pane already runs them through translateUi; do the same for the tree.
+function translateGenreTreeNames(nodes: GenreTreeNode[]): GenreTreeNode[] {
+  return nodes.map((node) => ({
+    ...node,
+    name: translateUi(node.name),
+    children: translateGenreTreeNames(node.children),
+  }));
+}
+
 function findGenrePath(nodes: GenreTreeNode[], targetId: string, parents: string[] = []): string[] {
   for (const node of nodes) {
     const nextPath = [...parents, node.name];
@@ -36,6 +46,7 @@ export default function GenreTreeBrowser({
   const [selectedId, setSelectedId] = useState(initialSelectedId || nodes[0]?.id || "");
   const selectedNode = useMemo(() => findGenreNode(nodes, selectedId), [nodes, selectedId]);
   const selectedPath = useMemo(() => findGenrePath(nodes, selectedId), [nodes, selectedId]);
+  const treeNodes = useMemo(() => translateGenreTreeNames(nodes), [nodes]);
 
   useEffect(() => {
     if (initialSelectedId && findGenreNode(nodes, initialSelectedId)) {
@@ -53,7 +64,7 @@ export default function GenreTreeBrowser({
   return (
     <div className="grid overflow-hidden rounded-lg border border-border/80 bg-background lg:grid-cols-[320px_minmax(0,1fr)]">
       <AssetTreeNavigator
-        nodes={nodes}
+        nodes={treeNodes}
         selectedId={selectedId}
         onSelect={setSelectedId}
         title={translateUi("题材目录")}
@@ -64,7 +75,7 @@ export default function GenreTreeBrowser({
 
       <section className="flex min-w-0 flex-col" aria-labelledby="selected-genre-title">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 px-5 py-3">
-          <div className="truncate text-xs text-muted-foreground">{selectedPath.join(" / ")}</div>
+          <div className="truncate text-xs text-muted-foreground">{selectedPath.map((segment) => translateUi(segment)).join(" / ")}</div>
           <div className="flex items-center gap-1">
             <Button type="button" variant="ghost" size="sm" onClick={() => onCreateChild(selectedNode.id)}>
               <Plus className="h-4 w-4" aria-hidden="true" />
@@ -111,7 +122,7 @@ export default function GenreTreeBrowser({
               <div className="mt-5 border-l-2 border-foreground/20 pl-4">
                 <div className="text-sm font-semibold text-foreground">{translateUi("AI 使用倾向")}</div>
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">
-                  {selectedNode.template}
+                  {translateUi(selectedNode.template)}
                 </p>
               </div>
             ) : null}

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import type { BaseCharacter, Character, VolumePlan } from "@ai-novel/shared/types/novel";
+import { DEFAULT_NOVEL_STYLE_FLAVOR } from "@ai-novel/shared/utils/novelStyleFlavor";
 import type { NovelDetailResponse } from "@/api/novel";
 import {
   DEFAULT_ESTIMATED_CHAPTER_COUNT,
@@ -126,6 +127,7 @@ export function useNovelEditInitialization({
       emotionIntensity: detail.emotionIntensity ?? "medium",
       aiFreedom: detail.aiFreedom ?? "medium",
       novelLanguage: detail.novelLanguage ?? "zh",
+      styleFlavor: detail.styleFlavor ?? DEFAULT_NOVEL_STYLE_FLAVOR,
       postGenerationStyleReviewEnabled: detail.postGenerationStyleReviewEnabled ?? true,
       defaultChapterLength: detail.defaultChapterLength ?? 2800,
       estimatedChapterCount: detail.estimatedChapterCount ?? DEFAULT_ESTIMATED_CHAPTER_COUNT,

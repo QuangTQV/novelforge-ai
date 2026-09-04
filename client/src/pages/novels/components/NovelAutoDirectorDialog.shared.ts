@@ -75,6 +75,7 @@ export function buildAutoDirectorRequestPayload(
     narrativePov: basicForm.narrativePov,
     pacePreference: basicForm.pacePreference,
     novelLanguage: basicForm.novelLanguage,
+    styleFlavor: basicForm.styleFlavor,
     styleTone: basicForm.styleTone.trim() || undefined,
     styleProfileId: options?.styleProfileId?.trim() || undefined,
     emotionIntensity: basicForm.emotionIntensity,

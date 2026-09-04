@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 ﻿import type {
   NovelWorkflowMilestone,
   NovelWorkflowMilestoneType,
@@ -370,7 +371,7 @@ export default function NovelAutoDirectorProgressPanel({
   const displaySteps = dashboardViewForDisplay?.steps ?? displayStateForDisplay?.steps ?? [];
   const stepDefinitions = candidateSetupFlow
     ? DIRECTOR_CANDIDATE_SETUP_STEPS
-    : displaySteps.map((step) => ({ key: step.key, label: step.label }));
+    : displaySteps.map((step) => ({ key: step.key, label: translateTaskProgressLabel(step.label) }));
   const steps = candidateSetupFlow
     ? resolveDirectorStepStatuses(task, visualMode, stepDefinitions)
     : displaySteps.map((step) => mapDisplayStepStatus(step.status));
@@ -468,7 +469,7 @@ export default function NovelAutoDirectorProgressPanel({
         <NovelDirectorPreparationJourney
           steps={candidateSetupFlow
             ? stepDefinitions
-            : displaySteps.map((step) => ({ key: step.key, label: step.label }))}
+            : displaySteps.map((step) => ({ key: step.key, label: translateTaskProgressLabel(step.label) }))}
           statuses={steps}
           onboardingStorageKey={`director-preparation-${onboardingNovelId}`}
           chapterProgress={chapterProgress}

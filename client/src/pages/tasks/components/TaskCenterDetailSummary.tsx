@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type { DirectorDashboardView } from "@ai-novel/shared/types/directorRuntime";
 import type { UnifiedTaskDetail } from "@ai-novel/shared/types/task";
 import { TaskQueueStatusBadge } from "@/components/taskQueue";
@@ -30,7 +31,7 @@ export default function TaskCenterDetailSummary({
     ? dashboardView.progressPercent
     : Math.round(task.progress * 100);
   const currentStage = dashboardView?.stageLabel ?? task.currentStage ?? translateUi("暂无");
-  const currentItem = dashboardView?.currentAction ?? task.currentItemLabel ?? translateUi("暂无");
+  const currentItem = dashboardView?.currentAction ?? (translateTaskProgressLabel(task.currentItemLabel) || translateUi("暂无"));
   const tone = getTaskQueueTone(task);
   const technicalRows = [
     [translateUi("最近心跳"), formatDate(task.heartbeatAt)],

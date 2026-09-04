@@ -606,6 +606,7 @@ ${summaryBlock || "暂无"}`;
 
   async rewriteIfTooSimilar(
     input: {
+      novelId?: string;
       chapterTitle: string;
       content: string;
       continuationPack: ContinuationContextPack;
@@ -648,6 +649,7 @@ ${summaryBlock || "暂无"}`;
           targetText,
         },
         options: {
+          novelId: input.novelId,
           provider: input.provider ?? "deepseek",
           model: input.model,
           temperature: input.temperature ?? 0.7,

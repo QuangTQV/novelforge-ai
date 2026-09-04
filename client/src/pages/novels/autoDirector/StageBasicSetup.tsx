@@ -5,6 +5,7 @@ import {
   BASIC_INFO_FIELD_HINTS,
   EMOTION_OPTIONS,
   NOVEL_LANGUAGE_OPTIONS,
+  NOVEL_STYLE_FLAVOR_OPTIONS,
   PACE_OPTIONS,
   POV_OPTIONS,
   READER_CHANNEL_OPTIONS,
@@ -119,6 +120,25 @@ export default function StageBasicSetup({
           </SelectControl>
           <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
             {findOptionSummary(NOVEL_LANGUAGE_OPTIONS, basicForm.novelLanguage)}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <FieldLabel htmlFor="director-basic-style-flavor" hint={BASIC_INFO_FIELD_HINTS.styleFlavor}>{translateUi("Phong cách văn phong")}</FieldLabel>
+          <SelectControl
+            id="director-basic-style-flavor"
+            className={controlClassName}
+            value={basicForm.styleFlavor}
+            onChange={(event) => onBasicFormChange({
+              styleFlavor: event.target.value as NovelBasicFormState["styleFlavor"],
+            })}
+          >
+            {NOVEL_STYLE_FLAVOR_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </SelectControl>
+          <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
+            {findOptionSummary(NOVEL_STYLE_FLAVOR_OPTIONS, basicForm.styleFlavor)}
           </div>
         </div>
 

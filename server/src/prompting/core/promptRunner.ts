@@ -30,6 +30,7 @@ import {
 } from "./promptQualityTelemetry";
 import { appendStructuredOutputHintMessages } from "./structuredOutputHint";
 import { appendOutputLanguageDirective } from "./novelOutputLanguage";
+import { DEFAULT_NOVEL_LANGUAGE, resolvePromptLanguage, resolveNovelLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import type {
   PromptAsset,
   PromptExecutionOptions,
@@ -49,9 +50,11 @@ function buildRenderContext(
   asset: PromptAsset<unknown, unknown, unknown>,
   rawBlocks: Parameters<typeof selectContextBlocks>[0],
   resolvedSlots?: import("../slots/slotTypes").ResolvedSlots,
+  outputLanguage?: import("@ai-novel/shared/types/novel").NovelLanguage,
 ): PromptRenderContext {
   const selection = selectContextBlocks(rawBlocks, asset.contextPolicy);
   return {
+    promptLanguage: resolvePromptLanguage(outputLanguage ?? DEFAULT_NOVEL_LANGUAGE),
     blocks: selection.selectedBlocks,
     selectedBlockIds: selection.selectedBlocks.map((block) => block.id),
     droppedBlockIds: selection.droppedBlockIds,
@@ -278,6 +281,7 @@ export function preparePromptExecution<I, O, R = O>(input: {
     input.asset as PromptAsset<unknown, unknown, unknown>,
     input.contextBlocks ?? [],
     input.resolvedSlots,
+    resolveNovelLanguage(input.options?.outputLanguage ?? DEFAULT_NOVEL_LANGUAGE),
   );
   const renderedMessages = input.asset.render(input.promptInput, context);
   return {
@@ -744,7 +748,7 @@ export async function runStructuredPrompt<I, O, R = O>(input: {
     context: prepared.context,
     messages: resolvedTemplateMessages,
   });
-  const messages = await appendOutputLanguageDirective(baseMessages, input.options?.novelId);
+  const messages = await appendOutputLanguageDirective(baseMessages, input.options?.novelId, input.options?.outputLanguage, input.options?.styleFlavor);
   logPromptEvent({
     event: "started",
     asset: input.asset as PromptAsset<unknown, unknown, unknown>,
@@ -867,7 +871,7 @@ export async function runTextPrompt<I>(input: {
     officialMessages: prepared.messages,
     novelId: input.options?.novelId,
   });
-  const messages = await appendOutputLanguageDirective(templateMessages, input.options?.novelId);
+  const messages = await appendOutputLanguageDirective(templateMessages, input.options?.novelId, input.options?.outputLanguage, input.options?.styleFlavor);
   const renderedPromptChars = estimateRenderedPromptChars(messages);
   const liveSession = beginLlmLiveSession({
     label: input.asset.id + "@" + input.asset.version,
@@ -968,7 +972,7 @@ export async function streamTextPrompt<I>(input: {
     officialMessages: prepared.messages,
     novelId: input.options?.novelId,
   });
-  const messages = await appendOutputLanguageDirective(templateMessages, input.options?.novelId);
+  const messages = await appendOutputLanguageDirective(templateMessages, input.options?.novelId, input.options?.outputLanguage, input.options?.styleFlavor);
   const renderedPromptChars = estimateRenderedPromptChars(messages);
   const liveSession = beginLlmLiveSession({
     label: input.asset.id + "@" + input.asset.version,
@@ -1078,7 +1082,7 @@ export async function streamStructuredPrompt<I, O, R = O>(input: {
     contextBlocks: overlays.blocks,
     resolvedSlots: overlays.resolvedSlots,
   });
-  const messages = await appendOutputLanguageDirective(prepared.messages, input.options?.novelId);
+  const messages = await appendOutputLanguageDirective(prepared.messages, input.options?.novelId, input.options?.outputLanguage, input.options?.styleFlavor);
   const startedAt = Date.now();
   const renderedPromptChars = estimateRenderedPromptChars(messages);
   const liveSession = beginLlmLiveSession({

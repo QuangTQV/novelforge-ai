@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -662,7 +663,7 @@ export default function NovelExistingProjectTakeoverDialog({
                                 {readiness.activePipelineJob ? (
                                   <div className={`mt-3 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
 
-                                    {translateUi("当前活动批次：")}{readiness.activePipelineJob.currentItemLabel || translateUi("范围 {{value0}}-{{value1}}", { value0: readiness.activePipelineJob.startOrder, value1: readiness.activePipelineJob.endOrder })}
+                                    {translateUi("当前活动批次：")}{translateTaskProgressLabel(readiness.activePipelineJob.currentItemLabel) || translateUi("范围 {{value0}}-{{value1}}", { value0: readiness.activePipelineJob.startOrder, value1: readiness.activePipelineJob.endOrder })}
                                   </div>
                                 ) : null}
                                 {readiness.latestCheckpoint?.checkpointType ? (

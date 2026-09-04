@@ -4,6 +4,7 @@ import type {
   NarrativePov,
   Novel,
   NovelLanguage,
+  NovelStyleFlavor,
   PacePreference,
   PipelineJobStatus,
   ProjectMode,
@@ -632,6 +633,7 @@ export interface DirectorProjectContextInput {
   emotionIntensity?: EmotionIntensity;
   aiFreedom?: AIFreedom;
   novelLanguage?: NovelLanguage;
+  styleFlavor?: NovelStyleFlavor;
   postGenerationStyleReviewEnabled?: boolean;
   defaultChapterLength?: number;
   estimatedChapterCount?: number;

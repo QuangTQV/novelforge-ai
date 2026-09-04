@@ -23,6 +23,8 @@ export type NovelListItem = Pick<
   | "commercialTags"
   | "status"
   | "writingMode"
+  | "novelLanguage"
+  | "styleFlavor"
   | "projectMode"
   | "creationExperience"
   | "narrativeForm"

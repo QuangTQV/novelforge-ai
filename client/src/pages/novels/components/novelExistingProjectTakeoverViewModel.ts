@@ -1,4 +1,5 @@
 import { translateUi } from "../../../i18n/legacy.ts";
+import { translateTaskProgressLabel } from "../../../i18n/taskProgressLabel.ts";
 import type {
   DirectorTaskSnapshot,
 } from "@ai-novel/shared/types/directorRuntime";
@@ -120,7 +121,7 @@ export function buildTakeoverGuidance(
   const chapterProgress = taskSnapshot?.chapterProgress ?? taskSnapshot?.projection?.chapterExecutionProgress ?? null;
   if (task && (task.status === "queued" || task.status === "running" || task.status === "waiting_approval")) {
     const currentStage = task.currentStage?.trim() || taskSnapshot?.displayState.stageLabel || translateUi("当前任务");
-    const currentLabel = task.currentItemLabel?.trim() || taskSnapshot?.displayState.currentAction || translateUi("等待继续");
+    const currentLabel = translateTaskProgressLabel(task.currentItemLabel?.trim()) || taskSnapshot?.displayState.currentAction || translateUi("等待继续");
     const nextChapterOrder = chapterProgress?.currentChapterOrder ?? chapterProgress?.activeChapterOrder ?? null;
     return {
       diagnosis: translateUi("当前已有导演任务停在「{{v0}}」。", { v0: currentStage }),
@@ -367,7 +368,7 @@ export function buildTakeoverProgressInspection(
   return {
     cards,
     summary: taskSnapshot?.task
-      ? translateUi("当前任务：{{value0}} / {{value1}}", { value0: taskSnapshot.task.currentStage || taskSnapshot.displayState.stageLabel || translateUi("自动导演"), value1: taskSnapshot.task.currentItemLabel || taskSnapshot.displayState.currentAction || translateUi("等待继续") })
+      ? translateUi("当前任务：{{value0}} / {{value1}}", { value0: taskSnapshot.task.currentStage || taskSnapshot.displayState.stageLabel || translateUi("自动导演"), value1: translateTaskProgressLabel(taskSnapshot.task.currentItemLabel) || taskSnapshot.displayState.currentAction || translateUi("等待继续") })
       : translateUi("以下为当前项目已检测到的资产进度。"),
   };
 }

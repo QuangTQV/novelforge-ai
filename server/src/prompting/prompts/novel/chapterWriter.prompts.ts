@@ -3,11 +3,9 @@ import type { PromptAsset } from "../../core/promptTypes";
 import { renderSelectedContextBlocks } from "../../core/renderContextBlocks";
 import { NOVEL_PROMPT_BUDGETS } from "./promptBudgetProfiles";
 import { CHAPTER_PROSE_QUALITY_RULES } from "@ai-novel/shared/types/chapterProseContract";
-import {
-  NOVEL_LANGUAGE_ENDONYM,
-  narrativeLengthUnitLabel,
-  type NovelLanguage,
-} from "@ai-novel/shared";
+import { NOVEL_LANGUAGE_ENDONYM } from "@ai-novel/shared/utils/novelLanguage";
+import { narrativeLengthUnitLabel } from "@ai-novel/shared/utils/narrativeLength";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 
 export interface ChapterWriterPromptInput {
   novelTitle: string;

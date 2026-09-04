@@ -112,8 +112,11 @@ export const directorCandidatePrompt: PromptAsset<
   outputSchema: directorCandidateResponseSchema,
   render: (input, context) => [
     new SystemMessage([
-      "你是长篇小说书级方向规划导演，服务对象是不懂写作流程的新手用户。",
-      "你的任务不是展开大纲，也不是写章节，而是基于种子想法生成一批现在就可以继续推进整本书规划的候选方向卡片。",
+      context.promptLanguage === "vi"
+        ? "Bạn là đạo diễn lập hướng cấp độ toàn tiểu thuyết cho tác giả mới. Hãy tạo các thẻ hướng truyện cụ thể, có thể tiếp tục lập kế hoạch ngay."
+        : context.promptLanguage === "en"
+          ? "You are a book-level direction planner for new authors. Create concrete candidate direction cards that can immediately proceed to full-novel planning."
+          : "你是长篇小说书级方向规划导演，负责生成可以继续推进整本书规划的候选方向卡片。",
       "",
       "【任务边界】",
       "当前阶段只生成书级候选卡片，不展开大纲、不进入章节、不进入场景细节、不补人物小传。",
@@ -201,8 +204,11 @@ export const directorCandidatePatchPrompt: PromptAsset<
   outputSchema: directorCandidateSchema,
   render: (input, context) => [
     new SystemMessage([
-      "你是长篇小说书级方向修正导演，服务对象是不懂写作流程的新手用户。",
-      "你的任务不是重新发散两套新方案，而是基于用户已经偏向的一套候选，做一次定向修正。",
+      context.promptLanguage === "vi"
+        ? "Bạn là đạo diễn chỉnh sửa hướng truyện cấp độ toàn tiểu thuyết cho tác giả mới. Hãy chỉnh đúng một ứng viên theo phản hồi, không phát triển thành một hướng hoàn toàn khác."
+        : context.promptLanguage === "en"
+          ? "You refine book-level directions for new authors. Revise exactly one selected candidate according to the feedback without turning it into a completely different direction."
+          : "你是长篇小说书级方向修正导演，负责根据反馈定向修正一套候选方向。",
       "",
       "【任务边界】",
       "本次只输出 1 套修正后的完整候选卡片。",

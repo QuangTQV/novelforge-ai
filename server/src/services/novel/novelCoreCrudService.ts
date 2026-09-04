@@ -92,6 +92,7 @@ export class NovelCoreCrudService {
           emotionIntensity: true,
           aiFreedom: true,
           novelLanguage: true,
+          styleFlavor: true,
           postGenerationStyleReviewEnabled: true,
           defaultChapterLength: true,
           estimatedChapterCount: true,
@@ -390,6 +391,7 @@ export class NovelCoreCrudService {
         emotionIntensity: input.emotionIntensity,
         aiFreedom: input.aiFreedom,
         novelLanguage: input.novelLanguage ?? null,
+        styleFlavor: input.styleFlavor ?? null,
         postGenerationStyleReviewEnabled: input.postGenerationStyleReviewEnabled,
         defaultChapterLength: input.defaultChapterLength,
         estimatedChapterCount: input.estimatedChapterCount,
@@ -560,7 +562,7 @@ export class NovelCoreCrudService {
     if (updated.worldId) {
       queueRagUpsert("world", updated.worldId);
     }
-    if (input.novelLanguage !== undefined) {
+    if (input.novelLanguage !== undefined || input.styleFlavor !== undefined) {
       invalidateNovelOutputLanguage(id);
     }
     return normalizeNovelOutput(updated);

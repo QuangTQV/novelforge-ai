@@ -1,7 +1,7 @@
 import { translateUi } from "@/i18n/legacy";
 import type { TitleFactorySuggestion } from "@ai-novel/shared/types/title";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, ChevronDown, RefreshCw, Wand2 } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, RefreshCw, Trash2, Wand2 } from "lucide-react";
 import {
   DIRECTOR_CORRECTION_PRESETS,
   type DirectorCandidate,
@@ -32,6 +32,9 @@ interface NovelAutoDirectorCandidateBatchesProps {
   onRefineTitle: (batchId: string, candidate: DirectorCandidate, feedback: string) => void;
   onConfirmCandidate: (candidate: DirectorCandidate) => void | Promise<void>;
   onGenerateNext: () => void;
+  isDeletingCandidate: boolean;
+  onDeleteCandidate: (candidateId: string) => void;
+  onDeleteAllCandidates: () => void;
 }
 
 function buildFallbackTitleOption(candidate: DirectorCandidate): TitleFactorySuggestion {
@@ -73,6 +76,15 @@ function formatToneKeywords(candidate: DirectorCandidate): string {
   return candidate.toneKeywords.filter(Boolean).slice(0, 4).join(" · ");
 }
 
+function translateTaxonomyPath(path: string): string {
+  return path.split("/").map((part) => translateUi(part.trim())).join(" / ");
+}
+
+function translateBatchRoundLabel(label: string): string {
+  const match = label.match(/^第\s*(\d+)\s*轮$/);
+  return match ? translateUi("Vòng {{v0}}", { v0: match[1] }) : translateUi(label);
+}
+
 function foundationSourceLabel(source: "user_selected" | "ai_recommended" | "market_recommended" | undefined): string {
   if (source === "user_selected") return translateUi("你的选择");
   if (source === "ai_recommended") return translateUi("AI 补充");
@@ -100,6 +112,9 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
     onRefineTitle,
     onConfirmCandidate,
     onGenerateNext,
+    isDeletingCandidate,
+    onDeleteCandidate,
+    onDeleteAllCandidates,
   } = props;
   const reducedMotion = useReducedMotion();
 
@@ -114,6 +129,12 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
 
   return (
     <div className="space-y-8">
+      <div className="flex justify-end">
+        <Button type="button" variant="ghost" size="sm" onClick={onDeleteAllCandidates} disabled={isDeletingCandidate}>
+          <Trash2 className="h-4 w-4" />
+          {translateUi("Xoá toàn bộ candidate")}
+        </Button>
+      </div>
       {batches.map((batch, batchIndex) => (
         <motion.section
           key={batch.id}
@@ -124,7 +145,7 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
         >
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div className="min-w-0">
-              <div className="break-words text-xs font-medium text-muted-foreground [overflow-wrap:anywhere]">{batch.roundLabel}</div>
+              <div className="break-words text-xs font-medium text-muted-foreground [overflow-wrap:anywhere]">{translateBatchRoundLabel(batch.roundLabel)}</div>
               <div className="mt-1 break-words text-base font-semibold text-foreground [overflow-wrap:anywhere]">
                 {batch.refinementSummary?.trim() || translateUi("初始方案")}
               </div>
@@ -177,7 +198,10 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
                       </div>
 
                       <h3 className="mt-2 max-w-3xl break-words text-2xl font-semibold leading-9 text-foreground [overflow-wrap:anywhere]">
-                        {candidate.workingTitle}
+                        <span>{candidate.workingTitle}</span>
+                        <button type="button" className="ml-3 inline-flex align-middle text-muted-foreground hover:text-destructive" onClick={() => onDeleteCandidate(candidate.id)} disabled={isDeletingCandidate} aria-label={translateUi("Xoá candidate")}>
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </h3>
 
                       <p className="mt-3 max-w-3xl break-words text-sm leading-7 text-muted-foreground [overflow-wrap:anywhere]">
@@ -191,20 +215,20 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
                             <span className="mr-1 text-muted-foreground">
                               {foundationSourceLabel(candidate.productionFoundation.genre.source)}
                             </span>
-                            {candidate.productionFoundation.genre.path}
+                            {translateTaxonomyPath(candidate.productionFoundation.genre.path)}
                           </span>
                           <span className="text-foreground">
                             <span className="mr-1 text-muted-foreground">
                               {foundationSourceLabel(candidate.productionFoundation.primaryStoryMode.source)}
                             </span>
-                            {candidate.productionFoundation.primaryStoryMode.path}
+                            {translateTaxonomyPath(candidate.productionFoundation.primaryStoryMode.path)}
                           </span>
                           {candidate.productionFoundation.secondaryStoryMode ? (
                             <span className="text-foreground">
                               <span className="mr-1 text-muted-foreground">
                                 {foundationSourceLabel(candidate.productionFoundation.secondaryStoryMode.source)}
                               </span>
-                              {candidate.productionFoundation.secondaryStoryMode.path}
+                                {translateTaxonomyPath(candidate.productionFoundation.secondaryStoryMode.path)}
                             </span>
                           ) : null}
                         </div>

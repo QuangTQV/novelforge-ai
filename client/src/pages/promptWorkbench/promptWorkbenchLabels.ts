@@ -1,4 +1,21 @@
 import type { NovelMaterialImportance, PromptCatalogItem } from "@/api/promptWorkbench";
+import { translateUi } from "@/i18n/legacy";
+
+const PROMPT_DISPLAY_LABELS: Record<string, string> = {
+  "novel.chapter.writer": "Tạo chính văn tiểu thuyết",
+  "novel.short_story.segment.write": "Tạo chính văn truyện ngắn",
+  "novel.short_story.full.audit": "Rà soát toàn bộ truyện ngắn",
+  "audit.chapter.full": "Rà soát toàn bộ chương",
+  "audit.chapter.light": "Rà soát nhanh chương",
+  "novel.chapter_editor.rewrite_candidates": "Các phương án viết lại chương",
+  "novel.review.patch": "Sửa cục bộ chương",
+  "novel.review.repair": "Sửa toàn bộ chương",
+  "novel.review.chapter": "Rà soát chính văn chương",
+};
+
+export function getPromptDisplayLabel(prompt: PromptCatalogItem): string {
+  return translateUi(PROMPT_DISPLAY_LABELS[prompt.id] ?? prompt.shortDescription ?? prompt.id);
+}
 
 export const LOCKED_FIELD_LABELS: Record<string, string> = {
   outputSchema: "输出格式",

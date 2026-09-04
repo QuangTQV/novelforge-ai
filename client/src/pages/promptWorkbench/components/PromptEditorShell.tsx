@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { Maximize2, Minimize2 } from "lucide-react";
 import type { PromptCatalogItem, PromptSlotOverrideScope } from "@/api/promptWorkbench";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ import {
   OUTPUT_TYPE_LABELS,
   TASK_TYPE_LABELS,
   capabilityLabels,
+  getPromptDisplayLabel,
 } from "../promptWorkbenchLabels";
 
 interface PromptEditorShellProps {
@@ -21,6 +23,8 @@ interface PromptEditorShellProps {
   onImmersiveChange?: (next: boolean) => void;
   entrypoint: string;
   onEntrypointChange: (entrypoint: string) => void;
+  outputLanguage: NovelLanguage;
+  onOutputLanguageChange: (language: NovelLanguage) => void;
   scope: PromptSlotOverrideScope;
   onScopeChange: (scope: PromptSlotOverrideScope) => void;
   selectedNovelId: string;
@@ -45,11 +49,13 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
     novels,
     chapters,
     onEntrypointChange,
+    onOutputLanguageChange,
     onChapterChange,
     onImmersiveChange,
     onNovelChange,
     onScopeChange,
     prompt,
+    outputLanguage,
     runBar,
     scope,
     selectedChapterId,
@@ -73,10 +79,10 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
         )}
       >
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-          <div className="min-w-0">
+          <div className="min-w-0 xl:flex-1">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
               <h2 className="min-w-0 truncate text-xl font-semibold tracking-normal text-foreground">
-                {heading || prompt.description || prompt.id}
+                {heading || getPromptDisplayLabel(prompt)}
               </h2>
               {!simplified ? (
                 <span className="rounded-md bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
@@ -124,9 +130,22 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
                 </div>
               </>
             )}
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <span>{translateUi("Ngôn ngữ prompt")}</span>
+              <SelectControl
+                value={outputLanguage}
+                onChange={(event) => onOutputLanguageChange(event.target.value as NovelLanguage)}
+                aria-label={translateUi("Ngôn ngữ prompt")}
+                className="h-8 w-32"
+              >
+                <option value="vi">{translateUi("Tiếng Việt")}</option>
+                <option value="en">English</option>
+                <option value="zh">{translateUi("中文")}</option>
+              </SelectControl>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-3 md:flex-row md:items-center xl:justify-end">
+          <div className="flex shrink-0 flex-col gap-3 md:flex-row md:items-center xl:justify-end">
             {!simplified ? (
               <>
                 <SelectControl

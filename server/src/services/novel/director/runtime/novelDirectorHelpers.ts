@@ -277,6 +277,8 @@ export async function enhanceCandidateTitles(
       count: 4,
       provider: context.options.provider,
       model: context.options.model,
+      outputLanguage: context.request.novelLanguage,
+      styleFlavor: context.request.styleFlavor,
     });
     const mergedOptions = mergeTitleOptions(response.titles, candidate, excludedTitles);
     const primaryTitle = mergedOptions[0]?.title?.trim();
@@ -518,6 +520,7 @@ export function buildWorkflowSeedPayload(
     emotionIntensity: input.emotionIntensity ?? "medium",
     aiFreedom: input.aiFreedom ?? "medium",
     novelLanguage: input.novelLanguage ?? null,
+    styleFlavor: input.styleFlavor ?? null,
     postGenerationStyleReviewEnabled: input.postGenerationStyleReviewEnabled ?? true,
     defaultChapterLength: input.defaultChapterLength ?? 2800,
     estimatedChapterCount: input.estimatedChapterCount ?? null,
@@ -562,6 +565,7 @@ export function buildWorkflowSeedPayload(
     emotionIntensity: basicForm.emotionIntensity,
     aiFreedom: basicForm.aiFreedom,
     novelLanguage: basicForm.novelLanguage,
+    styleFlavor: basicForm.styleFlavor,
     postGenerationStyleReviewEnabled: basicForm.postGenerationStyleReviewEnabled,
     provider: input.provider ?? null,
     model: input.model?.trim() || null,

@@ -63,6 +63,41 @@ export class NovelWorkflowStoreService {
     );
   }
 
+  public async removeAutoDirectorCandidates(taskId: string, candidateId?: string) {
+    const row = await this.getVisibleRowByIdRaw(taskId);
+    if (!row || row.lane !== "auto_director") {
+      throw new Error("Không tìm thấy task Auto Director.");
+    }
+    let payload: Record<string, unknown>;
+    try {
+      const parsed = row.seedPayloadJson ? JSON.parse(row.seedPayloadJson) as unknown : {};
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+        throw new Error("seed payload must be an object");
+      }
+      payload = parsed as Record<string, unknown>;
+    } catch {
+      throw new Error("Dữ liệu candidate không hợp lệ; không thể xoá an toàn.");
+    }
+    const batches = Array.isArray(payload.batches) ? payload.batches as Array<Record<string, unknown>> : [];
+    const before = batches.reduce((sum, batch) => sum + (Array.isArray(batch.candidates) ? batch.candidates.length : 0), 0);
+    const nextBatches = candidateId?.trim()
+      ? batches
+        .map((batch) => ({
+          ...batch,
+          candidates: Array.isArray(batch.candidates)
+            ? batch.candidates.filter((candidate) => (candidate as { id?: unknown })?.id !== candidateId.trim())
+            : [],
+        }))
+        .filter((batch) => Array.isArray(batch.candidates) && batch.candidates.length > 0)
+      : [];
+    const after = nextBatches.reduce((sum, batch) => sum + (Array.isArray(batch.candidates) ? batch.candidates.length : 0), 0);
+    await this.updateTaskWithRetry({
+      where: { id: taskId },
+      data: { seedPayloadJson: JSON.stringify({ ...payload, batches: nextBatches }) },
+    });
+    return { removedCandidates: before - after, removedBatches: batches.length - nextBatches.length };
+  }
+
   private toAutoDirectorEventSnapshot(row: {
     id: string;
     novelId: string | null;

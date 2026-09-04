@@ -1,4 +1,5 @@
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import type { NovelLanguage, NovelStyleFlavor } from "@ai-novel/shared/types/novel";
 import type { TitleFactorySuggestion } from "@ai-novel/shared/types/title";
 import { prisma } from "../../db/prisma";
 import { resolveLLMClientOptions } from "../../llm/factory";
@@ -21,6 +22,8 @@ export interface TitleGenerationLLMOptions {
   model?: string;
   temperature?: number;
   maxTokens?: number;
+  outputLanguage?: NovelLanguage;
+  styleFlavor?: NovelStyleFlavor;
 }
 
 export interface GenerateTitleIdeasInput extends TitleGenerationLLMOptions {
@@ -149,6 +152,8 @@ export class TitleGenerationService {
       model: input.model,
       temperature: input.temperature,
       maxTokens: input.maxTokens,
+      outputLanguage: input.outputLanguage,
+      styleFlavor: input.styleFlavor,
     });
   }
 
@@ -188,13 +193,14 @@ export class TitleGenerationService {
       currentTitle: novel.title,
       genreName: novel.genre?.name ?? "",
       genreDescription: novel.genre?.description ?? "",
-    }, input, novel.title ? [novel.title] : []);
+    }, input, novel.title ? [novel.title] : [], novelId);
   }
 
   private async runGeneration(
     promptContext: TitlePromptContext,
     llmOptions: TitleGenerationLLMOptions,
     blockedTitles: string[] = [],
+    novelId?: string,
   ): Promise<{ titles: TitleFactorySuggestion[] }> {
     const provider = llmOptions.provider ?? "deepseek";
     const forceJson = await shouldForceTitleJsonOutput(llmOptions);
@@ -218,10 +224,13 @@ export class TitleGenerationService {
             retryReason,
           },
           options: {
+            novelId,
             provider,
             model: llmOptions.model,
             temperature: llmOptions.temperature ?? 0.85,
             maxTokens: llmOptions.maxTokens,
+            outputLanguage: llmOptions.outputLanguage,
+            styleFlavor: llmOptions.styleFlavor,
           },
         });
 

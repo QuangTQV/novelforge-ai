@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type {
   AutoDirectorFollowUpAvailableFilters,
   AutoDirectorFollowUpItem,
@@ -192,8 +193,8 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
                 >
                 <div className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpListHeader}>
                   <div className="min-w-0 space-y-1">
-                    <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} font-medium`}>{item.novelTitle}</div>
-                    <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} text-sm text-muted-foreground`}>{item.followUpSummary}</div>
+                    <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} font-medium`}>{translateTaskProgressLabel(item.novelTitle)}</div>
+                    <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} text-sm text-muted-foreground`}>{translateTaskProgressLabel(item.followUpSummary)}</div>
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-2">
                     <TaskQueueSeverityBadge severity={getFollowUpSeverity(item)} label={getFollowUpLevelLabel(item)} />
@@ -203,9 +204,9 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
                 <div className="mt-3 flex min-w-0 flex-wrap gap-2 text-xs text-muted-foreground">
                   {item.section === "auto_progress" ? <TaskQueueStatusBadge label={formatItemType(item)} tone={tone} /> : null}
                   <TaskQueueStatusBadge label={formatStatus(item.status)} tone="neutral" />
-                  <TaskQueueStatusBadge label={item.reasonLabel} tone="neutral" />
+                  <TaskQueueStatusBadge label={translateTaskProgressLabel(item.reasonLabel)} tone="neutral" />
                   <TaskQueueStatusBadge label={getFollowUpPriorityLabel(item.priority, item.reason)} tone={tone} />
-                  {item.executionScope ? <TaskQueueStatusBadge label={item.executionScope} tone="neutral" className={`max-w-full whitespace-normal text-left ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`} /> : null}
+                  {item.executionScope ? <TaskQueueStatusBadge label={translateTaskProgressLabel(item.executionScope)} tone="neutral" className={`max-w-full whitespace-normal text-left ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`} /> : null}
                   {item.supportsBatch ? <TaskQueueStatusBadge label={translateUi("可批量")} tone="info" /> : null}
                   {buildChannelBadges(item).map((label) => (
                     <TaskQueueStatusBadge key={`${item.directorTaskId}:${label}`} label={label} tone="info" />
@@ -214,12 +215,12 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
 
                 <div className={`mt-2 text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
 
-                  {translateUi("当前阶段：")}{item.currentStage ?? translateUi("暂无")}  {translateUi("· 当前模型：")}{item.currentModel ?? translateUi("暂无")}  {translateUi("· 更新时间：")}{new Date(item.updatedAt).toLocaleString()}
+                  {translateUi("当前阶段：")}{translateTaskProgressLabel(item.currentStage) || translateUi("暂无")}  {translateUi("· 当前模型：")}{item.currentModel ?? translateUi("暂无")}  {translateUi("· 更新时间：")}{new Date(item.updatedAt).toLocaleString()}
                 </div>
                 </TaskQueueItem>
                 {item.supportsBatch ? (
                   <label className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center">
-                    <span className="sr-only">{translateUi("选择")} {item.novelTitle}  {translateUi("进行批量操作")}</span>
+                    <span className="sr-only">{translateUi("选择")} {translateTaskProgressLabel(item.novelTitle)}  {translateUi("进行批量操作")}</span>
                     <input
                       type="checkbox"
                       checked={checked}

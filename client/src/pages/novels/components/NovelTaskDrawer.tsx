@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 ﻿import type {
   NovelWorkflowMilestone,
   NovelWorkflowMilestoneType,
@@ -359,7 +360,7 @@ export default function NovelTaskDrawer({
             <AICockpit
               projection={projection}
               mode="focusedNovel"
-              fallbackSummary={dashboardView?.currentAction || displayState?.currentAction || task?.blockingReason || task?.currentItemLabel || translateUi("当前没有需要处理的 AI 推进动作。")}
+              fallbackSummary={dashboardView?.currentAction || displayState?.currentAction || translateTaskProgressLabel(task?.blockingReason) || translateTaskProgressLabel(task?.currentItemLabel) || translateUi("当前没有需要处理的 AI 推进动作。")}
               fallbackStatusLabel={dashboardView?.statusLabel ?? (task ? formatTaskStatus(task) : translateUi("未开启"))}
               showDetailsAction={false}
               onAction={(_projection, action) => handleProjectionAction(action)}
@@ -413,7 +414,7 @@ export default function NovelTaskDrawer({
                   </div>
                   <div className="rounded-xl border bg-background/80 p-3">
                     <div className="text-xs text-muted-foreground">{i18n.t("novelTaskDrawer:ui.currentAction")}</div>
-                    <div className="mt-1 text-sm font-medium text-foreground">{dashboardView?.currentAction ?? displayState?.currentAction ?? task.currentItemLabel ?? translateUi("暂无")}</div>
+                    <div className="mt-1 text-sm font-medium text-foreground">{dashboardView?.currentAction ?? displayState?.currentAction ?? (translateTaskProgressLabel(task.currentItemLabel) || translateUi("暂无"))}</div>
                   </div>
                   <div className="rounded-xl border bg-background/80 p-3">
                     <div className="text-xs text-muted-foreground">{i18n.t("novelTaskDrawer:ui.checkpoint")}</div>
@@ -435,7 +436,7 @@ export default function NovelTaskDrawer({
                 {task.lastError ? (
                   <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
                     <div className="font-medium">{i18n.t("novelTaskDrawer:ui.latestError")}</div>
-                    <div className="mt-1">{task.lastError}</div>
+                    <div className="mt-1">{translateTaskProgressLabel(task.lastError)}</div>
                     {task.recoveryHint ? (
                       <div className="mt-2 text-xs text-destructive/80">{i18n.t("novelTaskDrawer:ui.recovery", { value: task.recoveryHint })}</div>
                     ) : null}

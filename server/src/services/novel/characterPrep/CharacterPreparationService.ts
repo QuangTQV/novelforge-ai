@@ -420,6 +420,7 @@ export class CharacterPreparationService {
   }
 
   private async normalizeCharacterCastOptions(
+    novelId: string,
     parsed: CharacterCastOptionResponseParsed,
     options: CharacterPrepOptions,
   ): Promise<CharacterCastOptionResponseParsed> {
@@ -429,6 +430,7 @@ export class CharacterPreparationService {
         payloadJson: JSON.stringify(parsed, null, 2),
       },
       options: {
+        novelId,
         provider: options.provider,
         model: options.model,
         temperature: 0.2,
@@ -438,6 +440,7 @@ export class CharacterPreparationService {
   }
 
   private async repairCharacterCastOptions(input: {
+    novelId: string;
     parsed: CharacterCastOptionResponseParsed;
     assessment: CharacterCastBatchAssessment;
     contextBlocks: ReturnType<typeof buildCharacterCastContextBlocks>;
@@ -451,6 +454,7 @@ export class CharacterPreparationService {
       },
       contextBlocks: input.contextBlocks,
       options: {
+        novelId: input.novelId,
         provider: input.options.provider,
         model: input.options.model,
         temperature: Math.max(0.2, Math.min(input.options.temperature ?? 0.55, 0.6)),
@@ -601,6 +605,7 @@ export class CharacterPreparationService {
       },
       contextBlocks: context.contextBlocks,
       options: {
+        novelId,
         provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.5,
@@ -612,6 +617,7 @@ export class CharacterPreparationService {
     let assessment = assessCharacterCastBatch(parsed.options, context.storyInput);
     if (assessment.autoApplicableOptionIndex === null) {
       parsed = await this.repairCharacterCastOptions({
+        novelId,
         parsed,
         assessment,
         contextBlocks: context.contextBlocks,

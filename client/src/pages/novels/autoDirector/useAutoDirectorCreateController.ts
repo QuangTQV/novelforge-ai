@@ -25,6 +25,7 @@ import {
   confirmDirectorCandidate,
   generateDirectorIdeaInspirations,
   generateDirectorIdeaConstellationOptions,
+  removeDirectorCandidates,
 } from "@/api/novelDirector";
 import { queryKeys } from "@/api/queryKeys";
 import { getStyleProfiles } from "@/api/styleEngine";
@@ -433,6 +434,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     generateMutation,
     patchCandidateMutation,
     refineTitleMutation,
+    deleteCandidateMutation,
   } = useNovelAutoDirectorCandidateMutations({
     batches,
     selectedPresets,
@@ -719,6 +721,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     generateMutation,
     patchCandidateMutation,
     refineTitleMutation,
+    deleteCandidateMutation,
     confirmMutation,
     continueMutation,
     onBasicFormChange,

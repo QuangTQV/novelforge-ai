@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { Chapter, NovelBible, PipelineJob, PlotBeat, QualityScore, ReviewIssue } from "@ai-novel/shared/types/novel";
@@ -402,7 +403,7 @@ export default function PipelineTab(props: PipelineTabProps) {
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span>{stage.label}</span>
+                        <span>{translateTaskProgressLabel(stage.label)}</span>
                         <span className="text-xs text-muted-foreground">{t(`outline.pipeline.${stageStatusLabel(state)}`)}</span>
                       </div>
                     </div>
@@ -454,7 +455,7 @@ export default function PipelineTab(props: PipelineTabProps) {
                       <div>{t("outline.pipeline.jobId")}: {pipelineJob.id}</div>
                       <div>{t("outline.pipeline.status")}: {pipelineJob.status}</div>
                       <div>{t("outline.pipeline.currentStage")}: {pipelineJob.currentStage || "-"}</div>
-                      <div>{t("outline.pipeline.currentChapter")}: {pipelineJob.currentItemLabel || "-"}</div>
+                      <div>{t("outline.pipeline.currentChapter")}: {translateTaskProgressLabel(pipelineJob.currentItemLabel) || "-"}</div>
                       <div>{t("outline.pipeline.progress")}: {Math.round((pipelineJob.progress ?? 0) * 100)}%</div>
                       <div>{t("outline.pipeline.completed")}: {pipelineJob.completedCount}/{pipelineJob.totalCount}</div>
                       <div>{t("outline.pipeline.retries")}: {pipelineJob.retryCount}/{pipelineJob.maxRetries}</div>

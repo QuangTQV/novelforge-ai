@@ -374,6 +374,7 @@ export class PayoffLedgerSyncService {
         asset: payoffLedgerSyncPrompt,
         promptInput,
         options: {
+          novelId: novelId,
           provider: options.provider,
           model: options.model,
           temperature: options.temperature ?? 0.2,

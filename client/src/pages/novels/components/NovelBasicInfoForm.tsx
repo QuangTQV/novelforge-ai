@@ -11,6 +11,7 @@ import {
   DEFAULT_ESTIMATED_CHAPTER_COUNT,
   EMOTION_OPTIONS,
   NOVEL_LANGUAGE_OPTIONS,
+  NOVEL_STYLE_FLAVOR_OPTIONS,
   PACE_OPTIONS,
   POV_OPTIONS,
   PROJECT_MODE_OPTIONS,
@@ -344,6 +345,21 @@ export default function NovelBasicInfoForm(props: NovelBasicInfoFormProps) {
                   ))}
                 </SelectControl>
                 <div className="text-xs text-muted-foreground">{findOptionSummary(NOVEL_LANGUAGE_OPTIONS, basicForm.novelLanguage)}</div>
+              </div>
+
+              <div className="space-y-2">
+                <FieldLabel htmlFor="basic-style-flavor" hint={BASIC_INFO_FIELD_HINTS.styleFlavor}>{translateUi("Phong cách văn phong")}</FieldLabel>
+                <SelectControl
+                  id="basic-style-flavor"
+                  className="w-full rounded-md border bg-background p-2 text-sm"
+                  value={basicForm.styleFlavor}
+                  onChange={(event) => onFormChange({ styleFlavor: event.target.value as NovelBasicFormState["styleFlavor"] })}
+                >
+                  {NOVEL_STYLE_FLAVOR_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </SelectControl>
+                <div className="text-xs text-muted-foreground">{findOptionSummary(NOVEL_STYLE_FLAVOR_OPTIONS, basicForm.styleFlavor)}</div>
               </div>
 
               <div className="space-y-2">

@@ -15,6 +15,7 @@ import type {
   NarrativePov,
   Novel,
   NovelLanguage,
+  NovelStyleFlavor,
   PacePreference,
   ProjectMode,
   ProjectProgressStatus,
@@ -78,6 +79,7 @@ export async function createNovel(payload: {
   emotionIntensity?: EmotionIntensity;
   aiFreedom?: AIFreedom;
   novelLanguage?: NovelLanguage;
+  styleFlavor?: NovelStyleFlavor;
   postGenerationStyleReviewEnabled?: boolean;
   defaultChapterLength?: number;
   estimatedChapterCount?: number;
@@ -156,6 +158,7 @@ export async function updateNovel(
     emotionIntensity: EmotionIntensity | null;
     aiFreedom: AIFreedom | null;
     novelLanguage: NovelLanguage | null;
+    styleFlavor: NovelStyleFlavor | null;
     postGenerationStyleReviewEnabled: boolean;
     defaultChapterLength: number | null;
     estimatedChapterCount: number | null;

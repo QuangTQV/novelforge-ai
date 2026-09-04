@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type { RecoverableTaskSummary } from "@ai-novel/shared/types/task";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -86,7 +87,7 @@ export default function TaskRecoveryDialog() {
 
                 <div className="grid gap-2 text-sm text-muted-foreground">
                   {item.currentStage ? <div>{translateUi("当前阶段：")}{item.currentStage}</div> : null}
-                  {item.currentItemLabel ? <div>{translateUi("中断位置：")}{item.currentItemLabel}</div> : null}
+                  {item.currentItemLabel ? <div>{translateUi("中断位置：")}{translateTaskProgressLabel(item.currentItemLabel)}</div> : null}
                   {item.resumeAction ? <div>{translateUi("建议动作：")}{item.resumeAction}</div> : null}
                   {item.recoveryHint ? <div>{translateUi("恢复建议：")}{item.recoveryHint}</div> : null}
                 </div>

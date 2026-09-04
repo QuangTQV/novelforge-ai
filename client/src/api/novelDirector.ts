@@ -83,6 +83,14 @@ export async function generateDirectorCandidates(payload: DirectorCandidatesRequ
   return data;
 }
 
+export async function removeDirectorCandidates(workflowTaskId: string, candidateId?: string) {
+  const suffix = candidateId ? `/${encodeURIComponent(candidateId)}` : "";
+  const { data } = await apiClient.delete<ApiResponse<{ removedCandidates: number; removedBatches: number }>>(
+    `/novel-workflows/${encodeURIComponent(workflowTaskId)}/candidates${suffix}`,
+  );
+  return data;
+}
+
 export async function generateDirectorIdeaInspirations(
   payload: DirectorIdeaInspirationRequest,
 ): Promise<ApiResponse<DirectorIdeaInspirationsResponse>> {

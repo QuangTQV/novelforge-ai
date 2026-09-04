@@ -61,6 +61,11 @@ export type AIFreedom = "low" | "medium" | "high";
  * Độc lập với ngôn ngữ giao diện. `null`/rỗng trên bản ghi cũ ⇒ coi như "zh".
  */
 export type NovelLanguage = "zh" | "vi" | "en" | "ja" | "ko" | "fr" | "es";
+/**
+ * Phong cách văn phong (kỹ thuật kể chuyện) áp cho nội dung AI sinh, độc lập với
+ * ngôn ngữ đầu ra. `null`/rỗng trên bản ghi cũ ⇒ coi như "manga" (mặc định).
+ */
+export type NovelStyleFlavor = "manga" | "manhwa" | "manhua" | "none";
 export type ProjectProgressStatus = "not_started" | "in_progress" | "completed" | "rework" | "blocked";
 
 export type StorylineVersionStatus = "draft" | "active" | "frozen";
@@ -252,6 +257,7 @@ export interface Novel {
   emotionIntensity?: EmotionIntensity | null;
   aiFreedom?: AIFreedom | null;
   novelLanguage?: NovelLanguage | null;
+  styleFlavor?: NovelStyleFlavor | null;
   postGenerationStyleReviewEnabled: boolean;
   defaultChapterLength?: number | null;
   estimatedChapterCount?: number | null;

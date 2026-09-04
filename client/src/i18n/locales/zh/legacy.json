@@ -51,5 +51,15 @@
   "AI sẽ viết nội dung bằng tiếng Hàn.": "AI 会用韩语撰写内容。",
   "AI sẽ viết nội dung bằng tiếng Pháp.": "AI 会用法语撰写内容。",
   "AI sẽ viết nội dung bằng tiếng Tây Ban Nha.": "AI 会用西班牙语撰写内容。",
-  "Ngôn ngữ AI dùng để viết nội dung tiểu thuyết (chính văn, tên, mô tả). Độc lập với ngôn ngữ giao diện; mặc định lấy theo ngôn ngữ giao diện. Đổi về sau chỉ áp dụng cho nội dung sinh mới.": "AI 撰写小说内容（正文、名称、描述）所用的语言。独立于界面语言，默认跟随界面语言。之后修改只影响新生成的内容。"
+  "Ngôn ngữ AI dùng để viết nội dung tiểu thuyết (chính văn, tên, mô tả). Độc lập với ngôn ngữ giao diện; mặc định lấy theo ngôn ngữ giao diện. Đổi về sau chỉ áp dụng cho nội dung sinh mới.": "AI 撰写小说内容（正文、名称、描述）所用的语言。独立于界面语言，默认跟随界面语言。之后修改只影响新生成的内容。",
+  "Phong cách văn phong": "文风",
+  "Phong cách kỹ thuật kể chuyện (nhịp độ, cách mở/kết chương) mà AI áp dụng khi viết. Độc lập với ngôn ngữ; đổi về sau chỉ áp dụng cho nội dung sinh mới.": "AI 写作时采用的叙事技巧风格（节奏、开篇/收尾方式）。独立于语言；之后修改只影响新生成的内容。",
+  "Manga (Nhật)": "日式漫画（Manga）",
+  "Nhịp nhanh, đoạn ngắn, đậm nội tâm nhân vật, kết chương bằng chi tiết gây tò mò.": "节奏快，段落短，注重角色内心，以引人好奇的细节收尾。",
+  "Manhwa (Hàn)": "韩式漫画（Manhwa）",
+  "Nhịp rất nhanh, vào thẳng xung đột, kết chương bằng cao trào hoặc cliffhanger.": "节奏非常快，直接切入冲突，以高潮或悬念收尾。",
+  "Manhua (Trung)": "国漫（Manhua）",
+  "Nhịp ổn định, giàu bối cảnh và tính toán nội tâm, văn phong trau chuốt vừa phải.": "节奏平稳，背景信息与内心算计丰富，文字略加雕琢。",
+  "Không áp dụng": "不使用",
+  "Không ép theo phong cách nào, giữ nguyên văn phong mặc định của prompt.": "不强制任何风格，保持提示词的默认文风。"
 }

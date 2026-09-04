@@ -343,6 +343,7 @@ export async function generateCharacterCastOptionsDraft(
   novelId: string,
   options: CharacterPrepOptions = {},
 ): Promise<{ storyInput: string; parsed: CharacterCastOptionResponseParsed }> {
+  options = { ...options, novelId: options.novelId ?? novelId };
   const context = await loadCastGenerationContext(novelId, options);
   const generation = await runStructuredPrompt({
     asset: characterCastOptionPrompt,
@@ -381,6 +382,7 @@ export async function generateAutoCharacterCastDraft(
   novelId: string,
   options: CharacterPrepOptions = {},
 ): Promise<{ storyInput: string; parsed: CharacterCastAutoResponseParsed }> {
+  options = { ...options, novelId: options.novelId ?? novelId };
   const context = await loadCastGenerationContext(novelId, options);
   let parsed: CharacterCastAutoResponseParsed;
   try {

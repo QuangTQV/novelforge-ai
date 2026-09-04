@@ -15,11 +15,8 @@ import {
 } from "../../prompting/prompts/novel/chapterLayeredContext";
 import { chapterWriterPrompt } from "../../prompting/prompts/novel/chapterWriter.prompts";
 import { resolveNovelOutputLanguage } from "../../prompting/core/novelOutputLanguage";
-import {
-  countNarrativeLength,
-  isSpaceDelimitedLanguage,
-  type NovelLanguage,
-} from "@ai-novel/shared";
+import { countNarrativeLength, isSpaceDelimitedLanguage } from "@ai-novel/shared/utils/narrativeLength";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 import { NovelContinuationService } from "./NovelContinuationService";
 import { assertChapterContentNotEmpty } from "./runtime/chapterEmptyContentError";
 import { prisma } from "../../db/prisma";
@@ -167,6 +164,7 @@ export class ChapterWritingGraph {
     }
 
     const continuationGuard = await continuationService.rewriteIfTooSimilar({
+      novelId,
       chapterTitle: chapter.title,
       content: openingGuard.content,
       continuationPack,

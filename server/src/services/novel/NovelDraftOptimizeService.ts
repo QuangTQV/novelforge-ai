@@ -167,6 +167,7 @@ export class NovelDraftOptimizeService {
           selectedText,
         },
         options: {
+          novelId: novelId,
           provider: input.provider ?? "deepseek",
           model: input.model,
           temperature: input.temperature ?? 0.4,
@@ -190,6 +191,7 @@ export class NovelDraftOptimizeService {
         currentDraft,
       },
       options: {
+        novelId: novelId,
         provider: input.provider ?? "deepseek",
         model: input.model,
         temperature: input.temperature ?? 0.4,

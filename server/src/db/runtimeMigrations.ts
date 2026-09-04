@@ -21,6 +21,7 @@ const KNOWN_APPLICATION_TABLES = [
 
 const REQUIRED_COLUMN_BACKFILLS = [
   { tableName: "Novel", columnName: "novelLanguage", columnDefinition: `"novelLanguage" TEXT` },
+  { tableName: "Novel", columnName: "styleFlavor", columnDefinition: `"styleFlavor" TEXT` },
   { tableName: "Character", columnName: "arcClimax", columnDefinition: `"arcClimax" TEXT` },
   { tableName: "Character", columnName: "arcEnd", columnDefinition: `"arcEnd" TEXT` },
   { tableName: "Character", columnName: "arcMidpoint", columnDefinition: `"arcMidpoint" TEXT` },

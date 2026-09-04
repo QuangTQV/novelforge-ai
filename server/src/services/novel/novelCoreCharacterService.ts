@@ -274,6 +274,7 @@ export class NovelCoreCharacterService {
         ragContext: ragContext || "",
       },
       options: {
+        novelId: novelId,
         provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.4,
@@ -352,6 +353,7 @@ export class NovelCoreCharacterService {
           currentGoal: character.currentGoal ?? "",
         },
         options: {
+          novelId: novelId,
           provider: options.provider,
           model: options.model,
           temperature: options.temperature ?? 0.2,

@@ -17,7 +17,8 @@ import { openConflictService } from "../../state/OpenConflictService";
 import { normalizeScore, ruleScore } from "../novelP0Utils";
 import { detectProseQuality } from "./proseQuality/ProseQualityDetector";
 import { resolveNovelOutputLanguage } from "../../../prompting/core/novelOutputLanguage";
-import { countNarrativeLength, type NovelLanguage } from "@ai-novel/shared";
+import { countNarrativeLength } from "@ai-novel/shared/utils/narrativeLength";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 
 export interface ChapterAcceptanceAssessmentInput {
   novelId: string;

@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type { DirectorDashboardView, DirectorRuntimeProjection } from "@ai-novel/shared/types/directorRuntime";
 import type { NovelWorkflowMilestone } from "@ai-novel/shared/types/novelWorkflow";
 import type { UnifiedTaskDetail, UnifiedTaskStep } from "@ai-novel/shared/types/task";
@@ -83,7 +84,7 @@ export default function TaskCenterDetailPanel(props: TaskCenterDetailPanelProps)
             ) : null}
 
             {task.lastError && !props.failureIsQualityReminder && !task.failureCode && !task.failureSummary ? (
-              <WorkspaceStateNotice tone="danger" title={translateUi("最近一次执行失败")} description={task.lastError} />
+              <WorkspaceStateNotice tone="danger" title={translateUi("最近一次执行失败")} description={translateTaskProgressLabel(task.lastError)} />
             ) : null}
 
             {task.kind === "novel_workflow" && task.checkpointSummary ? (
@@ -118,7 +119,7 @@ export default function TaskCenterDetailPanel(props: TaskCenterDetailPanelProps)
                   <WorkspaceStateNotice compact title={translateUi("暂无步骤状态")} description={translateUi("该任务尚未提供可展示的细分步骤。")} />
                 ) : props.steps.map((step) => (
                   <div key={step.key} className="flex items-center justify-between rounded-xl bg-muted/25 px-3 py-2">
-                    <div>{step.label}</div>
+                    <div>{translateTaskProgressLabel(step.label)}</div>
                     <TaskQueueStatusBadge
                       label={step.status === "succeeded" ? translateUi("已完成") : step.status === "failed" ? translateUi("失败") : step.status === "running" ? translateUi("进行中") : step.status === "cancelled" ? translateUi("已取消") : translateUi("未开始")}
                       tone={step.status === "succeeded" ? "success" : step.status === "failed" ? "danger" : step.status === "running" ? "info" : "neutral"}

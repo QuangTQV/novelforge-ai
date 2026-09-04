@@ -37,3 +37,4 @@ export * from "./types/creationStudio";
 export * from "./utils/bookAnalysisTimeline";
 export * from "./utils/novelLanguage";
 export * from "./utils/narrativeLength";
+export * from "./utils/novelStyleFlavor";

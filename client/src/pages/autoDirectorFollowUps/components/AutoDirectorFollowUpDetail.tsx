@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type {
   AutoDirectorAction,
   AutoDirectorFollowUpDetail,
@@ -89,8 +90,8 @@ export function AutoDirectorFollowUpDetailPanel({
         {detail && selectedItem ? (
           <>
             <div className="space-y-1">
-              <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} font-medium`}>{selectedItem.novelTitle}</div>
-              <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} text-sm text-muted-foreground`}>{selectedItem.reasonLabel}</div>
+              <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} font-medium`}>{translateTaskProgressLabel(selectedItem.novelTitle)}</div>
+              <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} text-sm text-muted-foreground`}>{translateTaskProgressLabel(selectedItem.reasonLabel)}</div>
               <div className="flex flex-wrap gap-2 pt-2">
                 <TaskQueueStatusBadge label={getFollowUpLevelLabel(selectedItem)} tone={tone} />
                 <TaskQueueStatusBadge label={getFollowUpPriorityLabel(selectedItem.priority, selectedItem.reason)} tone={tone} />
@@ -100,7 +101,7 @@ export function AutoDirectorFollowUpDetailPanel({
             <TaskQueueImpactNotice
               severity={getFollowUpSeverity(selectedItem)}
               title={getFollowUpLevelLabel(selectedItem)}
-              description={detail.blockingReason ?? detail.followUpSummary}
+              description={translateTaskProgressLabel(detail.blockingReason ?? detail.followUpSummary)}
             />
 
             {detail.riskNote ? (
@@ -108,13 +109,13 @@ export function AutoDirectorFollowUpDetailPanel({
                 compact
                 tone={tone === "danger" ? "danger" : tone === "warning" ? "warning" : "info"}
                 title={translateUi("风险说明")}
-                description={detail.riskNote}
+                description={translateTaskProgressLabel(detail.riskNote)}
               />
             ) : null}
 
             <div className={`grid gap-2 text-sm text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-              <div>{translateUi("下一步建议：")}{detail.nextStepSuggestion ?? translateUi("查看任务详情后再继续。")}</div>
-              <div>{translateUi("检查点摘要：")}{detail.checkpointSummary ?? translateUi("暂无")}</div>
+              <div>{translateUi("下一步建议：")}{translateTaskProgressLabel(detail.nextStepSuggestion) || translateUi("查看任务详情后再继续。")} </div>
+              <div>{translateUi("检查点摘要：")}{translateTaskProgressLabel(detail.checkpointSummary) || translateUi("暂无")}</div>
               <div>{translateUi("当前模型：")}{detail.currentModel ?? translateUi("暂无")}</div>
             </div>
 
@@ -133,14 +134,14 @@ export function AutoDirectorFollowUpDetailPanel({
                 {(detail.validationSummary?.blockingReasons.length ?? 0) > 0 ? (
                   <div className="space-y-1 text-xs">
                     {detail.validationSummary?.blockingReasons.map((reason) => (
-                      <div key={reason}>{translateUi("阻塞：")}{reason}</div>
+                      <div key={reason}>{translateUi("阻塞：")}{translateTaskProgressLabel(reason)}</div>
                     ))}
                   </div>
                 ) : null}
                 {(detail.validationSummary?.warnings.length ?? 0) > 0 ? (
                   <div className="space-y-1 text-xs">
                     {detail.validationSummary?.warnings.map((warning) => (
-                      <div key={warning}>{translateUi("提示：")}{warning}</div>
+                      <div key={warning}>{translateUi("提示：")}{translateTaskProgressLabel(warning)}</div>
                     ))}
                   </div>
                 ) : null}
@@ -177,7 +178,7 @@ export function AutoDirectorFollowUpDetailPanel({
               {detail.availableActions.map((action) => (
                 <TaskQueueActionRow
                   key={action.code}
-                  title={action.label}
+                  title={translateTaskProgressLabel(action.label)}
                   consequence={translateUi("{{value0}} 风险：{{value1}}", { value0: getFollowUpActionConsequence(action), value1: getFollowUpActionRiskDescription(action) })}
                   tone={getFollowUpActionTone(action)}
                   action={(
@@ -188,7 +189,7 @@ export function AutoDirectorFollowUpDetailPanel({
                       disabled={actionLoading}
                       onClick={() => void onExecuteAction(selectedItem, action)}
                     >
-                      {action.label}
+                      {translateTaskProgressLabel(action.label)}
                     </Button>
                   )}
                 />
@@ -202,10 +203,10 @@ export function AutoDirectorFollowUpDetailPanel({
                   <div className="text-sm text-muted-foreground">{translateUi("暂无里程碑")}</div>
                 ) : detail.milestones.map((milestone) => (
                   <div key={`${milestone.at}:${milestone.label}`} className={`rounded-md border p-3 text-sm ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-                    <div className="font-medium">{milestone.label}</div>
+                    <div className="font-medium">{translateTaskProgressLabel(milestone.label)}</div>
                     <div className="text-xs text-muted-foreground">{new Date(milestone.at).toLocaleString()}</div>
                     {milestone.summary ? (
-                      <div className="mt-1 text-xs text-muted-foreground">{milestone.summary}</div>
+                      <div className="mt-1 text-xs text-muted-foreground">{translateTaskProgressLabel(milestone.summary)}</div>
                     ) : null}
                   </div>
                 ))}

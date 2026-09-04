@@ -149,6 +149,7 @@ export async function generateVolumeProjection(context: {
         ...sharedPromptInput,
         volumePlansText: buildVolumePlansText(batch),
       },
+      options: { novelId: context.id },
     });
     merged.assignments.push(...result.output.assignments);
     merged.factionTracks.push(...result.output.factionTracks);
@@ -186,6 +187,7 @@ export async function extractChapterDynamics(input: {
       chapterTitle: input.chapterTitle,
       chapterContent: input.chapterContent,
     },
+    options: { novelId: input.novelId, chapterId: input.chapterId },
   });
   return result.output;
 }

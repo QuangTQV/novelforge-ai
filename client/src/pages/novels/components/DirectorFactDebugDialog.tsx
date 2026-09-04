@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, Bug, CheckCircle2, Loader2, RefreshCw } from "lucide-react";
@@ -116,7 +117,7 @@ function StepFactCard({ step }: { step: DirectorTaskFactInspectionStep }) {
       <CardHeader className="space-y-3 p-4 pb-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 space-y-1">
-            <div className="text-sm font-semibold text-foreground">{step.label}</div>
+            <div className="text-sm font-semibold text-foreground">{translateTaskProgressLabel(step.label)}</div>
             <div className="text-xs text-muted-foreground">{formatStageLabel(step.stage)}</div>
           </div>
           <div className="flex flex-wrap items-center gap-2">

@@ -1,7 +1,7 @@
 import type { BookAnalysisSectionKey } from "@ai-novel/shared/types/bookAnalysis";
 import type { DirectorIssuePolicy } from "@ai-novel/shared/types/directorIssue";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
-import type { NovelLanguage, QualityScore, ReviewIssue } from "@ai-novel/shared/types/novel";
+import type { NovelLanguage, NovelStyleFlavor, QualityScore, ReviewIssue } from "@ai-novel/shared/types/novel";
 import { parseCommercialTagsJson } from "@ai-novel/shared/types/novelFraming";
 import { normalizeStoryModeOutput } from "../storyMode/storyModeProfile";
 
@@ -39,6 +39,7 @@ export interface CreateNovelInput {
   emotionIntensity?: "low" | "medium" | "high";
   aiFreedom?: "low" | "medium" | "high";
   novelLanguage?: NovelLanguage;
+  styleFlavor?: NovelStyleFlavor;
   postGenerationStyleReviewEnabled?: boolean;
   defaultChapterLength?: number;
   estimatedChapterCount?: number;
@@ -73,6 +74,7 @@ export interface UpdateNovelInput {
   emotionIntensity?: "low" | "medium" | "high" | null;
   aiFreedom?: "low" | "medium" | "high" | null;
   novelLanguage?: NovelLanguage | null;
+  styleFlavor?: NovelStyleFlavor | null;
   postGenerationStyleReviewEnabled?: boolean;
   defaultChapterLength?: number | null;
   estimatedChapterCount?: number | null;

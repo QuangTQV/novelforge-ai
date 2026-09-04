@@ -1,5 +1,95 @@
-# AI 小说创作工作台 / AI Novel Production Engine
-一个面向长篇小说创作的 AI Native 开源项目。
+# AI Novel Production Engine
+
+> **English is the default README language.** Vietnamese and Chinese sections are available below.
+
+AI Novel Production Engine is an open-source AI-native workspace for producing long-form novels.
+
+The project coordinates the complete production loop: ideation, book design, world and character development, volume and chapter planning, drafting, auditing, repair, and state recovery.
+
+## English — Quick overview
+
+### What it does
+
+- **AI Auto Director:** turns one idea into book-level directions, a book contract, characters, world context, volumes, and chapter plans.
+- **Creative Hub and Agent Runtime:** coordinates planning, tool calls, approvals, checkpoints, pausing, and resuming.
+- **Chapter Execution:** generates drafts, audits quality, repairs actionable issues, and feeds updated story state into later chapters.
+- **Knowledge/RAG:** retrieves relevant world-bible entries, character records, chapter history, events, background knowledge, and saved relationships.
+- **Style Engine:** manages style profiles, prose signals, and anti-AI writing rules.
+- **Model Routing:** assigns providers and models to different task types.
+- **Internationalization:** supports `vi`, `en`, and `zh`, with Vietnamese as the required fallback for missing translations.
+
+### AI content flow
+
+```text
+Idea / Chapter Task
+        ↓
+Book Contract → Story Macro → Volume Strategy → Beat Sheet
+        ↓
+Chapter Task Sheet → Participating Characters → Character Resource Ledger
+        ↓
+World Slice → Timeline & Payoff → Knowledge/RAG Retrieval
+        ↓
+Style Profile → Anti-AI Rules → Prompt Compiler
+        ↓
+LLM → Draft → Audit → Repair when needed → State Rehydration
+```
+
+Each stage creates an inspectable and reusable intermediate artifact. The system retrieves only the context relevant to the current chapter instead of putting the entire book into one prompt. See the [detailed project flow](./docs/architecture/project-flow-vi.md), [chapter execution flow](./docs/public/flow/chapter-execution.md), and [knowledge/RAG flow](./docs/public/flow/knowledge-and-rag.md).
+
+### Quick start
+
+Requirements: Node.js `^20.19.0 || ^22.12.0 || >=24.0.0`, pnpm `>=10.6`, and at least one working LLM API key. Node.js `20.19.x LTS` and pnpm `10.6.0` are recommended.
+
+```bash
+pnpm install
+cp server/.env.example server/.env
+pnpm dev
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item server/.env.example server/.env
+pnpm dev
+```
+
+After startup:
+
+- Frontend: <http://localhost:5173>
+- Backend: <http://localhost:3000>
+- Model settings: <http://localhost:5173/settings>
+- Knowledge/RAG settings: <http://localhost:5173/knowledge?tab=settings>
+
+SQLite is used by default. Set `RAG_ENABLED=false` in `server/.env` if you do not need Qdrant yet. For the complete setup, read [docs/public/installation.md](./docs/public/installation.md).
+
+### Repository and documentation
+
+```text
+client/   React + Vite frontend
+server/   Express + Prisma + Agent Runtime + Creative Hub
+shared/   Shared types and protocols
+docs/     Architecture, flows, guides, and release notes
+```
+
+Recommended reading: [user guide](./docs/public/usage-guide.md), [architecture flow](./docs/architecture/project-flow-vi.md), [end-to-end production](./docs/public/flow/end-to-end-production.md), and [CLAUDE.md](./CLAUDE.md).
+
+Development commands:
+
+```bash
+pnpm dev
+pnpm build
+pnpm typecheck
+pnpm lint
+pnpm test
+```
+
+For contributions, read [CONTRIBUTING.md](./CONTRIBUTING.md) and [CLA.md](./CLA.md). The project is licensed under GNU AGPLv3; see [LICENSE](./LICENSE) and [NOTICE](./NOTICE).
+
+---
+
+## Ngôn ngữ / Languages
+
+Đọc bản tiếng Việt tại [Tiếng Việt](#tiếng-việt), hoặc bản tiếng Anh chi tiết tại [English](#english).
 
 当前开发主线：
 `Creative Hub + 自动导演开书 + 本书世界上下文 + 整本生产主链 + 写法引擎`

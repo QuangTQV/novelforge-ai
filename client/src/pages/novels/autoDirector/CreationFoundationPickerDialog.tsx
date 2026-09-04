@@ -11,6 +11,16 @@ import {
   type CreationFoundationTreeNode,
 } from "./creationFoundationPickerState";
 
+function translateCreationFoundationTreeNames<Node extends CreationFoundationTreeNode>(
+  nodes: Node[],
+): Node[] {
+  return nodes.map((node) => ({
+    ...node,
+    name: translateUi(node.name),
+    children: translateCreationFoundationTreeNames(node.children as Node[]),
+  }));
+}
+
 interface CreationFoundationPickerDialogProps<Node extends CreationFoundationTreeNode> {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -60,6 +70,13 @@ export default function CreationFoundationPickerDialog<Node extends CreationFoun
   const filteredNodes = useMemo(
     () => filterCreationFoundationTree(nodes, search),
     [nodes, search],
+  );
+  // Genre / story-mode names come from the seeded system catalog (Chinese source
+  // text). The details pane already runs them through translateUi; do the same
+  // for the left-hand tree so it isn't the one place that stays Chinese.
+  const treeNodes = useMemo(
+    () => translateCreationFoundationTreeNames(filteredNodes),
+    [filteredNodes],
   );
   const selectedNode = useMemo(
     () => findCreationFoundationNode(nodes, draftId),
@@ -137,9 +154,9 @@ export default function CreationFoundationPickerDialog<Node extends CreationFoun
                   />
                 </div>
               </div>
-              {filteredNodes.length > 0 ? (
+              {treeNodes.length > 0 ? (
                 <AssetTreeNavigator
-                  nodes={filteredNodes}
+                  nodes={treeNodes}
                   selectedId={draftId}
                   onSelect={setDraftId}
                   title={treeTitle}

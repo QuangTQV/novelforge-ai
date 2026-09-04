@@ -410,11 +410,11 @@ export default function NovelTaskDrawer({
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="rounded-xl border bg-background/80 p-3">
                     <div className="text-xs text-muted-foreground">{i18n.t("novelTaskDrawer:ui.currentStage")}</div>
-                    <div className="mt-1 text-sm font-medium text-foreground">{dashboardView?.stageLabel ?? displayState?.stageLabel ?? task.currentStage ?? translateUi("暂无")}</div>
+                    <div className="mt-1 text-sm font-medium text-foreground">{translateTaskProgressLabel(dashboardView?.stageLabel ?? displayState?.stageLabel ?? task.currentStage) || translateUi("暂无")}</div>
                   </div>
                   <div className="rounded-xl border bg-background/80 p-3">
                     <div className="text-xs text-muted-foreground">{i18n.t("novelTaskDrawer:ui.currentAction")}</div>
-                    <div className="mt-1 text-sm font-medium text-foreground">{dashboardView?.currentAction ?? displayState?.currentAction ?? (translateTaskProgressLabel(task.currentItemLabel) || translateUi("暂无"))}</div>
+                    <div className="mt-1 text-sm font-medium text-foreground">{translateTaskProgressLabel(dashboardView?.currentAction ?? displayState?.currentAction ?? task.currentItemLabel) || translateUi("暂无")}</div>
                   </div>
                   <div className="rounded-xl border bg-background/80 p-3">
                     <div className="text-xs text-muted-foreground">{i18n.t("novelTaskDrawer:ui.checkpoint")}</div>

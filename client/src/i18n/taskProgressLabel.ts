@@ -20,7 +20,36 @@ interface Rule {
   params: (m: RegExpMatchArray) => Record<string, string | number>;
 }
 
+// Runtime messages may have been persisted before the i18n key was added.
+// Translate their stable Chinese fragments while preserving dynamic values
+// such as chapter counts, IDs, and user-authored titles.
+const RUNTIME_FRAGMENT_TRANSLATIONS: string[] = [
+  "推进任务：",
+  "最近进展：",
+  "当前阶段：",
+  "下一步：",
+  "缺少规划资源",
+  "执行章节生成批次",
+  "章节留存约定已纳入自动导演记录",
+  "读者承诺已纳入自动导演记录",
+  "生成目标卷节奏板完成",
+  "章节规划已完成，可以开始章节执行",
+  "已有草稿",
+  "章节",
+  "自动导演记录",
+];
+
+function translateKnownRuntimeFragments(value: string): string {
+  return RUNTIME_FRAGMENT_TRANSLATIONS.reduce(
+    (result, source) => result.split(source).join(translateUi(source)),
+    value,
+  );
+}
+
 const RULES: Rule[] = [
+  { test: /^推进任务：(.+)$/, key: "推进任务：{{label}}", params: (m) => ({ label: translateSegment(m[1]) }) },
+  { test: /^最近进展：(.+)$/, key: "最近进展：{{label}}", params: (m) => ({ label: translateSegment(m[1]) }) },
+  { test: /^当前阶段：(.+)$/, key: "当前阶段：{{label}}", params: (m) => ({ label: translateSegment(m[1]) }) },
   { test: /^正在继续生成第\s*(\d+)\s*卷节奏板与细化$/, key: "正在继续生成第 {{n}} 卷节奏板与细化", params: (m) => ({ n: m[1] }) },
   { test: /^正在生成第\s*(\d+)\s*卷节奏板$/, key: "正在生成第 {{n}} 卷节奏板", params: (m) => ({ n: m[1] }) },
   { test: /^正在生成第\s*(\d+)\s*卷章节列表$/, key: "正在生成第 {{n}} 卷章节列表", params: (m) => ({ n: m[1] }) },
@@ -50,10 +79,11 @@ function translateScopePrefix(raw: string): string {
   for (const rule of RULES.slice(-3)) {
     const m = trimmed.match(rule.test);
     if (m) {
-      return translateUi(rule.key, rule.params(m));
+      return translateKnownRuntimeFragments(translateUi(rule.key, rule.params(m)));
     }
   }
-  return translateUi(trimmed);
+  const translated = translateUi(trimmed);
+  return translateKnownRuntimeFragments(translated);
 }
 
 /** `全书` / `第 N 卷 · 卷名` / `第 N-M 章` phía trước các cụm ghép "正在自动…" */
@@ -76,10 +106,10 @@ function translateSegment(segment: string): string {
   for (const rule of RULES) {
     const m = trimmed.match(rule.test);
     if (m) {
-      return translateUi(rule.key, rule.params(m));
+      return translateKnownRuntimeFragments(translateUi(rule.key, rule.params(m)));
     }
   }
-  return translateUi(trimmed);
+  return translateKnownRuntimeFragments(translateUi(trimmed));
 }
 
 /** Dịch nhãn tiến độ tác vụ. Trả nguyên chuỗi nếu không có bản dịch. */

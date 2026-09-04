@@ -290,8 +290,8 @@ export default function ChapterExecutionActionPanel(props: ChapterExecutionActio
           <div className="mt-1 text-sm font-semibold text-foreground">{selectedChapterLabel}</div>
           {selectedChapter ? (
             <div className="mt-2 flex flex-wrap gap-1.5">
-              <Badge variant="secondary">{chapterStatusLabel(displayedStatus ?? selectedChapter.chapterStatus)}</Badge>
-              <Badge variant="outline">{chapterSuggestedActionLabel(selectedChapter)}</Badge>
+              <Badge variant="secondary">{tChapter(chapterStatusLabel(displayedStatus ?? selectedChapter.chapterStatus))}</Badge>
+              <Badge variant="outline">{tChapter(chapterSuggestedActionLabel(selectedChapter))}</Badge>
             </div>
           ) : null}
         </div>

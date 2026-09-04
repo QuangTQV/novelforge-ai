@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type {
   DirectorPolicyMode,
   DirectorRuntimeProjection,
@@ -258,19 +259,19 @@ export default function DirectorRuntimeProjectionCard({
   if (!projection) {
     return null;
   }
-  const primaryText = projection.headline?.trim()
-    || projection.currentLabel?.trim()
-    || projection.lastEventSummary?.trim()
+  const primaryText = translateTaskProgressLabel(projection.headline?.trim())
+    || translateTaskProgressLabel(projection.currentLabel?.trim())
+    || translateTaskProgressLabel(projection.lastEventSummary?.trim())
     || translateUi("等待同步当前推进状态");
-  const detailText = projection.detail?.trim();
+  const detailText = translateTaskProgressLabel(projection.detail?.trim());
   const attentionText = projection.requiresUserAction
-    ? projection.blockingReason?.trim()
-      || projection.blockedReason?.trim()
-      || projection.lastEventSummary?.trim()
+    ? translateTaskProgressLabel(projection.blockingReason?.trim())
+      || translateTaskProgressLabel(projection.blockedReason?.trim())
+      || translateTaskProgressLabel(projection.lastEventSummary?.trim())
       || translateUi("请先处理当前停留点。")
-    : projection.blockingReason?.trim() || projection.blockedReason?.trim();
-  const progressLine = projection.progressBreakdown?.explanation?.trim()
-    || projection.progressSummary?.trim()
+    : translateTaskProgressLabel(projection.blockingReason?.trim()) || translateTaskProgressLabel(projection.blockedReason?.trim());
+  const progressLine = translateTaskProgressLabel(projection.progressBreakdown?.explanation?.trim())
+    || translateTaskProgressLabel(projection.progressSummary?.trim())
     || null;
   const qualityDebtLine = formatQualityDebtSummary(projection.qualityDebtSummary);
   const qualityBudgetLine = formatQualityBudgetSummary(projection.qualityBudgetSummary);
@@ -282,11 +283,11 @@ export default function DirectorRuntimeProjectionCard({
     ? translateUi("Đang chạy nền: {{v0}}", {
       v0: getDirectorNodeDisplayLabel({
         nodeKey: projection.activeExecution.stepType,
-        fallback: projection.currentAction || translateUi("自动导演任务"),
+        fallback: translateTaskProgressLabel(projection.currentAction) || translateUi("自动导演任务"),
       }),
     }) + (projection.activeExecution.resourceClass ? ` · ${projection.activeExecution.resourceClass}` : "")
     : null;
-  const waitingLine = projection.waitingReason ? translateUi("等待原因：{{v0}}", { v0: projection.waitingReason }) : null;
+  const waitingLine = projection.waitingReason ? translateUi("等待原因：{{v0}}", { v0: translateTaskProgressLabel(projection.waitingReason) }) : null;
   const workerHealthLine = projection.workerHealth
     ? [
       translateUi("执行队列：{{v0}} 个等待", { v0: projection.workerHealth.queuedCommandCount }),
@@ -298,14 +299,14 @@ export default function DirectorRuntimeProjectionCard({
     activeExecutionLine,
     waitingLine,
     workerHealthLine,
-    projection.nextActionLabel ? translateUi("下一步：{{v0}}", { v0: projection.nextActionLabel }) : null,
-    projection.recommendedAction?.reason ? translateUi("推荐原因：{{v0}}", { v0: projection.recommendedAction.reason }) : null,
+    projection.nextActionLabel ? translateUi("下一步：{{v0}}", { v0: translateTaskProgressLabel(projection.nextActionLabel) }) : null,
+    projection.recommendedAction?.reason ? translateUi("推荐原因：{{v0}}", { v0: translateTaskProgressLabel(projection.recommendedAction.reason) }) : null,
     projection.isAutopilotRecoverable ? translateUi("AI 可以从当前进度继续处理。") : null,
     rootCauseLine,
     obligationLine,
     qualityBudgetLine,
     qualityDebtLine,
-    projection.scopeSummary,
+    translateTaskProgressLabel(projection.scopeSummary),
     progressLine,
   ].filter((line): line is string => Boolean(line?.trim()));
   const recentEvents = projection.recentEvents.slice(0, compact ? 2 : 4);
@@ -496,7 +497,7 @@ export default function DirectorRuntimeProjectionCard({
           <div className="text-xs font-medium text-muted-foreground">{translateUi("最近进展")}</div>
           {recentEvents.map((event) => (
             <div key={event.eventId} className="rounded-md border bg-background/70 px-3 py-2 text-xs leading-5">
-              <div className="text-foreground">{event.summary}</div>
+              <div className="text-foreground">{translateTaskProgressLabel(event.summary)}</div>
               <div className="mt-1 text-muted-foreground">{formatDate(event.occurredAt)}</div>
             </div>
           ))}

@@ -17,7 +17,8 @@
     "nextStep": "Bước tiếp theo",
     "currentWordCount": "{{count}} từ",
     "removing": "Đang xóa…",
-    "removeEmptyChapter": "Xóa chương trống"
+    "removeEmptyChapter": "Xóa chương trống",
+    "currentWordCountLabel": "Số từ hiện tại"
   },
   "chapter": {
     "labelWithTitle": "Chương {{number}}: {{title}}",

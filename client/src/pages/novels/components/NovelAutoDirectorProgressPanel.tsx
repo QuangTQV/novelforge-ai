@@ -519,7 +519,7 @@ export default function NovelAutoDirectorProgressPanel({
             <div className="mt-3 max-h-80 space-y-3 overflow-y-auto border-l border-border/60 pl-3 pr-1">
               {historyEvents.map((event) => (
                 <div key={event.eventId} className="text-sm">
-                  <div className="font-medium text-foreground">{event.summary}</div>
+                  <div className="font-medium text-foreground">{translateTaskProgressLabel(event.summary)}</div>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
                     <span>{translateUi("记录时间：")}{formatDate(event.occurredAt)}</span>
                     {event.nodeKey ? <span>{translateUi("步骤：")}{event.nodeKey}</span> : null}
@@ -643,7 +643,7 @@ export default function NovelAutoDirectorProgressPanel({
               .map((item) => (
                 <div key={`${item.checkpointType}:${item.createdAt}`} className="text-sm">
                   <div className="font-medium text-foreground">{formatCheckpoint(item.checkpointType, task)}</div>
-                  <div className="mt-1 text-sm text-muted-foreground">{item.summary}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{translateTaskProgressLabel(item.summary)}</div>
                   <div className="mt-1 text-xs text-muted-foreground">{translateUi("记录时间：")}{formatDate(item.createdAt)}</div>
                 </div>
               ))}

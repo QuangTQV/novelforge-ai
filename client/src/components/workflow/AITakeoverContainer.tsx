@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -129,6 +130,8 @@ export default function AITakeoverContainer({
   children,
 }: AITakeoverContainerProps) {
   const resolvedProgress = typeof progress === "number" ? normalizeProgressPercent(progress) : null;
+  const translatedCurrentAction = currentAction ? translateTaskProgressLabel(currentAction) : null;
+  const translatedCheckpointLabel = checkpointLabel ? translateTaskProgressLabel(checkpointLabel) : null;
 
   return (
     <div className="space-y-4">
@@ -154,7 +157,7 @@ export default function AITakeoverContainer({
                 disabled={action.disabled}
                 onClick={action.onClick}
               >
-                {action.label}
+                {translateTaskProgressLabel(action.label)}
               </Button>
             ))}
           </div>
@@ -183,7 +186,7 @@ export default function AITakeoverContainer({
 
           <WorkflowProgressBar progress={resolvedProgress} tone={progressTone(mode)} className="mt-3" />
 
-          {currentAction ? (
+          {translatedCurrentAction ? (
             <div
               className={cn(
                 "mt-2 text-sm",
@@ -192,11 +195,11 @@ export default function AITakeoverContainer({
                   : "text-foreground",
               )}
             >
-              {currentAction}
+              {translatedCurrentAction}
             </div>
           ) : null}
-          {checkpointLabel ? (
-            <div className="mt-2 text-xs text-muted-foreground">{translateUi("最近检查点：")}{checkpointLabel}</div>
+          {translatedCheckpointLabel ? (
+            <div className="mt-2 text-xs text-muted-foreground">{translateUi("最近检查点：")}{translatedCheckpointLabel}</div>
           ) : null}
           {taskId ? (
             <div className="mt-2 text-[11px] text-muted-foreground/70">{translateUi("运行编号")} {taskId.slice(0, 8)}</div>

@@ -153,7 +153,7 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
             <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
               {batch.presets.map((preset) => {
                 const meta = DIRECTOR_CORRECTION_PRESETS.find((item) => item.value === preset);
-                return meta ? <span key={preset}>{meta.label}</span> : null;
+                return meta ? <span key={preset}>{translateUi(meta.label)}</span> : null;
               })}
             </div>
           </div>
@@ -421,7 +421,7 @@ export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirect
                 }`}
                 onClick={() => onTogglePreset(preset.value)}
               >
-                {preset.label}
+                {translateUi(preset.label)}
               </button>
             );
           })}

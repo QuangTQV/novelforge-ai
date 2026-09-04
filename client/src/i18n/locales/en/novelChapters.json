@@ -17,7 +17,8 @@
     "nextStep": "Next step",
     "currentWordCount": "{{count}} words",
     "removing": "Removing…",
-    "removeEmptyChapter": "Delete the empty chapter"
+    "removeEmptyChapter": "Delete the empty chapter",
+    "currentWordCountLabel": "Current word count"
   },
   "chapter": {
     "labelWithTitle": "Chapter {{number}}: {{title}}",

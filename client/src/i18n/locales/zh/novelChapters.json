@@ -17,7 +17,8 @@
     "nextStep": "下一步",
     "currentWordCount": "{{count}} 字",
     "removing": "删除中…",
-    "removeEmptyChapter": "删除空章节"
+    "removeEmptyChapter": "删除空章节",
+    "currentWordCountLabel": "当前字数"
   },
   "chapter": {
     "labelWithTitle": "第 {{number}} 章：{{title}}",

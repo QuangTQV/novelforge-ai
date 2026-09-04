@@ -41,6 +41,13 @@ test("composed auto-exec label keeps the user's chapter title", () => {
   assert.match(out, /归乡/);
 });
 
+test("persisted runtime messages translate stable Chinese fragments", () => {
+  const out = translateTaskProgressLabel("当前阶段：has_chapter_plan，章节 0/8 已有草稿，下一步：章节规划已完成，可以开始章节执行。");
+  assert.match(out, /Giai đoạn hiện tại/);
+  assert.match(out, /chương 0\/8/);
+  assert.match(out, /Bước tiếp theo/);
+});
+
 test("unknown / dynamic strings pass through unchanged", () => {
   assert.equal(translateTaskProgressLabel("Error: connection reset by peer"), "Error: connection reset by peer");
   assert.equal(translateTaskProgressLabel(null), "");

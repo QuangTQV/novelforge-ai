@@ -30,8 +30,8 @@ export default function TaskCenterDetailSummary({
   const progressPercent = typeof dashboardView?.progressPercent === "number"
     ? dashboardView.progressPercent
     : Math.round(task.progress * 100);
-  const currentStage = dashboardView?.stageLabel ?? task.currentStage ?? translateUi("暂无");
-  const currentItem = dashboardView?.currentAction ?? (translateTaskProgressLabel(task.currentItemLabel) || translateUi("暂无"));
+  const currentStage = translateTaskProgressLabel(dashboardView?.stageLabel ?? task.currentStage) || translateUi("暂无");
+  const currentItem = translateTaskProgressLabel(dashboardView?.currentAction ?? task.currentItemLabel) || translateUi("暂无");
   const tone = getTaskQueueTone(task);
   const technicalRows = [
     [translateUi("最近心跳"), formatDate(task.heartbeatAt)],
@@ -63,7 +63,7 @@ export default function TaskCenterDetailSummary({
       </div>
       <div>
         <div className="mb-1 flex items-center justify-between text-xs text-muted-foreground">
-          <span>{dashboardView?.statusLabel ?? task.displayStatus ?? formatStatus(task.status)}</span>
+          <span>{translateTaskProgressLabel(dashboardView?.statusLabel ?? task.displayStatus) || formatStatus(task.status)}</span>
           <span className="tabular-nums">{progressPercent}%</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-muted">
@@ -83,7 +83,7 @@ export default function TaskCenterDetailSummary({
           <>
             <div>
               <div className="text-[11px] text-muted-foreground">{translateUi("建议下一步")}</div>
-              <div className="mt-1 leading-5 text-foreground/90">{task.resumeAction ?? task.nextActionLabel ?? translateUi("继续小说主流程")}</div>
+              <div className="mt-1 leading-5 text-foreground/90">{translateTaskProgressLabel(task.resumeAction ?? task.nextActionLabel) || translateUi("继续小说主流程")}</div>
             </div>
             <div>
               <div className="text-[11px] text-muted-foreground">{translateUi("最近检查点")}</div>
@@ -94,7 +94,7 @@ export default function TaskCenterDetailSummary({
       </div>
       {task.blockingReason ? (
         <div className="rounded-xl bg-destructive/[0.055] px-4 py-3 text-sm leading-6 text-destructive">
-          {task.blockingReason}
+          {translateTaskProgressLabel(task.blockingReason)}
         </div>
       ) : null}
       <details className="group border-t border-border/35 pt-3">

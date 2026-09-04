@@ -706,7 +706,915 @@ Lỗi do model/provider
 
 ---
 
-## 10. LLM và prompt system
+## 10. Giải thích chi tiết từng bước tạo nội dung chương
+
+Phần này giải thích chính xác hơn chuỗi xử lý ở trên. Cần nhớ rằng đây là **luồng chuẩn về mặt khái niệm**. Một số bước có thể đã được tạo từ trước trong Auto Director; một số bước được `GenerationContextAssembler` dựng lại hoặc bổ sung ngay trước khi viết chương.
+
+Các file runtime quan trọng:
+
+- `server/src/services/novel/runtime/ChapterRuntimeCoordinator.ts`
+- `server/src/services/novel/runtime/ChapterStreamGenerationOrchestrator.ts`
+- `server/src/services/novel/runtime/GenerationContextAssembler.ts`
+- `server/src/services/novel/production/ContextAssemblyService.ts`
+- `server/src/services/novel/runtime/ChapterContentFinalizationService.ts`
+- `server/src/services/novel/runtime/ChapterTimelineFinalizationService.ts`
+- `server/src/services/novel/production/NovelPipelineExecutor.ts`
+- `server/src/prompting/prompts/novel/chapterLayeredContext.ts`
+
+### 10.1. Bức tranh tổng quát
+
+Có thể chia một lần tạo chương thành bốn pha:
+
+```text
+Pha A — Chuẩn bị kế hoạch và dữ liệu
+  Chapter task → kế hoạch chương → context assembly
+
+Pha B — Xây context cho model
+  book/world/character/state/RAG/style → context package → prompt blocks
+
+Pha C — Sinh và lưu nội dung
+  prompt compiler → LLM stream → draft → finalize
+
+Pha D — Kiểm tra và hồi lưu
+  audit → repair/review → state/fact/payoff/artifact sync
+```
+
+Kết quả cuối cùng không chỉ là một chuỗi `content`. Hệ thống cố gắng tạo một gói kết quả gồm:
+
+- nội dung chương;
+- artifact bản nháp;
+- audit report;
+- trạng thái chapter;
+- timeline event;
+- character/resource changes;
+- payoff/reader promise changes;
+- thông tin cho chương tiếp theo;
+- token usage và runtime trace.
+
+---
+
+### 10.2. Bước 1 — Chapter task
+
+`Chapter task` là nhiệm vụ “viết chương X”, không phải nội dung chương hoàn chỉnh.
+
+Task thường chứa hoặc liên kết tới:
+
+- `novelId`;
+- `chapterId`;
+- số chương;
+- execution scope;
+- provider/model;
+- run mode;
+- retry policy;
+- workflow task id;
+- trạng thái hiện tại;
+- checkpoint và resume target.
+
+Task được tạo khi người dùng bấm viết chương, hoặc khi `NovelPipelineExecutor` chạy batch.
+
+Nhiệm vụ của task là trả lời:
+
+```text
+Viết chương nào?
+Đang chạy theo chế độ nào?
+Được phép tự động đến đâu?
+Nếu lỗi thì tiếp tục từ đâu?
+```
+
+Task không chứa toàn bộ context. Context được dựng lại ở thời điểm chạy để tránh dùng dữ liệu cũ.
+
+---
+
+### 10.3. Bước 2 — Book contract
+
+Book contract là “hợp đồng cấp sách”, giúp mỗi chương vẫn thuộc cùng một cuốn sách.
+
+Các trường chính trong `shared/types/novelWorkflow.ts` gồm:
+
+- `readingPromise`: độc giả sẽ nhận được trải nghiệm gì;
+- `protagonistFantasy`: mong muốn/trải nghiệm trung tâm của nhân vật chính;
+- `coreSellingPoint`: điểm bán cốt lõi;
+- `chapter3Payoff`: phần thưởng hoặc cam kết sớm;
+- `chapter10Payoff`: cam kết trung hạn;
+- `chapter30Payoff`: cam kết lớn hơn;
+- `escalationLadder`: xung đột và phần thưởng tăng dần thế nào;
+- `relationshipMainline`: tuyến quan hệ chính;
+- `absoluteRedLines`: những điều không được vi phạm.
+
+Book contract không viết hộ chương. Nó đặt giới hạn cấp sách để model không tạo một chương hay nhưng lệch khỏi lời hứa ban đầu.
+
+Ví dụ:
+
+```text
+Book contract:
+  - nhân vật chính phải liên tục giành lại quyền chủ động;
+  - tuyến tình cảm phải tiến triển từng bước;
+  - không được tiết lộ bí mật X trước chương 30;
+  - mỗi giai đoạn phải có phần thưởng rõ ràng.
+```
+
+Khi tạo prompt chương, contract thường được chuyển thành một context block bằng `buildBookContractContext`.
+
+---
+
+### 10.4. Bước 3 — Story macro
+
+Story macro là bản đồ vĩ mô của toàn bộ câu chuyện. Nó đứng giữa book contract và kế hoạch tập/chương.
+
+Các trường quan trọng:
+
+- premise mở rộng;
+- protagonist core;
+- conflict engine;
+- conflict layers: external, internal, relational;
+- mystery box;
+- emotional line;
+- setpiece seeds;
+- tone reference;
+- selling point;
+- main hook;
+- progression loop;
+- growth path;
+- major payoffs;
+- ending flavor;
+- constraints.
+
+Story macro trả lời:
+
+```text
+Câu chuyện vận hành nhờ xung đột nào?
+Nhân vật chính thay đổi ra sao?
+Những bí mật và phần thưởng lớn nào đang chờ?
+Nhịp tiến triển lặp lại của truyện là gì?
+Điểm kết thúc cần giữ cảm giác nào?
+```
+
+Nó không quyết định từng câu văn. Nó giúp chapter plan và volume plan không đi lệch khỏi hướng chính.
+
+---
+
+### 10.5. Bước 4 — Volume strategy
+
+Volume strategy là chiến lược của tập hiện tại. Một cuốn dài được chia thành nhiều tập để model không phải lập kế hoạch toàn bộ chi tiết ngay từ đầu.
+
+Một volume thường có:
+
+- mục tiêu tập;
+- opening hook;
+- main promise;
+- pressure source;
+- core selling point;
+- escalation mode;
+- protagonist change;
+- mid-volume risk;
+- climax;
+- payoff type;
+- next volume hook;
+- reset point;
+- open payoffs.
+
+Volume strategy trả lời:
+
+```text
+Tập này muốn đạt điều gì?
+Áp lực chính của tập là gì?
+Nhân vật phải thay đổi ra sao?
+Cuối tập cần trả phần thưởng nào?
+Tập tiếp theo được kéo bằng hook nào?
+```
+
+Khi tạo một chương, hệ thống thường chỉ lấy cửa sổ volume liên quan thay vì toàn bộ kế hoạch của mọi tập.
+
+---
+
+### 10.6. Bước 5 — Beat sheet
+
+Beat sheet chia volume thành các nhịp lớn hơn chương.
+
+Một beat có thể mô tả:
+
+- key/id;
+- label;
+- title;
+- mục tiêu;
+- xung đột;
+- reveal;
+- emotion beat;
+- khoảng chương;
+- phần thưởng hoặc thay đổi cần đạt.
+
+Beat sheet giúp chương biết mình đang đứng ở đoạn nào của đường cong:
+
+```text
+thiết lập → áp lực → thử thách → đảo chiều → trả thưởng → mở hướng mới
+```
+
+Nếu chương chỉ nhìn vào title mà không nhìn beat sheet, nó dễ tạo nội dung rời rạc hoặc giải quyết vấn đề quá sớm.
+
+---
+
+### 10.7. Bước 6 — Chapter task sheet
+
+Chapter task sheet là hợp đồng trực tiếp cho một chương. Đây là phần gần với “đề bài viết” nhất.
+
+Nó có thể chứa:
+
+- mục tiêu chương;
+- vai trò chương trong volume;
+- participants;
+- reveals;
+- risk notes;
+- `mustAdvance`;
+- `mustPreserve`;
+- hook target;
+- scenes;
+- source issue ids;
+- payoff references.
+
+Một task sheet tốt trả lời được:
+
+```text
+Chương này phải làm gì?
+Nhân vật nào cần tham gia?
+Điều gì bắt buộc phải tiến triển?
+Điều gì phải giữ nguyên?
+Điều gì chưa được tiết lộ?
+Cuối chương cần tạo lực kéo nào?
+```
+
+Trong chế độ full-book autopilot, `ChapterPlanJITService` có thể tạo hoặc đảm bảo task sheet ngay trước khi viết nếu chương chưa có đủ execution contract.
+
+Đây là lý do task sheet có thể được tạo “just in time” thay vì luôn tạo toàn bộ danh sách kế hoạch từ đầu cuốn sách.
+
+---
+
+### 10.8. Bước 7 — Chọn nhân vật tham gia chương
+
+Hệ thống không nên đưa tất cả nhân vật của tiểu thuyết vào prompt. `resolveChapterResourceCharacterIds` và các helper liên quan chọn nhóm nhân vật cục bộ.
+
+Nguồn để chọn gồm:
+
+- participants trong chapter plan;
+- nhân vật được nêu trong scene;
+- nhân vật có quan hệ với người tham gia;
+- nhân vật đang mang trạng thái hoặc mục tiêu cần xử lý;
+- nhân vật bắt buộc theo task sheet.
+
+Mục tiêu:
+
+```text
+6 nhân vật liên quan có ích
+  tốt hơn
+30 nhân vật không liên quan
+```
+
+Nếu chọn quá ít, chương có thể quên nhân vật phụ quan trọng. Nếu chọn quá nhiều, prompt dài, chi phí cao và model bị loãng.
+
+---
+
+### 10.9. Bước 8 — Character resource ledger
+
+Character resource ledger không chỉ là bảng tên nhân vật. Nó là sổ các tài nguyên kể chuyện đang thuộc về hoặc liên quan tới nhân vật.
+
+Ví dụ resource:
+
+- năng lực;
+- vật phẩm;
+- bí mật;
+- thông tin;
+- quan hệ;
+- quyền lực;
+- món nợ;
+- vết thương;
+- lời hứa;
+- bằng chứng;
+- thân phận;
+- trạng thái đã được xác nhận.
+
+Mỗi resource có thể có:
+
+- owner;
+- loại resource;
+- trạng thái;
+- nguồn xuất hiện;
+- chapter refs;
+- rủi ro;
+- có được phép sử dụng ngay hay chưa;
+- đang chờ người dùng xác nhận hay không.
+
+Ledger giúp tránh lỗi như:
+
+```text
+Chương 12 dùng một thanh kiếm
+nhưng thanh kiếm chưa từng được tạo hoặc trao cho nhân vật.
+```
+
+Các resource chưa được xác nhận không nên bị viết như sự thật chắc chắn. Chúng có thể trở thành proposal hoặc issue chờ review.
+
+---
+
+### 10.10. Bước 9 — World slice
+
+World slice là phần nhỏ của world cần dùng cho chương hiện tại, không phải toàn bộ world.
+
+Nó có thể gồm:
+
+- sân khấu chính;
+- địa điểm hiện tại;
+- địa điểm sắp đi tới;
+- thế lực liên quan;
+- quy tắc cứng;
+- giới hạn thân phận;
+- tài nguyên thế giới;
+- điều cấm;
+- áp lực môi trường;
+- các quan hệ kiểm soát hoặc đối đầu.
+
+Ví dụ, nếu chương diễn ra trong một khu chợ thuộc thành phố hiện thực, prompt không nhất thiết cần toàn bộ lịch sử của cả thế giới. Nó cần:
+
+```text
+Địa điểm: khu chợ phía nam
+Thế lực: gia tộc đang kiểm soát khu vực
+Quy tắc: không sử dụng phép thuật công khai
+Giới hạn: nhân vật chính chưa được lộ thân phận
+Áp lực: thời hạn giao hàng và sự giám sát
+```
+
+`WorldContextGateway` và các service world slice chịu trách nhiệm chọn dữ liệu này.
+
+World slice giúp giảm hallucination và ngăn model tự ý mở rộng luật thế giới.
+
+---
+
+### 10.11. Bước 10 — Timeline và payoff
+
+#### Timeline
+
+Timeline cho biết những gì đã xảy ra, đang xảy ra và chưa được phép xảy ra.
+
+Nó có thể chứa:
+
+- sự kiện các chương trước;
+- thời gian hiện tại;
+- địa điểm;
+- event bắt buộc trong chương;
+- event bị cấm tiết lộ sớm;
+- thay đổi trạng thái;
+- hook đang mở;
+- hook đã được xử lý.
+
+Timeline ngăn lỗi continuity như:
+
+- nhân vật xuất hiện ở nơi chưa thể tới;
+- sự kiện bị lặp;
+- bí mật đã tiết lộ nhưng lại được coi là bí mật;
+- vật phẩm bị mất rồi vẫn được dùng.
+
+#### Payoff ledger
+
+Payoff ledger theo dõi lời hứa và phần thưởng cần trả cho độc giả.
+
+Trạng thái có thể gồm:
+
+```text
+setup → hinted → pending_payoff → paid_off
+                         ├→ overdue
+                         └→ failed
+```
+
+Trong `ContextAssemblyService`, các payoff quá hạn/khẩn cấp/đang chờ được chọn giới hạn số lượng. Với mỗi payoff, hệ thống tạo directive:
+
+- `seed`: mới gieo;
+- `touch`: chạm nhẹ;
+- `pressure`: tạo áp lực để chuẩn bị trả;
+- `forbid`: không được tiết lộ vì chạm protected secret.
+
+Điều này quan trọng: chương không phải lúc nào cũng được phép “trả” payoff. Có payoff chỉ được gieo hoặc gây áp lực.
+
+---
+
+### 10.12. Bước 11 — Knowledge/RAG retrieval
+
+RAG là bước tìm lại tư liệu liên quan bằng ngữ nghĩa. Nó không phải nơi lưu toàn bộ trạng thái nghiệp vụ của cuốn sách.
+
+#### RAG truy xuất dữ liệu gì?
+
+Tùy cấu hình indexing, RAG có thể truy xuất các loại dữ liệu sau:
+
+1. **Tài liệu người dùng nhập vào knowledge base**
+   - tư liệu tham khảo;
+   - nghiên cứu;
+   - ghi chú thế giới;
+   - tài liệu bối cảnh;
+   - tài liệu dùng để xây dựng phong cách.
+
+2. **Nội dung các chương trước**
+   - đoạn văn liên quan đến nhân vật;
+   - lần xuất hiện của địa điểm/vật phẩm;
+   - cách một sự kiện đã được mô tả;
+   - chi tiết cần giữ nhất quán.
+
+3. **Kết quả phân tích sách**
+   - hồ sơ nhân vật;
+   - bằng chứng nhân vật trong văn bản;
+   - timeline được trích xuất;
+   - motif hoặc đặc điểm phong cách;
+   - kết luận từ các vùng đã phân tích.
+
+4. **Các production artifact được phép index**
+   - summary;
+   - world notes;
+   - story macro fragments;
+   - chapter facts;
+   - các tài liệu đã được xác nhận.
+
+RAG **không nên là nguồn duy nhất** cho:
+
+- trạng thái hiện tại của task;
+- enum nghiệp vụ;
+- quyền chỉnh sửa;
+- chapter status;
+- payoff status chính thức;
+- dữ liệu đang chờ user approval;
+- source data mới nhất nếu database đã có bản canonical.
+
+#### Ví dụ query RAG
+
+Khi chuẩn bị chương 12, query có thể được dựng từ:
+
+```text
+Tên sách: Thành phố sau cơn mưa
+Chương: 12
+Nhân vật: An, Minh, bà chủ tiệm
+Địa điểm: khu chợ phía nam
+Mục tiêu: tìm bằng chứng trước khi bị theo dõi
+Từ khóa cần giữ: chiếc nhẫn bạc, lời hứa của Minh
+```
+
+RAG có thể trả về:
+
+```text
+Chunk A: chương 3 — chiếc nhẫn bạc có vết nứt ở mặt trong
+Chunk B: chương 7 — Minh đã nói dối về nguồn gốc chiếc nhẫn
+Chunk C: tài liệu world — khu chợ phía nam cấm giao dịch sau giờ giới nghiêm
+Chunk D: phân tích nhân vật — An thường che giấu sợ hãi bằng cách kiểm tra đồ vật
+```
+
+Các chunk này được đưa vào context như **tư liệu tham khảo có nguồn**, sau đó prompt yêu cầu model ưu tiên dữ liệu đã xác nhận và không biến suy đoán thành sự thật.
+
+#### RAG indexing và retrieval khác nhau
+
+```text
+Indexing:
+  document/chapter/artifact → chunk → embedding → Qdrant
+
+Retrieval:
+  chapter query → embedding query → search Qdrant → rank/filter → context block
+```
+
+Metadata và trạng thái job nằm trong database; vector nằm trong Qdrant. Nếu Qdrant lỗi, hệ thống vẫn phải dùng được canonical database context ở mức tối thiểu.
+
+---
+
+### 10.13. Bước 12 — State-driven context
+
+Ngoài các artifact như book contract hoặc beat sheet, runtime còn dựng canonical state.
+
+`ContextAssemblyService` gọi `canonicalStateService.getSnapshot(...)` để lấy snapshot theo novel/chapter và cửa sổ timeline.
+
+Snapshot có thể cung cấp:
+
+- current chapter;
+- current chapter goal;
+- local characters;
+- open conflicts;
+- overdue/urgent/pending payoffs;
+- recent timeline;
+- hidden knowledge;
+- protected secrets;
+- pending review proposals;
+- trạng thái điều khiển hiện tại.
+
+Sau đó `generationDecisionEngine` quyết định hành động tiếp theo, ví dụ:
+
+```text
+generate_chapter
+hold_for_review
+repair_existing_draft
+replan_window
+```
+
+Đây là lớp bảo vệ để hệ thống không viết tiếp khi đang có vấn đề cần người dùng xử lý.
+
+---
+
+### 10.14. Bước 13 — Style profile
+
+Style profile là cách viết cấp sách hoặc cấp mục tiêu, không phải nội dung cốt truyện.
+
+Nó có thể quy định:
+
+- độ dài câu;
+- nhịp đoạn;
+- giọng kể;
+- mức mô tả;
+- cách dùng đối thoại;
+- mật độ hành động;
+- mức trữ tình;
+- ví dụ văn phong;
+- điều cần tránh;
+- profile đã bind cho novel hay chưa.
+
+`StyleBindingService` tìm profile đang được liên kết, sau đó compiler tạo các block nhẹ hoặc đầy đủ tùy giai đoạn.
+
+Style profile trả lời:
+
+```text
+Viết như thế nào?
+```
+
+Trong khi book contract trả lời:
+
+```text
+Viết câu chuyện gì và phải giữ lời hứa nào?
+```
+
+Không nên trộn hai khái niệm này vào một object duy nhất.
+
+---
+
+### 10.15. Bước 14 — Anti-AI rules
+
+Anti-AI rules là các rule giảm cảm giác văn bản máy móc hoặc lỗi biểu đạt.
+
+Ví dụ:
+
+- không giải thích tâm lý trực tiếp quá nhiều;
+- không kết luận chủ đề ở cuối mọi đoạn;
+- tránh các đoạn có cấu trúc giống hệt nhau;
+- tránh lặp từ/câu;
+- giữ hành động và phản ứng cụ thể;
+- không dùng quá nhiều câu chung chung;
+- giữ khác biệt giọng nói giữa nhân vật.
+
+Các rule này không được phép phá vỡ story contract. Ví dụ, rule tránh giải thích không có nghĩa là được bỏ mất thông tin bắt buộc của chapter task sheet.
+
+Style và anti-AI rules thường được biên dịch thành prompt blocks, thay vì nối chuỗi tùy tiện trong component.
+
+---
+
+### 10.16. Bước 15 — GenerationContextAssembler
+
+Đây là bước hợp nhất các nguồn trên thành `GenerationContextPackage`.
+
+Trong code, `GenerationContextAssembler` thực hiện nhiều việc:
+
+1. Đọc novel và chapter.
+2. Đảm bảo chapter plan/execution contract nếu cần.
+3. Xác định nhân vật liên quan.
+4. Đọc plan, scene cards và previous chapters.
+5. Đọc book contract/story macro/volume window.
+6. Đọc world context/world slice.
+7. Đọc character hard facts/resource ledger.
+8. Đọc timeline và payoff.
+9. Chạy RAG retrieval.
+10. Đọc style binding.
+11. Đọc pending proposals và audit issues.
+12. Tính readiness và next action.
+13. Tạo các context blocks có giới hạn token.
+
+Kết quả không phải là một prompt duy nhất ngay lập tức. Nó là package có cấu trúc, sau đó prompt asset mới quyết định cách ghép thành messages.
+
+---
+
+### 10.17. Bước 16 — Prompt compiler
+
+Prompt compiler nhận context package và biến nó thành input cho model.
+
+Một prompt thường gồm các phần:
+
+```text
+system instructions
+  + book contract
+  + story/volume context
+  + chapter mission
+  + character context
+  + world context
+  + timeline/payoff constraints
+  + RAG evidence
+  + style rules
+  + anti-AI rules
+  + output requirements
+```
+
+`chapterLayeredContext.ts` chia context thành các lớp để:
+
+- bật/tắt theo loại tác vụ;
+- giới hạn token;
+- dùng context khác nhau cho write/review/repair;
+- tránh nhồi tất cả dữ liệu vào mọi prompt.
+
+Prompt compiler cũng cần bảo vệ thứ tự ưu tiên:
+
+```text
+hard constraints / confirmed facts
+  > chapter task
+  > relevant context
+  > style preference
+  > optional inspiration
+```
+
+Nếu RAG trả về thông tin mâu thuẫn với canonical state, canonical state và dữ liệu đã xác nhận phải được ưu tiên.
+
+---
+
+### 10.18. Bước 17 — LLM streaming
+
+`ChapterWritingGraph` nhận:
+
+- novel id;
+- novel title;
+- chapter;
+- context package;
+- request options.
+
+Sau đó gọi provider thông qua LLM runtime và trả về stream.
+
+Frontend có thể nhận từng chunk để hiển thị tiến độ. Nhưng nội dung tạm thời trong stream chưa phải bản ghi cuối cùng.
+
+Trong lúc stream:
+
+- không nên coi draft là đã hoàn tất;
+- không nên chạy state sync cuối cùng;
+- cần xử lý connection interruption;
+- cần lưu/tiếp tục theo cơ chế runtime phù hợp.
+
+Khi stream xong, callback `onDone` mới bắt đầu pha finalize.
+
+---
+
+### 10.19. Bước 18 — Draft và finalize
+
+Sau khi LLM trả text, `ChapterStreamGenerationOrchestrator`:
+
+1. Kiểm tra nội dung có rỗng không.
+2. Có thể retry nếu output rỗng.
+3. Chuẩn hóa text.
+4. Ghi draft/artifact.
+5. Chạy quality gate/acceptance assessment.
+6. Lưu chapter content và status.
+7. Chuẩn bị runtime package.
+
+Các trạng thái chapter có thể chuyển qua:
+
+```text
+pending_generation
+  → generating
+  → pending_review
+  → completed
+
+hoặc
+
+generating
+  → needs_repair
+```
+
+Cần phân biệt:
+
+- text đang stream;
+- draft đã lưu;
+- draft đã qua acceptance;
+- chapter đã hoàn tất toàn bộ hậu xử lý.
+
+---
+
+### 10.20. Bước 19 — Audit
+
+Audit kiểm tra draft sau khi sinh. Các loại audit chính gồm:
+
+- `continuity`: có khớp timeline/fact không;
+- `character`: nhân vật có hành động/giọng nói đúng không;
+- `plot`: có hoàn thành nhiệm vụ chương không;
+- `mode_fit`: có đúng story mode không.
+
+Ngoài audit nội dung, runtime còn có thể kiểm tra:
+
+- độ dài;
+- opening diversity;
+- chapter obligations;
+- protected secrets;
+- resource consistency;
+- payoff coverage;
+- quality debt.
+
+Audit tạo issue có:
+
+- code;
+- type;
+- severity;
+- description;
+- chapter reference;
+- status;
+- repair hint.
+
+Audit report là derived artifact. Nó không được âm thầm sửa source data.
+
+---
+
+### 10.21. Bước 20 — Repair hoặc chờ người dùng
+
+Sau audit, `ChapterQualityGateService` và acceptance assessment quyết định hướng đi:
+
+```text
+Không có issue chặn
+  → chấp nhận và tiếp tục
+
+Có issue nhỏ, sửa được
+  → patch/heavy repair
+
+Có issue đổi hướng truyện
+  → chờ review hoặc replan
+
+Output lỗi/rỗng/provider lỗi
+  → retry hoặc đổi model
+```
+
+Repair không nên viết lại toàn bộ chương nếu chỉ có lỗi cục bộ. Nó nên nhận:
+
+- draft hiện tại;
+- issue list;
+- repair guidance;
+- chapter task;
+- context package cần thiết;
+- RAG context liên quan;
+- giới hạn vùng được sửa.
+
+Sau repair cần audit lại. Không nên đánh dấu thành công chỉ vì model trả về một chuỗi mới.
+
+---
+
+### 10.22. Bước 21 — State rehydration
+
+Đây là bước biến nội dung vừa viết thành dữ liệu có ích cho các chương sau.
+
+Hệ thống có thể trích xuất và đồng bộ:
+
+- sự kiện timeline;
+- trạng thái nhân vật;
+- thay đổi quan hệ;
+- facts mới;
+- resource changes;
+- foreshadow state;
+- payoff progress;
+- open conflicts;
+- chapter summary;
+- quality debt;
+- artifact dependency;
+- RAG indexing job.
+
+Ví dụ:
+
+```text
+Chương 12:
+  An tìm thấy nhẫn bạc
+  Minh phủ nhận biết nguồn gốc chiếc nhẫn
+  Quan hệ An–Minh tăng căng thẳng
+  Bí mật chiếc nhẫn vẫn chưa được trả
+  Hook “người theo dõi” chuyển sang trạng thái active
+```
+
+Chương 13 khi được tạo sẽ đọc các state này thay vì chỉ đọc lại toàn bộ văn bản chương 12.
+
+Đây là ý nghĩa của “rehydration”: xây lại context hiện tại từ các dữ liệu đã được lưu và xác nhận.
+
+---
+
+### 10.23. RAG khác state rehydration như thế nào?
+
+Hai khái niệm này dễ bị nhầm:
+
+| Thành phần | Mục đích | Ví dụ |
+|---|---|---|
+| Canonical state | Sự thật nghiệp vụ hiện tại | An đang bị thương, payoff X đang chờ trả |
+| RAG | Tìm đoạn tư liệu liên quan | Đoạn chương 3 mô tả chiếc nhẫn |
+| Chapter plan | Việc chương phải làm | Chương 12 phải tìm bằng chứng |
+| Book contract | Lời hứa cấp sách | Bí mật chỉ được tiết lộ sau chương 30 |
+| Style profile | Cách diễn đạt | Câu ngắn, nhiều hành động |
+| Audit report | Vấn đề sau khi viết | Chương chưa trả mục tiêu |
+
+Quy tắc thực tế:
+
+```text
+State quyết định sự thật hiện tại.
+RAG cung cấp bằng chứng/tư liệu liên quan.
+Plan quyết định nhiệm vụ.
+Contract quyết định giới hạn.
+Style quyết định cách viết.
+Audit kiểm tra kết quả.
+```
+
+---
+
+### 10.24. Ví dụ đầy đủ: tạo chương 12
+
+Giả sử chapter 12 có nhiệm vụ “An tìm bằng chứng trong khu chợ phía nam”.
+
+#### Input đã lưu
+
+```text
+Book contract:
+  Không tiết lộ nguồn gốc thật của chiếc nhẫn trước chương 30.
+
+Volume strategy:
+  Tập 1 phải làm An chuyển từ bị động sang chủ động.
+
+Beat sheet:
+  Beat 4: tìm dấu vết nhưng bị theo dõi.
+
+Chapter task sheet:
+  - An phải tìm được một manh mối.
+  - Minh phải xuất hiện.
+  - Không được giải thích toàn bộ thân phận Minh.
+  - Cuối chương phải mở nguy cơ bị phát hiện.
+```
+
+#### Context từ state
+
+```text
+An: đang nghi ngờ Minh nhưng chưa có bằng chứng.
+Minh: từng nói dối về chiếc nhẫn.
+Open conflict: có người theo dõi An.
+Payoff: nguồn gốc chiếc nhẫn — chỉ được tạo áp lực, chưa được trả.
+Protected secret: thân phận thật của Minh.
+```
+
+#### Context từ RAG
+
+```text
+Chương 3: chiếc nhẫn có vết nứt bên trong.
+Chương 7: Minh né tránh câu hỏi về chiếc nhẫn.
+World document: khu chợ phía nam đóng cửa sau giờ giới nghiêm.
+```
+
+#### Prompt instruction kết hợp
+
+```text
+Viết chương 12.
+Phải để An tìm được manh mối mới.
+Không được tiết lộ nguồn gốc chiếc nhẫn.
+Không được biến suy đoán về Minh thành sự thật.
+Phải giữ quy tắc giờ giới nghiêm của khu chợ.
+Cuối chương tạo nguy cơ An nhận ra mình đang bị theo dõi.
+Giữ phong cách câu ngắn, hành động rõ và tránh giải thích tâm lý trực tiếp.
+```
+
+#### Kết quả sau khi viết
+
+Audit kiểm tra:
+
+- An có thực sự tìm được manh mối chưa?
+- Minh có bị tiết lộ quá sớm không?
+- Quy tắc khu chợ có bị vi phạm không?
+- Cuối chương có tạo nguy cơ mới không?
+- Chiếc nhẫn có bị mô tả mâu thuẫn chương 3 không?
+
+Sau đó state rehydration ghi nhận manh mối và nguy cơ mới, nhưng payoff nguồn gốc chiếc nhẫn vẫn ở trạng thái chưa trả.
+
+---
+
+### 10.25. Nên đọc code theo thứ tự nào cho luồng này?
+
+Để hiểu thực thi thật, đọc theo thứ tự:
+
+1. `server/src/modules/novel/production/http/novelChapterGeneration.ts`
+2. `server/src/services/novel/runtime/ChapterRuntimeCoordinator.ts`
+3. `server/src/services/novel/runtime/ChapterStreamGenerationOrchestrator.ts`
+4. `server/src/services/novel/runtime/GenerationContextAssembler.ts`
+5. `server/src/services/novel/production/ContextAssemblyService.ts`
+6. `server/src/prompting/prompts/novel/chapterLayeredContext.ts`
+7. `server/src/services/novel/chapterWritingGraph.ts`
+8. `server/src/services/novel/runtime/ChapterContentFinalizationService.ts`
+9. `server/src/services/audit/AuditService.ts`
+10. `server/src/services/novel/runtime/repair/`
+11. `server/src/services/novel/runtime/ChapterTimelineFinalizationService.ts`
+12. `server/src/services/novel/runtime/ChapterArtifactDeltaService.ts`
+13. `server/src/services/rag/`
+14. `server/src/services/novel/state/CanonicalStateService.ts`
+
+Khi đọc mỗi file, hãy ghi lại bốn cột:
+
+| Cột | Câu hỏi |
+|---|---|
+| Reads | Nó đọc dữ liệu gì? |
+| Transforms | Nó biến đổi dữ liệu ra sao? |
+| Writes | Nó ghi artifact/state nào? |
+| Blocks | Điều kiện nào khiến nó dừng? |
+
+Nếu trả lời được bốn cột này, bạn đã hiểu được phần lớn luồng tạo nội dung.
+
+---
+
+## 11. LLM và prompt system
 
 Frontend không nên gọi LLM trực tiếp. Luồng đúng:
 
@@ -746,7 +1654,7 @@ Không nên dịch hoặc thay đổi prompt system bằng codemod ngôn ngữ. 
 
 ---
 
-## 11. RAG và knowledge base
+## 12. RAG và knowledge base
 
 RAG gồm hai phần:
 
@@ -801,7 +1709,7 @@ Các vùng nên đọc:
 
 ---
 
-## 12. Event bus và side effects
+## 13. Event bus và side effects
 
 Một nghiệp vụ chính có thể phát event để các tác vụ phụ xử lý:
 
@@ -836,7 +1744,7 @@ Khi sửa event handler, cần kiểm tra:
 
 ---
 
-## 13. i18n
+## 14. i18n
 
 Các file chính:
 
@@ -911,7 +1819,7 @@ Khi thêm namespace mới, cần có file tương ứng ở locale tiếng Việ
 
 ---
 
-## 14. Cách lần code khi muốn sửa một chức năng
+## 15. Cách lần code khi muốn sửa một chức năng
 
 Không nên bắt đầu bằng việc sửa component đầu tiên nhìn thấy. Hãy lần theo chuỗi sau:
 
@@ -969,7 +1877,7 @@ Nếu chỉ sửa UI, nguyên nhân chất lượng thường vẫn còn ở con
 
 ---
 
-## 15. Các nguyên tắc kiến trúc nên giữ
+## 16. Các nguyên tắc kiến trúc nên giữ
 
 ### 15.1. Route mỏng, service rõ
 
@@ -1008,7 +1916,7 @@ Backend nên trả code/enum ổn định. Frontend chịu trách nhiệm hiển
 
 ---
 
-## 16. Rủi ro cần chú ý khi cải tiến
+## 17. Rủi ro cần chú ý khi cải tiến
 
 ### Cache cũ
 
@@ -1040,7 +1948,7 @@ Không dùng hàm dịch UI cho toàn bộ dữ liệu tự do. Tên riêng và 
 
 ---
 
-## 17. Lộ trình đọc code đề xuất
+## 18. Lộ trình đọc code đề xuất
 
 ### Mức 1: hiểu sản phẩm
 
@@ -1090,7 +1998,7 @@ Không dùng hàm dịch UI cho toàn bộ dữ liệu tự do. Tên riêng và 
 
 ---
 
-## 18. Checklist trước khi merge một thay đổi
+## 19. Checklist trước khi merge một thay đổi
 
 ### Nếu sửa frontend
 
@@ -1130,7 +2038,7 @@ Không dùng hàm dịch UI cho toàn bộ dữ liệu tự do. Tên riêng và 
 
 ---
 
-## 19. Kết luận ngắn
+## 20. Kết luận ngắn
 
 Có thể hiểu dự án qua bốn tầng:
 

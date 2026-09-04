@@ -144,7 +144,7 @@ export default function NovelPreview() {
     const title = safeFileNamePart(novel?.title ?? translateUi("小说"));
     const chapterTitle = activeChapter.title?.trim() ? safeFileNamePart(activeChapter.title) : "";
     downloadBlob(
-      new Blob(["\uFEFF", `第 ${activeChapter.order} 章${chapterTitle ? ` ${chapterTitle}` : ""}\n\n${activeContent}`], { type: "text/plain;charset=utf-8" }),
+      new Blob(["\uFEFF", `${translateUi("Chương {{order}}", { order: activeChapter.order })}${chapterTitle ? ` ${chapterTitle}` : ""}\n\n${activeContent}`], { type: "text/plain;charset=utf-8" }),
       `${title}-C${activeChapter.order}${chapterTitle ? `-${chapterTitle}` : ""}.txt`,
     );
     toast.success(translateUi("本章正文下载已开始。"));

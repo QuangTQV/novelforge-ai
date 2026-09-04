@@ -27,13 +27,13 @@ function formatConnectionTestResult(response: Awaited<ReturnType<typeof testLLMC
   const structured = response.data?.structured;
   const plainText = plain
     ? plain.ok
-      ? `普通连通正常${plain.latency != null ? ` (${plain.latency}ms)` : ""}`
-      : `普通连通失败${plain.error ? `：${plain.error}` : ""}`
+      ? translateUi("Kết nối thường OK") + (plain.latency != null ? ` (${plain.latency}ms)` : "")
+      : translateUi("Kết nối thường lỗi") + (plain.error ? `: ${plain.error}` : "")
     : translateUi("普通连通未检测");
   const structuredText = structured
     ? structured.ok
-      ? `结构化正常${structured.strategy ? `，策略 ${structured.strategy}` : ""}${structured.reasoningForcedOff ? translateUi("，已强制关闭 thinking") : ""}`
-      : `结构化失败${structured.errorCategory ? `，分类 ${structured.errorCategory}` : ""}${structured.error ? `：${structured.error}` : ""}`
+      ? translateUi("Structured OK") + (structured.strategy ? translateUi(", chiến lược {{v0}}", { v0: structured.strategy }) : "") + (structured.reasoningForcedOff ? translateUi("，已强制关闭 thinking") : "")
+      : translateUi("Structured lỗi") + (structured.errorCategory ? translateUi(", phân loại {{v0}}", { v0: structured.errorCategory }) : "") + (structured.error ? `: ${structured.error}` : "")
     : translateUi("结构化未检测");
   return translateUi("连接成功，总耗时 {{v0}}ms · {{v1}} · {{v2}}", { v0: latency, v1: plainText, v2: structuredText });
 }
@@ -248,7 +248,7 @@ export default function SettingsPage() {
       }),
     onSuccess: async (_response, variables) => {
       const providerName = providerConfigs.find((item) => item.provider === variables.provider)?.name ?? variables.provider;
-      setActionResult(`${providerName} 思考功能已${variables.reasoningEnabled ? translateUi("开启") : translateUi("关闭")}。`);
+      setActionResult(translateUi("Đã {{state}} tính năng suy luận cho {{provider}}.", { provider: providerName, state: variables.reasoningEnabled ? translateUi("bật") : translateUi("tắt") }));
       await invalidateProviderQueries();
     },
     onError: (error) => {

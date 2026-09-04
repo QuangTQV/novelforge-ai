@@ -186,7 +186,7 @@ export async function runChapterDetailBatchGeneration({
             mode,
             message,
           });
-          setStructuredMessage(`第${target.chapterOrder}章的${mode === "purpose" ? translateUi("章节目标") : mode === "boundary" ? translateUi("执行边界") : translateUi("任务单")}暂未完成，可从这里继续细化。`);
+          setStructuredMessage(translateUi("{{field}} của chương {{order}} chưa xong, có thể chi tiết hóa tiếp từ đây.", { order: target.chapterOrder, field: mode === "purpose" ? translateUi("章节目标") : mode === "boundary" ? translateUi("执行边界") : translateUi("任务单") }));
           return;
         }
       }

@@ -54,7 +54,7 @@ function buildRecommendationDigest(form: {
     return form.rawText.trim().slice(0, 12000);
   }
   if (selectedNovel) {
-    return `已选择小说《${selectedNovel.title || translateUi("未命名小说")}》，共 ${selectedNovel._count?.chapters ?? 0} 章。`;
+    return translateUi("Đã chọn tiểu thuyết “{{title}}”, tổng {{count}} chương.", { title: selectedNovel.title || translateUi("未命名小说"), count: selectedNovel._count?.chapters ?? 0 });
   }
   return "";
 }

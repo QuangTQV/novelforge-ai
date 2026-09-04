@@ -246,7 +246,7 @@ export default function BookAnalysisSourceRangePicker({
     : translateUi("全文");
   const rangeDetail = selectedRange && selectedStartChapter && selectedEndChapter
     ? translateUi("{{v0}} 章 · 约 {{v1}} 字 · 占全文 {{v2}}%", { v0: selectedChapterCount, v1: formatCount(selectedCharCount), v2: Math.round(percent) })
-    : `${sortedChapters.length > 0 ? `${sortedChapters.length} 章 · ` : ""}约 ${formatCount(sourceCharCount)} 字`;
+    : (sortedChapters.length > 0 ? translateUi("{{v0}} chương · ", { v0: sortedChapters.length }) : "") + translateUi("khoảng {{v0}} chữ", { v0: formatCount(sourceCharCount) });
   const charModeHint = selectedRange && selectedStartChapter && selectedEndChapter
     ? translateUi("按章节边界覆盖第 {{v0}} 章 ~ 第 {{v1}} 章", { v0: selectedStartChapter.chapterIndex + 1, v1: selectedEndChapter.chapterIndex + 1 })
     : translateUi("输入字数后会自动换算为章节范围");

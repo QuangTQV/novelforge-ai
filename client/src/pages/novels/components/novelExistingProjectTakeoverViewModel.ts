@@ -335,7 +335,7 @@ export function buildTakeoverProgressInspection(
       title: translateUi("卷规划进度"),
       status: factSummary?.hasVolumeStrategy || (snapshot?.volumeCount ?? 0) > 0 ? translateUi("已具备卷战略") : translateUi("待补卷战略"),
       detail: snapshot
-        ? `${snapshot.volumeCount} 卷；当前卷章节 ${snapshot.firstVolumeChapterCount} 章；已拆范围 ${volumeRanges.map((range) => `第${range.startOrder}-${range.endOrder}章`).join("、") || translateUi("暂无")}`
+        ? translateUi("{{volumes}} tập; tập hiện tại {{chapters}} chương; đã chia: {{ranges}}", { volumes: snapshot.volumeCount, chapters: snapshot.firstVolumeChapterCount, ranges: volumeRanges.map((range) => translateUi("chương {{a}}-{{b}}", { a: range.startOrder, b: range.endOrder })).join(", ") || translateUi("暂无") })
         : translateUi("正在读取卷规划。"),
     },
     {

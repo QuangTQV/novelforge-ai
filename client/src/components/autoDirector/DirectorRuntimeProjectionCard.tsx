@@ -279,10 +279,12 @@ export default function DirectorRuntimeProjectionCard({
     ? translateUi("仍需处理：{{v0}}", { v0: projection.blockingObligations.slice(0, 3).map((item) => item.summary).join("；") })
     : null;
   const activeExecutionLine = projection.activeExecution
-    ? `后台执行：${getDirectorNodeDisplayLabel({
-      nodeKey: projection.activeExecution.stepType,
-      fallback: projection.currentAction || translateUi("自动导演任务"),
-    })}${projection.activeExecution.resourceClass ? ` · ${projection.activeExecution.resourceClass}` : ""}`
+    ? translateUi("Đang chạy nền: {{v0}}", {
+      v0: getDirectorNodeDisplayLabel({
+        nodeKey: projection.activeExecution.stepType,
+        fallback: projection.currentAction || translateUi("自动导演任务"),
+      }),
+    }) + (projection.activeExecution.resourceClass ? ` · ${projection.activeExecution.resourceClass}` : "")
     : null;
   const waitingLine = projection.waitingReason ? translateUi("等待原因：{{v0}}", { v0: projection.waitingReason }) : null;
   const workerHealthLine = projection.workerHealth

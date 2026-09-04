@@ -106,7 +106,7 @@ export function formatStructuredStatus(status: ModelRouteConnectivityStatus["str
     return translateUi("结构化诊断：未执行");
   }
   if (status.ok) {
-    return `结构化正常 · ${status.requestProtocol ?? "auto"} · ${status.strategy ?? "prompt_json"}${status.reasoningForcedOff ? translateUi(" · 会关闭 thinking") : ""}`;
+    return translateUi("Structured OK · {{proto}} · {{strategy}}", { proto: status.requestProtocol ?? "auto", strategy: status.strategy ?? "prompt_json" }) + (status.reasoningForcedOff ? translateUi(" · 会关闭 thinking") : "");
   }
   return translateUi("Structured lỗi · {{cat}} · {{err}}", { cat: status.errorCategory ?? "unknown", err: status.error ?? translateUi("未知错误") });
 }

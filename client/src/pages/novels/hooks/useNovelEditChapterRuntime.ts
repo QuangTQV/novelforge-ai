@@ -178,7 +178,7 @@ export function useNovelEditChapterRuntime({
     setRepairAfterContent("");
     setActiveRepairStream({
       chapterId: selectedChapterId,
-      chapterLabel: selectedChapter ? `第${selectedChapter.order}章 ${selectedChapter.title || translateUi("未命名章节")}` : translateUi("当前章节"),
+      chapterLabel: selectedChapter ? translateUi("Chương {{order}} {{title}}", { order: selectedChapter.order, title: selectedChapter.title || translateUi("未命名章节") }) : translateUi("当前章节"),
     });
     void repairSSE.start(`/novels/${novelId}/chapters/${selectedChapterId}/repair`, {
       provider: llm.provider,

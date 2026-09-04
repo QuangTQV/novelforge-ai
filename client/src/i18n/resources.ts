@@ -48,12 +48,16 @@ function buildResources(): Resource {
     namespaces.add(namespace);
   }
 
-  // The legacy bridge uses source text as its key. Keep the Chinese locale
-  // self-contained without maintaining a second 3,000+ line identity file.
-  if (!resources.zh?.legacy && resources.zh && resources.vi?.legacy) {
-    resources.zh.legacy = Object.fromEntries(
+  // The legacy bridge uses source text as its key. For the Chinese locale that
+  // key IS the display text, so synthesise an identity map from the vi keys
+  // instead of maintaining a second 3,000+ line file. Any explicit
+  // locales/zh/legacy.json entries (for keys whose text isn't Chinese — a few
+  // Vietnamese-worded interpolation templates) are merged on top.
+  if (resources.zh && resources.vi?.legacy) {
+    const identity = Object.fromEntries(
       Object.keys(resources.vi.legacy as Record<string, unknown>).map((key) => [key, key]),
     );
+    resources.zh.legacy = { ...identity, ...(resources.zh.legacy as Record<string, unknown> | undefined) };
     namespaces.add("legacy");
   }
 

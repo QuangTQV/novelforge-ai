@@ -64,10 +64,10 @@ function extractMessageText(message: ThreadMessage): string {
         }
       }
       if (part.type === "image") {
-        return `[图片:${part.filename ?? translateUi("未命名")}]`;
+        return translateUi("[Ảnh: {{name}}]", { name: part.filename ?? translateUi("未命名") });
       }
       if (part.type === "file") {
-        return `[文件:${part.filename ?? translateUi("未命名")}]`;
+        return translateUi("[Tệp: {{name}}]", { name: part.filename ?? translateUi("未命名") });
       }
       return "";
     })

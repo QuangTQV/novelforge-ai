@@ -101,10 +101,10 @@ export default function HelpPage() {
               </Badge>
             </div>
             <h1 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight tracking-normal sm:text-4xl">{translateUi(journey.headline)}</h1>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{journey.description}</p>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{translateUi(journey.description)}</p>
             <div className="mt-6 border-l border-sky-300/70 pl-4">
               <div className="text-xs font-medium uppercase tracking-[0.12em] text-sky-200">{translateUi("为什么推荐这一步")}</div>
-              <p className="mt-2 text-sm leading-6 text-slate-300">{journey.reason}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{translateUi(journey.reason)}</p>
             </div>
           </div>
           <div className="space-y-3">
@@ -151,12 +151,12 @@ export default function HelpPage() {
                   <MilestoneIcon milestone={milestone} index={index} />
                 </span>
                 <div className="min-w-0">
-                  <div className="font-semibold">{milestone.title}</div>
-                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{milestone.description}</p>
+                  <div className="font-semibold">{translateUi(milestone.title)}</div>
+                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{translateUi(milestone.description)}</p>
                 </div>
                 <div className="pl-12 text-xs sm:pl-0 sm:text-right">
                   {milestone.resultSummary ? (
-                    <span className="inline-flex max-w-56 rounded-full bg-muted px-3 py-1.5 text-muted-foreground">{milestone.resultSummary}</span>
+                    <span className="inline-flex max-w-56 rounded-full bg-muted px-3 py-1.5 text-muted-foreground">{translateUi(milestone.resultSummary)}</span>
                   ) : milestone.status === "current" ? (
                     <Badge>{translateUi("当前步骤")}</Badge>
                   ) : milestone.status === "attention" ? (
@@ -182,8 +182,8 @@ export default function HelpPage() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary">
                   <Icon className="h-5 w-5" />
                 </div>
-                <div className="mt-4 font-semibold">{item.title}</div>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
+                <div className="mt-4 font-semibold">{translateUi(item.title)}</div>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{translateUi(item.description)}</p>
               </Link>
             );
           })}

@@ -211,7 +211,7 @@ export async function getFirstNovelOnboardingProjection(): Promise<FirstNovelOnb
   if (graduated && firstReadableChapter) {
     currentMilestone = "first_chapter";
     headline = "第一章可以阅读";
-    description = `《${firstReadableChapter.title}》形成可读成稿，从灵感到正文的完整流程顺利跑通。`;
+    description = "第一章已形成可读成稿，从灵感到正文的完整流程顺利跑通。";
     reason = "接下来可以继续观察整书生产，或进入工作台完善后续内容。";
     primaryAction = {
       label: "阅读第一章",

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { RecoverableTaskSummary } from "@ai-novel/shared/types/task";
@@ -80,12 +81,12 @@ export function TaskRecoveryProvider({ children }: { children: ReactNode }) {
         next.add(recoveryItemKey(variables));
         return next;
       });
-      toast.success("已开始恢复任务。");
+      toast.success(translateUi("已开始恢复任务。"));
       refreshTaskState();
       void recoveryQuery.refetch();
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "恢复任务失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("恢复任务失败。"));
     },
   });
 
@@ -100,12 +101,12 @@ export function TaskRecoveryProvider({ children }: { children: ReactNode }) {
         }
         return next;
       });
-      toast.success(resumedCount > 0 ? `已开始恢复 ${resumedCount} 个任务。` : "当前没有可恢复任务。");
+      toast.success(resumedCount > 0 ? translateUi("已开始恢复 {{value0}} 个任务。", { value0: resumedCount }) : translateUi("当前没有可恢复任务。"));
       refreshTaskState();
       void recoveryQuery.refetch();
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "批量恢复任务失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("批量恢复任务失败。"));
     },
   });
 

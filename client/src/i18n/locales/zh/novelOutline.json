@@ -1,0 +1,295 @@
+{
+  "basicInfoTab": {
+    "directorTakeover": {
+      "title": "让 AI 从当前项目继续接管",
+      "description": "如果基础信息较完整，可以直接从选定步骤开始自动接管，并选择继续已有进度或重跑当前步。"
+    },
+    "section": {
+      "title": "书级定位",
+      "description": "先确认这本书面向谁、靠什么吸引读者、前期必须兑现什么，再让后续世界、角色和章节围绕同一组承诺展开。"
+    },
+    "submitLabel": "保存基本信息",
+    "styleAdvice": {
+      "title": "写法建议",
+      "description": "确认本书的叙述口味、表达密度和风格参考，帮助后续章节保持统一。",
+      "meta": "写法参考"
+    },
+    "ui": {
+      "volumeUnit": "卷",
+      "currentStructure": "当前结构级别：{{profile}}。",
+      "chapterBudget": "章节预算仍参考每卷 {{min}}–{{max}} 章，但系统优先按阶段承诺、卖点转换、局势升级和阶段回报来建议卷数。",
+      "collapseCustom": "收起自定义卷数",
+      "customCount": "自定义卷数",
+      "restore": "恢复系统建议",
+      "fixedCount": "固定卷数",
+      "applyCount": "应用固定卷数",
+      "allowedRange": "允许范围：{{min}}–{{max}} 卷。固定卷数会覆盖结构建议。",
+      "critiqueTitle": "卷策略复查",
+      "risk": "风险 {{risk}}",
+      "derivedTitle": "派生文本、版本管理和影响分析",
+      "derivedDescription": "这部分侧重完善和对比，编辑当前卷骨架时不必一直关注。",
+      "preview": "预览派生文本",
+      "versions": "版本管理",
+      "createdAt": "创建时间：{{date}}",
+      "noDiff": "还没有差异摘要",
+      "noVersions": "还没有卷版本，请先保存草稿版本。",
+      "saveDraft": "保存为草稿版本",
+      "overwrite": "覆盖当前草稿",
+      "activate": "设为应用版本",
+      "freeze": "冻结当前版本",
+      "diff": "查看版本差异",
+      "diffLoading": "加载中...",
+      "versionDiff": "预览 V{{version}} 差异",
+      "changed": "变更卷 {{volumes}} | 受影响章节 {{chapters}} | 变更行 {{lines}}",
+      "impactTitle": "影响分析",
+      "analyzeDraft": "分析当前草稿",
+      "analyzeVersion": "分析当前版本",
+      "analyzing": "分析中...",
+      "impactPreview": "预览卷级影响",
+      "affected": "受影响卷 {{volumes}} | 受影响章节 {{chapters}} | 变更行 {{lines}}",
+      "unwritten": "未写段落 {{count}}",
+      "locked": "锁定段落 {{count}}",
+      "advancedActions": "高级动作：{{actions}}",
+      "impactAdvice": "建议在应用前先分析卷级影响。",
+      "tabsCurrent": "当前卷",
+      "tabsStrategy": "策略总览",
+      "tabsAssets": "资产约束",
+      "strategySummary": "卷策略摘要",
+      "strategyDescription": "先看全书卷级回报和升级路线，再在下方选一卷进行细化编辑。",
+      "recommendedVolumes": "建议 {{count}} 卷",
+      "plannedVolumes": "硬规划 {{count}} 卷",
+      "rewardLadder": "读者回报阶梯",
+      "escalationLadder": "升级阶梯",
+      "midpoint": "故事中段转向",
+      "volumeOverview": "卷级节奏总览",
+      "noStrategy": "还没有卷策略建议。请先点击“生成卷策略建议”。",
+      "volumeLabel": "第 {{order}} 卷：{{role}}，{{reward}}"
+    }
+  },
+  "basicInfoForm": {
+    "recommended": "推荐"
+  },
+  "bookFramingQuickFill": {
+    "noSuggestion": "AI 没有返回可用的读者与卖点建议。",
+    "applied": "已根据当前书名和概述填入读者与卖点建议。",
+    "failed": "读者与卖点自动填写失败，请稍后再试。",
+    "needInput": "请先填写书名或一句话概述，再让 AI 帮你填写。",
+    "confirmOverwrite": "将用 AI 建议覆盖当前读者与卖点填写，是否继续？",
+    "filling": "填写中...",
+    "trigger": "帮我填写"
+  },
+  "bookFramingSection": {
+    "heading": "读者与追更理由",
+    "subtitle": "不用写专业策划词，按直觉说清楚谁会喜欢、最想看什么，以及前期会获得什么回报。",
+    "targetAudience": {
+      "label": "目标读者",
+      "placeholder": "例如：爱看都市高压逆袭、关系拉扯和持续追更钩子的读者"
+    },
+    "commercialTags": {
+      "label": "核心商业标签",
+      "placeholder": "例如：逆袭，强冲突，悬念拉满，职场博弈"
+    },
+    "competingFeel": {
+      "label": "竞品感 / 熟悉阅读感",
+      "placeholder": "例如：现实职场压迫感里带一点冷幽默和高密度关系拉扯"
+    },
+    "sellingPoint": {
+      "label": "本书核心卖点",
+      "placeholder": "例如：主角每次解决现实困局都会撬动更大的关系链和利益链，读者会一直期待下一次反压。"
+    },
+    "first30": {
+      "label": "前 30 章承诺",
+      "placeholder": "例如：前 30 章必须让读者看到主角站稳第一阶段立场、核心对手浮出水面、关系线第一次强反转，并明确这本书后面会越写越狠。"
+    }
+  },
+  "continuationSource": {
+    "section": {
+      "title": "续写来源",
+      "description": "续写模式下，需要明确引用的上游小说或知识文档，并决定是否注入拆书结果。"
+    },
+    "typeLabel": "续写来源类型",
+    "novel": {
+      "label": "站内小说",
+      "summary": "适合基于当前系统里的既有小说继续创作。"
+    },
+    "knowledge": {
+      "label": "知识库文档",
+      "summary": "适合基于外部导入的原著、设定集或拆书文档继续创作。"
+    },
+    "priorNovel": "前作小说",
+    "selectPriorNovel": "请选择前作小说",
+    "knowledgeDoc": "知识库文档",
+    "selectKnowledgeDoc": "请选择知识库文档",
+    "bookAnalysisRef": "拆书引用",
+    "bookAnalysisRefHint": "拆书结果会作为高权重结构化上下文注入后续规划和章节生成。",
+    "bookAnalysisResult": "拆书结果",
+    "noBookAnalysis": "不引用拆书",
+    "loadingBookAnalyses": "正在加载当前来源可用的拆书结果...",
+    "noBookAnalysesAvailable": "当前续写来源暂无可用拆书结果，需要先完成成功的拆书分析。",
+    "selectSectionsPrompt": "选择要注入生成上下文的拆书章节：",
+    "selectAll": "全选",
+    "clear": "清空"
+  },
+  "outline": {
+    "title": "卷策略控制台",
+    "description": "确定每卷如何展开，再复查承诺、压力、回报和拉向下一卷的牵引力。",
+    "readyCount": "{{completed}}/{{total}} 已就绪",
+    "unsaved": "有未保存草稿",
+    "generating": "生成中…",
+    "reviewing": "复查中…",
+    "saving": "保存中…",
+    "ready": "已就绪",
+    "notReady": "未就绪",
+    "nextLabel": "推荐下一步",
+    "characterHint": "建议在生成策略和卷骨架前先完善角色。",
+    "goCharacters": "打开角色管理",
+    "takeover": {
+      "title": "从卷策略接管",
+      "description": "AI 会检查卷策略和卷骨架，再补齐缺失部分或重跑当前步。"
+    },
+    "actions": {
+      "generateStrategy": "生成卷策略建议",
+      "reviewStrategy": "AI 复查卷策略",
+      "regenerateSkeleton": "重新生成全书骨架",
+      "generateSkeleton": "生成全书骨架",
+      "save": "保存卷工作区"
+    },
+    "readiness": {
+      "title": "阶段就绪度",
+      "ready": "卷阶段已具备推进条件。",
+      "blocked": "还有 {{count}} 项条件需要处理。",
+      "canContinue": "可以继续推进这个阶段。",
+      "workspaceReady": "工作区目前已具备继续的基本条件。"
+    },
+    "next": {
+      "generateStrategy": "先生成卷策略建议",
+      "generateSkeleton": "可以生成全书骨架",
+      "generateBeatSheet": "骨架已就绪；转到节奏或拆章",
+      "generateChapterList": "先生成当前卷的节奏板",
+      "ready": "卷策略已足够；可以转到节奏或拆章"
+    },
+    "volumeCount": {
+      "fixed": "正在固定 {{count}} 卷",
+      "draft": "正在用草稿的 {{count}} 卷",
+      "system": "正在用系统建议的 {{count}} 卷"
+    },
+    "chapterCount": "{{count}} 章",
+    "volumeCountLabel": "{{count}} 卷",
+    "volumeRange": "{{min}}–{{max}} 卷",
+    "volumeReview": {
+      "title": "卷数建议和策略复查",
+      "description": "这是辅助决策信息。先看下一步和当前卷；只在需要控制卷数时展开这部分。",
+      "countTitle": "卷数建议",
+      "chapterBudget": "总章节预算",
+      "range": "结构建议区间",
+      "recommended": "系统建议卷数",
+      "hardRange": "默认硬规划区间"
+    },
+    "structure": {
+      "short": "短篇结构",
+      "compact": "紧凑中篇",
+      "standard": "标准长篇",
+      "long": "扩展长篇",
+      "epic": "长篇巨著",
+      "mega": "超长巨著",
+      "default": "结构建议"
+    },
+    "versionStatus": {
+      "draft": "草稿",
+      "active": "应用中",
+      "frozen": "已冻结"
+    },
+    "impact": {
+      "locked": "已被正文锁定",
+      "pending": "待生成",
+      "unwritten": "可写入未写段落",
+      "pendingChapters": "待生成章节",
+      "singleChapter": "第 {{chapter}} 章",
+      "chapterRange": "第 {{start}}–{{end}} 章"
+    },
+    "pipeline": {
+      "takeover": {
+        "title": "从质量修复接管",
+        "description": "AI 会检查正在运行的章节批次或待修复的检查点，再恢复当前修复或开新批次。"
+      },
+      "title": "批量生成和质量检查",
+      "characterHint": "运行流程前请至少添加一个角色。",
+      "goCharacters": "打开角色管理",
+      "focus": "当前焦点",
+      "lowScoreFocus": "先处理 {{count}} 个低分章节",
+      "noLowScore": "没有低于阈值的章节。",
+      "qualityThreshold": "质量阈值",
+      "runMode": "运行模式",
+      "riskQueue": "质量风险队列",
+      "chapterOption": "第 {{order}} 章 – {{title}}",
+      "empty": "还没有数据",
+      "repairAfterHint": "修复完成后显示",
+      "configTitle": "模型和配置",
+      "configDescription": "批量任务、模型和高级参数在这里。",
+      "currentSettings": "当前设置：{{mode}} | 阈值 {{threshold}} | {{repairMode}}",
+      "reportsTitle": "质量报告和派生产物",
+      "reportsDescription": "质量报告、小说手册和已保存的节奏默认收起。",
+      "chapterLabel": "章节：{{chapter}}",
+      "book": "全书",
+      "reviewScore": "检查评分",
+      "coherence": "连贯性",
+      "repetition": "重复率",
+      "pacing": "节奏",
+      "voice": "语气",
+      "engagement": "追读吸引力",
+      "overall": "综合",
+      "lowScoreFilter": "筛选低分章节（阈值 {{threshold}}）",
+      "startChapter": "起始章节",
+      "endChapter": "结束章节",
+      "maxRetries": "失败时重试次数",
+      "repairModeTitle": "修复模式",
+      "autoReview": "自动检查",
+      "autoRepair": "自动修复",
+      "skipCompleted": "跳过已完成章节",
+      "stageVisualization": "阶段可视化",
+      "runPanel": "运行控制台",
+      "startBatch": "开始批量生成",
+      "rerunLowScore": "重跑低分章节",
+      "exportReport": "导出任务报告",
+      "generateBible": "生成 Bible",
+      "stopBible": "停止 Bible",
+      "generateBeats": "生成节奏",
+      "stopBeats": "停止节奏",
+      "lowScoreSummary": "有 {{count}} 个低分章节；重跑范围：第 {{start}}–{{end}} 章。",
+      "taskStatus": "任务状态",
+      "jobId": "任务 ID",
+      "status": "状态",
+      "currentStage": "当前阶段",
+      "currentChapter": "当前章节",
+      "progress": "进度",
+      "completed": "已完成",
+      "retries": "已重试",
+      "failureType": "失败类型",
+      "error": "错误",
+      "noRunningTask": "当前没有正在运行的 pipeline 任务。",
+      "actions": {
+        "review": "检查章节",
+        "repair": "修复章节",
+        "hook": "生成钩子"
+      },
+      "repairMode": {
+        "detectOnly": "只检测，不修复",
+        "light": "轻度自动修复",
+        "heavy": "深度自动修复",
+        "continuity": "只修连续性",
+        "character": "只修角色",
+        "ending": "只修结尾张力"
+      },
+      "stage": {
+        "active": "运行中",
+        "completed": "已完成",
+        "failed": "异常",
+        "pending": "待执行"
+      },
+      "modes": {
+        "fast": "快速",
+        "polish": "细调"
+      }
+    }
+  }
+}

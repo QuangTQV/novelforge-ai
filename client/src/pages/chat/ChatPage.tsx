@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { SSEFrame } from "@ai-novel/shared/types/api";
@@ -316,7 +317,7 @@ export default function ChatPage() {
       type: "run_status",
       runId,
       status: "running",
-      message: action === "approve" ? "审批已提交，继续执行中" : "审批已提交，处理中",
+      message: action === "approve" ? translateUi("审批已提交，继续执行中") : translateUi("审批已提交，处理中"),
     });
     const sessionMessages = buildPayloadMessages(
       (currentSession?.messages ?? [])
@@ -468,11 +469,12 @@ export default function ChatPage() {
     <div className="grid min-h-[70vh] gap-4 lg:grid-cols-[240px_minmax(0,1fr)_360px]">
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">会话列表</CardTitle>
+          <CardTitle className="text-base">{translateUi("会话列表")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Button className="w-full" onClick={() => void chatStore.createSession("新对话")}>
-            新建对话
+          <Button className="w-full" onClick={() => void chatStore.createSession(translateUi("新对话"))}>
+
+            {translateUi("新建对话")}
           </Button>
           <div className="space-y-1">
             {chatStore.sessions.map((session) => (
@@ -487,7 +489,8 @@ export default function ChatPage() {
                 <div>{session.title}</div>
                 {session.latestRunId ? (
                   <div className="text-[11px] text-muted-foreground">
-                    运行: {session.latestRunId.slice(0, 8)} · {session.runIds?.length ?? 1}条
+
+                    {translateUi("运行:")} {session.latestRunId.slice(0, 8)} · {session.runIds?.length ?? 1}{translateUi("条")}
                   </div>
                 ) : null}
               </button>
@@ -499,7 +502,7 @@ export default function ChatPage() {
       <Card>
         <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
           <div className="space-y-1">
-            <CardTitle className="text-base">对话消息</CardTitle>
+            <CardTitle className="text-base">{translateUi("对话消息")}</CardTitle>
             {headerRunMessage ? (
               <div className="text-xs text-slate-500">{headerRunMessage}</div>
             ) : null}

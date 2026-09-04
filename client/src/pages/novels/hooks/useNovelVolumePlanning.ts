@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { buildVolumeCountGuidance } from "@ai-novel/shared/types/volumePlanning";
@@ -200,7 +201,7 @@ export function useNovelVolumePlanning({
     if (hasCharacters) {
       return true;
     }
-    return window.confirm("当前小说还没有角色。继续生成会降低后续一致性，是否继续？");
+    return window.confirm(translateUi("当前小说还没有角色。继续生成会降低后续一致性，是否继续？"));
   };
 
   const startStrategyGeneration = () => {
@@ -276,11 +277,11 @@ export function useNovelVolumePlanning({
       return;
     }
     const confirmed = window.confirm([
-      `将基于当前内容为第${targetChapter.chapterOrder}章《${targetChapter.title}》AI 修正${detailModeLabel(detailMode)}。`,
+      translateUi("将基于当前内容为第{{value0}}章《{{value1}}》AI 修正{{value2}}。", { value0: targetChapter.chapterOrder, value1: targetChapter.title, value2: detailModeLabel(detailMode) }),
       hasChapterDetailDraft(targetChapter, detailMode)
-        ? "会优先沿用当前已填写结果，只修正空缺、模糊和不够可执行的部分。"
-        : "当前这块还是空白，AI 会先补出首版，再按现有标题和摘要收束。",
-      "不会改动本章标题和摘要，也不会影响其他章节。",
+        ? translateUi("会优先沿用当前已填写结果，只修正空缺、模糊和不够可执行的部分。")
+        : translateUi("当前这块还是空白，AI 会先补出首版，再按现有标题和摘要收束。"),
+      translateUi("不会改动本章标题和摘要，也不会影响其他章节。"),
     ].join("\n\n"));
     if (!confirmed) {
       return;

@@ -1,0 +1,113 @@
+{
+  "groups": {
+    "creation": "Creation",
+    "assets": "Assets",
+    "system": "System"
+  },
+  "items": {
+    "home": "Home",
+    "help": "Creation Guide",
+    "marketRadar": "Trending Radar",
+    "novels": "Novels",
+    "drama": "Short Drama Studio",
+    "comic": "Comic Studio",
+    "creativeHub": "Creative Hub",
+    "bookAnalysis": "Book Analysis",
+    "genres": "Genre Base Library",
+    "storyModes": "Story Mode Library",
+    "titles": "Title Studio",
+    "knowledge": "Knowledge Base",
+    "worlds": "World Sample Library",
+    "styleEngine": "Style Engine",
+    "antiAiRules": "Anti-AI Rules",
+    "baseCharacters": "Base Character Library",
+    "visualAssets": "Visual Asset Library",
+    "tasks": "Run Logs",
+    "autoDirectorFollowUps": "Director Follow-ups",
+    "promptWorkbench": "Prompt Management",
+    "settings": "System Settings"
+  },
+  "sidebar": {
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "comicBeta": "Comic Studio is still in Beta"
+  },
+  "navbar": {
+    "projectNav": "Project navigation",
+    "creationNav": "Creation navigation",
+    "modelSettings": "Model settings"
+  },
+  "mobile": {
+    "openBook": "Start a book",
+    "moreOpen": "Open more menu",
+    "moreClose": "Close more menu",
+    "openVisualAssets": "Open visual asset library",
+    "morePanelTitle": "More",
+    "morePanelDescription": "Pick the workspace you want to continue in.",
+    "primary": {
+      "home": "Home",
+      "novels": "Novels",
+      "creation": "Create",
+      "tasks": "Tasks",
+      "more": "More"
+    },
+    "groups": {
+      "creationAids": "Creation aids",
+      "assetLibrary": "Asset library",
+      "worldsAndSystem": "Worlds & system"
+    },
+    "items": {
+      "help": "Creation Guide",
+      "drama": "Short Drama Studio",
+      "bookAnalysis": "Book Analysis",
+      "marketRadar": "Trending Radar",
+      "chatLegacy": "Legacy chat",
+      "knowledge": "Knowledge Base",
+      "genres": "Genre base",
+      "storyModes": "Story modes",
+      "titles": "Title Studio",
+      "styleEngine": "Style Engine",
+      "antiAiRules": "Anti-AI Rules",
+      "baseCharacters": "Base characters",
+      "tasks": "Run Logs",
+      "autoDirectorFollowUps": "Director Follow-ups",
+      "worlds": "World Sample Library",
+      "worldGenerator": "Create world sample",
+      "promptWorkbench": "Prompt Management",
+      "settings": "System Settings"
+    },
+    "pages": {
+      "home": "Home",
+      "help": "Creation Guide",
+      "novels": "Novels",
+      "novelCreate": "Create novel",
+      "novelPreview": "Novel preview",
+      "novelEdit": "Novel workspace",
+      "chapterEdit": "Chapter text",
+      "drama": "Short drama",
+      "creativeHub": "Creative Hub",
+      "chatLegacy": "Legacy chat",
+      "bookAnalysis": "Book Analysis",
+      "marketRadar": "Trending Radar",
+      "tasks": "Tasks",
+      "autoDirectorFollowUps": "Director Follow-ups",
+      "knowledge": "Knowledge Base",
+      "genres": "Genre base",
+      "storyModes": "Story modes",
+      "titles": "Title Studio",
+      "promptWorkbench": "Prompt Management",
+      "settingsModels": "Models & providers",
+      "settingsDirector": "Auto-director settings",
+      "settingsKnowledge": "Knowledge & style",
+      "settingsMaintenance": "Desktop & maintenance",
+      "settings": "System Settings",
+      "worlds": "World Sample Library",
+      "worldGenerator": "Create world sample",
+      "worldWorkspace": "World handbook",
+      "styleEngine": "Style Engine",
+      "antiAiRules": "Anti-AI Rules",
+      "baseCharacters": "Base characters",
+      "fallback": "More"
+    }
+  }
+}

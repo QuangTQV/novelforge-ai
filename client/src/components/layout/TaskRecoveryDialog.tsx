@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { RecoverableTaskSummary } from "@ai-novel/shared/types/task";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -40,15 +41,16 @@ export default function TaskRecoveryDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={(nextOpen) => { if (!nextOpen) closeDialog(); }}>
       <AppDialogContent
-        title="检测到待恢复任务"
-        description="系统启动时发现有后台任务在服务重启前中断了。现在不会自动继续执行，你可以先逐个确认，再决定是否恢复。"
+        title={translateUi("检测到待恢复任务")}
+        description={translateUi("系统启动时发现有后台任务在服务重启前中断了。现在不会自动继续执行，你可以先逐个确认，再决定是否恢复。")}
         footer={(
           <>
             <Button variant="outline" onClick={closeDialog}>
-              稍后处理
+
+              {translateUi("稍后处理")}
             </Button>
             <Button onClick={resumeAll} disabled={isResumeSinglePending || isResumeAllPending}>
-              {isResumeAllPending ? "恢复全部中..." : "继续全部"}
+              {isResumeAllPending ? translateUi("恢复全部中...") : translateUi("继续全部")}
             </Button>
           </>
         )}
@@ -62,11 +64,11 @@ export default function TaskRecoveryDialog() {
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="outline">{formatTaskKind(item.kind)}</Badge>
                       <Badge variant={item.status === "running" ? "default" : "secondary"}>
-                        {item.status === "running" ? "运行中断" : "排队中断"}
+                        {item.status === "running" ? translateUi("运行中断") : translateUi("排队中断")}
                       </Badge>
                     </div>
                     <div className="text-base font-semibold">{item.title}</div>
-                    <div className="text-sm text-muted-foreground">所属对象：{item.ownerLabel}</div>
+                    <div className="text-sm text-muted-foreground">{translateUi("所属对象：")}{item.ownerLabel}</div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <Button
@@ -74,19 +76,19 @@ export default function TaskRecoveryDialog() {
                       onClick={() => resumeSingle({ kind: item.kind, id: item.id })}
                       disabled={isResumeAllPending || (isResumeSinglePending && busyTaskId !== item.id)}
                     >
-                      {isResumeSinglePending && busyTaskId === item.id ? "恢复中..." : "继续单个"}
+                      {isResumeSinglePending && busyTaskId === item.id ? translateUi("恢复中...") : translateUi("继续单个")}
                     </Button>
                     <Button asChild size="sm" variant="outline">
-                      <Link to={item.sourceRoute} onClick={closeDialog}>打开任务位置</Link>
+                      <Link to={item.sourceRoute} onClick={closeDialog}>{translateUi("打开任务位置")}</Link>
                     </Button>
                   </div>
                 </div>
 
                 <div className="grid gap-2 text-sm text-muted-foreground">
-                  {item.currentStage ? <div>当前阶段：{item.currentStage}</div> : null}
-                  {item.currentItemLabel ? <div>中断位置：{item.currentItemLabel}</div> : null}
-                  {item.resumeAction ? <div>建议动作：{item.resumeAction}</div> : null}
-                  {item.recoveryHint ? <div>恢复建议：{item.recoveryHint}</div> : null}
+                  {item.currentStage ? <div>{translateUi("当前阶段：")}{item.currentStage}</div> : null}
+                  {item.currentItemLabel ? <div>{translateUi("中断位置：")}{item.currentItemLabel}</div> : null}
+                  {item.resumeAction ? <div>{translateUi("建议动作：")}{item.resumeAction}</div> : null}
+                  {item.recoveryHint ? <div>{translateUi("恢复建议：")}{item.recoveryHint}</div> : null}
                 </div>
               </CardContent>
             </Card>

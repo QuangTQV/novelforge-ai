@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
 import type { NovelGenre } from "@ai-novel/shared/types/novel";
@@ -75,11 +76,12 @@ export function flattenGenreTreeOptions(
 ): GenreOption[] {
   return nodes.flatMap((node) => {
     const nextPath = [...path, node.name];
+    const translatedPath = nextPath.map((part) => translateUi(part));
     const current: GenreOption = {
       id: node.id,
       name: node.name,
-      label: `${level > 0 ? `${"— ".repeat(level)}` : ""}${node.name}`,
-      path: nextPath.join(" / "),
+      label: `${level > 0 ? `${"— ".repeat(level)}` : ""}${translateUi(node.name)}`,
+      path: translatedPath.join(" / "),
       level,
       description: node.description ?? null,
       template: node.template ?? null,

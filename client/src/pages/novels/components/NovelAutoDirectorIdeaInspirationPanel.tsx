@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { DirectorIdeaInspiration } from "@ai-novel/shared/types/novelDirector";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, RefreshCw } from "lucide-react";
@@ -23,11 +24,12 @@ export default function NovelAutoDirectorIdeaInspirationPanel({
     <div className="mt-5 w-full">
       <div className="flex items-center justify-between gap-3">
         <div className="text-xs text-muted-foreground">
-          这些只是临时灵感，使用后仍可继续改。
+
+          {translateUi("这些只是临时灵感，使用后仍可继续改。")}
         </div>
         <Button type="button" size="sm" variant="ghost" onClick={onGenerate} disabled={isGenerating}>
           <RefreshCw className="h-4 w-4" />
-          {isGenerating ? "生成中..." : ideas.length > 0 ? "换一组" : "生成灵感"}
+          {isGenerating ? translateUi("生成中...") : ideas.length > 0 ? translateUi("换一组") : translateUi("生成灵感")}
         </Button>
       </div>
       {ideas.length > 0 ? (
@@ -54,7 +56,8 @@ export default function NovelAutoDirectorIdeaInspirationPanel({
               </div>
               <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs text-primary opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">
                 <Check className="h-4 w-4" />
-                使用
+
+                {translateUi("使用")}
               </span>
             </motion.button>
           ))}

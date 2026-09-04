@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { DirectorCommandAcceptedResponse } from "@ai-novel/shared/types/directorRuntime";
 import type { DirectorContinuationMode } from "@ai-novel/shared/types/novelDirector";
 import type { UnifiedTaskDetail } from "@ai-novel/shared/types/task";
@@ -23,18 +24,18 @@ export function resolveWorkflowContinuationFeedback(
         || task.blockingReason?.trim()
         || task.lastError?.trim()
         || (options?.mode === "auto_execute_range"
-          ? `继续自动执行${scopeLabel}失败。`
-          : "继续自动导演失败。"),
+          ? translateUi("继续自动执行{{value0}}失败。", { value0: scopeLabel })
+          : translateUi("继续自动导演失败。")),
     };
   }
 
   return {
     tone: "success",
     message: options?.mode === "skip_quality_repair"
-      ? `已跳过本次质量建议，自动导演会继续执行${scopeLabel}。`
+      ? translateUi("已跳过本次质量建议，自动导演会继续执行{{value0}}。", { value0: scopeLabel })
       : options?.mode === "auto_execute_range"
-          ? `已继续自动执行${scopeLabel}。`
-          : "自动导演已继续推进。",
+          ? translateUi("已继续自动执行{{value0}}。", { value0: scopeLabel })
+          : translateUi("自动导演已继续推进。"),
   };
 }
 

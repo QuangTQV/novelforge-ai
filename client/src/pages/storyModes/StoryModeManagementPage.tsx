@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -206,7 +207,7 @@ export default function StoryModeManagementPage() {
     }),
     onSuccess: async () => {
       await invalidate();
-      toast.success("推进模式已创建。");
+      toast.success(translateUi("推进模式已创建。"));
       setCreateDialogOpen(false);
     },
   });
@@ -238,7 +239,7 @@ export default function StoryModeManagementPage() {
     onSuccess: async (response) => {
       await invalidate();
       const savedCount = response.data?.length ?? selectedGeneratedChildIndexes.length;
-      toast.success(`已批量创建 ${savedCount} 个推进模式子类。`);
+      toast.success(translateUi("已批量创建 {{value0}} 个推进模式子类。", { value0: savedCount }));
       setCreateDialogOpen(false);
     },
   });
@@ -257,7 +258,7 @@ export default function StoryModeManagementPage() {
     },
     onSuccess: async () => {
       await invalidate();
-      toast.success("推进模式已更新。");
+      toast.success(translateUi("推进模式已更新。"));
       setEditingStoryModeId("");
     },
   });
@@ -266,7 +267,7 @@ export default function StoryModeManagementPage() {
     mutationFn: (id: string) => deleteStoryMode(id),
     onSuccess: async () => {
       await invalidate();
-      toast.success("推进模式已删除。");
+      toast.success(translateUi("推进模式已删除。"));
     },
   });
 
@@ -286,7 +287,7 @@ export default function StoryModeManagementPage() {
     onSuccess: (drafts) => {
       setExpansionCandidates(drafts.map(cloneDraft));
       setSelectedExpansionIndexes(drafts.map((_draft, index) => index));
-      toast.success(`AI 已推荐 ${drafts.length} 个新的推进方向。`);
+      toast.success(translateUi("AI 已推荐 {{value0}} 个新的推进方向。", { value0: drafts.length }));
     },
   });
 
@@ -312,11 +313,11 @@ export default function StoryModeManagementPage() {
         });
         if (response.data) created.push(response.data);
       }
-      return { success: true, data: created, message: "推进模式根节点创建成功。" };
+      return { success: true, data: created, message: translateUi("推进模式根节点创建成功。") };
     },
     onSuccess: async (response) => {
       await invalidate();
-      toast.success(`已加入 ${response.data?.length ?? selectedExpansionIndexes.length} 个新的推进模式。`);
+      toast.success(translateUi("已加入 {{value0}} 个新的推进模式。", { value0: response.data?.length ?? selectedExpansionIndexes.length }));
       setExpansionDialogOpen(false);
     },
   });
@@ -364,7 +365,7 @@ export default function StoryModeManagementPage() {
         setSelectedGeneratedChildIndexes(candidates.map((_item, index) => index));
         setActiveGeneratedChildIndex(0);
         setCreateDraft(cloneDraft(candidates[0]));
-        toast.success(`AI 已生成 ${candidates.length} 个推进模式子类草稿。`);
+        toast.success(translateUi("AI 已生成 {{value0}} 个推进模式子类草稿。", { value0: candidates.length }));
         return;
       }
       setSelectedGeneratedChildIndexes([]);
@@ -374,7 +375,7 @@ export default function StoryModeManagementPage() {
       }
       setGeneratedChildCandidates([]);
       setCreateDraft(cloneDraft(result.draft));
-      toast.success("AI 推进模式树草稿已生成。");
+      toast.success(translateUi("AI 推进模式树草稿已生成。"));
     },
   });
 
@@ -416,8 +417,8 @@ export default function StoryModeManagementPage() {
   const handleDelete = (node: StoryModeTreeNode) => {
     const descendantCount = collectDescendantIds(node).length;
     const message = descendantCount > 0
-      ? `确认删除推进模式「${node.name}」吗？这会同时删除其下 ${descendantCount} 个子类，此操作不可恢复。`
-      : `确认删除推进模式「${node.name}」吗？此操作不可恢复。`;
+      ? translateUi("确认删除推进模式「{{value0}}」吗？这会同时删除其下 {{value1}} 个子类，此操作不可恢复。", { value0: translateUi(node.name), value1: descendantCount })
+      : translateUi("确认删除推进模式「{{value0}}」吗？此操作不可恢复。", { value0: translateUi(node.name) });
     const confirmed = window.confirm(message);
     if (!confirmed) {
       return;
@@ -495,23 +496,25 @@ export default function StoryModeManagementPage() {
       <Dialog open={Boolean(editingStoryMode)} onOpenChange={(open) => { if (!open) setEditingStoryModeId(""); }}>
         <DialogContent className="max-h-[90vh] max-w-4xl overflow-auto">
           <DialogHeader>
-            <DialogTitle>编辑推进模式</DialogTitle>
+            <DialogTitle>{translateUi("编辑推进模式")}</DialogTitle>
             <DialogDescription>
-              可以修改名称、描述、模板和 profile。两级树限制仍会保留。
+
+              {translateUi("可以修改名称、描述、模板和 profile。两级树限制仍会保留。")}
             </DialogDescription>
           </DialogHeader>
 
           {editingStoryMode ? (
             <div className="space-y-4">
               <div className="rounded-lg border bg-muted/20 p-3 text-sm text-muted-foreground">
-                当前父级：{editingStoryMode.parentId ? (editParentOptions.find((item) => item.id === editingStoryMode.parentId)?.path ?? "未找到") : "根节点"}
+
+                {translateUi("当前父级：")}{editingStoryMode.parentId ? (editParentOptions.find((item) => item.id === editingStoryMode.parentId)?.path ?? translateUi("未找到")) : translateUi("根节点")}
               </div>
               <label className="space-y-2 text-sm">
-                <span className="font-medium text-foreground">名称</span>
+                <span className="font-medium text-foreground">{translateUi("名称")}</span>
                 <Input value={editState.name} onChange={(event) => setEditState((prev) => ({ ...prev, name: event.target.value }))} />
               </label>
               <label className="space-y-2 text-sm">
-                <span className="font-medium text-foreground">描述</span>
+                <span className="font-medium text-foreground">{translateUi("描述")}</span>
                 <textarea
                   rows={3}
                   className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -520,7 +523,7 @@ export default function StoryModeManagementPage() {
                 />
               </label>
               <label className="space-y-2 text-sm">
-                <span className="font-medium text-foreground">人工模板补充</span>
+                <span className="font-medium text-foreground">{translateUi("人工模板补充")}</span>
                 <textarea
                   rows={3}
                   className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -537,10 +540,11 @@ export default function StoryModeManagementPage() {
 
           <DialogFooter className="gap-2">
             <Button type="button" variant="outline" onClick={() => setEditingStoryModeId("")}>
-              取消
+
+              {translateUi("取消")}
             </Button>
             <Button type="button" onClick={() => updateMutation.mutate()} disabled={updateMutation.isPending || !editState.name.trim()}>
-              {updateMutation.isPending ? "保存中..." : "保存修改"}
+              {updateMutation.isPending ? translateUi("保存中...") : translateUi("保存修改")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -549,13 +553,14 @@ export default function StoryModeManagementPage() {
       <Card>
         <CardHeader className="flex flex-row items-start justify-between gap-4">
           <div className="space-y-1">
-            <CardTitle>推进模式库</CardTitle>
+            <CardTitle>{translateUi("推进模式库")}</CardTitle>
             <CardDescription>
-              这里维护作品的推进模式，例如系统流、无敌流、种田流、治愈日常。它回答的是“这本书靠什么持续推进和兑现”，会作为后续规划和生成的硬约束输入。
+
+              {translateUi("这里维护作品的推进模式，例如系统流、无敌流、种田流、治愈日常。它回答的是“这本书靠什么持续推进和兑现”，会作为后续规划和生成的硬约束输入。")}
             </CardDescription>
           </div>
           <div className="flex flex-col items-end gap-2">
-            <div className="text-sm text-muted-foreground">当前推进模式数：{totalStoryModes}</div>
+            <div className="text-sm text-muted-foreground">{translateUi("当前推进模式数：")}{totalStoryModes}</div>
             <div className="flex gap-2">
               {storyModeTree.length > 0 ? (
                 <Button type="button" variant="outline" onClick={() => {
@@ -564,27 +569,30 @@ export default function StoryModeManagementPage() {
                   setSelectedExpansionIndexes([]);
                   setExpansionDialogOpen(true);
                 }}>
-                  扩展推进模式
+
+                  {translateUi("扩展推进模式")}
                 </Button>
               ) : null}
-              <Button type="button" onClick={handleCreateRoot}>新建推进模式树</Button>
+              <Button type="button" onClick={handleCreateRoot}>{translateUi("新建推进模式树")}</Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {storyModeTreeQuery.isLoading ? (
-            <div className="text-sm text-muted-foreground">正在加载推进模式树...</div>
+            <div className="text-sm text-muted-foreground">{translateUi("正在加载推进模式树...")}</div>
           ) : null}
 
           {!storyModeTreeQuery.isLoading && storyModeTree.length === 0 ? (
             <div className="rounded-xl border border-dashed p-6 text-center">
-              <div className="text-sm font-medium text-foreground">还没有任何推进模式</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("还没有任何推进模式")}</div>
               <div className="mt-1 text-sm text-muted-foreground">
-                可以先手动建一个根推进模式，也可以直接让 AI 生成一份结构化草稿。
+
+                {translateUi("可以先手动建一个根推进模式，也可以直接让 AI 生成一份结构化草稿。")}
               </div>
               <div className="mt-4">
                 <Button type="button" onClick={handleCreateRoot}>
-                  开始创建
+
+                  {translateUi("开始创建")}
                 </Button>
               </div>
             </div>

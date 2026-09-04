@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Character } from "@ai-novel/shared/types/novel";
@@ -147,21 +148,22 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
       <CardHeader className="gap-3">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-1">
-            <CardTitle>动态角色系统</CardTitle>
+            <CardTitle>{translateUi("动态角色系统")}</CardTitle>
             <div className="text-sm text-muted-foreground">
-              这里把卷级职责、缺席风险、新角色候选和关系阶段放回角色页主流程，不再依赖你自己手工追踪。
+
+              {translateUi("这里把卷级职责、缺席风险、新角色候选和关系阶段放回角色页主流程，不再依赖你自己手工追踪。")}
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="outline">{overview?.currentVolume?.title ?? "未定位当前卷"}</Badge>
-            <Badge variant="outline">{overview?.pendingCandidateCount ?? pendingCandidates.length} 个待确认候选</Badge>
+            <Badge variant="outline">{overview?.currentVolume?.title ?? translateUi("未定位当前卷")}</Badge>
+            <Badge variant="outline">{overview?.pendingCandidateCount ?? pendingCandidates.length}  {translateUi("个待确认候选")}</Badge>
             <AiButton
               variant="outline"
               size="sm"
               onClick={() => rebuildMutation.mutate()}
               disabled={rebuildMutation.isPending}
             >
-              {rebuildMutation.isPending ? "重建中..." : "重建动态角色"}
+              {rebuildMutation.isPending ? translateUi("重建中...") : translateUi("重建动态角色")}
             </AiButton>
           </div>
         </div>
@@ -187,7 +189,8 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
       <CardContent className="space-y-4">
         {overviewQuery.isLoading ? (
           <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
-            正在加载动态角色系统...
+
+            {translateUi("正在加载动态角色系统...")}
           </div>
         ) : null}
 
@@ -210,14 +213,14 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                       <div className="text-xs text-muted-foreground">{item.role}</div>
                     </div>
                     <Badge className={riskTone(item.absenceRisk)} variant="outline">
-                      {item.absenceRisk === "none" ? "稳定" : `风险 ${item.absenceRisk}`}
+                      {item.absenceRisk === "none" ? translateUi("稳定") : translateUi("风险 {{value0}}", { value0: item.absenceRisk })}
                     </Badge>
                   </div>
                   <div className="mt-3 space-y-1 text-xs text-muted-foreground">
-                    <div>卷级职责：{item.volumeResponsibility ?? "尚未分配"}</div>
-                    <div>计划出场章：{item.plannedChapterOrders.join("、") || "未定义"}</div>
-                    <div>最近出场：{item.lastAppearanceChapterOrder ?? "暂无"} / 出场次数：{item.appearanceCount}</div>
-                    {item.factionLabel ? <div>阵营：{item.factionLabel}{item.stanceLabel ? ` | 立场：${item.stanceLabel}` : ""}</div> : null}
+                    <div>{translateUi("卷级职责：")}{item.volumeResponsibility ?? translateUi("尚未分配")}</div>
+                    <div>{translateUi("计划出场章：")}{item.plannedChapterOrders.join(translateUi("、")) || translateUi("未定义")}</div>
+                    <div>{translateUi("最近出场：")}{item.lastAppearanceChapterOrder ?? translateUi("暂无")}  {translateUi("/ 出场次数：")}{item.appearanceCount}</div>
+                    {item.factionLabel ? <div>{translateUi("阵营：")}{item.factionLabel}{item.stanceLabel ? translateUi(" | 立场：{{value0}}", { value0: item.stanceLabel }) : ""}</div> : null}
                   </div>
                 </button>
               ))}
@@ -225,32 +228,32 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
 
             {selectedCharacter ? (
               <div className="rounded-2xl border border-border/70 bg-background/80 p-4">
-                <div className="mb-3 text-sm font-medium">手动修正当前角色动态状态</div>
+                <div className="mb-3 text-sm font-medium">{translateUi("手动修正当前角色动态状态")}</div>
                 <div className="grid gap-3 md:grid-cols-2">
                   <Input
-                    placeholder="当前状态"
+                    placeholder={translateUi("当前状态")}
                     value={manualState.currentState}
                     onChange={(event) => setManualState((prev) => ({ ...prev, currentState: event.target.value }))}
                   />
                   <Input
-                    placeholder="当前目标"
+                    placeholder={translateUi("当前目标")}
                     value={manualState.currentGoal}
                     onChange={(event) => setManualState((prev) => ({ ...prev, currentGoal: event.target.value }))}
                   />
                   <Input
-                    placeholder="阵营/站队"
+                    placeholder={translateUi("阵营/站队")}
                     value={manualState.factionLabel}
                     onChange={(event) => setManualState((prev) => ({ ...prev, factionLabel: event.target.value }))}
                   />
                   <Input
-                    placeholder="立场说明"
+                    placeholder={translateUi("立场说明")}
                     value={manualState.stanceLabel}
                     onChange={(event) => setManualState((prev) => ({ ...prev, stanceLabel: event.target.value }))}
                   />
                 </div>
                 <textarea
                   className="mt-3 min-h-[88px] w-full rounded-xl border bg-background p-3 text-sm"
-                  placeholder="补充这次变化的原因、后续作用或提醒 planner 的重点。"
+                  placeholder={translateUi("补充这次变化的原因、后续作用或提醒 planner 的重点。")}
                   value={manualState.summary}
                   onChange={(event) => setManualState((prev) => ({ ...prev, summary: event.target.value }))}
                 />
@@ -259,10 +262,10 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                     onClick={() => manualStateMutation.mutate()}
                     disabled={manualStateMutation.isPending || !selectedCharacterId}
                   >
-                    {manualStateMutation.isPending ? "保存中..." : "保存动态状态"}
+                    {manualStateMutation.isPending ? translateUi("保存中...") : translateUi("保存动态状态")}
                   </Button>
                   {selectedOverviewCharacter?.volumeResponsibility ? (
-                    <Badge variant="outline">当前卷职责：{selectedOverviewCharacter.volumeResponsibility}</Badge>
+                    <Badge variant="outline">{translateUi("当前卷职责：")}{selectedOverviewCharacter.volumeResponsibility}</Badge>
                   ) : null}
                 </div>
               </div>
@@ -279,16 +282,16 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                     <div>
                       <div className="font-medium">{candidate.proposedName}</div>
                       <div className="text-xs text-muted-foreground">
-                        {candidate.proposedRole || "未标注角色定位"}{typeof candidate.sourceChapterOrder === "number" ? ` | 来源第 ${candidate.sourceChapterOrder} 章` : ""}
+                        {candidate.proposedRole || translateUi("未标注角色定位")}{typeof candidate.sourceChapterOrder === "number" ? translateUi(" | 来源第 {{value0}} 章", { value0: candidate.sourceChapterOrder }) : ""}
                       </div>
                     </div>
-                    <Badge variant="outline">{typeof candidate.confidence === "number" ? `置信度 ${Math.round(candidate.confidence * 100)}%` : "待确认"}</Badge>
+                    <Badge variant="outline">{typeof candidate.confidence === "number" ? translateUi("置信度 {{value0}}%", { value0: Math.round(candidate.confidence * 100) }) : translateUi("待确认")}</Badge>
                   </div>
                   {candidate.summary ? <div className="mt-3 text-sm text-muted-foreground">{candidate.summary}</div> : null}
                   {candidate.evidence.length > 0 ? (
                     <div className="mt-3 space-y-1 text-xs text-muted-foreground">
                       {candidate.evidence.map((evidence, index) => (
-                        <div key={`${candidate.id}-${index}`}>证据：{evidence}</div>
+                        <div key={`${candidate.id}-${index}`}>{translateUi("证据：")}{evidence}</div>
                       ))}
                     </div>
                   ) : null}
@@ -298,7 +301,7 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                       onClick={() => confirmMutation.mutate(candidate.id)}
                       disabled={confirmMutation.isPending}
                     >
-                      {confirmMutation.isPending ? "确认中..." : "确认成新角色"}
+                      {confirmMutation.isPending ? translateUi("确认中...") : translateUi("确认成新角色")}
                     </Button>
                     <Button
                       size="sm"
@@ -306,7 +309,7 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                       onClick={() => mergeMutation.mutate(candidate.id)}
                       disabled={mergeMutation.isPending || !selectedCharacterId}
                     >
-                      {mergeMutation.isPending ? "合并中..." : selectedCharacterId ? `并入当前焦点` : "先选一个已存在角色"}
+                      {mergeMutation.isPending ? translateUi("合并中...") : selectedCharacterId ? translateUi("并入当前焦点") : translateUi("先选一个已存在角色")}
                     </Button>
                   </div>
                 </div>
@@ -314,7 +317,8 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
-              还没有待确认的新角色候选。写完几章后，这里会自动汇总 AI 抽取到的新人物入口。
+
+              {translateUi("还没有待确认的新角色候选。写完几章后，这里会自动汇总 AI 抽取到的新人物入口。")}
             </div>
           )
         ) : null}
@@ -330,16 +334,17 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                   </div>
                   <div className="mt-3 text-sm text-muted-foreground">{relation.stageSummary}</div>
                   <div className="mt-3 space-y-1 text-xs text-muted-foreground">
-                    {relation.volumeTitle ? <div>卷：{relation.volumeTitle}</div> : null}
-                    {typeof relation.chapterOrder === "number" ? <div>最近推进章：第 {relation.chapterOrder} 章</div> : null}
-                    {relation.nextTurnPoint ? <div>下一阶段触发点：{relation.nextTurnPoint}</div> : null}
+                    {relation.volumeTitle ? <div>{translateUi("卷：")}{relation.volumeTitle}</div> : null}
+                    {typeof relation.chapterOrder === "number" ? <div>{translateUi("最近推进章：第")} {relation.chapterOrder}  {translateUi("章")}</div> : null}
+                    {relation.nextTurnPoint ? <div>{translateUi("下一阶段触发点：")}{relation.nextTurnPoint}</div> : null}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
-              当前还没有关系阶段数据。应用阵容或完成章节后，这里会自动出现。
+
+              {translateUi("当前还没有关系阶段数据。应用阵容或完成章节后，这里会自动出现。")}
             </div>
           )
         ) : null}
@@ -357,16 +362,16 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
                         <div className="text-xs text-muted-foreground">{assignment?.roleLabel || item.role}</div>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {assignment?.isCore ? <Badge variant="secondary">本卷核心</Badge> : null}
+                        {assignment?.isCore ? <Badge variant="secondary">{translateUi("本卷核心")}</Badge> : null}
                         <Badge className={riskTone(item.absenceRisk)} variant="outline">
-                          {item.absenceRisk === "none" ? "无缺席风险" : `缺席 ${item.absenceSpan} 章`}
+                          {item.absenceRisk === "none" ? translateUi("无缺席风险") : translateUi("缺席 {{value0}} 章", { value0: item.absenceSpan })}
                         </Badge>
                       </div>
                     </div>
                     <div className="mt-3 grid gap-2 text-sm text-muted-foreground md:grid-cols-3">
-                      <div>职责：{assignment?.responsibility ?? "未分配"}</div>
-                      <div>预计出场：{assignment?.appearanceExpectation ?? "未定义"}</div>
-                      <div>计划章：{assignment?.plannedChapterOrders.join("、") || "未定义"}</div>
+                      <div>{translateUi("职责：")}{assignment?.responsibility ?? translateUi("未分配")}</div>
+                      <div>{translateUi("预计出场：")}{assignment?.appearanceExpectation ?? translateUi("未定义")}</div>
+                      <div>{translateUi("计划章：")}{assignment?.plannedChapterOrders.join(translateUi("、")) || translateUi("未定义")}</div>
                     </div>
                   </div>
                 );
@@ -374,7 +379,8 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
-              当前卷还没有角色职责投影。点击上方“重建动态角色”即可初始化。
+
+              {translateUi("当前卷还没有角色职责投影。点击上方“重建动态角色”即可初始化。")}
             </div>
           )
         ) : null}

@@ -1,0 +1,18 @@
+{
+  "worldInjectionHint": {
+    "missing": "缺少可用的本书世界，生成过程会先根据小说基础信息推进。",
+    "used": "本书世界已用于本次生成",
+    "viewDetails": "查看详情",
+    "hideDetails": "收起详情"
+  },
+  "worldSetupTab": {
+    "directorTakeover": {
+      "title": "让 AI 完成本书世界观",
+      "description": "先确定世界规则、势力和关键约束，再让角色、卷规划与章节生产围绕同一份世界观继续推进。"
+    },
+    "section": {
+      "title": "世界观准备",
+      "description": "这里维护本书实际使用的世界观。生成、检查和确认世界观时，AI 会以这些资产为依据。"
+    }
+  }
+}

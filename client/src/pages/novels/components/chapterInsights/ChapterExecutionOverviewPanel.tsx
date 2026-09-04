@@ -1,4 +1,6 @@
+import { translateUi } from "@/i18n/legacy";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { ChapterRuntimePackage } from "@ai-novel/shared/types/chapterRuntime";
 import type { Chapter, StoryPlan } from "@ai-novel/shared/types/novel";
 import { Badge } from "@/components/ui/badge";
@@ -47,6 +49,7 @@ function OverviewStat(props: { label: string; value: string; hint?: string }) {
 }
 
 export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOverviewPanelProps) {
+  const { t } = useTranslation("novelChapters");
   const {
     selectedChapter,
     chapterPlan,
@@ -59,7 +62,8 @@ export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOve
   if (!selectedChapter) {
     return (
       <section className="rounded-2xl border border-dashed border-border/70 bg-background p-4 text-sm leading-6 text-muted-foreground">
-        选中章节后，这里显示本章状态、目标、字数、质量和待处理问题。
+
+        {translateUi("选中章节后，这里显示本章状态、目标、字数、质量和待处理问题。")}
       </section>
     );
   }
@@ -71,8 +75,8 @@ export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOve
   const lengthControl = runtimePackage?.lengthControl ?? null;
   const qualityOverall = chapterQualityReport?.overall ?? selectedChapter.qualityScore ?? null;
   const displayedStatus = resolveDisplayedChapterStatus(selectedChapter);
-  const statusLabel = chapterStatusLabel(displayedStatus);
-  const generationLabel = generationStateLabel(selectedChapter.generationState);
+  const statusLabel = t(chapterStatusLabel(displayedStatus));
+  const generationLabel = t(generationStateLabel(selectedChapter.generationState));
   const currentWordCount = runtimePackage?.draft.wordCount ?? selectedChapter.content?.trim().length ?? 0;
   const targetWordCount = selectedChapter.targetWordCount ?? null;
   const issueCount = openAuditIssues.length || reviewResult?.issues?.length || 0;
@@ -89,12 +93,12 @@ export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOve
             </Badge>
             {generationLabel ? <Badge variant="outline">{generationLabel}</Badge> : null}
             {typeof qualityOverall === "number" ? (
-              <Badge variant={getQualityBadgeVariant(qualityOverall)}>质量 {qualityOverall}</Badge>
+              <Badge variant={getQualityBadgeVariant(qualityOverall)}>{translateUi("质量")} {qualityOverall}</Badge>
             ) : null}
           </div>
 
           <div className="space-y-2">
-            <div className="text-xs font-medium text-muted-foreground">章节概览</div>
+            <div className="text-xs font-medium text-muted-foreground">{translateUi("章节概览")}</div>
             <div className="text-base font-semibold text-foreground">{chapterTitle}</div>
             <p className="line-clamp-6 text-sm leading-6 text-muted-foreground">
               {chapterObjective}
@@ -103,28 +107,28 @@ export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOve
         </div>
 
         <Button asChild size="sm" variant="outline" className="w-full justify-center">
-          <Link to={`/novels/${selectedChapter.novelId}/chapters/${selectedChapter.id}`}>打开章节编辑器</Link>
+          <Link to={`/novels/${selectedChapter.novelId}/chapters/${selectedChapter.id}`}>{translateUi("打开章节编辑器")}</Link>
         </Button>
       </div>
 
       <div className="space-y-2">
-        <OverviewStat label="当前字数" value={String(currentWordCount)} hint="主面板正在显示的正文长度。" />
-        <OverviewStat label="章节目标" value={targetWordCount ? `${targetWordCount} 字` : "未设定"} hint="用于判断当前篇幅是否足够。" />
-        <OverviewStat label="待处理问题" value={String(issueCount)} hint="问题越少，越适合继续推进。" />
-        <OverviewStat label="最近更新" value={updatedAt} hint="用于判断这一章是否需要重新检查。" />
+        <OverviewStat label={translateUi("当前字数")} value={String(currentWordCount)} hint={translateUi("主面板正在显示的正文长度。")} />
+        <OverviewStat label={translateUi("章节目标")} value={targetWordCount ? translateUi("{{value0}} 字", { value0: targetWordCount }) : translateUi("未设定")} hint={translateUi("用于判断当前篇幅是否足够。")} />
+        <OverviewStat label={translateUi("待处理问题")} value={String(issueCount)} hint={translateUi("问题越少，越适合继续推进。")} />
+        <OverviewStat label={translateUi("最近更新")} value={updatedAt} hint={translateUi("用于判断这一章是否需要重新检查。")} />
       </div>
 
       {lengthControl ? (
         <div className="space-y-2">
           <OverviewStat
-            label="预算区间"
+            label={translateUi("预算区间")}
             value={`${lengthControl.softMinWordCount}-${lengthControl.softMaxWordCount}`}
-            hint={`硬上限 ${lengthControl.hardMaxWordCount} 字`}
+            hint={translateUi("硬上限 {{value0}} 字", { value0: lengthControl.hardMaxWordCount })}
           />
           <OverviewStat
-            label="控字模式"
-            value={lengthControl.wordControlMode === "prompt_only" ? "自然优先" : lengthControl.wordControlMode === "balanced" ? "标准控字" : "混合控字"}
-            hint={`偏差 ${Math.round(lengthControl.variance * 100)}%`}
+            label={translateUi("控字模式")}
+            value={lengthControl.wordControlMode === "prompt_only" ? translateUi("自然优先") : lengthControl.wordControlMode === "balanced" ? translateUi("标准控字") : translateUi("混合控字")}
+            hint={translateUi("偏差 {{value0}}%", { value0: Math.round(lengthControl.variance * 100) })}
           />
         </div>
       ) : null}

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { AutoDirectorFollowUpItem, AutoDirectorMutationActionCode } from "@ai-novel/shared/types/autoDirectorFollowUp";
 import type { AutoDirectorFollowUpSection } from "@ai-novel/shared/types/autoDirectorValidation";
 import { Button } from "@/components/ui/button";
@@ -47,16 +48,18 @@ export function AutoDirectorFollowUpBatchBar({
   return (
     <div className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpBatchBar}>
       <TaskQueueActionRow
-        title={`已选择 ${selectedItems.length} 项 · ${selectedSection === "pending" || selectedSection === "exception" ? formatBatchActionLabel(batchActionCode) : "该分区不提供批量动作"}`}
+        title={translateUi("已选择 {{value0}} 项 · {{value1}}", { value0: selectedItems.length, value1: selectedSection === "pending" || selectedSection === "exception" ? formatBatchActionLabel(batchActionCode) : translateUi("该分区不提供批量动作") })}
         consequence={consequence}
         tone={selectedSection === "exception" ? "danger" : "info"}
         action={(
           <div className="grid grid-cols-2 gap-2 md:flex">
           <Button variant="outline" size="sm" className="w-full md:w-auto" onClick={onClear} disabled={loading}>
-            清空
+
+            {translateUi("清空")}
           </Button>
           <Button size="sm" className="w-full md:w-auto" onClick={() => void onExecute()} disabled={!batchActionCode || loading}>
-            执行批量动作
+
+            {translateUi("执行批量动作")}
           </Button>
           </div>
         )}

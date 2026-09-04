@@ -1,0 +1,113 @@
+{
+  "groups": {
+    "creation": "Sáng tác",
+    "assets": "Tài nguyên",
+    "system": "Hệ thống"
+  },
+  "items": {
+    "home": "Trang chủ",
+    "help": "Hướng dẫn sáng tác",
+    "marketRadar": "Radar đề tài hot",
+    "novels": "Danh sách tiểu thuyết",
+    "drama": "Bàn làm việc phim ngắn",
+    "comic": "Bàn làm việc truyện tranh",
+    "creativeHub": "Trung tâm sáng tác",
+    "bookAnalysis": "Phân tích sách",
+    "genres": "Thư viện nền đề tài",
+    "storyModes": "Thư viện chế độ triển khai",
+    "titles": "Xưởng tiêu đề",
+    "knowledge": "Cơ sở tri thức",
+    "worlds": "Thư viện mẫu thế giới",
+    "styleEngine": "Động cơ lối viết",
+    "antiAiRules": "Quy tắc chống AI",
+    "baseCharacters": "Thư viện nhân vật gốc",
+    "visualAssets": "Thư viện tài nguyên hình ảnh",
+    "tasks": "Nhật ký chạy",
+    "autoDirectorFollowUps": "Theo dõi đạo diễn",
+    "promptWorkbench": "Quản lý prompt",
+    "settings": "Cài đặt hệ thống"
+  },
+  "sidebar": {
+    "expand": "Mở rộng thanh điều hướng",
+    "collapse": "Thu gọn thanh điều hướng",
+    "comicBeta": "Bàn làm việc truyện tranh vẫn đang giai đoạn Beta"
+  },
+  "navbar": {
+    "projectNav": "Điều hướng dự án",
+    "creationNav": "Điều hướng sáng tác",
+    "modelSettings": "Cài đặt mô hình"
+  },
+  "mobile": {
+    "openBook": "Bắt đầu viết",
+    "moreOpen": "Mở menu chức năng",
+    "moreClose": "Đóng menu chức năng",
+    "openVisualAssets": "Mở thư viện tài nguyên hình ảnh",
+    "morePanelTitle": "Menu chức năng",
+    "morePanelDescription": "Chọn không gian làm việc bạn muốn tiếp tục.",
+    "primary": {
+      "home": "Trang chủ",
+      "novels": "Tiểu thuyết",
+      "creation": "Sáng tác",
+      "tasks": "Tác vụ",
+      "more": "Thêm"
+    },
+    "groups": {
+      "creationAids": "Hỗ trợ sáng tác",
+      "assetLibrary": "Kho tài nguyên",
+      "worldsAndSystem": "Thế giới & hệ thống"
+    },
+    "items": {
+      "help": "Hướng dẫn sáng tác",
+      "drama": "Bàn làm việc phim ngắn",
+      "bookAnalysis": "Phân tích sách",
+      "marketRadar": "Radar đề tài hot",
+      "chatLegacy": "Chat bản cũ",
+      "knowledge": "Cơ sở tri thức",
+      "genres": "Nền đề tài",
+      "storyModes": "Chế độ triển khai",
+      "titles": "Xưởng tiêu đề",
+      "styleEngine": "Động cơ lối viết",
+      "antiAiRules": "Quy tắc chống AI",
+      "baseCharacters": "Nhân vật gốc",
+      "tasks": "Nhật ký chạy",
+      "autoDirectorFollowUps": "Theo dõi đạo diễn",
+      "worlds": "Thư viện mẫu thế giới",
+      "worldGenerator": "Tạo mẫu thế giới",
+      "promptWorkbench": "Quản lý prompt",
+      "settings": "Cài đặt hệ thống"
+    },
+    "pages": {
+      "home": "Trang chủ",
+      "help": "Hướng dẫn sáng tác",
+      "novels": "Tiểu thuyết",
+      "novelCreate": "Tạo tiểu thuyết",
+      "novelPreview": "Xem trước tiểu thuyết",
+      "novelEdit": "Không gian làm việc tiểu thuyết",
+      "chapterEdit": "Nội dung chương",
+      "drama": "Phim ngắn",
+      "creativeHub": "Trung tâm sáng tác",
+      "chatLegacy": "Chat bản cũ",
+      "bookAnalysis": "Phân tích sách",
+      "marketRadar": "Radar đề tài hot",
+      "tasks": "Tác vụ",
+      "autoDirectorFollowUps": "Theo dõi đạo diễn",
+      "knowledge": "Cơ sở tri thức",
+      "genres": "Nền đề tài",
+      "storyModes": "Chế độ triển khai",
+      "titles": "Xưởng tiêu đề",
+      "promptWorkbench": "Quản lý prompt",
+      "settingsModels": "Mô hình & nhà cung cấp",
+      "settingsDirector": "Cài đặt đạo diễn tự động",
+      "settingsKnowledge": "Tri thức & lối viết",
+      "settingsMaintenance": "Máy tính & bảo trì",
+      "settings": "Cài đặt hệ thống",
+      "worlds": "Thư viện mẫu thế giới",
+      "worldGenerator": "Tạo mẫu thế giới",
+      "worldWorkspace": "Sổ tay thế giới",
+      "styleEngine": "Động cơ lối viết",
+      "antiAiRules": "Quy tắc chống AI",
+      "baseCharacters": "Nhân vật gốc",
+      "fallback": "Chức năng khác"
+    }
+  }
+}

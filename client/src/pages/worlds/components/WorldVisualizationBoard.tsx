@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import type { WorldVisualizationPayload } from "@ai-novel/shared/types/world";
 import { Button } from "@/components/ui/button";
@@ -91,14 +92,14 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
   }, [keyword, payload?.timeline, timelineLimit]);
 
   return (
-    <section className="space-y-4 border-t border-border/30 pt-6" aria-label="世界图谱">
+    <section className="space-y-4 border-t border-border/30 pt-6" aria-label={translateUi("世界图谱")}>
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex gap-1 overflow-x-auto rounded-full bg-muted/30 p-1">
           {[
-            { value: "faction", label: "势力图谱" },
-            { value: "geography", label: "地理地图" },
-            { value: "power", label: "力量体系" },
-            { value: "timeline", label: "世界时间线" },
+            { value: "faction", label: translateUi("势力图谱") },
+            { value: "geography", label: translateUi("地理地图") },
+            { value: "power", label: translateUi("力量体系") },
+            { value: "timeline", label: translateUi("世界时间线") },
           ].map((item) => (
             <Button
               key={item.value}
@@ -118,7 +119,7 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
             className="w-full rounded-full sm:w-72"
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
-            placeholder="筛选名称或关键词"
+            placeholder={translateUi("筛选名称或关键词")}
           />
           {mode === "faction" ? (
             <SelectControl
@@ -133,7 +134,7 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
           ) : null}
           {mode === "timeline" ? (
             <label className="flex items-center gap-2 rounded-full bg-muted/30 px-4 text-xs text-muted-foreground">
-              <span>显示</span>
+              <span>{translateUi("显示")}</span>
               <input type="range" min={3} max={20} step={1} value={timelineLimit} onChange={(event) => setTimelineLimit(Number(event.target.value))} />
               <span className="tabular-nums">{timelineLimit}</span>
             </label>
@@ -152,7 +153,7 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
             ))}
           </div>
           <WorldGraphCanvas
-            title={`势力图谱 · ${factionNodes.length} 个节点 · ${factionEdges.length} 条关系`}
+            title={translateUi("势力图谱 · {{value0}} 个节点 · {{value1}} 条关系", { value0: factionNodes.length, value1: factionEdges.length })}
             nodes={factionNodes}
             edges={factionEdges}
             colorByType={(type) => FACTION_TYPE_COLORS[type ?? "other"] ?? FACTION_TYPE_COLORS.other}
@@ -162,7 +163,7 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
 
       {mode === "geography" ? (
         <WorldGraphCanvas
-          title={`世界地图 · ${geographyNodes.length} 个地点 · ${geographyEdges.length} 条路线`}
+          title={translateUi("世界地图 · {{value0}} 个地点 · {{value1}} 条路线", { value0: geographyNodes.length, value1: geographyEdges.length })}
           nodes={geographyNodes}
           edges={geographyEdges}
           layout="map"
@@ -171,7 +172,7 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
 
       {mode === "power" ? (
         <div className="rounded-3xl border border-border/35 bg-card/70 p-5">
-          <div className="mb-3 font-medium">力量体系 · {filteredPower.length} 项</div>
+          <div className="mb-3 font-medium">{translateUi("力量体系 ·")} {filteredPower.length}  {translateUi("项")}</div>
           <div className="grid gap-3 md:grid-cols-2">
             {filteredPower.map((item) => (
               <div key={`${item.level}-${item.description}`} className="rounded-2xl bg-muted/20 p-4">
@@ -179,7 +180,7 @@ export default function WorldVisualizationBoard({ payload }: WorldVisualizationB
                 <div className="mt-1 text-sm leading-6">{item.description}</div>
               </div>
             ))}
-            {filteredPower.length === 0 ? <div className="text-sm text-muted-foreground">暂无匹配内容</div> : null}
+            {filteredPower.length === 0 ? <div className="text-sm text-muted-foreground">{translateUi("暂无匹配内容")}</div> : null}
           </div>
         </div>
       ) : null}

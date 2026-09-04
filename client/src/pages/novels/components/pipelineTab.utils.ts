@@ -1,3 +1,4 @@
+import { translateUi } from "../../../i18n/legacy.ts";
 import type { Chapter, PipelineJob } from "@ai-novel/shared/types/novel";
 
 export interface PipelineStageItem {
@@ -6,13 +7,13 @@ export interface PipelineStageItem {
 }
 
 export const PIPELINE_STAGE_ITEMS: PipelineStageItem[] = [
-  { key: "assemble_context", label: "装配上下文" },
-  { key: "generate_task_sheet", label: "生成任务单" },
-  { key: "generate_scene_cards", label: "生成场景拍点" },
-  { key: "generate_content", label: "生成正文" },
-  { key: "quality_check", label: "质量检测" },
-  { key: "auto_repair", label: "自动修复" },
-  { key: "update_memory", label: "更新剧情记忆" },
+  { key: "assemble_context", label: translateUi("装配上下文") },
+  { key: "generate_task_sheet", label: translateUi("生成任务单") },
+  { key: "generate_scene_cards", label: translateUi("生成场景拍点") },
+  { key: "generate_content", label: translateUi("生成正文") },
+  { key: "quality_check", label: translateUi("质量检测") },
+  { key: "auto_repair", label: translateUi("自动修复") },
+  { key: "update_memory", label: translateUi("更新剧情记忆") },
 ];
 
 function mapCurrentStage(currentStage: string | null | undefined): string | null {

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   buildDefaultNovelCoverSourceDescription,
   type NovelCoverImagePromptNovelContext,
@@ -76,7 +77,7 @@ export function buildNovelCoverDraftContext(
   const commercialTags = normalizeCommercialTags(input.basicForm.commercialTagsText);
 
   return {
-    title: normalizeOptionalText(input.basicForm.title) ?? "这本小说",
+    title: normalizeOptionalText(input.basicForm.title) ?? translateUi("这本小说"),
     description: normalizeOptionalText(input.basicForm.description),
     targetAudience: normalizeOptionalText(input.basicForm.targetAudience),
     bookSellingPoint: normalizeOptionalText(input.basicForm.bookSellingPoint),

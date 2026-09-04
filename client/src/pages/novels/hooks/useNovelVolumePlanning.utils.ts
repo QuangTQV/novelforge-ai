@@ -1,3 +1,4 @@
+import { translateUi } from "../../../i18n/legacy.ts";
 import type {
   VolumeBeatSheet,
   VolumeCountGuidance,
@@ -102,7 +103,7 @@ export function resolveCustomVolumeCountInput(
   if (!Number.isFinite(parsed)) {
     return {
       value: null,
-      message: "请先输入有效的固定卷数。",
+      message: translateUi("请先输入有效的固定卷数。"),
     };
   }
   if (
@@ -111,7 +112,7 @@ export function resolveCustomVolumeCountInput(
   ) {
     return {
       value: null,
-      message: `固定卷数必须落在 ${volumeCountGuidance.allowedVolumeCountRange.min}-${volumeCountGuidance.allowedVolumeCountRange.max} 卷之间。`,
+      message: translateUi("固定卷数必须落在 {{min}}-{{max}} 卷之间。", { min: volumeCountGuidance.allowedVolumeCountRange.min, max: volumeCountGuidance.allowedVolumeCountRange.max }),
     };
   }
   return {

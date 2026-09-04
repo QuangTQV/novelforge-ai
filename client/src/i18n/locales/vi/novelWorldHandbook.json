@@ -1,0 +1,48 @@
+{
+  "source": {
+    "imported": "Từ thư viện thế giới",
+    "generated": "Tạo theo tiểu thuyết này",
+    "manual": "Thế giới tùy chỉnh",
+    "unset": "Chưa thiết lập"
+  },
+  "sync": {
+    "push": "Chỉ đẩy lên thư viện thế giới",
+    "pull": "Chỉ lấy từ thư viện thế giới",
+    "bidirectional": "Đồng bộ hai chiều",
+    "none": "Không đồng bộ"
+  },
+  "section": {
+    "profile": "Tổng quan thế giới",
+    "rules": "Quy tắc cốt lõi",
+    "factions": "Phe phái",
+    "forces": "Thế lực",
+    "locations": "Địa điểm",
+    "relations": "Mạng lưới quan hệ"
+  },
+  "asset": {
+    "ready": "Có thể xem",
+    "draft": "Đang hoàn thiện",
+    "archived": "Đã lưu trữ",
+    "pending": "Chờ tạo"
+  },
+  "assetHints": {
+    "map": "Bổ sung sân khấu và rủi ro địa điểm để bản đồ thể hiện khu vực và điểm xung đột.",
+    "factionDiagram": "Bổ sung thế lực chính, mục tiêu và áp lực để sơ đồ thể hiện quan hệ phe phái.",
+    "timeline": "Bổ sung xung đột cốt lõi và hệ quả chung để dòng thời gian thể hiện biến động.",
+    "characterNetwork": "Bổ sung phe phái và áp lực để quan hệ nhân vật sát với thế giới hơn.",
+    "powerSystemTree": "Bổ sung quy tắc, cái giá và ranh giới để cây hệ thống không biến thành bảng cấp bậc.",
+    "default": "Hoàn thiện sổ tay thế giới trước, rồi sắp xếp tài sản trực quan."
+  },
+  "overview": {
+    "title": "Tổng quan thế giới",
+    "description": "Thông tin nền giúp bạn đánh giá thế giới có đang nâng đỡ câu chuyện hiện tại hay không.",
+    "sourceUnset": "Chưa thiết lập nguồn",
+    "scopeReady": "Phạm vi viết đã được sắp xếp",
+    "scopePending": "Đang chờ sắp xếp phạm vi viết",
+    "preparing": "Thế giới của tiểu thuyết đang được chuẩn bị.",
+    "identity": "Bản sắc: {{value}}",
+    "tone": "Không khí: {{value}}",
+    "mainForces": "Thế lực chính",
+    "noForces": "Chưa có thế lực rõ ràng."
+  }
+}

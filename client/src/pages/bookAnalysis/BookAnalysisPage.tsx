@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ListChecks, Plus, RefreshCw } from "lucide-react";
 import {
@@ -183,12 +184,13 @@ export default function BookAnalysisPage() {
       {!workspace.selectedAnalysisId ? (
         <WorkspaceHeader
           className="rounded-[24px] border-b-0 bg-card px-5 py-6 shadow-[0_18px_55px_rgba(15,23,42,0.05)] sm:px-7"
-          title="拆书分析"
-          description="选择来源文档并生成结构化拆书结果，完成后可直接阅读小节、回看原文证据和整理角色档案。"
+          title={translateUi("拆书分析")}
+          description={translateUi("选择来源文档并生成结构化拆书结果，完成后可直接阅读小节、回看原文证据和整理角色档案。")}
           actions={(
             <Button type="button" variant="outline" onClick={() => setCreateDialogOpen(true)}>
               <Plus className="mr-1.5 h-4 w-4" aria-hidden="true" />
-              新建拆书
+
+              {translateUi("新建拆书")}
             </Button>
           )}
         />
@@ -198,18 +200,19 @@ export default function BookAnalysisPage() {
         <WorkspaceStateNotice
           loading
           tone="info"
-          title="正在读取拆书结果"
-          description="结果加载完成后会直接显示可阅读小节和原文证据。"
+          title={translateUi("正在读取拆书结果")}
+          description={translateUi("结果加载完成后会直接显示可阅读小节和原文证据。")}
         />
       ) : workspace.selectedAnalysisId && workspace.queryState.detailError ? (
         <WorkspaceStateNotice
           tone="danger"
-          title="无法读取这份拆书结果"
-          description={`${workspace.queryState.detailError} 来源文档和已保存结果不会被覆盖。`}
+          title={translateUi("无法读取这份拆书结果")}
+          description={translateUi("{{value0}} 来源文档和已保存结果不会被覆盖。", { value0: workspace.queryState.detailError })}
           action={(
             <Button type="button" size="sm" variant="outline" onClick={workspace.retryDetail}>
               <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-              重试详情
+
+              {translateUi("重试详情")}
             </Button>
           )}
         />
@@ -217,18 +220,19 @@ export default function BookAnalysisPage() {
         <WorkspaceStateNotice
           loading
           tone="info"
-          title="正在读取拆书列表"
-          description="正在确认已有分析和最近进度，加载完成后会给出下一步。"
+          title={translateUi("正在读取拆书列表")}
+          description={translateUi("正在确认已有分析和最近进度，加载完成后会给出下一步。")}
         />
       ) : !workspace.selectedAnalysisId && workspace.queryState.analysesError ? (
         <WorkspaceStateNotice
           tone="danger"
-          title="无法读取拆书列表"
-          description={`${workspace.queryState.analysesError} 现有来源文档和分析结果不会被修改。`}
+          title={translateUi("无法读取拆书列表")}
+          description={translateUi("{{value0}} 现有来源文档和分析结果不会被修改。", { value0: workspace.queryState.analysesError })}
           action={(
             <Button type="button" size="sm" variant="outline" onClick={workspace.retryAnalyses}>
               <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-              重新加载
+
+              {translateUi("重新加载")}
             </Button>
           )}
         />
@@ -361,12 +365,12 @@ export default function BookAnalysisPage() {
           ) : (
             <WorkspaceStateNotice
               tone="neutral"
-              title={workspace.analyses.length > 0 ? "选择一份拆书分析" : "还没有拆书结果"}
+              title={workspace.analyses.length > 0 ? translateUi("选择一份拆书分析") : translateUi("还没有拆书结果")}
               description={workspace.analyses.length > 0
-                ? "从左侧选择分析后，这里会展示来源、生成阶段、可阅读结果和恢复动作。"
-                : "新建拆书后，AI 会把来源文档整理为可阅读、可发布和可引用的结果。"}
+                ? translateUi("从左侧选择分析后，这里会展示来源、生成阶段、可阅读结果和恢复动作。")
+                : translateUi("新建拆书后，AI 会把来源文档整理为可阅读、可发布和可引用的结果。")}
               action={workspace.analyses.length === 0 ? (
-                <Button type="button" size="sm" onClick={() => setCreateDialogOpen(true)}>新建拆书</Button>
+                <Button type="button" size="sm" onClick={() => setCreateDialogOpen(true)}>{translateUi("新建拆书")}</Button>
               ) : null}
             />
           )}

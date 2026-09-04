@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import type { TitleFactorySuggestion } from "@ai-novel/shared/types/title";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,16 +26,16 @@ type FactoryMode = "novel" | "brief" | "adapt";
 
 const MODE_COPY: Record<FactoryMode, { title: string; description: string }> = {
   novel: {
-    title: "按小说生成",
-    description: "读取已保存的小说项目资料，直接产出更贴近当前作品的标题候选。",
+    title: translateUi("按小说生成"),
+    description: translateUi("读取已保存的小说项目资料，直接产出更贴近当前作品的标题候选。"),
   },
   brief: {
-    title: "自由工坊",
-    description: "只写一句题材、主角卖点或核心冲突，快速试一批不同方向的标题。",
+    title: translateUi("自由工坊"),
+    description: translateUi("只写一句题材、主角卖点或核心冲突，快速试一批不同方向的标题。"),
   },
   adapt: {
-    title: "参考改编",
-    description: "参考一个标题的节奏和命名结构，再结合你的作品信息重新生成。",
+    title: translateUi("参考改编"),
+    description: translateUi("参考一个标题的节奏和命名结构，再结合你的作品信息重新生成。"),
   },
 };
 
@@ -98,7 +99,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
       const next = sortSuggestions(rows);
       setSuggestions(next);
       setSelectedTitle(next[0]?.title ?? "");
-      toast.success(`已生成 ${next.length} 个标题候选。`);
+      toast.success(translateUi("已生成 {{value0}} 个标题候选。", { value0: next.length }));
     },
   });
 
@@ -125,14 +126,14 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.titles.all });
-      toast.success("标题已加入标题库。");
+      toast.success(translateUi("标题已加入标题库。"));
     },
   });
 
   const handleCopy = async (suggestion: TitleFactorySuggestion) => {
     await navigator.clipboard.writeText(suggestion.title);
     setSelectedTitle(suggestion.title);
-    toast.success("标题已复制到剪贴板。");
+    toast.success(translateUi("标题已复制到剪贴板。"));
   };
 
   const handlePrimaryAction = async (suggestion: TitleFactorySuggestion) => {
@@ -147,9 +148,9 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
         <section className="rounded-3xl bg-muted/[0.18] p-4 sm:p-6">
           <div className="mx-auto max-w-3xl">
             <TabsList className="grid h-11 w-full grid-cols-3 rounded-full bg-background/70 p-1 shadow-sm">
-              <TabsTrigger value="novel" className="rounded-full">按小说生成</TabsTrigger>
-              <TabsTrigger value="brief" className="rounded-full">自由工坊</TabsTrigger>
-              <TabsTrigger value="adapt" className="rounded-full">参考改编</TabsTrigger>
+              <TabsTrigger value="novel" className="rounded-full">{translateUi("按小说生成")}</TabsTrigger>
+              <TabsTrigger value="brief" className="rounded-full">{translateUi("自由工坊")}</TabsTrigger>
+              <TabsTrigger value="adapt" className="rounded-full">{translateUi("参考改编")}</TabsTrigger>
             </TabsList>
             <p className="mt-3 text-center text-sm leading-6 text-muted-foreground">{modeCopy.description}</p>
           </div>
@@ -158,7 +159,8 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
             <TabsContent value="novel" className="mt-0 space-y-3">
               <div className="space-y-2">
                 <label htmlFor="title-factory-novel" className="text-sm font-medium text-foreground">
-                  想为哪本小说取名？
+
+                  {translateUi("想为哪本小说取名？")}
                 </label>
                 <SelectControl
                   id="title-factory-novel"
@@ -166,7 +168,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
                   value={selectedNovelId}
                   onChange={(event) => setSelectedNovelId(event.target.value)}
                 >
-                  <option value="">请选择项目</option>
+                  <option value="">{translateUi("请选择项目")}</option>
                   {novels.map((novel) => (
                     <option key={novel.id} value={novel.id}>
                       {novel.title}
@@ -175,26 +177,29 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
                 </SelectControl>
               </div>
               <div className="text-xs leading-5 text-muted-foreground">
-                适合已填写简介和类型的作品，系统会结合项目资料生成候选标题。
+
+                {translateUi("适合已填写简介和类型的作品，系统会结合项目资料生成候选标题。")}
               </div>
             </TabsContent>
 
             <TabsContent value="brief" className="mt-0 grid gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
               <div className="space-y-3">
                 <label htmlFor="title-factory-brief" className="text-sm font-medium text-foreground">
-                  创作简报
+
+                  {translateUi("创作简报")}
                 </label>
                 <textarea
                   id="title-factory-brief"
                   className={`${textareaClassName} min-h-[176px]`}
                   value={brief}
                   onChange={(event) => setBrief(event.target.value)}
-                  placeholder="描述题材、主角卖点、冲突、文风和读者期待。越具体，标题越有区分度。"
+                  placeholder={translateUi("描述题材、主角卖点、冲突、文风和读者期待。越具体，标题越有区分度。")}
                 />
               </div>
               <div className="space-y-3">
                 <label htmlFor="title-factory-genre" className="text-sm font-medium text-foreground">
-                  类型过滤
+
+                  {translateUi("类型过滤")}
                 </label>
                 <SelectControl
                   id="title-factory-genre"
@@ -202,7 +207,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
                   value={genreId}
                   onChange={(event) => setGenreId(event.target.value)}
                 >
-                  <option value="">不指定类型</option>
+                  <option value="">{translateUi("不指定类型")}</option>
                   {genreOptions.map((option) => (
                     <option key={option.id} value={option.id}>
                       {option.path}
@@ -210,7 +215,8 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
                   ))}
                 </SelectControl>
                 <p className="text-xs leading-5 text-muted-foreground">
-                  不确定类型时可以留空，让模型先按简报自行判断标题方向。
+
+                  {translateUi("不确定类型时可以留空，让模型先按简报自行判断标题方向。")}
                 </p>
               </div>
             </TabsContent>
@@ -219,19 +225,21 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
               <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
                 <div className="space-y-3">
                   <label htmlFor="title-factory-reference" className="text-sm font-medium text-foreground">
-                    参考标题
+
+                    {translateUi("参考标题")}
                   </label>
                   <Input
                     id="title-factory-reference"
                     value={referenceTitle}
                     onChange={(event) => setReferenceTitle(event.target.value)}
-                    placeholder="例如：我在废土捡属性"
+                    placeholder={translateUi("例如：我在废土捡属性")}
                     className={inputClassName}
                   />
                 </div>
                 <div className="space-y-3">
                   <label htmlFor="title-factory-adapt-genre" className="text-sm font-medium text-foreground">
-                    类型过滤
+
+                    {translateUi("类型过滤")}
                   </label>
                   <SelectControl
                     id="title-factory-adapt-genre"
@@ -239,7 +247,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
                     value={genreId}
                     onChange={(event) => setGenreId(event.target.value)}
                   >
-                    <option value="">不指定类型</option>
+                    <option value="">{translateUi("不指定类型")}</option>
                     {genreOptions.map((option) => (
                       <option key={option.id} value={option.id}>
                         {option.path}
@@ -250,14 +258,15 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
               </div>
               <div className="space-y-3">
                 <label htmlFor="title-factory-adapt-brief" className="text-sm font-medium text-foreground">
-                  作品简报
+
+                  {translateUi("作品简报")}
                 </label>
                 <textarea
                   id="title-factory-adapt-brief"
                   className={`${textareaClassName} min-h-[132px]`}
                   value={brief}
                   onChange={(event) => setBrief(event.target.value)}
-                  placeholder="说明你的作品题材、人物与卖点。系统会参考标题节奏，但不会直接照抄。"
+                  placeholder={translateUi("说明你的作品题材、人物与卖点。系统会参考标题节奏，但不会直接照抄。")}
                 />
               </div>
             </TabsContent>
@@ -270,12 +279,12 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
               onClick={() => setShowModelSettings((value) => !value)}
             >
               <Settings2 className="h-3.5 w-3.5" />
-              <span>模型 {llm.provider} · {llm.model}</span>
+              <span>{translateUi("模型")} {llm.provider} · {llm.model}</span>
             </button>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
               <label className="flex items-center gap-2 text-sm">
-                <span className="font-medium text-foreground">数量</span>
+                <span className="font-medium text-foreground">{translateUi("数量")}</span>
                 <Input
                   type="number"
                   min={3}
@@ -293,7 +302,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
                 disabled={generateMutation.isPending}
               >
                 <Sparkles className="h-4 w-4" />
-                {generateMutation.isPending ? "生成中..." : "生成标题"}
+                {generateMutation.isPending ? translateUi("生成中...") : translateUi("生成标题")}
               </Button>
             </div>
           </div>
@@ -305,7 +314,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
           ) : null}
           {generateMutation.error ? (
             <div className="mx-auto mt-4 max-w-4xl rounded-xl bg-destructive/[0.055] px-4 py-3 text-sm text-destructive">
-              {generateMutation.error instanceof Error ? generateMutation.error.message : "标题生成失败，请重试。"}
+              {generateMutation.error instanceof Error ? generateMutation.error.message : translateUi("标题生成失败，请重试。")}
             </div>
           ) : null}
         </section>
@@ -313,21 +322,21 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
 
       <section className="space-y-4">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-          <h3 className="text-base font-semibold text-foreground">候选结果</h3>
+          <h3 className="text-base font-semibold text-foreground">{translateUi("候选结果")}</h3>
           <div className="text-xs text-muted-foreground">
-            {suggestions.length > 0 ? `已按点击潜力排序，共 ${suggestions.length} 个` : "结果会在生成后显示"}
+            {suggestions.length > 0 ? translateUi("已按点击潜力排序，共 {{value0}} 个", { value0: suggestions.length }) : translateUi("结果会在生成后显示")}
           </div>
         </div>
         <TitleSuggestionList
           layout="grid"
           suggestions={suggestions}
           selectedTitle={selectedTitle}
-          primaryActionLabel="复制标题"
+          primaryActionLabel={translateUi("复制标题")}
           onPrimaryAction={handlePrimaryAction}
           onCopy={handleCopy}
           onSave={(suggestion) => saveMutation.mutate(suggestion)}
           savingTitle={saveMutation.isPending ? saveMutation.variables?.title ?? "" : ""}
-          emptyMessage={`${modeCopy.title}准备好后，点击“生成标题”查看不同命名方向。`}
+          emptyMessage={translateUi("{{value0}}准备好后，点击“生成标题”查看不同命名方向。", { value0: modeCopy.title })}
         />
       </section>
     </div>

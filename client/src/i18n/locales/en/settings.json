@@ -1,0 +1,64 @@
+{
+  "appearance": {
+    "title": "Appearance & Theme",
+    "description": "Choose interface colors and display density suited to long writing sessions.",
+    "cardTitle": "Interface appearance",
+    "cardDescription": "The theme is stored only on this device; it does not affect novel content or task status.",
+    "mode": {
+      "label": "Display mode",
+      "system": "Follow system",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "palette": {
+      "label": "Theme style",
+      "ink": { "label": "Inkstone", "description": "Restrained blue-grey, good for daily writing." },
+      "paper": { "label": "Warm Paper", "description": "Soft off-white, good for reading and chapter editing." },
+      "night": { "label": "Night Voyage", "description": "Deep indigo and teal, good for AI runs and log viewing." }
+    },
+    "density": {
+      "label": "Interface density",
+      "comfortable": "Comfortable",
+      "compact": "Compact"
+    },
+    "reset": "Reset to default theme"
+  },
+  "language": {
+    "cardTitle": "Interface language",
+    "cardDescription": "Choose the display language of the app interface. This choice is stored only on this device.",
+    "label": "Language",
+    "selectPlaceholder": "Select a language"
+  },
+  "overview": {
+    "title": "System Settings",
+    "description": "Check your writing environment status and open the settings you need to adjust.",
+    "open": "Open",
+    "entries": {
+      "models": {
+        "title": "Models & providers",
+        "description": "Choose creation models, check task routing, and manage connections.",
+        "summaryConfigured": "{{provider}} · {{model}} · {{routeCount}} task routes",
+        "summaryEmpty": "No usable text model configured yet",
+        "noModel": "No model selected"
+      },
+      "director": {
+        "title": "Auto-director",
+        "description": "Arrange issue handling, confirmation preferences, and reminders.",
+        "summary": "Set confirmation preferences, issue handling, and notifications"
+      },
+      "knowledge": {
+        "title": "Knowledge & style",
+        "description": "Let your material and style preferences feed later writing.",
+        "summaryEnabled": "Document retrieval on · {{model}}",
+        "summaryDisabled": "Optional enhancement, does not block getting started",
+        "noModel": "No embedding model selected"
+      },
+      "maintenance": {
+        "title": "Desktop & maintenance",
+        "description": "See updates and data maintenance for the current device.",
+        "summaryDesktop": "Check desktop updates and legacy local data",
+        "summaryWeb": "The web version needs no desktop maintenance"
+      }
+    }
+  }
+}

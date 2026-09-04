@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +23,7 @@ export function SectionHeader({
         </div>
         <div className="mt-1 text-sm leading-6 text-muted-foreground">{description}</div>
       </div>
-      {typeof count === "number" ? <Badge variant="secondary" className="border-0 bg-muted/60 font-normal">{count} 条</Badge> : null}
+      {typeof count === "number" ? <Badge variant="secondary" className="border-0 bg-muted/60 font-normal">{count}  {translateUi("条")}</Badge> : null}
     </div>
   );
 }

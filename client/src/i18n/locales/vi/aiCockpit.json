@@ -1,0 +1,65 @@
+{
+  "empty": "Chưa có",
+  "state": {
+    "processing": "AI đang xử lý",
+    "needsConfirmation": "Chờ bạn xác nhận",
+    "paused": "Đã tạm dừng",
+    "needsAttention": "Có lỗi cần xử lý",
+    "completed": "Đã hoàn tất",
+    "idle": "Chưa bật"
+  },
+  "duration": {
+    "lessThanSecond": "<1 giây",
+    "seconds": "{{count}} giây",
+    "minutes": "{{minutes}} phút",
+    "minutesSeconds": "{{minutes}} phút {{seconds}} giây"
+  },
+  "usage": {
+    "calls": "{{count}} lượt gọi",
+    "input": "Đầu vào {{count}}",
+    "output": "Đầu ra {{count}}",
+    "total": "Tổng {{count}} Tokens",
+    "duration": "Tổng thời gian gọi {{value}}"
+  },
+  "fallbackSummary": "Không có tác vụ tự động nào cần bạn xử lý.",
+  "actions": {
+    "confirmContinue": "Xác nhận và tiếp tục",
+    "continue": "Tiếp tục xử lý"
+  },
+  "artifact": {
+    "bookContract": "Cam kết cấp sách",
+    "storyMacro": "Hoạch định câu chuyện",
+    "characterCast": "Nhân vật",
+    "volumeStrategy": "Phân tập",
+    "chapterTaskSheet": "Phiếu tác vụ",
+    "chapterDraft": "Nội dung",
+    "auditReport": "Kiểm tra",
+    "repairTicket": "Sửa chữa",
+    "readerPromise": "Cam kết với độc giả",
+    "characterState": "Trạng thái nhân vật",
+    "worldSkeleton": "Khung thế giới",
+    "sourcePack": "Gói tư liệu",
+    "retentionContract": "Cam kết duy trì",
+    "continuity": "Tính liên tục",
+    "rollingReview": "Rà soát gần đây"
+  },
+  "recovery": {
+    "retry": "Thử lại bước hiện tại",
+    "resumeAfterReview": "Xem nguyên nhân rồi tiếp tục",
+    "switchModel": "Đổi model rồi tiếp tục",
+    "confirmProtected": "Xác nhận ranh giới nội dung bảo vệ",
+    "manualRepair": "Xử lý vấn đề chương trước"
+  },
+  "worker": {
+    "idle": "Chưa chạy",
+    "queued": "Chờ tiếp nhận",
+    "leased": "Đang tiếp nhận",
+    "running": "Đang tự động tiến hành",
+    "waiting": "Chờ xác nhận",
+    "recovering": "Đang khôi phục",
+    "cancelled": "Đã dừng",
+    "failedRecoverable": "Chờ khôi phục",
+    "failedHard": "Cần xử lý",
+    "succeeded": "Đã hoàn tất"
+  }
+}

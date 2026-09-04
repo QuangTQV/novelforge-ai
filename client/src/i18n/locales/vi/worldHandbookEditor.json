@@ -1,0 +1,47 @@
+{
+  "title": "Hoàn thiện sổ tay thế giới",
+  "description": "Xác nhận ấn tượng và mâu thuẫn cốt lõi trước, sau đó hoàn thiện quy tắc, thế lực, địa điểm và sức căng xung đột khi cần.",
+  "loading": {
+    "title": "Đang đọc sổ tay thế giới",
+    "description": "Khi cần, bạn có thể để AI sắp xếp các thiết lập hiện có thành sổ tay hoàn chỉnh."
+  },
+  "actions": {
+    "organizing": "Đang sắp xếp...",
+    "organizeWithAi": "Để AI sắp xếp sổ tay thế giới",
+    "viewHandbook": "Xem sổ tay",
+    "saving": "Đang lưu...",
+    "save": "Lưu sổ tay",
+    "editProfile": "Sắp xếp tổng quan thế giới",
+    "generating": "Đang bổ sung...",
+    "generateSection": "Bổ sung phần đã chọn",
+    "editRules": "Sắp xếp quy tắc"
+  },
+  "sections": {
+    "profile": "Ấn tượng thế giới",
+    "rules": "Quy tắc",
+    "factions": "Thế lực",
+    "locations": "Địa điểm",
+    "relations": "Sức căng"
+  },
+  "profile": {
+    "identity": "Ấn tượng thế giới trong một câu",
+    "identityFallback": "Bổ sung ấn tượng một câu để tác giả nhận ra thể loại, thời đại và kỳ quan cốt lõi.",
+    "summary": "Ấn tượng đầu tiên của độc giả",
+    "summaryFallback": "Bổ sung hình ảnh, trật tự, nguy hiểm hoặc kỳ quan đầu tiên của thế giới.",
+    "tone": "Không khí đọc",
+    "toneFallback": "Bổ sung không khí đọc, ví dụ triển khai nhiệt huyết, sử thi u tối, phiêu lưu hài hước hoặc tranh quyền.",
+    "coreConflict": "Mâu thuẫn liên tục thúc đẩy cốt truyện",
+    "coreConflictFallback": "Bổ sung vấn đề lặp lại khiến nhân vật lựa chọn, thế lực xung đột và chương phát sinh sự kiện."
+  },
+  "ai": {
+    "title": "AI hỗ trợ sắp xếp",
+    "description": "Để AI bổ sung một phần sổ tay từ nội dung hiện có; bạn vẫn có thể sửa tiếp trước khi lưu."
+  },
+  "rules": {
+    "description": "{{count}} quy tắc sẽ giới hạn sức mạnh, tài nguyên, điều cấm kỵ và cái giá.",
+    "summary": "Tổng quan quy tắc",
+    "summaryFallback": "Bổ sung quy tắc cứng vận hành thế giới để tránh năng lực và cách giải quyết cốt truyện mất kiểm soát.",
+    "axioms": "Quy tắc tiêu biểu",
+    "axiomsFallback": "Bổ sung 2–3 quy tắc cốt lõi bắt buộc phải tuân thủ."
+  }
+}

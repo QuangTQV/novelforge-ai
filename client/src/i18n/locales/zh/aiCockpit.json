@@ -1,0 +1,65 @@
+{
+  "empty": "暂无",
+  "state": {
+    "processing": "AI 处理中",
+    "needsConfirmation": "等待你确认",
+    "paused": "已暂停",
+    "needsAttention": "有错误需要处理",
+    "completed": "已完成",
+    "idle": "未开启"
+  },
+  "duration": {
+    "lessThanSecond": "<1 秒",
+    "seconds": "{{count}} 秒",
+    "minutes": "{{minutes}} 分钟",
+    "minutesSeconds": "{{minutes}} 分 {{seconds}} 秒"
+  },
+  "usage": {
+    "calls": "{{count}} 次调用",
+    "input": "输入 {{count}}",
+    "output": "输出 {{count}}",
+    "total": "共 {{count}} Tokens",
+    "duration": "调用总耗时 {{value}}"
+  },
+  "fallbackSummary": "没有需要你处理的自动任务。",
+  "actions": {
+    "confirmContinue": "确认并继续",
+    "continue": "继续处理"
+  },
+  "artifact": {
+    "bookContract": "书级承诺",
+    "storyMacro": "故事规划",
+    "characterCast": "角色",
+    "volumeStrategy": "分卷",
+    "chapterTaskSheet": "任务单",
+    "chapterDraft": "正文",
+    "auditReport": "检查",
+    "repairTicket": "修复",
+    "readerPromise": "读者承诺",
+    "characterState": "角色状态",
+    "worldSkeleton": "世界骨架",
+    "sourcePack": "资料包",
+    "retentionContract": "留存承诺",
+    "continuity": "连续性",
+    "rollingReview": "近期复查"
+  },
+  "recovery": {
+    "retry": "重试当前步骤",
+    "resumeAfterReview": "查看原因后继续",
+    "switchModel": "换模型后继续",
+    "confirmProtected": "确认受保护内容边界",
+    "manualRepair": "先处理上一章问题"
+  },
+  "worker": {
+    "idle": "未运行",
+    "queued": "等待接入",
+    "leased": "接入中",
+    "running": "自动推进中",
+    "waiting": "等待确认",
+    "recovering": "恢复中",
+    "cancelled": "已停止",
+    "failedRecoverable": "等待恢复",
+    "failedHard": "需要处理",
+    "succeeded": "已完成"
+  }
+}

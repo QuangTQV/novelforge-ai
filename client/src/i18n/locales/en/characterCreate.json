@@ -1,0 +1,51 @@
+{
+  "title": "Create character",
+  "actions": {
+    "open": "Create character",
+    "creating": "Creating...",
+    "create": "Create character",
+    "generating": "Generating...",
+    "generate": "Generate and save to the library"
+  },
+  "manual": {
+    "title": "Create a character manually"
+  },
+  "ai": {
+    "title": "AI-generate a character",
+    "descriptionPlaceholder": "Enter a character description, e.g. a calm young swordsman carrying a family grudge"
+  },
+  "advanced": {
+    "title": "Advanced settings (optional)",
+    "clear": "Clear all advanced settings",
+    "storyFunction": "Story role",
+    "growthStage": "Growth stage"
+  },
+  "fields": {
+    "name": "Character name",
+    "role": "Story role (protagonist / antagonist / supporting)",
+    "personality": "Personality traits",
+    "background": "Backstory",
+    "development": "Development arc",
+    "externalGoal": "External goal (what they want to get)",
+    "internalNeed": "Internal need (what they truly crave)",
+    "coreFear": "Core fear",
+    "moralBottomLine": "Moral bottom line",
+    "secret": "Unspeakable secret",
+    "coreFlaw": "Core flaw",
+    "relationshipHooks": "Relationship hooks (conflicts / bonds with others)",
+    "toneStyle": "Tone style (e.g. calm and restrained, sharply humorous)"
+  },
+  "options": {
+    "unspecified": "Unspecified",
+    "protagonist": "Protagonist",
+    "antagonist": "Antagonist",
+    "mentor": "Mentor",
+    "foil": "Foil",
+    "supporting": "Supporting character",
+    "start": "Start",
+    "setback": "Setback",
+    "turningPoint": "Turning point",
+    "awakening": "Awakening",
+    "resolution": "Resolution"
+  }
+}

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UnifiedTaskDetail } from "@ai-novel/shared/types/task";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +53,7 @@ export function useDirectorChapterTitleRepair(options: DirectorChapterTitleRepai
           warning,
         })).catch(() => {});
       }
-      toast.success("已开始 AI 修复章节标题，系统正在重写当前卷拆章。");
+      toast.success(translateUi("已开始 AI 修复章节标题，系统正在重写当前卷拆章。"));
     },
     onError: (error) => {
       const message = error instanceof Error ? error.message : "AI 修复章节标题失败。";
@@ -63,7 +64,7 @@ export function useDirectorChapterTitleRepair(options: DirectorChapterTitleRepai
   return {
     startRepair: (task: UnifiedTaskDetail | null | undefined) => {
       if (!task) {
-        toast.error("当前没有可修复的自动导演任务。");
+        toast.error(translateUi("当前没有可修复的自动导演任务。"));
         return;
       }
       mutation.mutate(task);

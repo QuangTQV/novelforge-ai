@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { StyleDetectionReport, StyleProfile } from "@ai-novel/shared/types/styleEngine";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,24 +33,27 @@ export default function WritingFormulaCleanPanel(props: WritingFormulaCleanPanel
   return (
     <Card>
       <CardHeader>
-        <CardTitle>去 AI 味</CardTitle>
+        <CardTitle>{translateUi("去 AI 味")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
         {selectedProfile ? (
           <div className="rounded-2xl border bg-slate-50/70 px-4 py-3 text-sm leading-7 text-slate-700">
-            当前按「{selectedProfile.name}」这套写法来做检测和修正。这里只处理正文的 AI 味，不会改写法字段本身。
+
+            {translateUi("当前按「")}{selectedProfile.name}{translateUi("」这套写法来做检测和修正。这里只处理正文的 AI 味，不会改写法字段本身。")}
           </div>
         ) : (
           <div className="rounded-2xl border bg-slate-50/70 px-4 py-3 text-sm leading-7 text-slate-700">
-            先从列表里选中一套写法，再来检测正文。
+
+            {translateUi("先从列表里选中一套写法，再来检测正文。")}
           </div>
         )}
 
         <div className="space-y-4 rounded-2xl border p-4">
           <div className="space-y-1">
-            <div className="text-base font-semibold text-slate-950">当前会优先参考的反 AI 约束</div>
+            <div className="text-base font-semibold text-slate-950">{translateUi("当前会优先参考的反 AI 约束")}</div>
             <div className="text-sm leading-6 text-slate-500">
-              如果这套写法绑了反 AI 规则，检测和修正会优先按这些约束去判断问题。
+
+              {translateUi("如果这套写法绑了反 AI 规则，检测和修正会优先按这些约束去判断问题。")}
             </div>
           </div>
           {antiAiRuleNames.length > 0 ? (
@@ -62,16 +66,18 @@ export default function WritingFormulaCleanPanel(props: WritingFormulaCleanPanel
             </div>
           ) : (
             <div className="rounded-xl border border-dashed px-3 py-3 text-sm leading-6 text-slate-500">
-              这套写法还没有绑定明确的反 AI 规则。当前检测会更依赖通用风险判断，结果可能不够贴合你的预期。
+
+              {translateUi("这套写法还没有绑定明确的反 AI 规则。当前检测会更依赖通用风险判断，结果可能不够贴合你的预期。")}
             </div>
           )}
         </div>
 
         <div className="space-y-4 rounded-2xl border p-4">
           <div className="space-y-1">
-            <div className="text-base font-semibold text-slate-950">检测正文</div>
+            <div className="text-base font-semibold text-slate-950">{translateUi("检测正文")}</div>
             <div className="text-sm leading-6 text-slate-500">
-              粘贴你想检查的正文。建议一次给一段完整场景，这样更容易看出叙述腔、对白腔和解释腔的问题。
+
+              {translateUi("粘贴你想检查的正文。建议一次给一段完整场景，这样更容易看出叙述腔、对白腔和解释腔的问题。")}
             </div>
           </div>
 
@@ -79,24 +85,26 @@ export default function WritingFormulaCleanPanel(props: WritingFormulaCleanPanel
             data-writing-formula-detect-input
             autoFocus
             className="min-h-[220px] w-full rounded-md border p-3 text-sm"
-            placeholder="粘贴待检测正文"
+            placeholder={translateUi("粘贴待检测正文")}
             value={detectInput}
             onChange={(event) => onDetectInputChange(event.target.value)}
           />
 
           <div className="flex flex-wrap gap-2">
             <Button onClick={onDetect} disabled={detectionPending || !selectedProfile || !detectInput.trim()}>
-              执行检测
+
+              {translateUi("执行检测")}
             </Button>
             <Button variant="secondary" onClick={onRewrite} disabled={rewritePending || !selectedProfile || !detectInput.trim()}>
-              一键修正
+
+              {translateUi("一键修正")}
             </Button>
           </div>
 
           {detectionReport ? (
             <div className="space-y-3 rounded-2xl border p-4 text-sm">
               <div className="space-y-1">
-                <div className="font-medium text-slate-900">风险分：{detectionReport.riskScore}</div>
+                <div className="font-medium text-slate-900">{translateUi("风险分：")}{detectionReport.riskScore}</div>
                 <div className="leading-6 text-slate-600">{detectionReport.summary}</div>
               </div>
               <div className="space-y-2">
@@ -113,13 +121,14 @@ export default function WritingFormulaCleanPanel(props: WritingFormulaCleanPanel
             </div>
           ) : (
             <div className="rounded-xl border border-dashed px-3 py-3 text-sm leading-6 text-slate-500">
-              检测结果会在这里显示，重点告诉你哪些句段最像 AI 腔、为什么会被判成风险，以及可以往什么方向改。
+
+              {translateUi("检测结果会在这里显示，重点告诉你哪些句段最像 AI 腔、为什么会被判成风险，以及可以往什么方向改。")}
             </div>
           )}
 
           {rewritePreview ? (
             <div className="space-y-2">
-              <div className="text-sm font-medium text-slate-900">修正结果</div>
+              <div className="text-sm font-medium text-slate-900">{translateUi("修正结果")}</div>
               <pre className="max-h-[320px] overflow-auto whitespace-pre-wrap rounded-xl border bg-muted/20 p-4 text-sm">
                 {rewritePreview}
               </pre>

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   AssistantRuntimeProvider,
   ComposerPrimitive,
@@ -62,25 +63,26 @@ export default function CreativeHubConversation({
       <AssistantRuntimeProvider runtime={runtime}>
         <Card className="flex h-full min-h-0 flex-col overflow-hidden rounded-lg shadow-none">
           <CardHeader>
-            <CardTitle className="text-base">创作推进记录</CardTitle>
+            <CardTitle className="text-base">{translateUi("创作推进记录")}</CardTitle>
           </CardHeader>
           <CardContent className="flex min-h-0 flex-1 flex-col">
             {loading ? (
               <WorkspaceStateNotice
                 loading
                 tone="info"
-                title="正在读取当前线程"
-                description="加载完成前不会显示上一线程的消息。"
+                title={translateUi("正在读取当前线程")}
+                description={translateUi("加载完成前不会显示上一线程的消息。")}
               />
             ) : errorMessage ? (
               <WorkspaceStateNotice
                 tone="danger"
-                title="当前线程加载失败"
-                description={`${errorMessage} 已保存的小说和其他线程不会受影响。`}
+                title={translateUi("当前线程加载失败")}
+                description={translateUi("{{value0}} 已保存的小说和其他线程不会受影响。", { value0: errorMessage })}
                 action={onRetry ? (
                   <Button type="button" size="sm" variant="outline" onClick={onRetry}>
                     <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-                    重新加载
+
+                    {translateUi("重新加载")}
                   </Button>
                 ) : null}
               />
@@ -92,9 +94,10 @@ export default function CreativeHubConversation({
                 >
                   <ThreadPrimitive.Empty>
                     <div className="mx-auto mt-8 max-w-xl rounded-md border border-dashed border-border px-5 py-8 text-center">
-                      <h3 className="text-base font-semibold tracking-normal text-foreground">查看当前小说状态</h3>
+                      <h3 className="text-base font-semibold tracking-normal text-foreground">{translateUi("查看当前小说状态")}</h3>
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                        使用上方入口查看进度、诊断问题或了解下一步；也可以直接描述你想查询的内容。
+
+                        {translateUi("使用上方入口查看进度、诊断问题或了解下一步；也可以直接描述你想查询的内容。")}
                       </p>
                     </div>
                   </ThreadPrimitive.Empty>
@@ -109,17 +112,17 @@ export default function CreativeHubConversation({
                 <ComposerPrimitive.Root className="rounded-md border border-border bg-background p-3">
                   <ComposerPrimitive.Input
                     className="min-h-[110px] w-full resize-none rounded-md border border-input bg-muted/20 p-3 text-base text-foreground outline-none transition focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60 md:text-sm"
-                    placeholder="询问小说进度、失败原因、执行记录或下一步入口；Enter 发送，Shift+Enter 换行。"
+                    placeholder={translateUi("询问小说进度、失败原因、执行记录或下一步入口；Enter 发送，Shift+Enter 换行。")}
                     submitMode="enter"
                     disabled={actionDisabled}
-                    aria-label="状态查询或诊断问题"
+                    aria-label={translateUi("状态查询或诊断问题")}
                   />
                   <div className="mt-3 flex gap-2">
                     <ComposerPrimitive.Send asChild>
-                      <Button type="button" size="sm" disabled={actionDisabled}>发送</Button>
+                      <Button type="button" size="sm" disabled={actionDisabled}>{translateUi("发送")}</Button>
                     </ComposerPrimitive.Send>
                     <ComposerPrimitive.Cancel asChild>
-                      <Button type="button" size="sm" variant="outline">停止</Button>
+                      <Button type="button" size="sm" variant="outline">{translateUi("停止")}</Button>
                     </ComposerPrimitive.Cancel>
                   </div>
                 </ComposerPrimitive.Root>

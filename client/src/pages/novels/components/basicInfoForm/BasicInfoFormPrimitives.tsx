@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { CircleHelp } from "lucide-react";
 import type { BasicInfoOption } from "../../novelBasicInfo.shared";
 import { cn } from "@/lib/utils";
@@ -72,6 +73,7 @@ export function SelectionCard<T extends string>({
   selected: boolean;
   onSelect: (value: T) => void;
 }) {
+  const { t } = useTranslation("novelOutline");
   return (
     <button
       type="button"
@@ -86,7 +88,7 @@ export function SelectionCard<T extends string>({
         <div className="text-sm font-medium text-foreground">{option.label}</div>
         {option.recommended ? (
           <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
-            推荐
+            {t("basicInfoForm.recommended")}
           </span>
         ) : null}
       </div>

@@ -1,0 +1,15 @@
+{
+  "reference": {
+    "characterSheet": "Character sheet",
+    "expressionSheet": "Expression sheet",
+    "faceCrop": "Face crop",
+    "asset": "Asset",
+    "scene": "Scene"
+  },
+  "density": {
+    "low": "Low density",
+    "medium": "Medium density",
+    "high": "High density",
+    "unlabeled": "Unlabeled"
+  }
+}

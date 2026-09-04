@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { Download, RefreshCw, RotateCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -49,7 +50,7 @@ export default function DesktopUpdatePanel({ updater, showEnvironment = true }: 
         await checkForDesktopUpdates();
       }
     } catch {
-      toast.error(action === "install" ? "未能重启安装，请稍后重试。" : "未能完成版本检查，请确认网络连接后重试。");
+      toast.error(action === "install" ? translateUi("未能重启安装，请稍后重试。") : translateUi("未能完成版本检查，请确认网络连接后重试。"));
     } finally {
       setIsBusy(false);
     }
@@ -58,9 +59,9 @@ export default function DesktopUpdatePanel({ updater, showEnvironment = true }: 
   const exportLogs = async () => {
     try {
       const filePath = await bundleDesktopLogs();
-      if (filePath) toast.success("日志包已保存，可以发送给开发者。");
+      if (filePath) toast.success(translateUi("日志包已保存，可以发送给开发者。"));
     } catch {
-      toast.error("日志包保存失败，请稍后重试。");
+      toast.error(translateUi("日志包保存失败，请稍后重试。"));
     }
   };
 
@@ -75,15 +76,15 @@ export default function DesktopUpdatePanel({ updater, showEnvironment = true }: 
 
       <div className="grid gap-3 sm:grid-cols-3">
         <div className="rounded-xl border bg-muted/25 p-3">
-          <div className="text-xs text-muted-foreground">本机版本</div>
+          <div className="text-xs text-muted-foreground">{translateUi("本机版本")}</div>
           <div className="mt-1 font-semibold">{formatDesktopVersion(updater.currentVersion)}</div>
         </div>
         <div className="rounded-xl border bg-muted/25 p-3">
-          <div className="text-xs text-muted-foreground">更新状态</div>
+          <div className="text-xs text-muted-foreground">{translateUi("更新状态")}</div>
           <div className="mt-1 font-semibold">{getDesktopUpdaterStatusLabel(updater.status)}</div>
         </div>
         <div className="rounded-xl border bg-muted/25 p-3">
-          <div className="text-xs text-muted-foreground">可用版本</div>
+          <div className="text-xs text-muted-foreground">{translateUi("可用版本")}</div>
           <div className="mt-1 font-semibold">
             {updater.availableVersion ? formatDesktopVersion(updater.availableVersion) : "—"}
           </div>
@@ -95,7 +96,7 @@ export default function DesktopUpdatePanel({ updater, showEnvironment = true }: 
         {typeof updater.progressPercent === "number" ? (
           <div className="mt-3 space-y-1.5">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>下载进度</span>
+              <span>{translateUi("下载进度")}</span>
               <span>{Math.round(updater.progressPercent)}%</span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-muted">
@@ -106,12 +107,13 @@ export default function DesktopUpdatePanel({ updater, showEnvironment = true }: 
             </div>
           </div>
         ) : null}
-        <div className="mt-3 text-xs text-muted-foreground">检查时间：{formatCheckedAt(updater.lastCheckedAt)}</div>
+        <div className="mt-3 text-xs text-muted-foreground">{translateUi("检查时间：")}{formatCheckedAt(updater.lastCheckedAt)}</div>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <Button type="button" variant="ghost" onClick={() => void exportLogs()}>
-          下载近期日志包
+
+          {translateUi("下载近期日志包")}
         </Button>
         {showCheckButton ? (
           <Button
@@ -122,22 +124,24 @@ export default function DesktopUpdatePanel({ updater, showEnvironment = true }: 
           >
             <RefreshCw className={cn("h-4 w-4", updater.status === "checking" && "animate-spin")} aria-hidden="true" />
             {updater.status === "checking"
-              ? "正在检查"
+              ? translateUi("正在检查")
               : updater.status === "error" || updater.status === "not-available"
-                ? "重新检查"
-                : "检查更新"}
+                ? translateUi("重新检查")
+                : translateUi("检查更新")}
           </Button>
         ) : null}
         {showDownloadButton ? (
           <Button type="button" disabled={isBusy} onClick={() => void runAction("check")}>
             <Download className="h-4 w-4" aria-hidden="true" />
-            下载更新
+
+            {translateUi("下载更新")}
           </Button>
         ) : null}
         {showInstallButton ? (
           <Button type="button" disabled={isBusy || !updater.canInstall} onClick={() => void runAction("install")}>
             <RotateCw className="h-4 w-4" aria-hidden="true" />
-            保存工作并重启安装
+
+            {translateUi("保存工作并重启安装")}
           </Button>
         ) : null}
       </div>

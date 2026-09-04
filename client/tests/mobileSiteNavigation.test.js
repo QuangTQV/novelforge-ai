@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   MOBILE_ROUTE_PATTERNS,
   getMobileNavGroupForPath,
-  getMobilePageTitle,
+  getMobilePageTitleKey,
   getMobilePrimaryNavItems,
   getMobileMoreNavGroups,
   getMobileRouteClassName,
@@ -21,6 +21,7 @@ const routedPaths = [
   "/drama",
   "/chat-legacy",
   "/book-analysis",
+  "/market-radar",
   "/tasks",
   "/auto-director/follow-ups",
   "/knowledge",
@@ -45,7 +46,7 @@ test("mobile route metadata covers every registered page", () => {
   assert.equal(MOBILE_ROUTE_PATTERNS.length, routedPaths.length);
 
   for (const path of routedPaths) {
-    assert.notEqual(getMobilePageTitle(path), "更多功能");
+    assert.notEqual(getMobilePageTitleKey(path), "mobile.pages.fallback");
     assert.match(getMobileNavGroupForPath(path), /^(home|novels|creation|tasks|more)$/);
     assert.match(getMobileRouteClassName(path), /^mobile-route-[a-z0-9-]+$/);
   }
@@ -53,13 +54,13 @@ test("mobile route metadata covers every registered page", () => {
 
 test("mobile primary nav keeps core beginner actions visible", () => {
   assert.deepEqual(
-    getMobilePrimaryNavItems().map((item) => [item.key, item.to, item.label]),
+    getMobilePrimaryNavItems().map((item) => [item.key, item.to, item.labelKey]),
     [
-      ["home", "/", "首页"],
-      ["novels", "/novels", "小说"],
-      ["creation", "/creative-hub", "创作"],
-      ["tasks", "/tasks", "任务"],
-      ["more", "", "更多"],
+      ["home", "/", "mobile.primary.home"],
+      ["novels", "/novels", "mobile.primary.novels"],
+      ["creation", "/creative-hub", "mobile.primary.creation"],
+      ["tasks", "/tasks", "mobile.primary.tasks"],
+      ["more", "", "mobile.primary.more"],
     ],
   );
 });
@@ -73,7 +74,7 @@ test("mobile more menu contains all non-primary registered pages", () => {
       "/help",
       "/drama",
       "/book-analysis",
-      "/auto-director/follow-ups",
+      "/market-radar",
       "/chat-legacy",
       "/knowledge",
       "/genres",
@@ -82,6 +83,8 @@ test("mobile more menu contains all non-primary registered pages", () => {
       "/style-engine",
       "/anti-ai-rules",
       "/base-characters",
+      "/tasks",
+      "/auto-director/follow-ups",
       "/worlds",
       "/worlds/generator",
       "/prompt-workbench",

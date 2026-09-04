@@ -1,0 +1,20 @@
+{
+  "title": "AI 执行操作台",
+  "description": "只保留最推荐的一步；其他操作放在下方折叠里，避免按钮过多。",
+  "currentTarget": "当前操作对象",
+  "recommendedAction": "推荐操作",
+  "recommendedHint": "不确定选什么时，优先用推荐操作。其他可能性仍在下方。",
+  "actions": {
+    "openEditor": "打开章节编辑器",
+    "fullAuditRunning": "全量检查中...",
+    "fullAudit": "全量检查",
+    "taskSheetRunning": "生成任务单中...",
+    "taskSheet": "生成任务单",
+    "sceneCardsRunning": "拆分场景中...",
+    "sceneCards": "生成场景拆解",
+    "summaryRunning": "生成摘要中...",
+    "summary": "生成摘要",
+    "replanRunning": "调整后续规划中...",
+    "replan": "调整后续章节规划"
+  }
+}

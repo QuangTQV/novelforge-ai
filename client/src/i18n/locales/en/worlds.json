@@ -1,0 +1,101 @@
+{
+  "generator": {
+    "title": "Create a world sample",
+    "steps": {
+      "intent": "Idea",
+      "scale": "Scale",
+      "skeletonPreview": "Skeleton preview",
+      "save": "Save"
+    },
+    "analyze": {
+      "analyzing": "Analyzing…",
+      "referenceCta": "Analyze reference material",
+      "freeCta": "Start from an idea"
+    },
+    "stepOne": {
+      "name": {
+        "label": "World name",
+        "hint": "Give it a recognizable name",
+        "placeholder": "e.g. Mistveil Kingdom"
+      },
+      "genre": {
+        "label": "Genre base",
+        "hint": "Pick a genre base for the world",
+        "loadingOption": "Loading…",
+        "selectPlaceholder": "Select a genre base",
+        "currentPath": "Current path",
+        "description": "Description",
+        "template": "Template",
+        "loadingTree": "Loading genre library…",
+        "emptyLibrary": "The genre library is empty",
+        "goToLibrary": "Open the genre base library",
+        "footerHint": "You can change the choice later"
+      },
+      "mode": {
+        "label": "Story mode"
+      },
+      "reference": {
+        "knowledgeTitle": "Reference material",
+        "knowledgeDescription": "Use material as the world's base",
+        "modeLabel": "How to use the material",
+        "preserveLabel": "Preserve",
+        "preservePlaceholder": "Elements to preserve",
+        "allowedLabel": "Allowed",
+        "allowedPlaceholder": "Elements allowed to add",
+        "forbiddenLabel": "Forbidden",
+        "forbiddenPlaceholder": "Elements to avoid"
+      },
+      "inspirationText": {
+        "referencePlaceholder": "Paste reference content…",
+        "randomPlaceholder": "Describe the inspiration…",
+        "freePlaceholder": "Describe the world you want to create…"
+      },
+      "preferences": {
+        "title": "Detailed preferences",
+        "hint": "Adjust the level of output detail",
+        "collapse": "Collapse",
+        "expand": "Expand",
+        "refinementLabel": "Refinement level",
+        "refinement": {
+          "basic": "Basic",
+          "standard": "Standard",
+          "detailed": "Detailed"
+        },
+        "countLabel": "Number of suggestions"
+      },
+      "progress": {
+        "title": "Analysis progress",
+        "starting": "Starting…",
+        "referenceHint": "Reading the reference material",
+        "freeHint": "Developing the world idea"
+      },
+      "sourceMeta": {
+        "extracted": "Extracted from the material"
+      },
+      "concept": {
+        "referenceTitle": "Concept from the material",
+        "title": "World concept",
+        "worldType": "World type",
+        "tone": "Tone",
+        "keywords": "Keywords",
+        "propertyOptions": "Suggested properties",
+        "anchorsTitle": "Anchors",
+        "anchorLine": "{{label}}: {{value}}"
+      }
+    },
+    "stepTwo": {
+      "scaleTitle": "World scale",
+      "scaleHint": "Choose a scope that matches the story",
+      "adjustTitle": "Adjust the counts",
+      "adjustHint": "You can fine-tune before generating",
+      "generating": "Generating…",
+      "generate": "Generate the skeleton",
+      "preview": {
+        "forces": "{{count}} forces",
+        "locations": "{{count}} locations",
+        "conflicts": "{{count}} conflicts",
+        "entries": "{{count}} story leads"
+      }
+    }
+  }
+}

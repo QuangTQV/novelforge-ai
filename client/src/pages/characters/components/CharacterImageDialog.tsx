@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import {
   buildCharacterImagePrompt,
@@ -243,22 +244,24 @@ export function CharacterImageDialog({
       <DialogContent className="flex max-h-[92vh] w-[96vw] max-w-[980px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-0">
         <DialogHeader className="shrink-0 border-b border-slate-200 px-6 pb-4 pt-5">
           <DialogTitle className="text-[22px] font-semibold tracking-tight text-slate-900">
-            生成角色形象图
-            {character ? `：${character.name}` : ""}
+
+            {translateUi("生成角色形象图")}
+            {character ? translateUi("：{{value0}}", { value0: character.name }) : ""}
           </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-6 py-5">
           <section className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50/65 p-4">
             <div className="space-y-1">
-              <div className="text-sm font-semibold text-slate-900">角色描述 / AI优化输入</div>
+              <div className="text-sm font-semibold text-slate-900">{translateUi("角色描述 / AI优化输入")}</div>
               <div className="text-xs leading-5 text-slate-500">
-                这里填写角色描述。点击“AI优化Prompt”后，会把这段描述整理成图片生成专用 prompt。
+
+                {translateUi("这里填写角色描述。点击“AI优化Prompt”后，会把这段描述整理成图片生成专用 prompt。")}
               </div>
             </div>
             <textarea
               className="min-h-[190px] max-h-[38vh] w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
-              placeholder="输入角色描述，越具体越好。"
+              placeholder={translateUi("输入角色描述，越具体越好。")}
               value={sourcePrompt}
               onChange={(event) => updateSourcePrompt(event.target.value)}
             />
@@ -267,7 +270,7 @@ export function CharacterImageDialog({
           <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="space-y-2">
-                <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">优化输出语言</div>
+                <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">{translateUi("优化输出语言")}</div>
                 <div className="inline-flex w-full rounded-xl border border-slate-200 bg-slate-50 p-1 sm:w-auto">
                   <Button
                     type="button"
@@ -276,7 +279,8 @@ export function CharacterImageDialog({
                     className="min-w-[92px] flex-1 rounded-lg sm:flex-none"
                     onClick={() => setOptimizedPromptLanguage("zh")}
                   >
-                    中文
+
+                    {translateUi("中文")}
                   </Button>
                   <Button
                     type="button"
@@ -299,7 +303,7 @@ export function CharacterImageDialog({
                     onClick={() => optimizeMutation.mutate()}
                     disabled={optimizeMutation.isPending || !sourcePrompt.trim()}
                   >
-                    {optimizeMutation.isPending ? "优化中..." : "AI优化Prompt"}
+                    {optimizeMutation.isPending ? translateUi("优化中...") : translateUi("AI优化Prompt")}
                   </Button>
                   <Button
                     type="button"
@@ -308,12 +312,13 @@ export function CharacterImageDialog({
                     onClick={restoreOriginalChainPrompt}
                     disabled={promptMode !== "direct" && !hasDirectPrompt}
                   >
-                    恢复原链路
+
+                    {translateUi("恢复原链路")}
                   </Button>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 text-sm xl:justify-end">
-                  <span className="text-slate-500">当前发送模式</span>
+                  <span className="text-slate-500">{translateUi("当前发送模式")}</span>
                   <span className={currentSendModeClass}>{currentSendModeLabel}</span>
                 </div>
               </div>
@@ -322,9 +327,10 @@ export function CharacterImageDialog({
 
           <section className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50/55 p-4">
             <div className="space-y-1">
-              <div className="text-sm font-semibold text-slate-900">最终发送 Prompt 预览</div>
+              <div className="text-sm font-semibold text-slate-900">{translateUi("最终发送 Prompt 预览")}</div>
               <div className="text-xs leading-5 text-slate-500">
-                这里展示最终会发送给图像模型的 prompt。你可以直接手动编辑；AI 优化后，也可以继续在这里修改。
+
+                {translateUi("这里展示最终会发送给图像模型的 prompt。你可以直接手动编辑；AI 优化后，也可以继续在这里修改。")}
               </div>
             </div>
             <textarea
@@ -339,19 +345,19 @@ export function CharacterImageDialog({
           <div className="grid gap-2 md:grid-cols-2">
             <input
               className="rounded-xl border border-slate-200 bg-white p-3 text-sm shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
-              placeholder="风格预设，例如：电影感写实"
+              placeholder={translateUi("风格预设，例如：电影感写实")}
               value={imageForm.stylePreset}
               onChange={(event) => updateStylePreset(event.target.value)}
             />
             <input
               className="rounded-xl border border-slate-200 bg-white p-3 text-sm shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
-              placeholder="负向提示词，例如：低清晰度、畸形、多余肢体、文字水印"
+              placeholder={translateUi("负向提示词，例如：低清晰度、畸形、多余肢体、文字水印")}
               value={imageForm.negativePrompt}
               onChange={(event) => setImageForm((prev) => ({ ...prev, negativePrompt: event.target.value }))}
             />
 
             <label className="space-y-1 text-sm">
-              <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">模型厂商</div>
+              <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">{translateUi("模型厂商")}</div>
               <SelectControl
                 className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
                 value={imageForm.provider}
@@ -363,7 +369,7 @@ export function CharacterImageDialog({
                   }))}
               >
                 {imageProviderOptions.length === 0 ? (
-                  <option value="">请先在系统设置中填写图像模型</option>
+                  <option value="">{translateUi("请先在系统设置中填写图像模型")}</option>
                 ) : null}
                 {imageProviderOptions.map((item) => (
                   <option key={item.provider} value={item.provider}>
@@ -374,7 +380,7 @@ export function CharacterImageDialog({
             </label>
 
             <label className="space-y-1 text-sm">
-              <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">尺寸</div>
+              <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">{translateUi("尺寸")}</div>
               <SelectControl
                 className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
                 value={imageForm.size}
@@ -393,7 +399,7 @@ export function CharacterImageDialog({
             </label>
 
             <label className="space-y-1 text-sm md:col-span-2">
-              <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">生成张数</div>
+              <div className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">{translateUi("生成张数")}</div>
               <SelectControl
                 className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
                 value={String(imageForm.count)}
@@ -403,17 +409,17 @@ export function CharacterImageDialog({
                     count: Number(event.target.value),
                   }))}
               >
-                <option value="1">1 张</option>
-                <option value="2">2 张</option>
-                <option value="3">3 张</option>
-                <option value="4">4 张</option>
+                <option value="1">{translateUi("1 张")}</option>
+                <option value="2">{translateUi("2 张")}</option>
+                <option value="3">{translateUi("3 张")}</option>
+                <option value="4">{translateUi("4 张")}</option>
               </SelectControl>
             </label>
           </div>
 
           {activeTask ? (
             <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
-              <div>当前任务状态：{IMAGE_STATUS_TEXT[activeTask.status] ?? activeTask.status}</div>
+              <div>{translateUi("当前任务状态：")}{IMAGE_STATUS_TEXT[activeTask.status] ?? activeTask.status}</div>
               {activeTask.error ? (
                 <div className="mt-1 text-xs text-destructive">{activeTask.error}</div>
               ) : null}
@@ -425,7 +431,7 @@ export function CharacterImageDialog({
             onClick={() => generateMutation.mutate()}
             disabled={generateMutation.isPending || !finalPromptPreview.trim() || !imageForm.provider || Boolean(activeTaskId)}
           >
-            {generateMutation.isPending ? "提交任务中..." : "开始生成"}
+            {generateMutation.isPending ? translateUi("提交任务中...") : translateUi("开始生成")}
           </Button>
         </div>
       </DialogContent>

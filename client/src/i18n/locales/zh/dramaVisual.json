@@ -1,0 +1,67 @@
+{
+  "emptyProject": "先创建剧集和台本，再打开分镜和视频提示词。",
+  "metrics": {
+    "currentPrompt": "当前提示词",
+    "createdTasks": "已创建任务",
+    "generating": "生成中",
+    "completed": "已完成",
+    "failed": "失败",
+    "history": "历史版本"
+  },
+  "fields": {
+    "videoProvider": "视频渠道",
+    "imageProvider": "首帧图 Provider",
+    "imageProviderUnset": "尚未配置图片 Provider",
+    "characterReference": "角色参考图"
+  },
+  "actions": {
+    "createStoryboard": "生成分镜",
+    "createEpisodeKeyframe": "生成本集首帧图",
+    "createEpisodeVideo": "生成本集视频任务"
+  },
+  "storyboard": {
+    "title": "分镜",
+    "generated": "已生成镜头序列。"
+  },
+  "ui": {
+    "episode": "第 {{order}} 集",
+    "keyframeEstimate": "首帧图预计成本",
+    "videoEstimate": "视频预计成本",
+    "keyframeBatch": "批量首帧图任务",
+    "videoBatch": "批量视频任务",
+    "currentVideoChannel": "当前视频渠道：{{value}}",
+    "noStoryboard": "当前集还没有分镜。",
+    "shot": "镜头 {{order}} · {{size}}",
+    "sizeUnset": "未确定景别",
+    "keyframe": "首帧图 v{{version}}",
+    "keyframeHistory": "{{count}} 条首帧图历史",
+    "videoPrompt": "视频提示词 v{{version}}",
+    "refresh": "刷新状态",
+    "videoTasks": "视频任务",
+    "videoTasksDescription": "集中查看当前项目已生成的视频提示词和 provider 任务状态。",
+    "history": "历史版本",
+    "task": "任务：{{value}}",
+    "createTask": "创建任务",
+    "skipped": "已跳过 {{count}}",
+    "failed": "失败 {{count}}",
+    "channel": "渠道：{{value}}",
+    "estimated": "预计：{{value}}",
+    "actual": "实际：{{value}}",
+    "failedShots": "失败镜头：{{value}}",
+    "retryFailed": "重试失败镜头",
+    "shotFrame": "镜头画面",
+    "location": "地点：{{value}}",
+    "keyframeChannel": "首帧图渠道：{{value}}",
+    "keyframeHistoryTitle": "首帧图历史",
+    "negativePrompt": "负面提示词",
+    "version": "版本：v{{value}}",
+    "aspect": "画面比例：{{value}}",
+    "duration": "时长：{{value}} 秒",
+    "videoStatus": "视频渠道状态：{{value}}",
+    "viewResult": "查看生成结果",
+    "keyframeGenerating": "正在生成首帧图",
+    "keyframeError": "生成首帧图失败",
+    "keyframePending": "尚未生成首帧图",
+    "videoFailed": "视频任务失败。请刷新状态或重新生成提示词后再创建任务。"
+  }
+}

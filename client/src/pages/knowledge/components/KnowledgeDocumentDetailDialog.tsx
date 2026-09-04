@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import type { KnowledgeDocumentDetail, KnowledgeRecallTestResult } from "@ai-novel/shared/types/knowledge";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,7 @@ function VersionContentPreview({ content }: { content: string }) {
 
   const handleExpand = () => {
     if (!expanded && isLarge) {
-      if (!window.confirm(`文档共 ${content.length.toLocaleString()} 字符，展开全文可能导致页面卡顿，确认继续？`)) {
+      if (!window.confirm(translateUi("文档共 {{value0}} 字符，展开全文可能导致页面卡顿，确认继续？", { value0: content.length.toLocaleString() }))) {
         return;
       }
     }
@@ -38,8 +39,8 @@ function VersionContentPreview({ content }: { content: string }) {
           onClick={handleExpand}
         >
           {expanded
-            ? `收起（共 ${content.length.toLocaleString()} 字符）`
-            : `仅显示前 ${PREVIEW_CHAR_LIMIT.toLocaleString()} 字符，点击展开全文（共 ${content.length.toLocaleString()} 字符）`}
+            ? translateUi("收起（共 {{value0}} 字符）", { value0: content.length.toLocaleString() })
+            : translateUi("仅显示前 {{value0}} 字符，点击展开全文（共 {{value1}} 字符）", { value0: PREVIEW_CHAR_LIMIT.toLocaleString(), value1: content.length.toLocaleString() })}
         </button>
       ) : null}
     </div>
@@ -91,13 +92,13 @@ export default function KnowledgeDocumentDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <AppDialogContent
         className="max-w-4xl"
-        title={document?.title ?? "知识文档详情"}
+        title={document?.title ?? translateUi("知识文档详情")}
         bodyClassName="min-w-0 space-y-4"
       >
           <div className="flex flex-wrap gap-2">
             {isArchived ? (
               <Button variant="outline" onClick={onRestoreDocument} disabled={restorePending}>
-                {restorePending ? "恢复中..." : "恢复启用"}
+                {restorePending ? translateUi("恢复中...") : translateUi("恢复启用")}
               </Button>
             ) : (
               <input
@@ -117,7 +118,8 @@ export default function KnowledgeDocumentDetailDialog({
             )}
             {selectedDocumentId && !isArchived ? (
               <Button variant="outline" onClick={onReindex}>
-                手动重建索引
+
+                {translateUi("手动重建索引")}
               </Button>
             ) : null}
           </div>
@@ -125,23 +127,25 @@ export default function KnowledgeDocumentDetailDialog({
           {document ? (
             <>
               <div className="flex flex-wrap items-center gap-2 text-sm">
-                <Badge variant="outline">文档状态：{formatStatus(document.status)}</Badge>
-                <Badge variant="outline">索引状态：{formatStatus(isArchived ? "idle" : (document.latestIndexStatus ?? "-"))}</Badge>
+                <Badge variant="outline">{translateUi("文档状态：")}{formatStatus(document.status)}</Badge>
+                <Badge variant="outline">{translateUi("索引状态：")}{formatStatus(isArchived ? "idle" : (document.latestIndexStatus ?? "-"))}</Badge>
               </div>
               {document.latestIndexStatus === "failed" && document.latestIndexError ? (
                 <div className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-                  索引失败原因：{document.latestIndexError}
+
+                  {translateUi("索引失败原因：")}{document.latestIndexError}
                 </div>
               ) : null}
 
               <Card>
                 <CardHeader>
-                  <CardTitle>召回测试</CardTitle>
+                  <CardTitle>{translateUi("召回测试")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {isArchived ? (
                     <div className="text-sm text-muted-foreground">
-                      恢复启用并完成索引后，可以测试召回效果。
+
+                      {translateUi("恢复启用并完成索引后，可以测试召回效果。")}
                     </div>
                   ) : document.latestIndexStatus === "succeeded" ? (
                     <>
@@ -149,17 +153,18 @@ export default function KnowledgeDocumentDetailDialog({
                         <Input
                           value={recallQuery}
                           onChange={(event) => onRecallQueryChange(event.target.value)}
-                          placeholder="输入一句问题或片段，测试当前激活版本的召回效果"
+                          placeholder={translateUi("输入一句问题或片段，测试当前激活版本的召回效果")}
                         />
                         <Button
                           onClick={onRecallTest}
                           disabled={recallPending || !selectedDocumentId || !recallQuery.trim()}
                         >
-                          {recallPending ? "测试中..." : "开始测试"}
+                          {recallPending ? translateUi("测试中...") : translateUi("开始测试")}
                         </Button>
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        仅针对当前激活且已建立索引的版本执行召回测试。
+
+                        {translateUi("仅针对当前激活且已建立索引的版本执行召回测试。")}
                       </div>
                       {recallErrorMessage ? (
                         <div className="text-sm text-destructive">{recallErrorMessage}</div>
@@ -168,16 +173,18 @@ export default function KnowledgeDocumentDetailDialog({
                         <div className="min-w-0 space-y-2 overflow-hidden">
                           {recallResult.hits.length === 0 ? (
                             <div className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">
-                              当前查询没有召回到任何分块内容。
+
+                              {translateUi("当前查询没有召回到任何分块内容。")}
                             </div>
                           ) : (
                             recallResult.hits.map((hit, index) => (
                               <div key={hit.id} className="min-w-0 max-w-full overflow-hidden rounded-md border p-3">
                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                   <div className="min-w-0 break-all font-medium">
-                                    命中 {index + 1} | {hit.source === "reranked" ? "重排" : hit.source === "vector" ? "向量" : "关键词"} | 分块 #{hit.chunkOrder + 1}
+
+                                    {translateUi("命中")} {index + 1} | {hit.source === "reranked" ? translateUi("重排") : hit.source === "vector" ? translateUi("向量") : translateUi("关键词")}  {translateUi("| 分块 #")}{hit.chunkOrder + 1}
                                   </div>
-                                  <Badge variant="outline">得分 {hit.score.toFixed(4)}</Badge>
+                                  <Badge variant="outline">{translateUi("得分")} {hit.score.toFixed(4)}</Badge>
                                 </div>
                                 {hit.title ? (
                                   <div className="mt-1 break-all text-xs text-muted-foreground">{hit.title}</div>
@@ -198,7 +205,8 @@ export default function KnowledgeDocumentDetailDialog({
                     </>
                   ) : (
                     <div className="text-sm text-muted-foreground">
-                      当前激活版本索引成功后，才可以执行召回测试。
+
+                      {translateUi("当前激活版本索引成功后，才可以执行召回测试。")}
                     </div>
                   )}
                 </CardContent>
@@ -208,11 +216,12 @@ export default function KnowledgeDocumentDetailDialog({
                 {document.versions.map((version) => (
                   <div key={version.id} className="min-w-0 max-w-full overflow-hidden rounded-md border p-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="font-medium">版本 v{version.versionNumber}</div>
-                      {version.isActive ? <Badge>当前激活</Badge> : null}
+                      <div className="font-medium">{translateUi("版本 v")}{version.versionNumber}</div>
+                      {version.isActive ? <Badge>{translateUi("当前激活")}</Badge> : null}
                     </div>
                     <div className="mt-1 text-xs text-muted-foreground">
-                      字符数 {version.charCount} | {new Date(version.createdAt).toLocaleString()}
+
+                      {translateUi("字符数")} {version.charCount} | {new Date(version.createdAt).toLocaleString()}
                     </div>
                     {!version.isActive && !isArchived ? (
                       <div className="mt-2">
@@ -222,7 +231,8 @@ export default function KnowledgeDocumentDetailDialog({
                           onClick={() => onActivateVersion(version.id)}
                           disabled={activateVersionPending}
                         >
-                          切换为激活版本
+
+                          {translateUi("切换为激活版本")}
                         </Button>
                       </div>
                     ) : null}
@@ -233,7 +243,8 @@ export default function KnowledgeDocumentDetailDialog({
             </>
           ) : (
             <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
-              正在加载文档详情...
+
+              {translateUi("正在加载文档详情...")}
             </div>
           )}
       </AppDialogContent>

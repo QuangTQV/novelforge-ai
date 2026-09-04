@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { KnowledgeDocumentStatus } from "@ai-novel/shared/types/knowledge";
@@ -53,35 +54,38 @@ export default function KnowledgeDocumentPicker(props: KnowledgeDocumentPickerPr
             className={`rounded-md border px-3 py-1 text-sm ${isAuto ? "bg-accent" : ""}`}
             onClick={() => props.onChange(null)}
           >
-            自动
+
+            {translateUi("自动")}
           </button>
           <button
             type="button"
             className={`rounded-md border px-3 py-1 text-sm ${!isAuto ? "bg-accent" : ""}`}
             onClick={() => props.onChange(selectedIds)}
           >
-            自定义
+
+            {translateUi("自定义")}
           </button>
         </div>
       ) : null}
 
       {isAuto ? (
         <div className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">
-          当前使用自动规则：若有实体绑定文档则优先使用绑定文档，否则回退到全部启用文档。
+
+          {translateUi("当前使用自动规则：若有实体绑定文档则优先使用绑定文档，否则回退到全部启用文档。")}
         </div>
       ) : (
         <>
           <Input
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
-            placeholder="搜索知识文档"
+            placeholder={translateUi("搜索知识文档")}
           />
           <div className="max-h-64 space-y-2 overflow-auto rounded-md border p-2">
             {documentsQuery.isLoading ? (
-              <div className="text-sm text-muted-foreground">加载中...</div>
+              <div className="text-sm text-muted-foreground">{translateUi("加载中...")}</div>
             ) : null}
             {visibleDocuments.length === 0 && !documentsQuery.isLoading ? (
-              <div className="text-sm text-muted-foreground">没有可选文档。</div>
+              <div className="text-sm text-muted-foreground">{translateUi("没有可选文档。")}</div>
             ) : null}
             {visibleDocuments.map((item) => {
               const checked = selectedIds.includes(item.id);
@@ -117,7 +121,8 @@ export default function KnowledgeDocumentPicker(props: KnowledgeDocumentPickerPr
                         className="text-xs text-primary hover:underline"
                         onClick={(event) => event.stopPropagation()}
                       >
-                        查看来源拆书
+
+                        {translateUi("查看来源拆书")}
                       </Link>
                     ) : null}
                   </div>
@@ -126,7 +131,8 @@ export default function KnowledgeDocumentPicker(props: KnowledgeDocumentPickerPr
             })}
           </div>
           <div className="text-xs text-muted-foreground">
-            已选择 {selectedIds.length} 个文档。保持为空会显式关闭知识库检索。
+
+            {translateUi("已选择")} {selectedIds.length}  {translateUi("个文档。保持为空会显式关闭知识库检索。")}
           </div>
         </>
       )}

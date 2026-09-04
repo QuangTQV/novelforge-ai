@@ -1,0 +1,4 @@
+{
+  "reference": { "characterSheet": "Bản thiết kế nhân vật", "expressionSheet": "Bảng biểu cảm", "faceCrop": "Ảnh cận mặt", "asset": "Tài sản", "scene": "Cảnh" },
+  "density": { "low": "Mật độ thấp", "medium": "Mật độ vừa", "high": "Mật độ cao", "unlabeled": "Chưa gắn nhãn" }
+}

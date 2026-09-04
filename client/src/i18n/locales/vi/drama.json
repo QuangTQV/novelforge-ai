@@ -1,0 +1,604 @@
+{
+  "tabs": {
+    "source": "Tài liệu nguồn",
+    "strategy": "Chiến lược phim ngắn",
+    "episodes": "Kịch bản tập",
+    "quality": "Vấn đề chất lượng",
+    "characters": "Nhân vật",
+    "visual": "Phân cảnh và video",
+    "export": "Xuất dữ liệu"
+  },
+  "status": {
+    "draft": "Chuẩn bị tài liệu",
+    "strategized": "Đã tạo chiến lược",
+    "outlined": "Đã tạo các tập",
+    "scripting": "Đang tạo kịch bản",
+    "completed": "Đã hoàn tất",
+    "planned": "Chờ tạo kịch bản",
+    "scripted": "Đã tạo kịch bản",
+    "reviewed": "Đã kiểm tra",
+    "needsRepair": "Cần sửa",
+    "approved": "Đã thông qua"
+  },
+  "progress": {
+    "bundle": "Gói tài liệu",
+    "strategy": "Chiến lược",
+    "episodes": "Các tập",
+    "script": "Kịch bản",
+    "quality": "Chất lượng"
+  },
+  "strategy": {
+    "positioning": "Định vị khán giả",
+    "mainPleasureLine": "Mạch thỏa mãn chính",
+    "paywallNote": "Kế hoạch điểm khóa trả phí",
+    "paywallPlan": "Kế hoạch điểm khóa trả phí",
+    "emotionCurveNote": "Đường cong cảm xúc",
+    "deviationDeclaration": "Ranh giới chuyển thể"
+  },
+  "score": {
+    "hook": "Móc mở đầu",
+    "density": "Mật độ thông tin",
+    "paywall": "Điểm khóa trả phí",
+    "emotion": "Đường cong cảm xúc",
+    "duration": "Thời lượng",
+    "consistency": "Tính nhất quán",
+    "overall": "Tổng hợp"
+  },
+  "sep": {
+    "pause": ", ",
+    "semicolon": "; ",
+    "comma": ", "
+  },
+  "common": {
+    "refresh": "Làm mới",
+    "repair": "Sửa chữa",
+    "prevStep": "Bước trước",
+    "nextStep": "Bước tiếp",
+    "title": "Tiêu đề",
+    "processing": "Đang xử lý..."
+  },
+  "tracks": {
+    "counterattack": "Phản đòn",
+    "rebirth_revenge": "Trùng sinh báo thù",
+    "war_god": "Chiến thần trở về",
+    "live_in_son": "Ở rể",
+    "miracle_doctor": "Thần y",
+    "rich_family": "Ân oán hào môn",
+    "sweet_love": "Ngôn tình ngọt",
+    "hidden_identity": "Giấu thân phận",
+    "none": "Chưa chọn hướng đề tài"
+  },
+  "source": {
+    "novel_import": "Nhập từ tiểu thuyết",
+    "original": "Phim ngắn nguyên tác",
+    "text_import": "Nhập từ văn bản"
+  },
+  "toast": {
+    "projectCreated": "Đã tạo dự án phim ngắn.",
+    "trackRecommended": "Đã gợi ý hướng đề tài phim ngắn phù hợp.",
+    "sourceAssembled": "Đã dựng tư liệu phim ngắn.",
+    "strategyGenerated": "Đã tạo chiến lược phim ngắn.",
+    "first12Outlined": "Đã tạo phân tập cho 12 tập đầu.",
+    "episodeScriptGenerated": "Đã tạo kịch bản tập {{order}}.",
+    "episodeReviewed": "Đã kiểm tra chất lượng tập {{order}}.",
+    "episodeRepaired": "Đã sửa tập {{order}} theo gợi ý chất lượng.",
+    "storyboardGenerated": "Đã tạo phân cảnh tập {{order}}.",
+    "videoPromptGenerated": "Đã tạo prompt video cho cảnh {{order}}.",
+    "videoTaskCreated": "Đã tạo tác vụ video.",
+    "videoTaskRefreshed": "Đã làm mới trạng thái tác vụ video.",
+    "ttsJobCreated": "Đã tạo tác vụ lồng tiếng.",
+    "batchJobCreated": "Đã tạo tác vụ hàng loạt.",
+    "complianceDone": "Đã hoàn tất tiền kiểm tra tuân thủ.",
+    "keyframeGenerated": "Đã tạo khung hình đầu cho cảnh {{order}}.",
+    "characterImported": "Đã nhập nhân vật vào dự án hiện tại.",
+    "characterSaved": "Đã lưu {{name}}.",
+    "characterSavedToLibrary": "Đã lưu {{name}} vào thư viện nhân vật."
+  },
+  "workspace": {
+    "title": "Bàn làm việc phim ngắn",
+    "subtitle": "Dựng tư liệu phim ngắn từ tiểu thuyết, cảm hứng nguyên tác hoặc văn bản nhập vào, rồi tạo chiến lược phim ngắn trả phí màn dọc và kịch bản từng tập.",
+    "defaults": {
+      "originalProjectTitle": "Dự án phim ngắn nguyên tác"
+    },
+    "create": {
+      "title": "Tạo dự án phim ngắn",
+      "description": "Chọn nguồn theo từng bước, bổ sung nội dung, rồi tạo dự án có thể đưa vào dây chuyền phim ngắn.",
+      "submitting": "Đang tạo...",
+      "submit": "Tạo dự án phim ngắn"
+    },
+    "wizard": {
+      "steps": {
+        "source": "Nguồn",
+        "content": "Nội dung",
+        "settings": "Thông số"
+      }
+    },
+    "status": {
+      "draft": "Chuẩn bị tư liệu",
+      "strategized": "Đã tạo chiến lược",
+      "outlined": "Đã tạo phân tập",
+      "scripting": "Đang tạo kịch bản",
+      "completed": "Đã hoàn thành"
+    },
+    "sourceOptions": {
+      "novelImport": {
+        "title": "Nhập tiểu thuyết",
+        "description": "Chuyển thể từ tiểu thuyết sẵn có, hợp để đưa truyện dài thành phim ngắn màn dọc."
+      },
+      "original": {
+        "title": "Phim ngắn nguyên tác",
+        "description": "Bắt đầu từ một câu cảm hứng, hệ thống sắp xếp nhân vật, xung đột và nhịp truyện."
+      },
+      "textImport": {
+        "title": "Dán văn bản",
+        "description": "Sắp xếp tóm tắt truyện, truyện ngắn hoặc tư liệu bên ngoài thành dự án phim ngắn."
+      }
+    },
+    "form": {
+      "selectNovel": "Chọn tiểu thuyết",
+      "loadingNovels": "Đang tải tiểu thuyết...",
+      "selectNovelToAdapt": "Chọn tiểu thuyết cần chuyển thể",
+      "noNovels": "Chưa có tiểu thuyết để nhập",
+      "untitledNovel": "Tiểu thuyết chưa đặt tên",
+      "novelOption": "{{title}} ({{count}} chương)",
+      "selectedNovelHint": "Đã chọn {{title}}, tổng {{count}} chương. Sau khi tạo sẽ dựng thành gói tư liệu phim ngắn trước.",
+      "inspirationLabel": "Cảm hứng nguyên tác",
+      "inspirationPlaceholder": "Ví dụ: nữ chính bị hủy hôn phát hiện mình là người thừa kế tài phiệt, phản đòn công khai tất cả kẻ từng sỉ nhục cô.",
+      "rawTextLabel": "Văn bản nhập vào",
+      "rawTextPlaceholder": "Dán tóm tắt truyện, thiết lập nhân vật, chính văn truyện ngắn hoặc tư liệu chuyển thể.",
+      "projectName": "Tên dự án",
+      "track": "Hướng đề tài",
+      "targetEpisodes": "Số tập mục tiêu",
+      "themeSupplement": "Bổ sung đề tài",
+      "trackRecommendation": "Gợi ý hướng đề tài",
+      "trackRecommendationHint": "Dựa trên tư liệu hiện tại để gợi ý hướng đề tài phim ngắn màn dọc phù hợp hơn.",
+      "recommending": "Đang gợi ý...",
+      "recommendTrack": "Gợi ý hướng đề tài"
+    },
+    "projects": {
+      "title": "Dự án",
+      "subtitle": "Dựng tư liệu trước, rồi tạo chiến lược và phân tập.",
+      "loading": "Đang tải dự án phim ngắn...",
+      "empty": "Chưa có dự án phim ngắn. Hãy tạo một dự án ở cột bên trái."
+    },
+    "card": {
+      "open": "Mở bàn làm việc",
+      "assemble": "Dựng tư liệu",
+      "strategy": "Tạo chiến lược",
+      "outline12": "Tạo 12 tập đầu",
+      "episodesCount": "{{count}} tập"
+    },
+    "validation": {
+      "selectNovel": "Vui lòng chọn tiểu thuyết cần chuyển thể.",
+      "fillInspiration": "Vui lòng nhập cảm hứng nguyên tác.",
+      "pasteText": "Vui lòng dán văn bản cần sắp xếp.",
+      "fillTitle": "Vui lòng nhập tên dự án phim ngắn trước."
+    }
+  },
+  "project": {
+    "loading": "Đang tải dự án phim ngắn...",
+    "notFound": "Không tìm thấy dự án phim ngắn này.",
+    "backToWorkspace": "Về bàn làm việc phim ngắn",
+    "workspaceLink": "Bàn làm việc phim ngắn",
+    "episodesBadge": "{{count}} tập",
+    "costBadge": "Chi phí sản xuất: đã dùng {{actual}} / dự kiến {{estimated}}",
+    "flowHint": "Đẩy phim ngắn này theo thứ tự \"tư liệu → chiến lược → phân tập → kịch bản → chất lượng → phân cảnh video\".",
+    "tabs": {
+      "source": "Tư liệu nguồn",
+      "strategy": "Chiến lược phim ngắn",
+      "episodes": "Kịch bản từng tập",
+      "quality": "Vấn đề chất lượng",
+      "characters": "Nhân vật",
+      "visual": "Phân cảnh video",
+      "export": "Xuất"
+    },
+    "status": {
+      "draft": "Chuẩn bị tư liệu",
+      "strategized": "Đã tạo chiến lược",
+      "outlined": "Đã tạo phân tập",
+      "scripting": "Đang tạo kịch bản",
+      "completed": "Đã hoàn thành",
+      "planned": "Chờ tạo kịch bản",
+      "scripted": "Đã tạo kịch bản",
+      "reviewed": "Đã kiểm tra",
+      "needs_repair": "Cần sửa chữa",
+      "approved": "Đã duyệt"
+    },
+    "strategyLabels": {
+      "positioning": "Định vị khán giả",
+      "mainPleasureLine": "Tuyến điểm sướng chính",
+      "paywallNote": "Bố trí điểm chốt trả phí",
+      "paywallPlan": "Kế hoạch điểm chốt trả phí",
+      "emotionCurveNote": "Đường cong cảm xúc",
+      "deviationDeclaration": "Ranh giới chuyển thể"
+    },
+    "scoreLabels": {
+      "hook": "Mồi mở đầu",
+      "density": "Mật độ thông tin",
+      "paywall": "Điểm chốt trả phí",
+      "emotion": "Đường cong cảm xúc",
+      "duration": "Thời lượng",
+      "consistency": "Nhất quán",
+      "overall": "Tổng hợp"
+    },
+    "progress": {
+      "bundle": "Gói tư liệu",
+      "strategy": "Chiến lược",
+      "episodes": "Phân tập",
+      "script": "Kịch bản",
+      "quality": "Chất lượng"
+    },
+    "strategy": {
+      "empty": "Chưa tạo chiến lược phim ngắn."
+    },
+    "episodes": {
+      "empty": "Chưa có dàn ý phân tập. Hãy tạo phân tập cho 12 tập đầu."
+    },
+    "episode": {
+      "episodeNo": "Tập {{order}}",
+      "episodeTitle": "Tập {{order}}: {{title}}",
+      "paywall": "Điểm chốt trả phí",
+      "normal": "Tập thường",
+      "noHook": "Chưa có thông tin mồi",
+      "noHookOpening": "Tập này chưa viết mồi mở đầu.",
+      "generateScript": "Tạo kịch bản",
+      "qualityCheck": "Kiểm tra chất lượng",
+      "saveEdit": "Lưu chỉnh sửa",
+      "pending": "Chờ tạo",
+      "durationField": "Thời lượng: {{value}} giây",
+      "emotionNet": "Cảm xúc ròng: {{value}}",
+      "statusField": "Trạng thái: {{value}}",
+      "infoSection": "Thông tin tập",
+      "durationInput": "Thời lượng dự kiến (giây)",
+      "hookOpening": "Mồi mở đầu",
+      "cliffhanger": "Điểm chốt kết thúc",
+      "script": "Kịch bản",
+      "scriptPlaceholder": "Chưa tạo kịch bản. Có thể tạo trước, hoặc viết tay.",
+      "qualityResult": "Kết quả chất lượng"
+    },
+    "quality": {
+      "empty": "Chưa có kết quả kiểm tra chất lượng.",
+      "checkedFallback": "Đã kiểm tra",
+      "overall": "Tổng hợp {{score}}",
+      "flagFallback": "Gợi ý chất lượng",
+      "suggestRepair": "Gợi ý sửa chữa"
+    },
+    "toast": {
+      "fillEpisodeTitle": "Vui lòng nhập tiêu đề tập.",
+      "episodeSaved": "Đã lưu tập {{order}}.",
+      "fillCharacterName": "Vui lòng nhập tên nhân vật."
+    },
+    "export": {
+      "title": "Xuất tài liệu phim ngắn",
+      "description": "Xuất nhân vật, phân tập và kịch bản đã tạo của dự án hiện tại.",
+      "markdown": "Xuất Markdown",
+      "json": "Xuất JSON",
+      "episodeSrt": "Xuất SRT tập này",
+      "timelineDraft": "Xuất bản nháp dựng phim"
+    }
+  },
+  "nextStep": {
+    "projectBadge": "Dự án {{count}} tập",
+    "processing": "Đang xử lý...",
+    "yes": "Có",
+    "no": "Không",
+    "generated": "Đã tạo",
+    "notGenerated": "Chưa tạo",
+    "stats": {
+      "sourceAssembled": "Đã dựng tư liệu: {{value}}",
+      "strategy": "Chiến lược: {{value}}",
+      "episodes": "Phân tập: {{count}} tập",
+      "videoPrompts": "Prompt video hiện tại: {{count}}"
+    },
+    "source": {
+      "title": "Bước tiếp: dựng tư liệu nguồn",
+      "description": "Sắp xếp tiểu thuyết, cảm hứng hoặc văn bản nhập vào thành tóm tắt, nhịp truyện, nhân vật và dữ kiện cứng dùng được cho phim ngắn.",
+      "button": "Dựng tư liệu"
+    },
+    "strategy": {
+      "title": "Bước tiếp: tạo chiến lược phim ngắn",
+      "description": "Dựa trên tư liệu và hướng đề tài để tạo định vị khán giả, tuyến điểm sướng chính, điểm chốt trả phí và ranh giới chuyển thể.",
+      "button": "Tạo chiến lược"
+    },
+    "outline": {
+      "title": "Bước tiếp: tạo phân tập 12 tập đầu",
+      "description": "Tạo trước một đoạn dàn ý phân tập có thể kiểm tra, xác nhận hướng mồi, xung đột và điểm chốt trả phí.",
+      "button": "Tạo 12 tập đầu"
+    },
+    "script": {
+      "title": "Bước tiếp: tạo kịch bản tập {{order}}",
+      "description": "Viết dàn ý tập này thành kịch bản phim ngắn quay được, thoại dày, mở đầu có mồi, kết thúc có điểm chốt.",
+      "button": "Tạo kịch bản"
+    },
+    "repair": {
+      "title": "Bước tiếp: sửa vấn đề chất lượng tập {{order}}",
+      "description": "Tập này đã có gợi ý chất lượng, hãy sửa theo gợi ý trước để tránh lỗi lọt vào phân cảnh và prompt video.",
+      "button": "Sửa kịch bản"
+    },
+    "review": {
+      "title": "Bước tiếp: kiểm tra chất lượng tập {{order}}",
+      "description": "Kiểm tra 3 giây vàng, mật độ thông tin, điểm chốt trả phí, thời lượng, nhất quán dữ kiện và nhất quán nhân vật.",
+      "button": "Kiểm tra chất lượng"
+    },
+    "storyboard": {
+      "title": "Bước tiếp: tạo phân cảnh tập {{order}}",
+      "description": "Tách kịch bản đã qua kiểm tra thành các cảnh quay được, giữ mỏ neo hình ảnh nhân vật và trọng tâm hành động.",
+      "button": "Tạo phân cảnh"
+    },
+    "videoPrompt": {
+      "title": "Bước tiếp: tạo prompt video tập {{order}}",
+      "description": "Chuyển một cảnh phân cảnh thành prompt tạo video màn dọc, giữ nhân vật, hành động và ngôn ngữ máy quay.",
+      "button": "Tạo prompt video"
+    },
+    "providerTask": {
+      "title": "Bước tiếp: tạo tác vụ tạo video",
+      "description": "Gửi prompt video đã tạo cho provider hiện tại, sau đó có thể làm mới trạng thái ở trang phân cảnh video.",
+      "button": "Tạo tác vụ video"
+    },
+    "export": {
+      "title": "Bước tiếp: xuất tài liệu phim ngắn",
+      "description": "Xuất nhân vật, phân tập, kịch bản, kết quả chất lượng và tài liệu sản xuất tiếp theo hiện tại để tiện chỉnh sửa hoặc bàn giao.",
+      "button": "Xuất Markdown"
+    }
+  },
+  "quality": {
+    "emptyOutline": "Chưa có dàn ý phân tập. Sau khi tạo phân tập và kịch bản, đây sẽ tổng hợp kết quả kiểm tra chất lượng từng tập.",
+    "header": "Chất lượng & tuân thủ",
+    "headerHint": "Kiểm tra chất lượng kịch bản trước, rồi xác nhận rủi ro tuân thủ nền tảng.",
+    "checkAllCompliance": "Kiểm tra tuân thủ toàn bộ kịch bản",
+    "check": "Kiểm tra",
+    "recheck": "Kiểm tra lại",
+    "viewScript": "Xem kịch bản",
+    "noProblems": "Hiện không có vấn đề chất lượng cần xử lý.",
+    "noStructuredDetail": "Tập này cần xử lý, nhưng không có chi tiết vấn đề có cấu trúc.",
+    "reviewThenDecide": "Xem vấn đề rồi quyết định có sửa hay không.",
+    "flagFallback": "Gợi ý chất lượng",
+    "uncheckedTitle": "Kịch bản chờ kiểm tra",
+    "uncheckedHint": "Các tập này đã có kịch bản, chưa có kết quả kiểm tra chất lượng.",
+    "episodeTitle": "Tập {{order}}: {{title}}",
+    "status": {
+      "approved": "Đã duyệt",
+      "repairable": "Gợi ý sửa chữa",
+      "continue_with_warning": "Có thể tiếp tục",
+      "blocked": "Cần xử lý",
+      "unchecked": "Chưa kiểm tra"
+    },
+    "severity": {
+      "low": "Nhẹ",
+      "medium": "Trung bình",
+      "high": "Quan trọng",
+      "critical": "Nghiêm trọng",
+      "fallback": "Gợi ý"
+    },
+    "compliance": {
+      "pass": "Tuân thủ đạt",
+      "warn": "Nhắc nhở tuân thủ",
+      "block": "Tuân thủ cần sửa",
+      "fallback": "Chưa tiền kiểm"
+    },
+    "summary": {
+      "checked": "Đã kiểm tra",
+      "needsRepair": "Gợi ý sửa chữa",
+      "warning": "Có thể tiếp tục",
+      "approved": "Đã duyệt",
+      "complianceRisk": "Rủi ro tuân thủ",
+      "average": "Điểm trung bình",
+      "pending": "Chờ kiểm tra"
+    }
+  },
+  "sourcePanel": {
+    "qualityTitle": "Gợi ý chất lượng tư liệu",
+    "qualityHint": "Các gợi ý này quyết định chiến lược, phân tập và kịch bản sau có đủ đầu vào hay không.",
+    "available": "Dùng được",
+    "needSupplement": "Cần bổ sung",
+    "empty": "Chưa dựng tư liệu nguồn. Hãy nhấn \"Dựng tư liệu\", hệ thống sẽ sắp xếp tiểu thuyết, cảm hứng hoặc văn bản nhập vào thành tóm tắt, nhịp truyện, nhân vật và dữ kiện cứng dùng được cho phim ngắn.",
+    "storyMaterial": "Tư liệu truyện",
+    "storyMaterialHint": "Gói nội dung chuẩn dùng để tạo chiến lược, phân tập và kịch bản sau.",
+    "synopsis": "Tóm tắt",
+    "noSynopsis": "Chưa có tóm tắt",
+    "worldNotes": "Điểm thiết lập",
+    "noWorldNotes": "Chưa có điểm thiết lập",
+    "sourceBeats": "Nhịp truyện nguồn",
+    "beatN": "Nhịp {{n}}",
+    "noBeats": "Chưa có nhịp truyện nguồn.",
+    "hardFacts": "Dữ kiện cứng",
+    "noHardFacts": "Chưa có dữ kiện cứng.",
+    "checks": {
+      "synopsis": {
+        "label": "Tóm tắt truyện",
+        "ready": "Đã sắp xếp thành tư liệu phim ngắn",
+        "missing": "Thiếu tóm tắt truyện"
+      },
+      "beats": {
+        "label": "Nhịp truyện nguồn",
+        "ready": "{{count}} nhịp",
+        "short": "{{count}} nhịp, có thể không đủ cho số tập dài"
+      },
+      "characters": {
+        "label": "Nguồn nhân vật",
+        "ready": "{{count}} nhân vật",
+        "short": "Thiếu nhân vật chính"
+      },
+      "facts": {
+        "label": "Dữ kiện cứng",
+        "ready": "{{count}} dữ kiện cứng",
+        "missing": "Thiếu dữ kiện để ràng buộc kịch bản sau"
+      }
+    },
+    "readiness": {
+      "ready": "Có thể tiếp tục",
+      "needs_supplement": "Gợi ý bổ sung",
+      "needs_rebuild": "Gợi ý dựng lại tư liệu"
+    },
+    "nextAction": {
+      "continue": "Tiếp tục tạo chiến lược",
+      "supplement_notes": "Bổ sung ghi chú trước",
+      "rebuild_source_bundle": "Bổ sung rồi dựng lại tư liệu"
+    },
+    "supplement": {
+      "title": "Gợi ý bổ sung tư liệu",
+      "hint": "Để hệ thống chỉ ra các lỗ hổng tư liệu ảnh hưởng tới việc tạo chiến lược, phân tập và kịch bản.",
+      "analyzing": "Đang phân tích...",
+      "generate": "Tạo gợi ý bổ sung",
+      "notesLabel": "Ghi chú bổ sung (tùy chọn)",
+      "notesPlaceholder": "Ví dụ: nhân vật chính phải giữ tuyến báo thù, tuyến tình cảm nam nữ chính ngọt hơn, phản diện không quá một chiều."
+    },
+    "toast": {
+      "guidanceGenerated": "Đã tạo gợi ý bổ sung tư liệu."
+    }
+  },
+  "characters": {
+    "panelTitle": "Tài sản nhân vật phim ngắn",
+    "panelHint": "Tài sản nhân vật sẽ đi vào kịch bản, phân cảnh và prompt video, ưu tiên đảm bảo khán giả nhận diện, tạo hình nhất quán và thoại quay được.",
+    "selectLibraryAsset": "Chọn tài sản nhân vật phim ngắn",
+    "noLibraryAsset": "Chưa có tài sản nhân vật để nhập",
+    "importAsset": "Nhập tài sản nhân vật",
+    "emptyHint": "Sau khi dựng tư liệu, hệ thống sẽ tự nhập nhân vật chính, rồi bổ sung mỏ neo tạo hình, diễn xuất và thoại.",
+    "completeness": {
+      "screenRole": "Chức năng lên hình",
+      "audienceRead": "Nhận diện khán giả",
+      "visualAnchor": "Mỏ neo tạo hình",
+      "voiceAnchor": "Mỏ neo diễn xuất",
+      "lineRule": "Quy tắc thoại"
+    },
+    "designSheet": "Bản thiết kế nhân vật",
+    "designSheetHint": "Cận cảnh khuôn mặt + ba hình chiếu toàn thân trước/nghiêng/sau — sau khi tạo sẽ khóa nhất quán hình ảnh xuyên tập",
+    "designSheetAlt": "{{name}} - bản thiết kế nhân vật",
+    "configureProvider": "Vui lòng cấu hình Provider tạo ảnh trong phần cài đặt trước",
+    "generatingSheet": "Đang tạo bản thiết kế nhân vật...",
+    "generateFailed": "Tạo thất bại",
+    "noResult": "Không có kết quả",
+    "notGenerated": "Chưa tạo",
+    "regenerateSheet": "Tạo lại bản thiết kế",
+    "generateSheet": "Tạo bản thiết kế nhân vật",
+    "sheetRefHint": "Việc tạo video sẽ tự động dùng ảnh này làm tham chiếu nhân vật",
+    "historyCount": "{{count}} phiên bản lịch sử",
+    "sheetHistory": "Phiên bản lịch sử bản thiết kế",
+    "screenRolePlaceholder2": "Trước hết hãy xác định chức năng lên hình của nhân vật này trong phim ngắn.",
+    "assetProgress": "Tài sản {{done}}/{{total}}",
+    "screenName": "Tên lên hình",
+    "dramaFunction": "Chức năng trong phim ngắn",
+    "dramaFunctionPlaceholder": "Chính diện / phản diện / nhân vật cản trở / trợ công / đối tượng tình cảm",
+    "audienceRead": "Khán giả phải hiểu ngay điều gì",
+    "audienceReadPlaceholder": "Ví dụ: bề ngoài cô ở thế yếu bị sỉ nhục, nhưng ánh mắt luôn bình tĩnh, khán giả phải tin ngay cô có bài phản đòn.",
+    "visualAnchor": "Mỏ neo tạo hình cố định",
+    "visualAnchorPlaceholder": "Ngoại hình, kiểu tóc, trang phục, vật tùy thân, màu thường dùng; phân cảnh và prompt video sau sẽ giữ theo.",
+    "voiceAnchor": "Mỏ neo diễn xuất và giọng",
+    "voiceAnchorPlaceholder": "Tốc độ nói, âm sắc, thói quen biểu cảm, cách bùng nổ cảm xúc; dùng để thoại và diễn xuất video nhất quán.",
+    "lineRule": "Quy tắc thoại",
+    "lineRulePlaceholder": "Ví dụ: câu ngắn dồn ép, ít giải thích, nhiều câu hỏi ngược; khi bị sỉ nhục không vội thanh minh, khi phản đòn một câu chốt hạ.",
+    "relationMap": "Quan hệ xung đột và phối cảnh máy quay",
+    "relationMapPlaceholder": "Nhân vật này chủ yếu đối đầu với ai, áp chế ai, bảo vệ ai, hợp khung hình chung thế nào.",
+    "saveAsset": "Lưu tài sản nhân vật",
+    "saveToLibrary": "Lưu vào thư viện nhân vật phim ngắn"
+  },
+  "audio": {
+    "title": "Lồng tiếng",
+    "channelAria": "Kênh lồng tiếng",
+    "mockChannel": "Kênh lồng tiếng mô phỏng",
+    "synthesize": "Tổng hợp lồng tiếng tập này",
+    "jobTitle": "Tác vụ lồng tiếng tập này",
+    "skipped": "Đã bỏ qua {{count}}",
+    "failed": "Lỗi {{count}}",
+    "channel": "Kênh: {{provider}}",
+    "estimated": "Dự kiến: {{cost}}",
+    "actual": "Thực tế: {{cost}}",
+    "failedShots": "Cảnh lỗi: {{ids}}",
+    "retryFailed": "Thử lại cảnh lỗi",
+    "shotN": "Cảnh {{order}}",
+    "voiceLine": "Giọng: {{voiceId}}",
+    "needStoryboard": "Sau khi tạo phân cảnh có thể tổng hợp lồng tiếng tập này.",
+    "costTitle": "Chi phí lồng tiếng dự kiến",
+    "calculating": "Đang tính",
+    "costNeedStoryboard": "Tạo phân cảnh xong có thể tính",
+    "perSecond": "Thời lượng {{cost}}/giây",
+    "noUnitPrice": "Chưa cấu hình đơn giá",
+    "shotsCount": " · {{count}} cảnh",
+    "batchStatus": {
+      "pending": "Đang chờ",
+      "running": "Đang chạy",
+      "paused": "Đã tạm dừng",
+      "done": "Đã hoàn thành",
+      "failed": "Có mục lỗi"
+    }
+  },
+  "visual": {
+    "needEpisodes": "Hãy tạo phân tập và kịch bản trước, rồi vào phân cảnh và prompt video.",
+    "noStoryboardShort": "Tập hiện tại chưa có phân cảnh.",
+    "episodeOption": "Tập {{order}} {{title}}",
+    "videoChannelAria": "Kênh video",
+    "keyframeProviderAria": "Provider ảnh khung đầu",
+    "noImageProvider": "Chưa cấu hình Provider ảnh",
+    "characterRefImages": "Ảnh tham chiếu nhân vật",
+    "generateStoryboard": "Tạo phân cảnh",
+    "generateKeyframes": "Tạo khung đầu tập này",
+    "createVideoJobs": "Tạo tác vụ video tập này",
+    "keyframeCostTitle": "Chi phí khung đầu dự kiến",
+    "videoCostTitle": "Chi phí video dự kiến",
+    "keyframeBatchTitle": "Tác vụ khung đầu hàng loạt",
+    "videoBatchTitle": "Tác vụ video hàng loạt",
+    "currentVideoChannel": "Kênh video hiện tại: {{value}}",
+    "storyboard": "Phân cảnh",
+    "shotSequenceGenerated": "Đã tạo chuỗi cảnh.",
+    "shotN": "Cảnh {{order}}",
+    "shotSizePending": "Chờ xác định cỡ cảnh",
+    "keyframeV": "Khung đầu v{{version}}",
+    "keyframeHistoryCount": "{{count}} lịch sử khung đầu",
+    "promptV": "Prompt v{{version}}",
+    "regenerateKeyframe": "Tạo lại khung đầu",
+    "generateKeyframe": "Tạo khung đầu",
+    "videoPrompt": "Prompt video",
+    "taskCreated": "Đã tạo tác vụ",
+    "createVideoTask": "Tạo tác vụ video",
+    "createTask": "Tạo tác vụ",
+    "refreshStatus": "Làm mới trạng thái",
+    "videoTasks": "Tác vụ video",
+    "videoTasksHint": "Xem tập trung các prompt video và trạng thái tác vụ provider đã tạo của dự án hiện tại.",
+    "taskId": "Tác vụ: {{id}}",
+    "historyVersion": "Phiên bản lịch sử",
+    "stats": {
+      "prompted": "Prompt hiện tại",
+      "withTask": "Đã tạo tác vụ",
+      "queued": "Đang tạo",
+      "succeeded": "Đã hoàn thành",
+      "failed": "Lỗi",
+      "history": "Phiên bản lịch sử"
+    },
+    "skipped": "Đã bỏ qua {{count}}",
+    "failed": "Lỗi {{count}}",
+    "channel": "Kênh: {{provider}}",
+    "estimated": "Dự kiến: {{cost}}",
+    "actual": "Thực tế: {{cost}}",
+    "failedShots": "Cảnh lỗi: {{ids}}",
+    "retryFailed": "Thử lại cảnh lỗi",
+    "keyframeAlt": "Khung hình đầu cảnh {{order}}",
+    "keyframeGenerating": "Đang tạo ảnh khung đầu",
+    "keyframeFailed": "Tạo ảnh khung đầu thất bại",
+    "keyframeNotYet": "Chưa tạo khung đầu",
+    "shotFrame": "Khung hình cảnh",
+    "location": "Địa điểm: {{location}}",
+    "keyframeChannel": "Kênh khung đầu: {{provider}}",
+    "keyframeHistory": "Phiên bản lịch sử khung đầu",
+    "perImage": "Ảnh {{cost}}/tấm",
+    "perSecond": "Thời lượng {{cost}}/giây",
+    "noUnitPrice": "Chưa cấu hình đơn giá",
+    "calculating": "Đang tính",
+    "costPending": "Chờ tính",
+    "shotsCount": " · {{count}} cảnh",
+    "negativePrompt": "Prompt phủ định",
+    "version": "Phiên bản: v{{version}}",
+    "aspectRatio": "Khung hình: {{ratio}}",
+    "durationSec": "Thời lượng: {{sec}} giây",
+    "channelStatus": "Trạng thái kênh video: {{status}}",
+    "viewResult": "Xem kết quả tạo",
+    "videoTaskFailedReason": "Tác vụ video thất bại: {{reason}}",
+    "videoTaskFailed": "Tác vụ video thất bại. Hãy làm mới trạng thái hoặc tạo lại prompt rồi tạo tác vụ.",
+    "batchStatus": {
+      "pending": "Đang chờ",
+      "running": "Đang chạy",
+      "paused": "Đã tạm dừng",
+      "done": "Đã hoàn thành",
+      "failed": "Có mục lỗi"
+    }
+  }
+}

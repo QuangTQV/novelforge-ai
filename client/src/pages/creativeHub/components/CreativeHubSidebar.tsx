@@ -1,4 +1,6 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { FailureDiagnostic } from "@ai-novel/shared/types/agent";
 import type {
   CreativeHubInterrupt,
@@ -44,30 +46,30 @@ interface CreativeHubSidebarProps {
 }
 
 function bindingStatusLabel(value: string | null | undefined): string {
-  return value?.trim() ? "已绑定" : "未绑定";
+  return value?.trim() ? "binding.bound" : "binding.unbound";
 }
 
 function pipelineStatusLabel(status: string | null | undefined): string {
-  if (status === "queued") return "等待执行";
-  if (status === "running") return "执行中";
-  if (status === "succeeded") return "已完成";
-  if (status === "failed") return "执行失败";
-  if (status === "cancelled") return "已取消";
-  return "未启动";
+  if (status === "queued") return "pipeline.queued";
+  if (status === "running") return "pipeline.running";
+  if (status === "succeeded") return "pipeline.succeeded";
+  if (status === "failed") return "pipeline.failed";
+  if (status === "cancelled") return "pipeline.cancelled";
+  return "pipeline.notStarted";
 }
 
 function turnStatusLabel(status: CreativeHubTurnSummary["status"]): string {
   switch (status) {
     case "succeeded":
-      return "已完成";
+      return "turn.succeeded";
     case "interrupted":
-      return "待确认";
+      return "turn.interrupted";
     case "failed":
-      return "失败";
+      return "turn.failed";
     case "cancelled":
-      return "已取消";
+      return "turn.cancelled";
     case "running":
-      return "进行中";
+      return "turn.running";
     default:
       return status;
   }
@@ -76,15 +78,15 @@ function turnStatusLabel(status: CreativeHubTurnSummary["status"]): string {
 function threadStatusLabel(status: CreativeHubThread["status"] | undefined): string {
   switch (status) {
     case "busy":
-      return "执行中";
+      return "thread.busy";
     case "interrupted":
-      return "待处理";
+      return "thread.interrupted";
     case "error":
-      return "异常";
+      return "thread.error";
     case "idle":
-      return "空闲";
+      return "thread.idle";
     default:
-      return "未初始化";
+      return "thread.uninitialized";
   }
 }
 
@@ -106,71 +108,73 @@ function buildBlockerCardData(input: {
   diagnostics?: FailureDiagnostic;
   productionStatus?: CreativeHubProductionStatus | null;
   latestTurnSummary?: CreativeHubTurnSummary | null;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }) {
+  const { t } = input;
   if (input.interrupt) {
     return {
-      title: "当前阻塞",
+      title: t("sidebar.blocker.blocked"),
       summary: input.interrupt.summary,
       details: [
-        `等待确认: ${input.interrupt.title}`,
-        input.interrupt.targetType ? `目标类型: ${input.interrupt.targetType}` : "",
+        t("sidebar.blocker.waitingConfirmation", { title: input.interrupt.title }),
+        input.interrupt.targetType ? t("sidebar.blocker.targetType", { type: input.interrupt.targetType }) : "",
       ].filter(Boolean),
       tone: "border-warning/30 bg-warning/5 text-foreground",
-      actionLabel: "查看待确认项",
+      actionLabel: t("sidebar.blocker.viewConfirmation"),
       actionPrompt: "总结当前待确认的创作决策，并说明推荐处理方式",
     };
   }
 
   if (input.diagnostics?.failureSummary) {
     return {
-      title: "当前风险",
+      title: t("sidebar.blocker.risk"),
       summary: input.diagnostics.failureSummary,
       details: [
-        input.diagnostics.failureCode ? `错误码: ${input.diagnostics.failureCode}` : "",
-        input.diagnostics.recoveryHint ? `恢复建议: ${input.diagnostics.recoveryHint}` : "",
+        input.diagnostics.failureCode ? t("sidebar.blocker.errorCode", { code: input.diagnostics.failureCode }) : "",
+        input.diagnostics.recoveryHint ? t("sidebar.blocker.recoveryHint", { hint: input.diagnostics.recoveryHint }) : "",
       ].filter(Boolean),
       tone: "border-destructive/30 bg-destructive/5 text-foreground",
-      actionLabel: "生成恢复方案",
+      actionLabel: t("sidebar.blocker.createRecovery"),
       actionPrompt: input.diagnostics.recoveryHint || "分析当前失败原因并给出恢复步骤",
     };
   }
 
   if (input.productionStatus?.failureSummary) {
     return {
-      title: "当前阻塞",
+      title: t("sidebar.blocker.blocked"),
       summary: input.productionStatus.failureSummary,
       details: [
-        input.productionStatus.recoveryHint ? `恢复建议: ${input.productionStatus.recoveryHint}` : "",
-        `当前阶段: ${input.productionStatus.currentStage}`,
+        input.productionStatus.recoveryHint ? t("sidebar.blocker.recoveryHint", { hint: input.productionStatus.recoveryHint }) : "",
+        t("sidebar.blocker.currentStage", { stage: input.productionStatus.currentStage }),
       ].filter(Boolean),
       tone: "border-destructive/30 bg-destructive/5 text-foreground",
-      actionLabel: "查看当前阻塞",
+      actionLabel: t("sidebar.blocker.viewBlocked"),
       actionPrompt: input.productionStatus.recoveryHint || "分析当前生产阻塞和正式处理入口",
     };
   }
 
   if (input.latestTurnSummary?.status === "interrupted") {
     return {
-      title: "当前关注点",
+      title: t("sidebar.blocker.focus"),
       summary: input.latestTurnSummary.nextSuggestion,
       details: [
-        `阶段: ${input.latestTurnSummary.currentStage}`,
-        `状态: ${turnStatusLabel(input.latestTurnSummary.status)}`,
+        t("sidebar.blocker.stage", { stage: input.latestTurnSummary.currentStage }),
+        t("sidebar.blocker.status", { status: t(`sidebar.${turnStatusLabel(input.latestTurnSummary.status)}`) }),
       ],
       tone: "border-info/30 bg-info/5 text-foreground",
-      actionLabel: "查看建议",
+      actionLabel: t("sidebar.blocker.viewSuggestion"),
       actionPrompt: `解释当前建议和正式入口：${input.latestTurnSummary.nextSuggestion}`,
     };
   }
 
   return {
-    title: "当前状态",
-    summary: "当前没有需要处理的状态问题，可以查看小说进度或执行记录。",
+    title: t("sidebar.blocker.currentStatus"),
+    summary: t("sidebar.blocker.noIssue"),
     details: input.latestTurnSummary?.nextSuggestion
-      ? [`建议下一步: ${input.latestTurnSummary.nextSuggestion}`]
+      ? [t("sidebar.blocker.nextSuggestion", { suggestion: input.latestTurnSummary.nextSuggestion })]
       : [],
     tone: "border-border bg-muted/20 text-foreground",
-    actionLabel: input.latestTurnSummary?.nextSuggestion ? "查看建议" : undefined,
+    actionLabel: input.latestTurnSummary?.nextSuggestion ? t("sidebar.blocker.viewSuggestion") : undefined,
     actionPrompt: input.latestTurnSummary?.nextSuggestion
       ? `解释当前建议和正式入口：${input.latestTurnSummary.nextSuggestion}`
       : undefined,
@@ -207,6 +211,7 @@ export default function CreativeHubSidebar({
   onNovelChange,
   onQuickAction,
 }: CreativeHubSidebarProps) {
+  const { t } = useTranslation("creativeHub");
   const [isBindingNovel, setIsBindingNovel] = useState(false);
   const selectedNovel = novels.find((item) => item.id === bindings.novelId);
   const currentNovelTitle = selectedNovel?.title
@@ -219,6 +224,7 @@ export default function CreativeHubSidebar({
       diagnostics,
       productionStatus,
       latestTurnSummary,
+      t,
     }),
     [diagnostics, interrupt, latestTurnSummary, productionStatus],
   );
@@ -233,14 +239,14 @@ export default function CreativeHubSidebar({
       aria-busy={isBindingNovel || novelsRetrying}
     >
       <CardHeader className="pb-4">
-        <CardTitle className="text-base">当前小说与状态</CardTitle>
+      <CardTitle className="text-base">{t("sidebar.title")}</CardTitle>
       </CardHeader>
       <CardContent className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1 text-sm">
         <div className="rounded-md border border-border bg-muted/20 p-3">
-          <div className="mb-2 text-xs font-medium text-muted-foreground">当前小说与资源</div>
+          <div className="mb-2 text-xs font-medium text-muted-foreground">{t("sidebar.resourcesTitle")}</div>
           <div className="space-y-3 text-xs text-muted-foreground">
             <div className="space-y-1">
-              <label htmlFor="creative-hub-novel" className="text-xs font-medium text-muted-foreground">当前小说</label>
+              <label htmlFor="creative-hub-novel" className="text-xs font-medium text-muted-foreground">{t("sidebar.currentNovel")}</label>
               <SelectControl
                 id="creative-hub-novel"
                 className="w-full rounded-md border border-input bg-background p-2 text-base text-foreground disabled:cursor-not-allowed disabled:opacity-60 md:text-sm"
@@ -251,14 +257,14 @@ export default function CreativeHubSidebar({
                   setIsBindingNovel(true);
                   void Promise.resolve(onNovelChange(novelId))
                     .catch((error: unknown) => {
-                      toast.error(error instanceof Error ? error.message : "小说工作区切换失败，请重试。");
+                      toast.error(error instanceof Error ? error.message : t("sidebar.switchFailed"));
                     })
                     .finally(() => setIsBindingNovel(false));
                 }}
               >
-                <option value="">未绑定小说</option>
+                <option value="">{t("sidebar.unboundNovel")}</option>
                 {bindings.novelId && !selectedNovel ? (
-                  <option value={bindings.novelId}>{currentNovelTitle ?? "当前已绑定小说"}</option>
+                  <option value={bindings.novelId}>{currentNovelTitle ?? t("sidebar.boundNovel")}</option>
                 ) : null}
                 {novels.map((novel) => (
                   <option key={novel.id} value={novel.id}>
@@ -268,11 +274,11 @@ export default function CreativeHubSidebar({
               </SelectControl>
               {novelsLoading ? (
                 <div className="text-xs leading-5 text-muted-foreground" role="status">
-                  正在读取可用小说，完成前不能切换工作区。
+                  {t("sidebar.loadingNovels")}
                 </div>
               ) : novelsErrorMessage ? (
                 <div className="rounded-md border border-destructive/30 bg-destructive/5 p-2 text-xs leading-5 text-foreground">
-                  <div>小说列表读取失败，现有线程不会受影响。</div>
+                  <div>{t("sidebar.novelsLoadFailed")}</div>
                   {onRetryNovels ? (
                     <Button
                       type="button"
@@ -282,40 +288,40 @@ export default function CreativeHubSidebar({
                       disabled={novelsRetrying}
                       onClick={onRetryNovels}
                     >
-                      {novelsRetrying ? "正在重新读取..." : "重新读取小说"}
+                      {novelsRetrying ? t("sidebar.retrying") : t("sidebar.reloadNovels")}
                     </Button>
                   ) : null}
                 </div>
               ) : null}
               <div className="mt-2 flex flex-wrap gap-2">
-                <Button asChild size="sm" variant="outline"><Link to="/novels/create">创建小说</Link></Button>
-                {bindings.novelId ? <Button asChild size="sm" variant="outline"><Link to={`/novels/${bindings.novelId}/edit`}>打开小说工作台</Link></Button> : null}
+                <Button asChild size="sm" variant="outline"><Link to="/novels/create">{t("sidebar.createNovel")}</Link></Button>
+                {bindings.novelId ? <Button asChild size="sm" variant="outline"><Link to={`/novels/${bindings.novelId}/edit`}>{t("sidebar.openWorkspace")}</Link></Button> : null}
               </div>
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
-              <div>章节: {bindingStatusLabel(bindings.chapterId)}</div>
-              <div>世界观: {bindingStatusLabel(bindings.worldId)}</div>
-              <div>任务: {bindingStatusLabel(bindings.taskId)}</div>
-              <div>拆书分析: {bindingStatusLabel(bindings.bookAnalysisId)}</div>
-              <div>写作公式: {bindingStatusLabel(bindings.formulaId)}</div>
-              <div>基础角色: {bindingStatusLabel(bindings.baseCharacterId)}</div>
+              <div>{t("sidebar.binding.chapter")}: {t(`sidebar.${bindingStatusLabel(bindings.chapterId)}`)}</div>
+              <div>{t("sidebar.binding.world")}: {t(`sidebar.${bindingStatusLabel(bindings.worldId)}`)}</div>
+              <div>{t("sidebar.binding.task")}: {t(`sidebar.${bindingStatusLabel(bindings.taskId)}`)}</div>
+              <div>{t("sidebar.binding.analysis")}: {t(`sidebar.${bindingStatusLabel(bindings.bookAnalysisId)}`)}</div>
+              <div>{t("sidebar.binding.formula")}: {t(`sidebar.${bindingStatusLabel(bindings.formulaId)}`)}</div>
+              <div>{t("sidebar.binding.character")}: {t(`sidebar.${bindingStatusLabel(bindings.baseCharacterId)}`)}</div>
             </div>
-            <div>知识文档: {bindings.knowledgeDocumentIds?.length ?? 0} 份</div>
+            <div>{t("sidebar.binding.knowledge")}: {bindings.knowledgeDocumentIds?.length ?? 0}</div>
           </div>
         </div>
 
         <div className="rounded-md border border-info/30 bg-info/5 p-3">
-          <div className="text-xs font-medium text-info">正式创作入口</div>
-          <div className="mt-2 text-sm leading-6 text-foreground">完整的小说创建、Agent 生产和自动导演流程，请从正式工作台继续。</div>
+          <div className="text-xs font-medium text-info">{t("sidebar.officialEntry")}</div>
+          <div className="mt-2 text-sm leading-6 text-foreground">{t("sidebar.officialEntryDescription")}</div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <Button asChild size="sm"><Link to="/novels/auto-director">打开 AI 自动导演</Link></Button>
+            <Button asChild size="sm"><Link to="/novels/auto-director">{t("sidebar.openDirector")}</Link></Button>
           </div>
         </div>
 
         <div className={cn("rounded-md border p-3", blocker.tone)}>
           <div className="mb-2 flex items-center justify-between gap-2">
             <div className="text-xs font-medium">{blocker.title}</div>
-            {interrupt ? <Badge variant="secondary">需要确认</Badge> : null}
+            {interrupt ? <Badge variant="secondary">{t("sidebar.needsConfirmation")}</Badge> : null}
           </div>
           <div className="text-sm leading-6">{blocker.summary}</div>
           {blocker.details.length > 0 ? (
@@ -342,28 +348,28 @@ export default function CreativeHubSidebar({
         </div>
 
         <div className="rounded-md border border-border bg-background p-3">
-          <div className="mb-3 text-xs font-medium text-muted-foreground">创作阶段</div>
+          <div className="mb-3 text-xs font-medium text-muted-foreground">{t("sidebar.productionStage")}</div>
           {productionStatus ? (
             <div className="space-y-3">
               <div className="grid gap-2 sm:grid-cols-2">
                 <div className="rounded-md border border-border bg-muted/20 p-3">
-                  <div className="text-xs text-muted-foreground">当前阶段</div>
+                  <div className="text-xs text-muted-foreground">{t("sidebar.currentStage")}</div>
                   <div className="mt-2 text-sm font-medium text-foreground">{productionStatus.currentStage}</div>
                 </div>
                 <div className="rounded-md border border-border bg-muted/20 p-3">
-                  <div className="text-xs text-muted-foreground">章节进度</div>
+                  <div className="text-xs text-muted-foreground">{t("sidebar.chapterProgress")}</div>
                   <div className="mt-2 text-sm font-medium text-foreground">
                     {productionStatus.chapterCount}/{productionStatus.targetChapterCount}
                   </div>
                 </div>
                 <div className="rounded-md border border-border bg-muted/20 p-3">
-                  <div className="text-xs text-muted-foreground">资产完成</div>
+                  <div className="text-xs text-muted-foreground">{t("sidebar.assetsComplete")}</div>
                   <div className="mt-2 text-sm font-medium text-foreground">
                     {completedAssets}/{productionStatus.assetStages.length}
                   </div>
                 </div>
                 <div className="rounded-md border border-border bg-muted/20 p-3">
-                  <div className="text-xs text-muted-foreground">生产流水线</div>
+                  <div className="text-xs text-muted-foreground">{t("sidebar.pipeline")}</div>
                   <div className="mt-2 text-sm font-medium text-foreground">
                     {pipelineStatusLabel(productionStatus.pipelineStatus)}
                   </div>
@@ -382,68 +388,71 @@ export default function CreativeHubSidebar({
             </div>
           ) : (
             <div className="rounded-md border border-dashed border-border bg-muted/20 p-3 text-xs text-muted-foreground">
-              选择小说并发起整本创作后，这里会显示阶段与进度。
+              {t("sidebar.emptyProduction")}
             </div>
           )}
         </div>
 
         <details className="rounded-md border border-border bg-background p-3">
           <summary className="cursor-pointer list-none text-xs font-medium text-muted-foreground">
-            运行与调试信息
+            {t("sidebar.debugTitle")}
           </summary>
           <div className="mt-3 space-y-3">
             <div className="rounded-md border border-border bg-muted/20 p-3">
               <div className="mb-2 text-xs font-medium text-muted-foreground">
-                运行细节显示
+                {t("sidebar.runtimeDetails")}
               </div>
               <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
                 <span>
-                  当前默认
-                  {defaultRuntimeDetailsCollapsed ? "折叠" : "展开"}
-                  消息内的运行细节
+
+                  {translateUi("当前默认")}
+                  {defaultRuntimeDetailsCollapsed ? translateUi("折叠") : translateUi("展开")}
+
+                  {translateUi("消息内的运行细节")}
                 </span>
                 <Button type="button" size="sm" variant="outline" onClick={onToggleRuntimeDetailsDefault}>
-                  切换为{defaultRuntimeDetailsCollapsed ? "默认展开" : "默认折叠"}
+
+                  {translateUi("切换为")}{defaultRuntimeDetailsCollapsed ? translateUi("默认展开") : translateUi("默认折叠")}
                 </Button>
               </div>
             </div>
 
             <div className="space-y-2 rounded-md border border-border bg-muted/20 p-3">
-              <div className="text-xs font-medium text-muted-foreground">线程状态</div>
-              <DebugRow label="线程 ID" value={thread?.id ?? "-"} />
-              <DebugRow label="线程状态" value={threadStatusLabel(thread?.status)} />
-              <DebugRow label="最新 Run" value={latestRunId ?? "-"} />
-              <DebugRow label="当前 Checkpoint" value={currentCheckpointId ?? "-"} />
+              <div className="text-xs font-medium text-muted-foreground">{translateUi("线程状态")}</div>
+              <DebugRow label={translateUi("线程 ID")} value={thread?.id ?? "-"} />
+              <DebugRow label={translateUi("线程状态")} value={threadStatusLabel(thread?.status)} />
+              <DebugRow label={translateUi("最新 Run")} value={latestRunId ?? "-"} />
+              <DebugRow label={translateUi("当前 Checkpoint")} value={currentCheckpointId ?? "-"} />
             </div>
 
             <div className="space-y-2 rounded-md border border-border bg-muted/20 p-3">
-              <div className="text-xs font-medium text-muted-foreground">资源绑定 ID</div>
-              <DebugRow label="小说" value={bindings.novelId ?? "-"} />
-              <DebugRow label="章节" value={bindings.chapterId ?? "-"} />
-              <DebugRow label="世界观" value={bindings.worldId ?? "-"} />
-              <DebugRow label="任务" value={bindings.taskId ?? "-"} />
-              <DebugRow label="拆书分析" value={bindings.bookAnalysisId ?? "-"} />
-              <DebugRow label="写作公式" value={bindings.formulaId ?? "-"} />
-              <DebugRow label="写法档案" value={bindings.styleProfileId ?? "-"} />
-              <DebugRow label="基础角色" value={bindings.baseCharacterId ?? "-"} />
-              <DebugRow label="知识文档" value={bindings.knowledgeDocumentIds?.join(", ") || "-"} />
-              {interrupt ? <DebugRow label="待确认目标" value={interrupt.targetId ?? "-"} /> : null}
+              <div className="text-xs font-medium text-muted-foreground">{translateUi("资源绑定 ID")}</div>
+              <DebugRow label={translateUi("小说")} value={bindings.novelId ?? "-"} />
+              <DebugRow label={translateUi("章节")} value={bindings.chapterId ?? "-"} />
+              <DebugRow label={translateUi("世界观")} value={bindings.worldId ?? "-"} />
+              <DebugRow label={translateUi("任务")} value={bindings.taskId ?? "-"} />
+              <DebugRow label={translateUi("拆书分析")} value={bindings.bookAnalysisId ?? "-"} />
+              <DebugRow label={translateUi("写作公式")} value={bindings.formulaId ?? "-"} />
+              <DebugRow label={translateUi("写法档案")} value={bindings.styleProfileId ?? "-"} />
+              <DebugRow label={translateUi("基础角色")} value={bindings.baseCharacterId ?? "-"} />
+              <DebugRow label={translateUi("知识文档")} value={bindings.knowledgeDocumentIds?.join(", ") || "-"} />
+              {interrupt ? <DebugRow label={translateUi("待确认目标")} value={interrupt.targetId ?? "-"} /> : null}
             </div>
 
             <div className="space-y-2 rounded-md border border-border bg-muted/20 p-3">
-              <div className="text-xs font-medium text-muted-foreground">模型路由</div>
+              <div className="text-xs font-medium text-muted-foreground">{translateUi("模型路由")}</div>
               <DebugRow label="Provider" value={modelSummary.provider} />
               <DebugRow label="Model" value={modelSummary.model} />
               <DebugRow label="Temperature" value={String(modelSummary.temperature)} />
-              <DebugRow label="Max tokens" value={modelSummary.maxTokens != null ? String(modelSummary.maxTokens) : "默认"} />
+              <DebugRow label="Max tokens" value={modelSummary.maxTokens != null ? String(modelSummary.maxTokens) : translateUi("默认")} />
             </div>
 
             {latestTurnSummary ? (
               <div className="space-y-2 rounded-md border border-border bg-muted/20 p-3">
-                <div className="text-xs font-medium text-muted-foreground">最近回合</div>
-                <DebugRow label="回合状态" value={turnStatusLabel(latestTurnSummary.status)} />
-                <DebugRow label="回合阶段" value={latestTurnSummary.currentStage} />
-                <DebugRow label="摘要 Checkpoint" value={latestTurnSummary.checkpointId ?? "-"} />
+                <div className="text-xs font-medium text-muted-foreground">{translateUi("最近回合")}</div>
+                <DebugRow label={translateUi("回合状态")} value={turnStatusLabel(latestTurnSummary.status)} />
+                <DebugRow label={translateUi("回合阶段")} value={latestTurnSummary.currentStage} />
+                <DebugRow label={translateUi("摘要 Checkpoint")} value={latestTurnSummary.checkpointId ?? "-"} />
               </div>
             ) : null}
           </div>

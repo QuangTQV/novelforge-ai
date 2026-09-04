@@ -1,0 +1,84 @@
+{
+  "planning": {
+    "title": "Kế hoạch tài sản thế giới",
+    "description": "Bản đồ, sơ đồ thế lực, dòng thời gian và cây hệ thống đều phát triển từ sổ tay thế giới. Hãy hoàn thiện quy tắc, thế lực, địa điểm và sức căng trước khi tạo tài sản trực quan.",
+    "reserved": "Tính năng sắp ra mắt"
+  },
+  "references": {
+    "title": "Tư liệu tham khảo"
+  },
+  "library": {
+    "title": "Tài sản thế giới",
+    "keyword": "Từ khóa",
+    "saveCurrent": "Lưu thiết lập hiện tại thành tài sản thế giới",
+    "name": "Tên tài sản",
+    "descriptionPlaceholder": "Mô tả tùy chọn (để trống sẽ dùng nội dung lớp hiện tại)",
+    "addToLayer": "Thêm vào lớp hiện tại ({{field}})",
+    "addToForces": "Thêm vào sổ tay thế lực",
+    "addToLocations": "Thêm vào sổ tay địa điểm"
+  },
+  "categories": {
+    "all": "Tất cả danh mục",
+    "terrain": "Địa hình",
+    "race": "Chủng tộc",
+    "power": "Hệ thống sức mạnh",
+    "organization": "Tổ chức/thế lực",
+    "resource": "Tài nguyên",
+    "event": "Sự kiện",
+    "artifact": "Đạo cụ/kỳ vật",
+    "custom": "Tùy chỉnh"
+  },
+  "actions": {
+    "refresh": "Làm mới",
+    "saving": "Đang lưu...",
+    "saveAsset": "Lưu tài sản"
+  },
+  "snapshots": {
+    "title": "Ảnh chụp phiên bản",
+    "labelPlaceholder": "Nhãn ảnh chụp (tùy chọn)",
+    "create": "Tạo ảnh chụp",
+    "restore": "Khôi phục",
+    "from": "Ảnh chụp bắt đầu",
+    "to": "Ảnh chụp đích",
+    "compare": "So sánh khác biệt"
+  },
+  "export": {
+    "title": "Xuất bản sao lưu",
+    "markdown": "Xuất Markdown (sao chép vào clipboard)",
+    "json": "Xuất JSON (sao chép vào clipboard)"
+  },
+  "import": {
+    "title": "Nhập văn bản",
+    "text": "Văn bản thuần",
+    "placeholder": "Dán nội dung cần nhập",
+    "importing": "Đang nhập...",
+    "createWorld": "Nhập thành thế giới mới"
+  },
+  "presets": {
+    "map": {
+      "title": "Bản đồ thế giới",
+      "description": "Dùng khu vực, đường đi, biên giới và địa điểm truyện để giải thích nhân vật di chuyển ra sao và xung đột bùng nổ ở đâu.",
+      "readiness": "Hãy bổ sung sân khấu truyện, rủi ro địa điểm và vùng kiểm soát của thế lực."
+    },
+    "factions": {
+      "title": "Sơ đồ thế lực",
+      "description": "Biến quan hệ thế lực, phe phái, đồng minh, đối địch và chư hầu thành mạng lưới trực quan.",
+      "readiness": "Hãy bổ sung thế lực chính, mục tiêu hiện tại và áp lực giữa các bên."
+    },
+    "timeline": {
+      "title": "Dòng thời gian thế giới",
+      "description": "Ghi lại sự kiện lớn, thảm họa, thay triều đổi đại và biến động để thế giới có tiến trình rõ ràng.",
+      "readiness": "Hãy bổ sung xung đột cốt lõi, hệ quả chung và các mốc lịch sử quan trọng."
+    },
+    "characters": {
+      "title": "Mạng quan hệ nhân vật",
+      "description": "Kết nối nhân vật với thế lực, địa điểm, tài nguyên và điều cấm kỵ để giảm trôi lệch thiết lập.",
+      "readiness": "Hãy bổ sung phe phái, áp lực và địa điểm then chốt của nhân vật."
+    },
+    "power": {
+      "title": "Cây hệ thống sức mạnh",
+      "description": "Sắp xếp nguồn sức mạnh, lộ trình nâng cấp, cái giá và ranh giới cấm kỵ thành cấu trúc phân cấp.",
+      "readiness": "Hãy bổ sung quy tắc cốt lõi, cái giá và ranh giới không thể vượt qua."
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "options": {
+    "aiRecommendGenre": "Let AI suggest a genre",
+    "aiRecommendPrimary": "Let AI suggest the main progression",
+    "noSecondary": "No secondary progression mode"
+  },
+  "hints": {
+    "chapterLength": "Start around 2500-3500; you can still adjust per chapter.",
+    "estimatedChapterCount": "Used as the default range for outline, rhythm and pipeline; still adjustable later.",
+    "resourceScore": "0 means just started; 100 means settings, characters and planning are fairly complete.",
+    "postGenerationReview": "When on, after generating chapter text the system checks AI-flavor risk and produces a revision when feasible."
+  },
+  "summaries": {
+    "primaryTitle": "Main progression mode summary",
+    "secondaryTitle": "Secondary progression mode summary",
+    "coreDrive": "Core drive: {{value}}",
+    "readerReward": "Added reader reward: {{value}}"
+  },
+  "sections": {
+    "advancedTitle": "Advanced settings for narrative experience and AI collaboration",
+    "advancedDescription": "These affect generation style and AI automation, but beginners don't need to decide right away.",
+    "narrativeTitle": "Narrative experience",
+    "narrativeDescription": "These fields shape how readers feel about the work and directly affect chapter tone, density and pacing.",
+    "aiTitle": "How to collaborate with AI",
+    "aiDescription": "Sets how you and AI divide work and how far the system may auto-advance."
+  },
+  "world": {
+    "title": "Reference world sample",
+    "description": "Only records the initial reference. After creating, do import, generation and sync in the \"This book's world\" tab.",
+    "unset": "No reference sample"
+  },
+  "platformHint": "After saving, only affects later planning, text, review and revision; doesn't rewrite existing content.",
+  "fields": {
+    "writingMode": "Writing mode",
+    "genreAndModeTitle": "Genre base vs. progression mode",
+    "genreAndModeDescription": "The genre base answers \"what kind of book is this\" (e.g. cultivation, urban, alt-history); the progression mode answers \"what keeps the book going and paying off\" (e.g. system, invincible, homesteading).",
+    "genre": "Genre base",
+    "defaultChapterLength": "Default chapter length",
+    "estimatedChapterCount": "Estimated chapter count",
+    "primaryMode": "Main progression mode",
+    "secondaryMode": "Secondary progression mode",
+    "platform": "Target platform",
+    "pov": "Narrative POV",
+    "pace": "Pace",
+    "emotion": "Emotional intensity",
+    "styleTone": "Style keywords",
+    "projectMode": "Project mode",
+    "aiFreedom": "AI freedom",
+    "resourceScore": "Resource readiness",
+    "postGenerationReview": "Detect and fix AI flavor after generation"
+  },
+  "placeholders": {
+    "styleTone": "e.g. calm, restrained, dark humor"
+  }
+}

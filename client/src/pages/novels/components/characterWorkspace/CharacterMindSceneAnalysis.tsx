@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import type { CharacterMindSnapshot } from "@ai-novel/shared/types/characterMind";
 import { Brain, ChevronDown, ChevronUp, CircleAlert, Lightbulb, ShieldCheck } from "lucide-react";
@@ -15,34 +16,34 @@ export default function CharacterMindSceneAnalysis(props: CharacterMindSceneAnal
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <aside className={cn("min-w-0 rounded-3xl border border-border/70 bg-background p-5 shadow-sm xl:sticky xl:top-0", props.className)}>
-      <div className="flex items-center gap-2 text-sm font-semibold"><Brain className="h-4 w-4 text-primary" />角色场景分析</div>
-      <p className="mt-1 text-xs leading-5 text-muted-foreground">以下内容帮助理解 {props.characterName} 的回应逻辑，是 AI 推断，不会改写小说正史。</p>
+      <div className="flex items-center gap-2 text-sm font-semibold"><Brain className="h-4 w-4 text-primary" />{translateUi("角色场景分析")}</div>
+      <p className="mt-1 text-xs leading-5 text-muted-foreground">{translateUi("以下内容帮助理解")} {props.characterName}  {translateUi("的回应逻辑，是 AI 推断，不会改写小说正史。")}</p>
 
       <section className="mt-5 rounded-2xl border border-primary/15 bg-primary/[0.045] p-4">
-        <div className="text-xs font-medium text-primary">他如何看待眼前局面</div>
+        <div className="text-xs font-medium text-primary">{translateUi("他如何看待眼前局面")}</div>
         <p className="mt-2 text-sm leading-7 text-foreground">{props.mind.currentInterpretation}</p>
       </section>
 
       <div className="mt-4 space-y-3">
-        <AnalysisItem icon={Lightbulb} title="谈话中的关注点" value={props.mind.activePlan || props.mind.privateIntent || "AI 尚未判断出稳定关注点。"} />
-        <AnalysisItem icon={CircleAlert} title="可能的误读" value={props.mind.misbeliefs[0] || "暂无明确误读。"} tone="warning" />
-        <AnalysisItem icon={ShieldCheck} title="受压时的反应" value={props.mind.actionTendency || "AI 尚未判断出稳定反应。"} />
+        <AnalysisItem icon={Lightbulb} title={translateUi("谈话中的关注点")} value={props.mind.activePlan || props.mind.privateIntent || translateUi("AI 尚未判断出稳定关注点。")} />
+        <AnalysisItem icon={CircleAlert} title={translateUi("可能的误读")} value={props.mind.misbeliefs[0] || translateUi("暂无明确误读。")} tone="warning" />
+        <AnalysisItem icon={ShieldCheck} title={translateUi("受压时的反应")} value={props.mind.actionTendency || translateUi("AI 尚未判断出稳定反应。")} />
       </div>
 
       <Button className="mt-4 w-full justify-between" size="sm" variant="ghost" onClick={() => setIsExpanded((current) => !current)}>
-        {isExpanded ? "收起完整分析" : "查看完整分析"}
+        {isExpanded ? translateUi("收起完整分析") : translateUi("查看完整分析")}
         {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
       </Button>
       {isExpanded ? <div className="mt-3 space-y-3 border-t border-border/60 pt-4">
-        <AnalysisItem title="当前情绪与立场" value={props.mind.emotionalStance || "未形成稳定判断。"} />
-        <AnalysisItem title="什么会改变决定" value={props.mind.decisionTrigger || "未形成稳定判断。"} />
-        <AnalysisItem title="当前相信" value={props.mind.beliefs.join("；") || "暂无需要特别追踪的判断。"} />
-        <AnalysisItem title="推断依据" value={props.mind.evidence.join("；") || "暂无可展示依据。"} />
+        <AnalysisItem title={translateUi("当前情绪与立场")} value={props.mind.emotionalStance || translateUi("未形成稳定判断。")} />
+        <AnalysisItem title={translateUi("什么会改变决定")} value={props.mind.decisionTrigger || translateUi("未形成稳定判断。")} />
+        <AnalysisItem title={translateUi("当前相信")} value={props.mind.beliefs.join(translateUi("；")) || translateUi("暂无需要特别追踪的判断。")} />
+        <AnalysisItem title={translateUi("推断依据")} value={props.mind.evidence.join(translateUi("；")) || translateUi("暂无可展示依据。")} />
       </div> : null}
 
       <div className="mt-5 flex flex-wrap gap-2 border-t border-border/60 pt-4 text-xs text-muted-foreground">
-        <Badge variant="outline">来源：{props.mind.sourceType === "artifact_delta" ? "章节定稿后的变化" : props.mind.sourceType === "bootstrap" ? "角色准备" : "手动整理"}</Badge>
-        {typeof props.mind.confidence === "number" ? <Badge variant="outline">置信度 {Math.round(props.mind.confidence * 100)}%</Badge> : null}
+        <Badge variant="outline">{translateUi("来源：")}{props.mind.sourceType === "artifact_delta" ? translateUi("章节定稿后的变化") : props.mind.sourceType === "bootstrap" ? translateUi("角色准备") : translateUi("手动整理")}</Badge>
+        {typeof props.mind.confidence === "number" ? <Badge variant="outline">{translateUi("置信度")} {Math.round(props.mind.confidence * 100)}%</Badge> : null}
       </div>
     </aside>
   );

@@ -1,0 +1,86 @@
+{
+  "page": {
+    "title": "热门题材雷达"
+  },
+  "platforms": {
+    "fanqie": "番茄小说",
+    "qidian": "起点中文网",
+    "jinjiang": "晋江文学城"
+  },
+  "signalKind": {
+    "genre": "热门题材",
+    "protagonist": "主角身份",
+    "advantage": "金手指",
+    "opening": "开局爆点",
+    "relationship": "关系卖点",
+    "title_pattern": "标题句式",
+    "opportunity": "差异化机会",
+    "crowding": "拥挤套路"
+  },
+  "influenceMode": {
+    "follow_hot": "跟随热门",
+    "differentiate": "热门中求差异",
+    "light": "弱化市场"
+  },
+  "signalDirection": {
+    "current": "当前高频",
+    "rising": "正在升温",
+    "falling": "正在降温",
+    "stable": "相对稳定"
+  },
+  "toast": {
+    "scanFailed": "扫榜失败，请稍后重试。",
+    "analysisFailed": "AI分析失败，请稍后重试。",
+    "briefFailed": "生成市场创作简报失败。",
+    "genreSynced": "题材基底已加入资源库。",
+    "storyModeSynced": "推进模式已加入资源库。",
+    "syncFailed": "加入资源库失败，请稍后重试。",
+    "maxSignals": "最多选择5项市场信号。"
+  },
+  "scan": {
+    "inProgress": "正在获取榜单 {{percent}}%",
+    "rescan": "重新扫榜",
+    "partialFailure": "部分榜单暂时无法读取，仍可查看并分析已成功获取的数据：{{details}}",
+    "platformError": "{{platform}}：{{error}}",
+    "readFailed": "读取失败",
+    "runFailed": "本次扫榜未完成：{{error}}",
+    "noPublicData": "没有取得可分析的公开榜单数据。",
+    "emptyLoadingTitle": "正在获取公开榜单",
+    "emptyTitle": "还没有可展示的榜单数据",
+    "emptyHint": "进入页面会自动扫榜。榜单获取完成后，你可以先查看原始排名，再决定是否让 AI 分析。"
+  },
+  "analysis": {
+    "lockedScope": "本次报告使用当前勾选的作品；如需更换范围，请重新扫榜。",
+    "selectedCount": "已选 {{count}} 本作品，可在各榜单右上角全选或逐本调整。",
+    "waitingForScan": "等待榜单获取完成",
+    "inProgress": "AI 分析中 {{percent}}%",
+    "viewAnalysis": "查看 AI 分析",
+    "start": "开始 AI 分析（{{count}} 本）",
+    "selectAll": "全选",
+    "clearAll": "取消全选",
+    "listRecordCount": "本次识别 {{count}} 条公开上榜记录（最多 30 条）",
+    "selectItem": "选择{{title}}",
+    "deselectItem": "取消选择{{title}}",
+    "authorHidden": "作者未公开",
+    "viewSource": "查看{{title}}的公开来源"
+  },
+  "report": {
+    "verdictTitle": "本期判断",
+    "verdictMeta": "采集于 {{date}}，结论均可回看公开榜单证据。",
+    "genreFoundation": "题材基底：",
+    "primaryStoryMode": "主要推进：",
+    "secondaryStoryMode": "辅助推进：",
+    "inLibrary": "库中已有 · 查看",
+    "addGenreFoundation": "加入题材基底库",
+    "addStoryModeLibrary": "加入推进模式库",
+    "foundationHint": "库中已有的方向直接复用；只有缺失的方向需要手动加入。下方市场信号用于选择本次开书偏好。",
+    "platformItemCount": "{{platform}} · {{count}}项",
+    "suggestRefresh": " · 建议刷新",
+    "signalSelected": "已选",
+    "signalHeat": "热度 {{value}}",
+    "signalCrowding": "拥挤度 {{value}}",
+    "selectionCount": "已选 {{count}}/5 项市场信号",
+    "selectionHint": "AI 推荐已自动勾选，你可以替换后再开书。",
+    "createWithSignals": "用这些信号创作"
+  }
+}

@@ -1,3 +1,4 @@
+import { translateUi } from "../../i18n/legacy.ts";
 import type { WorldConsistencyIssue, WorldConsistencyReport } from "@ai-novel/shared/types/world";
 
 const ISSUE_CODE_LABELS: Record<string, string> = {
@@ -33,7 +34,7 @@ const ISSUE_DETAIL_LABELS: Record<string, string> = {
 };
 
 const FIELD_LABELS: Record<string, string> = {
-  description: "世界概述",
+  description: translateUi("世界概述"),
   background: "背景设定",
   geography: "地理环境",
   cultures: "文化习俗",

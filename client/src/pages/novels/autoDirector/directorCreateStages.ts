@@ -1,3 +1,4 @@
+import { translateUi } from "../../../i18n/legacy.ts";
 import type { DirectorRunMode, DirectorWorldSetupMode } from "@ai-novel/shared/types/novelDirector";
 import type { StyleIntentSummary } from "@ai-novel/shared/types/styleEngine";
 import type { NovelBasicFormState } from "../novelBasicInfo.shared";
@@ -16,11 +17,11 @@ export const AUTO_DIRECTOR_CREATE_STAGES: Array<{
   order: number;
   label: string;
 }> = [
-  { key: "idea", order: 0, label: "起始想法" },
-  { key: "basic", order: 1, label: "导演起始设置" },
-  { key: "world_style", order: 2, label: "世界与写法" },
-  { key: "model_run", order: 3, label: "模型与生产准备" },
-  { key: "candidates", order: 4, label: "方向与自动准备" },
+  { key: "idea", order: 0, label: translateUi("起始想法") },
+  { key: "basic", order: 1, label: translateUi("导演起始设置") },
+  { key: "world_style", order: 2, label: translateUi("世界与写法") },
+  { key: "model_run", order: 3, label: translateUi("模型与生产准备") },
+  { key: "candidates", order: 4, label: translateUi("方向与自动准备") },
 ];
 
 function findLabel(options: Array<{ value: string; label: string }>, value: string): string {

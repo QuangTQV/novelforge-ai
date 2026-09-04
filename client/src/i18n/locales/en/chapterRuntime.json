@@ -1,0 +1,59 @@
+{
+  "lengthPolicy": {
+    "natural": "Natural first",
+    "standard": "Standard word control",
+    "mixed": "Mixed word control"
+  },
+  "trigger": {
+    "manual": "Manual",
+    "autoMilestone": "Auto milestone",
+    "beforePipeline": "Before pipeline"
+  },
+  "length": {
+    "title": "Length control & execution replay",
+    "mode": "Control mode",
+    "closing": "In the closing zone",
+    "normal": "Still progressing normally",
+    "targetResult": "Target & result",
+    "words": "{{actual}} / {{target}} words",
+    "variance": "Variance {{value}}",
+    "budget": "Budget range",
+    "range": "{{min}} - {{max}} words",
+    "hardMax": "Hard cap {{value}} words"
+  },
+  "ui": {
+    "signal": "Execution signal",
+    "hardStops": "{{count}} hard stops",
+    "scenes": "Scenes {{actual}}/{{planned}}",
+    "repairPath": "Length adjustment path",
+    "noRepair": "No extra length adjustment was triggered this time.",
+    "overlength": "Over-length adjustment was triggered this time.",
+    "noOverlength": "No over-length adjustment was triggered this time.",
+    "rounds": "Round {{round}}: suggested {{suggested}} words, actual {{actual}} words",
+    "finalRound": "final round",
+    "middleRound": "middle round",
+    "hardStop": "hard-stopped",
+    "naturalEnd": "natural end",
+    "sentenceTrim": "trimmed at sentence boundaries",
+    "noLengthData": "No length-control replay data yet. After generating a chapter, budget execution results appear here.",
+    "contextTitle": "Chapter goal & context",
+    "plan": "Chapter plan",
+    "role": "Role: {{value}}",
+    "phase": "Phase: {{value}}",
+    "participants": "Participating characters: {{value}}",
+    "mustAdvance": "This chapter must advance: {{value}}",
+    "mustPreserve": "This chapter must preserve: {{value}}",
+    "replanned": "This chapter comes from a planning adjustment.",
+    "sourceIssues": "This chapter references {{count}} pending audit issues.",
+    "noSupplement": "No supplement",
+    "noPlan": "No chapter plan yet.",
+    "stateSnapshot": "State snapshot",
+    "noSummary": "No summary yet",
+    "knowledgeState": "Knowledge state: {{value}}",
+    "noSnapshot": "No state snapshot yet.",
+    "activeConflicts": "Active conflicts",
+    "lastSeen": "Last seen: chapter {{chapter}}",
+    "suggestion": "Suggestion: {{value}}",
+    "noConflicts": "No active conflicts yet."
+  }
+}

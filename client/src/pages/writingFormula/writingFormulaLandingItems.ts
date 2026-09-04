@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   buildStyleIntentSummary,
   type StyleBinding,
@@ -178,7 +179,7 @@ export function buildLandingProfileItems(params: BuildLandingProfileItemsParams)
         originLabel: getStyleProfileOriginLabel(profile),
         summaryLine: detailLines[0] ?? profile.description ?? "暂无写法摘要。",
         detailLines,
-        description: firstNonEmptyText(profile.description, profileSummary?.readingFeel, "这套写法还没有写清楚读感定位。"),
+        description: firstNonEmptyText(profile.description, profileSummary?.readingFeel, translateUi("这套写法还没有写清楚读感定位。")),
         recentNovelTitle: recentNovelBinding
           ? (novelTitleMap[recentNovelBinding.targetId] ?? recentNovelBinding.targetId)
           : null,

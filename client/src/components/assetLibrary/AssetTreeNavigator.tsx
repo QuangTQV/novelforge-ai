@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight, FolderTree } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface AssetTreeNode {
   id: string;
@@ -30,6 +31,7 @@ function AssetTreeRow<Node extends AssetTreeNode>({
   selectedId,
   onSelect,
 }: AssetTreeRowProps<Node>) {
+  const { t } = useTranslation("components");
   const [expanded, setExpanded] = useState(depth === 0);
   const hasChildren = node.children.length > 0;
   const selected = selectedId === node.id;
@@ -51,7 +53,13 @@ function AssetTreeRow<Node extends AssetTreeNode>({
             if (hasChildren) setExpanded((value) => !value);
             else onSelect(node.id);
           }}
-          aria-label={hasChildren ? `${expanded ? "折叠" : "展开"}「${node.name}」` : `选择「${node.name}」`}
+          aria-label={
+            hasChildren
+              ? t(expanded ? "assetLibrary.tree.collapseNode" : "assetLibrary.tree.expandNode", {
+                  name: node.name,
+                })
+              : t("assetLibrary.tree.selectNode", { name: node.name })
+          }
         >
           {hasChildren ? (
             expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />

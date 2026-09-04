@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import type { DocumentChapter } from "@ai-novel/shared/types/knowledge";
 import { Button } from "@/components/ui/button";
@@ -21,9 +22,9 @@ interface BookAnalysisSourceRangePickerProps {
 }
 
 const CHAR_PRESETS = [
-  { label: "前 5 万字", value: 50_000 },
-  { label: "前 10 万字", value: 100_000 },
-  { label: "前 20 万字", value: 200_000 },
+  { label: translateUi("前 5 万字"), value: 50_000 },
+  { label: translateUi("前 10 万字"), value: 100_000 },
+  { label: translateUi("前 20 万字"), value: 200_000 },
 ];
 
 const numberFormatter = new Intl.NumberFormat("zh-CN");
@@ -253,12 +254,12 @@ export default function BookAnalysisSourceRangePicker({
   return (
     <div className="space-y-2 rounded-md border bg-background p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-sm font-medium">原文范围</div>
+        <div className="text-sm font-medium">{translateUi("原文范围")}</div>
         <div className="inline-flex rounded-md bg-muted/40 p-1">
           {([
-            ["full", "全文"],
-            ["chapter", "按章节"],
-            ["chars", "按字数"],
+            ["full", translateUi("全文")],
+            ["chapter", translateUi("按章节")],
+            ["chars", translateUi("按字数")],
           ] as const).map(([key, label]) => (
             <button
               key={key}
@@ -292,7 +293,8 @@ export default function BookAnalysisSourceRangePicker({
               >
                 {sortedChapters.map((chapter) => (
                   <option key={chapter.id} value={chapter.chapterIndex}>
-                    起：第 {chapter.chapterIndex + 1} 章 · {shortTitle(chapter.title)}
+
+                    {translateUi("起：第")} {chapter.chapterIndex + 1}  {translateUi("章 ·")} {shortTitle(chapter.title)}
                   </option>
                 ))}
               </SelectControl>
@@ -309,7 +311,8 @@ export default function BookAnalysisSourceRangePicker({
                   .filter((chapter) => chapter.chapterIndex >= (selectedRange?.startChapterIndex ?? sortedChapters[0]?.chapterIndex ?? 0))
                   .map((chapter) => (
                     <option key={chapter.id} value={chapter.chapterIndex}>
-                      止：第 {chapter.chapterIndex + 1} 章 · {shortTitle(chapter.title)}
+
+                      {translateUi("止：第")} {chapter.chapterIndex + 1}  {translateUi("章 ·")} {shortTitle(chapter.title)}
                     </option>
                   ))}
               </SelectControl>
@@ -334,7 +337,7 @@ export default function BookAnalysisSourceRangePicker({
               disabled={!canUseChapterRange}
               onChange={(event) => setCharStartInput(event.target.value)}
               onBlur={() => applyCharRange(charStartInput, charEndInput)}
-              placeholder="起始字数，如 5000"
+              placeholder={translateUi("起始字数，如 5000")}
             />
             <Input
               className="h-9 text-xs"
@@ -342,7 +345,7 @@ export default function BookAnalysisSourceRangePicker({
               disabled={!canUseChapterRange}
               onChange={(event) => setCharEndInput(event.target.value)}
               onBlur={() => applyCharRange(charStartInput, charEndInput)}
-              placeholder="结束字数，如 5万"
+              placeholder={translateUi("结束字数，如 5万")}
             />
           </div>
           <div className="text-xs text-muted-foreground">{charModeHint}</div>
@@ -359,11 +362,11 @@ export default function BookAnalysisSourceRangePicker({
 
       {mode === "chapter" && canUseChapterRange ? (
         <div className="flex flex-wrap gap-1.5">
-          <QuickButton onClick={() => applyChapterPreset("first5")}>前 5 章</QuickButton>
-          <QuickButton onClick={() => applyChapterPreset("last5")}>后 5 章</QuickButton>
-          <QuickButton onClick={() => applyChapterPreset("frontThird")}>前 1/3</QuickButton>
-          <QuickButton onClick={() => applyChapterPreset("middleThird")}>中 1/3</QuickButton>
-          <QuickButton onClick={() => applyChapterPreset("backThird")}>后 1/3</QuickButton>
+          <QuickButton onClick={() => applyChapterPreset("first5")}>{translateUi("前 5 章")}</QuickButton>
+          <QuickButton onClick={() => applyChapterPreset("last5")}>{translateUi("后 5 章")}</QuickButton>
+          <QuickButton onClick={() => applyChapterPreset("frontThird")}>{translateUi("前 1/3")}</QuickButton>
+          <QuickButton onClick={() => applyChapterPreset("middleThird")}>{translateUi("中 1/3")}</QuickButton>
+          <QuickButton onClick={() => applyChapterPreset("backThird")}>{translateUi("后 1/3")}</QuickButton>
         </div>
       ) : null}
 

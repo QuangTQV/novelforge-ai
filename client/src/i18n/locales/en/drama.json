@@ -1,0 +1,604 @@
+{
+  "tabs": {
+    "source": "Source material",
+    "strategy": "Drama strategy",
+    "episodes": "Episode scripts",
+    "quality": "Quality issues",
+    "characters": "Characters",
+    "visual": "Storyboard & video",
+    "export": "Export data"
+  },
+  "status": {
+    "draft": "Preparing material",
+    "strategized": "Strategy created",
+    "outlined": "Episodes created",
+    "scripting": "Generating scripts",
+    "completed": "Completed",
+    "planned": "Pending script",
+    "scripted": "Script created",
+    "reviewed": "Reviewed",
+    "needsRepair": "Needs repair",
+    "approved": "Approved"
+  },
+  "progress": {
+    "bundle": "Source bundle",
+    "strategy": "Strategy",
+    "episodes": "Episodes",
+    "script": "Script",
+    "quality": "Quality"
+  },
+  "strategy": {
+    "positioning": "Audience positioning",
+    "mainPleasureLine": "Main pleasure line",
+    "paywallNote": "Paywall point plan",
+    "paywallPlan": "Paywall point plan",
+    "emotionCurveNote": "Emotion curve",
+    "deviationDeclaration": "Adaptation boundary"
+  },
+  "score": {
+    "hook": "Opening hook",
+    "density": "Information density",
+    "paywall": "Paywall point",
+    "emotion": "Emotion curve",
+    "duration": "Duration",
+    "consistency": "Consistency",
+    "overall": "Overall"
+  },
+  "sep": {
+    "pause": ", ",
+    "semicolon": "; ",
+    "comma": ", "
+  },
+  "common": {
+    "refresh": "Refresh",
+    "repair": "Repair",
+    "prevStep": "Previous step",
+    "nextStep": "Next step",
+    "title": "Title",
+    "processing": "Processing..."
+  },
+  "tracks": {
+    "counterattack": "Underdog comeback",
+    "rebirth_revenge": "Rebirth revenge",
+    "war_god": "War god returns",
+    "live_in_son": "Live-in son-in-law",
+    "miracle_doctor": "Miracle doctor",
+    "rich_family": "Rich family feud",
+    "sweet_love": "Sweet romance",
+    "hidden_identity": "Hidden identity",
+    "none": "No track selected"
+  },
+  "source": {
+    "novel_import": "Import from a novel",
+    "original": "Original drama",
+    "text_import": "Import from text"
+  },
+  "toast": {
+    "projectCreated": "Drama project created.",
+    "trackRecommended": "Suggested a suitable drama track.",
+    "sourceAssembled": "Drama source material assembled.",
+    "strategyGenerated": "Drama strategy generated.",
+    "first12Outlined": "Generated episode breakdowns for the first 12.",
+    "episodeScriptGenerated": "Generated the script for episode {{order}}.",
+    "episodeReviewed": "Reviewed episode {{order}}'s quality.",
+    "episodeRepaired": "Fixed episode {{order}} per the quality suggestions.",
+    "storyboardGenerated": "Generated episode {{order}}'s storyboard.",
+    "videoPromptGenerated": "Generated a video prompt for shot {{order}}.",
+    "videoTaskCreated": "Video task created.",
+    "videoTaskRefreshed": "Video task status refreshed.",
+    "ttsJobCreated": "Voiceover task created.",
+    "batchJobCreated": "Batch task created.",
+    "complianceDone": "Compliance pre-check done.",
+    "keyframeGenerated": "Generated a first frame for shot {{order}}.",
+    "characterImported": "Imported the character into the current project.",
+    "characterSaved": "Saved {{name}}.",
+    "characterSavedToLibrary": "Saved {{name}} to the character library."
+  },
+  "workspace": {
+    "title": "Short Drama Studio",
+    "subtitle": "Assemble drama material from a novel, original inspiration or pasted text, then generate a vertical paid-drama strategy and per-episode scripts.",
+    "defaults": {
+      "originalProjectTitle": "Original drama project"
+    },
+    "create": {
+      "title": "Create a drama project",
+      "description": "Choose a source step by step, add content, then create a project ready for the drama pipeline.",
+      "submitting": "Creating...",
+      "submit": "Create the drama project"
+    },
+    "wizard": {
+      "steps": {
+        "source": "Source",
+        "content": "Content",
+        "settings": "Parameters"
+      }
+    },
+    "status": {
+      "draft": "Preparing material",
+      "strategized": "Strategy created",
+      "outlined": "Episodes created",
+      "scripting": "Generating scripts",
+      "completed": "Completed"
+    },
+    "sourceOptions": {
+      "novelImport": {
+        "title": "Import a novel",
+        "description": "Adapt an existing novel; good for turning a long work into a vertical drama."
+      },
+      "original": {
+        "title": "Original drama",
+        "description": "Start from a line of inspiration; the system organizes characters, conflict and rhythm."
+      },
+      "textImport": {
+        "title": "Paste text",
+        "description": "Turn a synopsis, short story or external material into a drama project."
+      }
+    },
+    "form": {
+      "selectNovel": "Select a novel",
+      "loadingNovels": "Loading novels...",
+      "selectNovelToAdapt": "Select the novel to adapt",
+      "noNovels": "No novels to import",
+      "untitledNovel": "Untitled novel",
+      "novelOption": "{{title}} ({{count}} chapters)",
+      "selectedNovelHint": "Selected {{title}}, {{count}} chapters. After creating, it's assembled into a drama source bundle first.",
+      "inspirationLabel": "Original inspiration",
+      "inspirationPlaceholder": "e.g. After being jilted, the heroine discovers she's a conglomerate heir and publicly humiliates everyone who scorned her.",
+      "rawTextLabel": "Input text",
+      "rawTextPlaceholder": "Paste a synopsis, character setup, short-story text or adaptation material.",
+      "projectName": "Project name",
+      "track": "Track",
+      "targetEpisodes": "Target episode count",
+      "themeSupplement": "Theme notes",
+      "trackRecommendation": "Track suggestion",
+      "trackRecommendationHint": "Suggests a better-fitting vertical drama track from the current material.",
+      "recommending": "Suggesting...",
+      "recommendTrack": "Suggest a track"
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Assemble material first, then generate strategy and episodes.",
+      "loading": "Loading drama projects...",
+      "empty": "No drama projects yet. Create one on the left."
+    },
+    "card": {
+      "open": "Open the studio",
+      "assemble": "Assemble material",
+      "strategy": "Generate strategy",
+      "outline12": "Generate the first 12",
+      "episodesCount": "{{count}} episodes"
+    },
+    "validation": {
+      "selectNovel": "Please select the novel to adapt.",
+      "fillInspiration": "Please enter the original inspiration.",
+      "pasteText": "Please paste the text to organize.",
+      "fillTitle": "Please enter the drama project name first."
+    }
+  },
+  "project": {
+    "loading": "Loading the drama project...",
+    "notFound": "This drama project wasn't found.",
+    "backToWorkspace": "Back to the Short Drama Studio",
+    "workspaceLink": "Short Drama Studio",
+    "episodesBadge": "{{count}} episodes",
+    "costBadge": "Production cost: used {{actual}} / estimated {{estimated}}",
+    "flowHint": "Advance this drama in order: material → strategy → episodes → script → quality → storyboard video.",
+    "tabs": {
+      "source": "Source material",
+      "strategy": "Drama strategy",
+      "episodes": "Episode scripts",
+      "quality": "Quality issues",
+      "characters": "Characters",
+      "visual": "Storyboard video",
+      "export": "Export"
+    },
+    "status": {
+      "draft": "Preparing material",
+      "strategized": "Strategy created",
+      "outlined": "Episodes created",
+      "scripting": "Generating scripts",
+      "completed": "Completed",
+      "planned": "Pending script",
+      "scripted": "Script created",
+      "reviewed": "Reviewed",
+      "needs_repair": "Needs repair",
+      "approved": "Approved"
+    },
+    "strategyLabels": {
+      "positioning": "Audience positioning",
+      "mainPleasureLine": "Main pleasure line",
+      "paywallNote": "Paywall point plan",
+      "paywallPlan": "Paywall point plan",
+      "emotionCurveNote": "Emotion curve",
+      "deviationDeclaration": "Adaptation boundary"
+    },
+    "scoreLabels": {
+      "hook": "Opening hook",
+      "density": "Information density",
+      "paywall": "Paywall point",
+      "emotion": "Emotion curve",
+      "duration": "Duration",
+      "consistency": "Consistency",
+      "overall": "Overall"
+    },
+    "progress": {
+      "bundle": "Source bundle",
+      "strategy": "Strategy",
+      "episodes": "Episodes",
+      "script": "Script",
+      "quality": "Quality"
+    },
+    "strategy": {
+      "empty": "No drama strategy generated yet."
+    },
+    "episodes": {
+      "empty": "No episode outline yet. Generate breakdowns for the first 12."
+    },
+    "episode": {
+      "episodeNo": "Episode {{order}}",
+      "episodeTitle": "Episode {{order}}: {{title}}",
+      "paywall": "Paywall point",
+      "normal": "Regular episode",
+      "noHook": "No hook info yet",
+      "noHookOpening": "This episode has no opening hook yet.",
+      "generateScript": "Generate the script",
+      "qualityCheck": "Quality check",
+      "saveEdit": "Save edits",
+      "pending": "Pending",
+      "durationField": "Duration: {{value}} s",
+      "emotionNet": "Net emotion: {{value}}",
+      "statusField": "Status: {{value}}",
+      "infoSection": "Episode info",
+      "durationInput": "Estimated duration (s)",
+      "hookOpening": "Opening hook",
+      "cliffhanger": "Ending cliffhanger",
+      "script": "Script",
+      "scriptPlaceholder": "No script yet. Generate one, or write it by hand.",
+      "qualityResult": "Quality result"
+    },
+    "quality": {
+      "empty": "No quality check results yet.",
+      "checkedFallback": "Reviewed",
+      "overall": "Overall {{score}}",
+      "flagFallback": "Quality suggestion",
+      "suggestRepair": "Repair suggested"
+    },
+    "toast": {
+      "fillEpisodeTitle": "Please enter the episode title.",
+      "episodeSaved": "Saved episode {{order}}.",
+      "fillCharacterName": "Please enter the character name."
+    },
+    "export": {
+      "title": "Export drama materials",
+      "description": "Export this project's generated characters, episodes and scripts.",
+      "markdown": "Export Markdown",
+      "json": "Export JSON",
+      "episodeSrt": "Export this episode's SRT",
+      "timelineDraft": "Export the edit draft"
+    }
+  },
+  "nextStep": {
+    "projectBadge": "{{count}}-episode project",
+    "processing": "Processing...",
+    "yes": "Yes",
+    "no": "No",
+    "generated": "Generated",
+    "notGenerated": "Not generated",
+    "stats": {
+      "sourceAssembled": "Material assembled: {{value}}",
+      "strategy": "Strategy: {{value}}",
+      "episodes": "Episodes: {{count}}",
+      "videoPrompts": "Current video prompts: {{count}}"
+    },
+    "source": {
+      "title": "Next: assemble the source material",
+      "description": "Organize the novel, inspiration or input text into a synopsis, rhythm, characters and hard facts the drama can use.",
+      "button": "Assemble material"
+    },
+    "strategy": {
+      "title": "Next: generate the drama strategy",
+      "description": "From the material and track, generate audience positioning, the main pleasure line, paywall points and the adaptation boundary.",
+      "button": "Generate strategy"
+    },
+    "outline": {
+      "title": "Next: generate breakdowns for the first 12 episodes",
+      "description": "Generate a checkable episode outline first to confirm the direction of hooks, conflict and paywall points.",
+      "button": "Generate the first 12"
+    },
+    "script": {
+      "title": "Next: generate episode {{order}}'s script",
+      "description": "Write this episode's outline into a shootable drama script: dense dialogue, a hooked opening, a cliffhanger ending.",
+      "button": "Generate the script"
+    },
+    "repair": {
+      "title": "Next: fix episode {{order}}'s quality issues",
+      "description": "This episode has quality suggestions; fix them first so issues don't reach the storyboard and video prompts.",
+      "button": "Fix the script"
+    },
+    "review": {
+      "title": "Next: review episode {{order}}'s quality",
+      "description": "Check the golden three seconds, information density, paywall points, duration, fact consistency and character consistency.",
+      "button": "Quality check"
+    },
+    "storyboard": {
+      "title": "Next: generate episode {{order}}'s storyboard",
+      "description": "Split the reviewed script into shootable shots, keeping character visual anchors and action focus.",
+      "button": "Generate the storyboard"
+    },
+    "videoPrompt": {
+      "title": "Next: generate episode {{order}}'s video prompts",
+      "description": "Turn one storyboard shot into a vertical video generation prompt, keeping character, action and camera language.",
+      "button": "Generate the video prompt"
+    },
+    "providerTask": {
+      "title": "Next: create a video generation task",
+      "description": "Send the generated video prompt to the current provider, then refresh status on the storyboard video page.",
+      "button": "Create a video task"
+    },
+    "export": {
+      "title": "Next: export drama materials",
+      "description": "Export the current characters, episodes, scripts, quality results and follow-up production materials for editing or handoff.",
+      "button": "Export Markdown"
+    }
+  },
+  "quality": {
+    "emptyOutline": "No episode outline yet. After generating episodes and scripts, this summarizes each episode's quality check.",
+    "header": "Quality & compliance",
+    "headerHint": "Check script quality first, then confirm platform compliance risk.",
+    "checkAllCompliance": "Check all scripts for compliance",
+    "check": "Check",
+    "recheck": "Recheck",
+    "viewScript": "View the script",
+    "noProblems": "No quality issues need handling right now.",
+    "noStructuredDetail": "This episode needs handling but has no structured issue details.",
+    "reviewThenDecide": "Review the issues, then decide whether to fix.",
+    "flagFallback": "Quality suggestion",
+    "uncheckedTitle": "Scripts pending review",
+    "uncheckedHint": "These episodes have scripts but no quality check results yet.",
+    "episodeTitle": "Episode {{order}}: {{title}}",
+    "status": {
+      "approved": "Approved",
+      "repairable": "Repair suggested",
+      "continue_with_warning": "Can continue",
+      "blocked": "Needs handling",
+      "unchecked": "Not checked"
+    },
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical",
+      "fallback": "Suggestion"
+    },
+    "compliance": {
+      "pass": "Compliance passed",
+      "warn": "Compliance warning",
+      "block": "Compliance needs fixing",
+      "fallback": "Not pre-checked"
+    },
+    "summary": {
+      "checked": "Reviewed",
+      "needsRepair": "Repair suggested",
+      "warning": "Can continue",
+      "approved": "Approved",
+      "complianceRisk": "Compliance risk",
+      "average": "Average score",
+      "pending": "Pending review"
+    }
+  },
+  "sourcePanel": {
+    "qualityTitle": "Material quality suggestions",
+    "qualityHint": "These suggestions decide whether later strategy, episodes and scripts have enough input.",
+    "available": "Usable",
+    "needSupplement": "Needs more",
+    "empty": "No source material assembled yet. Click \"Assemble material\" and the system organizes the novel, inspiration or input text into a synopsis, rhythm, characters and hard facts the drama can use.",
+    "storyMaterial": "Story material",
+    "storyMaterialHint": "The standard content pack for generating strategy, episodes and scripts later.",
+    "synopsis": "Synopsis",
+    "noSynopsis": "No synopsis yet",
+    "worldNotes": "Setting notes",
+    "noWorldNotes": "No setting notes yet",
+    "sourceBeats": "Source beats",
+    "beatN": "Beat {{n}}",
+    "noBeats": "No source beats yet.",
+    "hardFacts": "Hard facts",
+    "noHardFacts": "No hard facts yet.",
+    "checks": {
+      "synopsis": {
+        "label": "Story synopsis",
+        "ready": "Organized into drama material",
+        "missing": "Missing a story synopsis"
+      },
+      "beats": {
+        "label": "Source beats",
+        "ready": "{{count}} beats",
+        "short": "{{count}} beats, possibly not enough for a long run"
+      },
+      "characters": {
+        "label": "Character source",
+        "ready": "{{count}} characters",
+        "short": "Missing main characters"
+      },
+      "facts": {
+        "label": "Hard facts",
+        "ready": "{{count}} hard facts",
+        "missing": "Missing facts to constrain later scripts"
+      }
+    },
+    "readiness": {
+      "ready": "Can continue",
+      "needs_supplement": "More suggested",
+      "needs_rebuild": "Reassemble the material"
+    },
+    "nextAction": {
+      "continue": "Continue to generate strategy",
+      "supplement_notes": "Add notes first",
+      "rebuild_source_bundle": "Reassemble after adding notes"
+    },
+    "supplement": {
+      "title": "Material supplement suggestions",
+      "hint": "Let the system point out material gaps affecting strategy, episode and script generation.",
+      "analyzing": "Analyzing...",
+      "generate": "Generate supplement suggestions",
+      "notesLabel": "Supplement notes (optional)",
+      "notesPlaceholder": "e.g. The protagonist must keep the revenge line, the lead romance sweeter, the villain not too one-dimensional."
+    },
+    "toast": {
+      "guidanceGenerated": "Material supplement suggestions generated."
+    }
+  },
+  "characters": {
+    "panelTitle": "Drama character assets",
+    "panelHint": "Character assets feed scripts, storyboards and video prompts, prioritizing audience recognition, consistent styling and shootable dialogue.",
+    "selectLibraryAsset": "Select a drama character asset",
+    "noLibraryAsset": "No character assets to import",
+    "importAsset": "Import a character asset",
+    "emptyHint": "After assembling material, the system auto-imports main characters, then adds styling anchors, performance and dialogue.",
+    "completeness": {
+      "screenRole": "On-screen function",
+      "audienceRead": "Audience recognition",
+      "visualAnchor": "Styling anchor",
+      "voiceAnchor": "Performance anchor",
+      "lineRule": "Dialogue rule"
+    },
+    "designSheet": "Character sheet",
+    "designSheetHint": "Face crop + front/side/back full-body views — locks cross-episode image consistency once generated",
+    "designSheetAlt": "{{name}} - character sheet",
+    "configureProvider": "Configure an image provider in settings first",
+    "generatingSheet": "Generating the character sheet...",
+    "generateFailed": "Generation failed",
+    "noResult": "No result",
+    "notGenerated": "Not generated",
+    "regenerateSheet": "Regenerate the sheet",
+    "generateSheet": "Generate the character sheet",
+    "sheetRefHint": "Video generation automatically uses this image as the character reference",
+    "historyCount": "{{count}} history versions",
+    "sheetHistory": "Sheet history versions",
+    "screenRolePlaceholder2": "First define this character's on-screen function in the drama.",
+    "assetProgress": "Assets {{done}}/{{total}}",
+    "screenName": "On-screen name",
+    "dramaFunction": "Function in the drama",
+    "dramaFunctionPlaceholder": "Hero / villain / obstacle / helper / love interest",
+    "audienceRead": "What the audience must grasp immediately",
+    "audienceReadPlaceholder": "e.g. She appears weak and humiliated, but her gaze stays calm; the audience must instantly believe she has a comeback card.",
+    "visualAnchor": "Fixed styling anchor",
+    "visualAnchorPlaceholder": "Appearance, hairstyle, outfit, props, usual colors; later storyboards and video prompts keep to this.",
+    "voiceAnchor": "Performance & voice anchor",
+    "voiceAnchorPlaceholder": "Pace, timbre, expression habits, how emotions erupt; for consistent dialogue and video performance.",
+    "lineRule": "Dialogue rule",
+    "lineRulePlaceholder": "e.g. short pressing sentences, little explanation, many rhetorical questions; doesn't rush to explain when humiliated, one decisive line when striking back.",
+    "relationMap": "Conflict relations & camera setup",
+    "relationMapPlaceholder": "Who this character mainly opposes, presses, protects, and how shared-frame composition is handled.",
+    "saveAsset": "Save the character asset",
+    "saveToLibrary": "Save to the drama character library"
+  },
+  "audio": {
+    "title": "Voiceover",
+    "channelAria": "Voiceover channel",
+    "mockChannel": "Mock voiceover channel",
+    "synthesize": "Synthesize this episode's voiceover",
+    "jobTitle": "This episode's voiceover task",
+    "skipped": "Skipped {{count}}",
+    "failed": "Failed {{count}}",
+    "channel": "Channel: {{provider}}",
+    "estimated": "Estimated: {{cost}}",
+    "actual": "Actual: {{cost}}",
+    "failedShots": "Failed shots: {{ids}}",
+    "retryFailed": "Retry failed shots",
+    "shotN": "Shot {{order}}",
+    "voiceLine": "Voice: {{voiceId}}",
+    "needStoryboard": "After generating the storyboard, you can synthesize this episode's voiceover.",
+    "costTitle": "Estimated voiceover cost",
+    "calculating": "Calculating",
+    "costNeedStoryboard": "Can be calculated after storyboarding",
+    "perSecond": "{{cost}}/s",
+    "noUnitPrice": "No unit price configured",
+    "shotsCount": " · {{count}} shots",
+    "batchStatus": {
+      "pending": "Pending",
+      "running": "Running",
+      "paused": "Paused",
+      "done": "Completed",
+      "failed": "Some failed"
+    }
+  },
+  "visual": {
+    "needEpisodes": "Generate episodes and scripts first, then move to storyboarding and video prompts.",
+    "noStoryboardShort": "This episode has no storyboard yet.",
+    "episodeOption": "Episode {{order}} {{title}}",
+    "videoChannelAria": "Video channel",
+    "keyframeProviderAria": "First-frame provider",
+    "noImageProvider": "Image provider not configured",
+    "characterRefImages": "Character reference images",
+    "generateStoryboard": "Generate the storyboard",
+    "generateKeyframes": "Generate this episode's first frames",
+    "createVideoJobs": "Create this episode's video tasks",
+    "keyframeCostTitle": "Estimated first-frame cost",
+    "videoCostTitle": "Estimated video cost",
+    "keyframeBatchTitle": "Batch first-frame tasks",
+    "videoBatchTitle": "Batch video tasks",
+    "currentVideoChannel": "Current video channel: {{value}}",
+    "storyboard": "Storyboard",
+    "shotSequenceGenerated": "Shot sequence generated.",
+    "shotN": "Shot {{order}}",
+    "shotSizePending": "Shot size pending",
+    "keyframeV": "First frame v{{version}}",
+    "keyframeHistoryCount": "{{count}} first-frame history entries",
+    "promptV": "Prompt v{{version}}",
+    "regenerateKeyframe": "Regenerate the first frame",
+    "generateKeyframe": "Generate the first frame",
+    "videoPrompt": "Video prompt",
+    "taskCreated": "Task created",
+    "createVideoTask": "Create a video task",
+    "createTask": "Create task",
+    "refreshStatus": "Refresh status",
+    "videoTasks": "Video tasks",
+    "videoTasksHint": "Centrally view this project's generated video prompts and provider task status.",
+    "taskId": "Task: {{id}}",
+    "historyVersion": "Older versions",
+    "stats": {
+      "prompted": "Current prompt",
+      "withTask": "Task created",
+      "queued": "Generating",
+      "succeeded": "Completed",
+      "failed": "Failed",
+      "history": "Older versions"
+    },
+    "skipped": "Skipped {{count}}",
+    "failed": "Failed {{count}}",
+    "channel": "Channel: {{provider}}",
+    "estimated": "Estimated: {{cost}}",
+    "actual": "Actual: {{cost}}",
+    "failedShots": "Failed shots: {{ids}}",
+    "retryFailed": "Retry failed shots",
+    "keyframeAlt": "Shot {{order}} first frame",
+    "keyframeGenerating": "Generating the first frame",
+    "keyframeFailed": "Failed to generate the first frame",
+    "keyframeNotYet": "First frame not generated yet",
+    "shotFrame": "Shot frame",
+    "location": "Location: {{location}}",
+    "keyframeChannel": "First-frame channel: {{provider}}",
+    "keyframeHistory": "First-frame history versions",
+    "perImage": "{{cost}}/image",
+    "perSecond": "{{cost}}/s",
+    "noUnitPrice": "No unit price configured",
+    "calculating": "Calculating",
+    "costPending": "Pending calculation",
+    "shotsCount": " · {{count}} shots",
+    "negativePrompt": "Negative prompt",
+    "version": "Version: v{{version}}",
+    "aspectRatio": "Aspect ratio: {{ratio}}",
+    "durationSec": "Duration: {{sec}} s",
+    "channelStatus": "Video channel status: {{status}}",
+    "viewResult": "View the generated result",
+    "videoTaskFailedReason": "Video task failed: {{reason}}",
+    "videoTaskFailed": "The video task failed. Refresh the status or regenerate the prompt before creating a task.",
+    "batchStatus": {
+      "pending": "Pending",
+      "running": "Running",
+      "paused": "Paused",
+      "done": "Completed",
+      "failed": "Some failed"
+    }
+  }
+}

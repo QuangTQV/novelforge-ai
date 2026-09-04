@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AntiAiRule } from "@ai-novel/shared/types/styleEngine";
@@ -111,20 +112,20 @@ export default function AntiAiRulesPage() {
     mutationFn: (payload: ReturnType<typeof buildPayload>) => createAntiAiRule(payload),
     onSuccess: async () => {
       await refreshRules();
-      toast.success("反 AI 规则已创建。");
+      toast.success(translateUi("反 AI 规则已创建。"));
       setDialogOpen(false);
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "创建规则失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("创建规则失败。")),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: Partial<ReturnType<typeof buildPayload>> }) => updateAntiAiRule(id, payload),
     onSuccess: async () => {
       await refreshRules();
-      toast.success("反 AI 规则已保存。");
+      toast.success(translateUi("反 AI 规则已保存。"));
       setDialogOpen(false);
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "保存规则失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("保存规则失败。")),
   });
 
   const aiDraftMutation = useMutation({
@@ -148,7 +149,7 @@ export default function AntiAiRulesPage() {
     onSuccess: (response) => {
       const result = response.data;
       if (!result) {
-        toast.error("AI 没有返回可用草稿。");
+        toast.error(translateUi("AI 没有返回可用草稿。"));
         return;
       }
       setForm({
@@ -164,9 +165,9 @@ export default function AntiAiRulesPage() {
         globalBaselineEnabled: result.draft.globalBaselineEnabled,
         autoRewrite: result.draft.autoRewrite,
       });
-      toast.success("草稿填入表单，请检查后保存。");
+      toast.success(translateUi("草稿填入表单，请检查后保存。"));
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "AI 生成草稿失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("AI 生成草稿失败。")),
   });
 
   const detectionMutation = useMutation({
@@ -179,7 +180,7 @@ export default function AntiAiRulesPage() {
       temperature: 0.2,
     }),
     onSuccess: () => setRewritePreview(""),
-    onError: (error) => toast.error(error instanceof Error ? error.message : "检测失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("检测失败。")),
   });
 
   const rewriteMutation = useMutation({
@@ -212,7 +213,7 @@ export default function AntiAiRulesPage() {
       });
     },
     onSuccess: (response) => setRewritePreview(response.data?.content ?? ""),
-    onError: (error) => toast.error(error instanceof Error ? error.message : "修正失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("修正失败。")),
   });
 
   useEffect(() => {
@@ -239,7 +240,7 @@ export default function AntiAiRulesPage() {
     event.preventDefault();
     const payload = buildPayload(form);
     if (!payload.key || !payload.name || !payload.description) {
-      toast.error("请填写规则标识、名称和说明。");
+      toast.error(translateUi("请填写规则标识、名称和说明。"));
       return;
     }
     if (editingRule) {
@@ -268,15 +269,18 @@ export default function AntiAiRulesPage() {
           <div className="space-y-1">
             <CardTitle className="flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" />
-              反 AI 规则
+
+              {translateUi("反 AI 规则")}
             </CardTitle>
             <CardDescription>
-              管理正文生成会参考的反 AI 规则，控制哪些规则进入全局默认，哪些只留给写法资产绑定使用。
+
+              {translateUi("管理正文生成会参考的反 AI 规则，控制哪些规则进入全局默认，哪些只留给写法资产绑定使用。")}
             </CardDescription>
           </div>
           <Button type="button" onClick={openCreateDialog}>
             <Plus className="h-4 w-4" />
-            新建规则
+
+            {translateUi("新建规则")}
           </Button>
         </CardHeader>
         <CardContent>

@@ -1,0 +1,86 @@
+{
+  "page": {
+    "title": "Radar đề tài xu hướng"
+  },
+  "platforms": {
+    "fanqie": "Fanqie Novel",
+    "qidian": "Qidian",
+    "jinjiang": "Jinjiang Literature"
+  },
+  "signalKind": {
+    "genre": "Đề tài hot",
+    "protagonist": "Thân phận nhân vật chính",
+    "advantage": "Lợi thế đặc biệt",
+    "opening": "Điểm bùng nổ mở đầu",
+    "relationship": "Điểm hấp dẫn quan hệ",
+    "title_pattern": "Mẫu câu tiêu đề",
+    "opportunity": "Cơ hội khác biệt hóa",
+    "crowding": "Mô-típ bão hòa"
+  },
+  "influenceMode": {
+    "follow_hot": "Bám theo xu hướng",
+    "differentiate": "Khác biệt trong xu hướng",
+    "light": "Giảm ảnh hưởng thị trường"
+  },
+  "signalDirection": {
+    "current": "Đang xuất hiện nhiều",
+    "rising": "Đang tăng nhiệt",
+    "falling": "Đang giảm nhiệt",
+    "stable": "Tương đối ổn định"
+  },
+  "toast": {
+    "scanFailed": "Quét bảng xếp hạng thất bại. Thử lại sau.",
+    "analysisFailed": "Phân tích AI thất bại. Thử lại sau.",
+    "briefFailed": "Tạo bản tóm tắt sáng tác thị trường thất bại.",
+    "genreSynced": "Đã thêm nền tảng đề tài vào thư viện tài nguyên.",
+    "storyModeSynced": "Đã thêm chế độ triển khai vào thư viện tài nguyên.",
+    "syncFailed": "Thêm vào thư viện tài nguyên thất bại. Thử lại sau.",
+    "maxSignals": "Chỉ chọn tối đa 5 tín hiệu thị trường."
+  },
+  "scan": {
+    "inProgress": "Đang lấy bảng xếp hạng {{percent}}%",
+    "rescan": "Quét lại bảng xếp hạng",
+    "partialFailure": "Một số bảng xếp hạng tạm thời không đọc được, vẫn có thể xem và phân tích dữ liệu đã lấy thành công: {{details}}",
+    "platformError": "{{platform}}: {{error}}",
+    "readFailed": "Đọc thất bại",
+    "runFailed": "Lần quét này chưa hoàn tất: {{error}}",
+    "noPublicData": "Không lấy được dữ liệu bảng xếp hạng công khai có thể phân tích.",
+    "emptyLoadingTitle": "Đang lấy bảng xếp hạng công khai",
+    "emptyTitle": "Chưa có dữ liệu bảng xếp hạng để hiển thị",
+    "emptyHint": "Trang sẽ tự quét bảng xếp hạng khi mở. Sau khi lấy xong, bạn có thể xem thứ hạng gốc trước, rồi quyết định có để AI phân tích hay không."
+  },
+  "analysis": {
+    "lockedScope": "Báo cáo này dùng các tác phẩm đang được chọn; nếu muốn đổi phạm vi, hãy quét lại bảng xếp hạng.",
+    "selectedCount": "Đã chọn {{count}} tác phẩm, có thể chọn tất cả ở góc trên phải mỗi bảng hoặc điều chỉnh từng cuốn.",
+    "waitingForScan": "Chờ lấy xong bảng xếp hạng",
+    "inProgress": "AI đang phân tích {{percent}}%",
+    "viewAnalysis": "Xem phân tích AI",
+    "start": "Bắt đầu phân tích AI ({{count}} cuốn)",
+    "selectAll": "Chọn tất cả",
+    "clearAll": "Bỏ chọn tất cả",
+    "listRecordCount": "Lần này nhận diện {{count}} bản ghi lên bảng công khai (tối đa 30)",
+    "selectItem": "Chọn {{title}}",
+    "deselectItem": "Bỏ chọn {{title}}",
+    "authorHidden": "Tác giả không công khai",
+    "viewSource": "Xem nguồn công khai của {{title}}"
+  },
+  "report": {
+    "verdictTitle": "Nhận định kỳ này",
+    "verdictMeta": "Thu thập lúc {{date}}, mọi kết luận đều có thể tra lại bằng chứng bảng xếp hạng công khai.",
+    "genreFoundation": "Nền tảng đề tài: ",
+    "primaryStoryMode": "Triển khai chính: ",
+    "secondaryStoryMode": "Triển khai phụ: ",
+    "inLibrary": "Đã có trong thư viện · Xem",
+    "addGenreFoundation": "Thêm vào thư viện nền tảng đề tài",
+    "addStoryModeLibrary": "Thêm vào thư viện chế độ triển khai",
+    "foundationHint": "Các hướng đã có trong thư viện được dùng lại trực tiếp; chỉ hướng còn thiếu mới cần thêm thủ công. Tín hiệu thị trường bên dưới dùng để chọn sở thích mở truyện lần này.",
+    "platformItemCount": "{{platform}} · {{count}} mục",
+    "suggestRefresh": " · nên làm mới",
+    "signalSelected": "Đã chọn",
+    "signalHeat": "Độ hot {{value}}",
+    "signalCrowding": "Độ bão hòa {{value}}",
+    "selectionCount": "Đã chọn {{count}}/5 tín hiệu thị trường",
+    "selectionHint": "AI đã tự động chọn gợi ý, bạn có thể thay thế rồi mới mở truyện.",
+    "createWithSignals": "Sáng tác với các tín hiệu này"
+  }
+}

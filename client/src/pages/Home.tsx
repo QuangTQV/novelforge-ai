@@ -1,5 +1,7 @@
+import { translateUi } from "@/i18n/legacy";
 import type { MouseEvent } from "react";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { continueNovelWorkflow } from "@/api/novelWorkflow";
@@ -32,6 +34,7 @@ import CreationSetupNotice from "@/components/onboarding/CreationSetupNotice";
 import FirstNovelJourneyStrip from "@/components/onboarding/FirstNovelJourneyStrip";
 
 export default function Home() {
+  useTranslation();
   const queryClient = useQueryClient();
 
   const taskQuery = useQuery({
@@ -74,8 +77,8 @@ export default function Home() {
         error instanceof Error
           ? error.message
           : input.mode === "auto_execute_range"
-            ? "继续自动执行当前章节范围失败。"
-            : "继续自动导演失败。",
+            ? translateUi("继续自动执行当前章节范围失败。")
+            : translateUi("继续自动导演失败。"),
       );
     },
   });
@@ -123,7 +126,8 @@ export default function Home() {
             to={`/novels/${novel.id}/story`}
             onClick={stopPropagation ? stopCardClick : undefined}
           >
-            打开作品
+
+            {translateUi("打开作品")}
           </Link>
         </Button>
       );
@@ -145,7 +149,7 @@ export default function Home() {
           }}
           disabled={isWorkflowPending}
         >
-          {isWorkflowPending ? "继续执行中..." : (task?.resumeAction ?? `继续自动执行${task?.executionScopeLabel ?? "当前章节范围"}`)}
+          {isWorkflowPending ? translateUi("继续执行中...") : (task?.resumeAction ?? translateUi("继续自动执行{{value0}}", { value0: task?.executionScopeLabel ?? translateUi("当前章节范围") }))}
         </Button>
       );
     }
@@ -165,7 +169,7 @@ export default function Home() {
           }}
           disabled={isWorkflowPending}
         >
-          {isWorkflowPending ? "继续中..." : (task?.resumeAction ?? "继续导演")}
+          {isWorkflowPending ? translateUi("继续中...") : (task?.resumeAction ?? translateUi("继续导演"))}
         </Button>
       );
     }
@@ -177,7 +181,7 @@ export default function Home() {
             to={getCandidateSelectionLink(task!.id)}
             onClick={stopPropagation ? stopCardClick : undefined}
           >
-            {task!.resumeAction ?? "继续确认书级方向"}
+            {task!.resumeAction ?? translateUi("继续确认书级方向")}
           </Link>
         </Button>
       );
@@ -190,7 +194,8 @@ export default function Home() {
             to={`/novels/${novel.id}/edit`}
             onClick={stopPropagation ? stopCardClick : undefined}
           >
-            进入章节执行
+
+            {translateUi("进入章节执行")}
           </Link>
         </Button>
       );
@@ -203,7 +208,8 @@ export default function Home() {
             to={`/novels/${novel.id}/edit?directorTaskId=${task.id}`}
             onClick={stopPropagation ? stopCardClick : undefined}
           >
-            查看推进状态
+
+            {translateUi("查看推进状态")}
           </Link>
         </Button>
       );
@@ -215,7 +221,8 @@ export default function Home() {
           to={`/novels/${novel.id}/edit`}
           onClick={stopPropagation ? stopCardClick : undefined}
         >
-          编辑小说
+
+          {translateUi("编辑小说")}
         </Link>
       </Button>
     );

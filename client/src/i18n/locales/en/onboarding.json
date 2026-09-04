@@ -1,0 +1,110 @@
+{
+  "setupNotice": {
+    "title": "Finish quick setup to start creating with AI",
+    "defaultReason": "Pick a text model and the system automatically prepares the task routing for planning, prose, review and repair.",
+    "action": "Quick setup"
+  },
+  "journeyStrip": {
+    "title": "First book guide",
+    "stepProgress": "{{completed}}/{{total}} steps done",
+    "completedAria": "{{count}} steps completed"
+  },
+  "tip": {
+    "next": "Next: {{next}}",
+    "dismiss": "Dismiss this tip"
+  },
+  "quickSetup": {
+    "title": "Get the AI creation environment running first",
+    "description": "Configure just one text model and the system prepares the task routing for planning, prose, review and repair automatically.",
+    "reload": "Reload",
+    "steps": {
+      "chooseProvider": "Choose provider",
+      "connectModel": "Connect model",
+      "detect": "Verification done"
+    },
+    "checkingEnv": "Checking the creation environment",
+    "readError": {
+      "title": "Can't read the model configuration right now",
+      "description": "After reloading, the system keeps checking whether creation can start."
+    },
+    "ready": {
+      "title": "Creation environment is ready",
+      "summary": "{{provider}} · {{model}}, {{count}} core task groups are ready.",
+      "continue": "Keep creating"
+    },
+    "providerDesc": {
+      "deepseek": "Recommends DeepSeek V4 Flash, balancing long-form Chinese quality with response speed",
+      "ollama": "Uses a local model, no API key required",
+      "openai": "Good for general planning, prose and structured tasks",
+      "configured": "Already configured; you can verify it and set it as the global default directly",
+      "default": "Once configured it can drive the whole novel production pipeline"
+    },
+    "footer": {
+      "fillConnection": "Enter connection details",
+      "backToSelect": "Back to selection",
+      "detectAndComplete": "Verify and finish setup",
+      "viewGuide": "View the creation guide",
+      "startFirstNovel": "Start your first novel with one sentence",
+      "viewAdvanced": "View advanced settings",
+      "startCreating": "Start creating",
+      "editConfig": "Edit configuration"
+    },
+    "step1": {
+      "titleAll": "Choose a built-in model provider",
+      "titleRecommended": "Start from the recommended option",
+      "hintAll": "Choose a provider, then enter the connection details.",
+      "hintRecommended": "Configure one text model to start creating; choose another provider whenever you need to.",
+      "viewAllProviders": "View all built-in providers",
+      "viewAllProvidersHint": "Choose a provider you already have an account with, then enter the connection details.",
+      "addCustom": "Add a third-party provider",
+      "addCustomHint": "Add a separate provider configuration, suited to proxy services, local gateways or OpenAI-compatible endpoints.",
+      "backToRecommended": "Back to recommended option",
+      "recommendedModel": "Recommended model: {{model}}"
+    },
+    "badge": {
+      "selected": "Selected",
+      "configured": "Already configured"
+    },
+    "step2": {
+      "connectTitle": "Connect {{name}}",
+      "providerFallback": "model provider",
+      "apiKeyNote": "The API key is only saved to the local or server key store and is never shown in the result.",
+      "customNote": "The provider name, API URL and model are saved as a separate configuration and won't overwrite built-in providers.",
+      "providerName": "Provider name",
+      "providerNamePlaceholder": "e.g. My model gateway",
+      "optional": "(optional)",
+      "apiKeyPlaceholderSaved": "Leave blank to keep using the saved key",
+      "apiKeyPlaceholderRequired": "Enter API key",
+      "apiKeyPlaceholderLocal": "Local endpoints can be left blank",
+      "baseUrl": "API URL",
+      "fetchModels": "Fetch model list",
+      "textModel": "Text model",
+      "modelPlaceholder": "Pick a model above, or type a model name directly",
+      "footnote": "Once done, this model becomes the initial default for core tasks such as planning, prose, review, repair, replanning and summaries."
+    },
+    "customModels": {
+      "found": "Found {{count}} available models.",
+      "none": "The endpoint returned no model list; you can fill it in manually.",
+      "failed": "Failed to fetch the model list; you can enter the model name manually."
+    },
+    "step3": {
+      "detecting": "Verifying plain text and structured output",
+      "detectingHint": "Once verification passes, the system prepares every core creation task automatically, with no per-item route setup.",
+      "successTitle": "Creation environment configured",
+      "successDesc": "{{model}} is ready for the whole novel production pipeline.",
+      "failTitle": "Model verification did not pass",
+      "failDesc": "Please check the API key, URL and model name, then try again."
+    },
+    "handoff": {
+      "title": "Start your first novel",
+      "configureMore": "Configure more models",
+      "heading": "Start from a single sentence of story",
+      "body": "Tell the AI what you want to write and it offers directions to choose from; once you pick one it keeps preparing the story, world, characters and first chapter.",
+      "steps": {
+        "idea": "Share an idea",
+        "direction": "Choose a direction",
+        "firstChapter": "Read chapter one"
+      }
+    }
+  }
+}

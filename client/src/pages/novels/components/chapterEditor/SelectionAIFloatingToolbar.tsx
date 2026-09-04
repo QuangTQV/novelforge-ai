@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { ChapterEditorOperation } from "@ai-novel/shared/types/novel";
 import { Button } from "@/components/ui/button";
 import type { SelectionToolbarPosition } from "./chapterEditorTypes";
@@ -15,6 +16,7 @@ const SECONDARY_OPERATIONS: ChapterEditorOperation[] = ["expand", "compress", "e
 
 export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToolbarProps) {
   const { visible, position, disabled = false, onRunOperation } = props;
+  const { t } = useTranslation(["novelChapters", "common"]);
   const [customInstruction, setCustomInstruction] = useState("");
   const [isCustomOpen, setIsCustomOpen] = useState(false);
 
@@ -41,7 +43,7 @@ export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToo
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => onRunOperation("polish")}
         >
-          AI 优化这段
+          {t("selectionToolbar.polishThis")}
         </Button>
         {SECONDARY_OPERATIONS.map((operation) => (
           <Button
@@ -52,7 +54,7 @@ export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToo
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => onRunOperation(operation)}
           >
-            {CHAPTER_EDITOR_OPERATION_LABELS[operation]}
+            {t(CHAPTER_EDITOR_OPERATION_LABELS[operation])}
           </Button>
         ))}
         <Button
@@ -62,7 +64,7 @@ export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToo
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => setIsCustomOpen((current) => !current)}
         >
-          告诉 AI 怎么改
+          {t("selectionToolbar.tellAiHow")}
         </Button>
       </div>
 
@@ -70,7 +72,7 @@ export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToo
         <div className="mt-2 space-y-2 rounded-xl border border-border/70 bg-muted/20 p-2">
           <textarea
             className="min-h-[96px] w-full resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
-            placeholder="例如：让这段更压抑一点，保留原信息，但把节奏压得更紧。"
+            placeholder={t("selectionToolbar.customPlaceholder")}
             value={customInstruction}
             onChange={(event) => setCustomInstruction(event.target.value)}
           />
@@ -84,7 +86,7 @@ export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToo
                 setCustomInstruction("");
               }}
             >
-              取消
+              {t("common:actions.cancel")}
             </Button>
             <Button
               size="sm"
@@ -92,7 +94,7 @@ export default function SelectionAIFloatingToolbar(props: SelectionAIFloatingToo
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => onRunOperation("custom", customInstruction.trim())}
             >
-              提交指令
+              {t("selectionToolbar.submitInstruction")}
             </Button>
           </div>
         </div>

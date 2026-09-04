@@ -1,0 +1,48 @@
+{
+  "toast": {
+    "switchModeFailed": "Couldn't switch modes, please retry.",
+    "dismissTakeover": "Director takeover reminder dismissed.",
+    "noDirectorTask": "There's no auto-director task to continue right now.",
+    "continueDirectorFailed": "Failed to continue the auto-director.",
+    "stepValidated": "The current step has been checked.",
+    "stepUpdated": "The current step was updated; please check the result.",
+    "calibrationFailed": "Step calibration failed.",
+    "changesAccepted": "Changes confirmed; the director continues from the next unfinished step.",
+    "acceptChangesFailed": "Failed to confirm changes and continue."
+  },
+  "takeover": {
+    "currentProject": "Current project",
+    "unsavedChapterDraft": "The chapter-splitting workspace has unsaved changes. Save first, then let AI fix titles.",
+    "calibrationPrompt": "Tell AI what to adjust in this step (optional)",
+    "actions": {
+      "repairing": "AI repairing...",
+      "confirmBookDirection": "Confirm the book-level direction",
+      "goReviewStage": "Go to the step under review",
+      "continuing": "Continuing...",
+      "continueDirector": "Continue the auto-director",
+      "checking": "Checking...",
+      "checkStep": "AI check the current step",
+      "improving": "Improving...",
+      "improveStep": "AI improve the current step",
+      "generating": "Generating...",
+      "regenerateStep": "Regenerate the current step",
+      "confirming": "Confirming...",
+      "saveAndConfirm": "Save and confirm",
+      "openChapterExecution": "Open chapter execution",
+      "openQualityRepair": "Open quality repair",
+      "completeDirectorOutput": "Complete the director output",
+      "goCharacterPrep": "Go to character preparation",
+      "cancelling": "Cancelling...",
+      "cancelTask": "Cancel the task",
+      "continueDirectorShort": "Continue director",
+      "exiting": "Exiting...",
+      "exitDirector": "Exit director mode",
+      "removing": "Removing...",
+      "removeFromTasks": "Remove from the task list",
+      "collapsing": "Collapsing...",
+      "completeAndCollapse": "Complete and collapse",
+      "dismissReminder": "Dismiss this reminder",
+      "executionDetails": "Execution details"
+    }
+  }
+}

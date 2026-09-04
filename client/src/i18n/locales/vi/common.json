@@ -1,0 +1,24 @@
+{
+  "appName": "Bàn làm việc sáng tác tiểu thuyết AI",
+  "appTagline": "AI Novel Production Engine",
+  "badge": {
+    "beta": "Beta"
+  },
+  "state": {
+    "comingSoon": "Sắp ra mắt"
+  },
+  "links": {
+    "github": "Mở kho GitHub"
+  },
+  "actions": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "close": "Đóng",
+    "reset": "Đặt lại",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "create": "Tạo mới",
+    "retry": "Thử lại"
+  }
+}

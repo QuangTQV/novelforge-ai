@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { TakeoverProgressInspectionViewModel } from "../novelExistingProjectTakeoverViewModel";
 import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
 
@@ -15,7 +16,7 @@ export default function TakeoverProgressInspectionPanel({
   return (
     <div className="mt-3 rounded-lg border bg-background/70 p-3">
       <div className={`text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-        {isLoadingTaskSnapshot ? "正在读取当前任务的详细进度..." : inspection.summary}
+        {isLoadingTaskSnapshot ? translateUi("正在读取当前任务的详细进度...") : inspection.summary}
       </div>
       <div className="mt-3 grid min-w-0 gap-2 md:grid-cols-2">
         {inspection.cards.map((card) => (
@@ -30,7 +31,8 @@ export default function TakeoverProgressInspectionPanel({
       </div>
       {hasTaskSnapshotError ? (
         <div className={`mt-2 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-          当前任务详细进度读取失败，已先显示项目资产体检。
+
+          {translateUi("当前任务详细进度读取失败，已先显示项目资产体检。")}
         </div>
       ) : null}
     </div>

@@ -1,0 +1,34 @@
+{
+  "empty": "None",
+  "issueAction": {
+    "autoRetry": "Auto retry",
+    "continueWithWarning": "Continue after warning",
+    "pauseForManual": "Pause for manual handling",
+    "failTask": "Fail the task"
+  },
+  "policySource": {
+    "global": "Global policy",
+    "novel": "Novel policy",
+    "taskSnapshot": "Policy at task start",
+    "safety": "Safety limit"
+  },
+  "duration": {
+    "lessThanSecond": "<1 s",
+    "seconds": "{{count}} s",
+    "minutes": "{{minutes}} min",
+    "minutesSeconds": "{{minutes}} min {{seconds}} s"
+  },
+  "usage": {
+    "calls": "{{count}} calls",
+    "input": "Input {{count}}",
+    "output": "Output {{count}}",
+    "total": "{{count}} tokens total",
+    "duration": "Total call time {{value}}"
+  },
+  "policy": {
+    "suggestOnly": "Suggestions only",
+    "runNextStep": "Run the next step",
+    "autoSafeScope": "Auto-run within the safe scope",
+    "toCheckpoint": "Run to the checkpoint"
+  }
+}

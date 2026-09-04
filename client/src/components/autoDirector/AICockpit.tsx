@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import type {
   DirectorBookAutomationAction,
@@ -20,6 +21,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import i18n from "@/i18n";
+
+const t = (key: string, options?: Record<string, unknown>) => i18n.t(`aiCockpit:${key}`, options);
 
 export interface AICockpitProps {
   projection?: DirectorBookAutomationProjection | null;
@@ -36,14 +40,10 @@ export interface AICockpitProps {
 
 function displayStateLabel(state: DirectorBookAutomationDisplayState): string {
   const labels: Record<DirectorBookAutomationDisplayState, string> = {
-    processing: "AI 正在处理",
-    needs_confirmation: "等你确认",
-    paused: "已暂停",
-    needs_attention: "出错需处理",
-    completed: "已完成",
-    idle: "未开启",
+    processing: "state.processing", needs_confirmation: "state.needsConfirmation", paused: "state.paused",
+    needs_attention: "state.needsAttention", completed: "state.completed", idle: "state.idle",
   };
-  return labels[state];
+  return t(labels[state]);
 }
 
 function stateBadgeVariant(state: DirectorBookAutomationDisplayState): "default" | "secondary" | "outline" | "destructive" {
@@ -137,11 +137,11 @@ function stateSoftSurfaceClassName(state: DirectorBookAutomationDisplayState): s
 
 function formatDate(value: string | null | undefined): string {
   if (!value) {
-    return "暂无";
+    return t("empty");
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "暂无";
+    return t("empty");
   }
   return date.toLocaleString();
 }
@@ -157,14 +157,14 @@ function formatDuration(value: number | null | undefined): string | null {
   }
   const seconds = Math.round(value / 1000);
   if (seconds <= 0) {
-    return "<1 秒";
+    return t("duration.lessThanSecond");
   }
   if (seconds < 60) {
-    return `${seconds} 秒`;
+    return t("duration.seconds", { count: seconds });
   }
   const minutes = Math.floor(seconds / 60);
   const restSeconds = seconds % 60;
-  return restSeconds > 0 ? `${minutes} 分 ${restSeconds} 秒` : `${minutes} 分`;
+  return restSeconds > 0 ? t("duration.minutesSeconds", { minutes, seconds: restSeconds }) : t("duration.minutes", { minutes });
 }
 
 function formatUsageLine(usage: {
@@ -176,16 +176,16 @@ function formatUsageLine(usage: {
 }): string {
   const duration = formatDuration(usage.durationMs);
   return [
-    `${formatTokenCount(usage.llmCallCount)} 次调用`,
-    `输入 ${formatTokenCount(usage.promptTokens)}`,
-    `输出 ${formatTokenCount(usage.completionTokens)}`,
-    `总计 ${formatTokenCount(usage.totalTokens)} Tokens`,
-    duration ? `累计调用耗时 ${duration}` : null,
+    t("usage.calls", { count: formatTokenCount(usage.llmCallCount) }),
+    t("usage.input", { count: formatTokenCount(usage.promptTokens) }),
+    t("usage.output", { count: formatTokenCount(usage.completionTokens) }),
+    t("usage.total", { count: formatTokenCount(usage.totalTokens) }),
+    duration ? t("usage.duration", { value: duration }) : null,
   ].filter(Boolean).join(" · ");
 }
 
 function fallbackProjectionReason(props: Pick<AICockpitProps, "fallbackSummary">): string {
-  return props.fallbackSummary?.trim() || "没有需要你处理的 AI 自动推进任务。";
+  return props.fallbackSummary?.trim() || t("fallbackSummary");
 }
 
 function renderActionLabel(
@@ -196,61 +196,41 @@ function renderActionLabel(
     displayState === "needs_confirmation"
     && (action.type === "continue" || action.type === "auto_execute_range")
   ) {
-    return "确认并继续";
+    return t("actions.confirmContinue");
   }
-  return action.label || "继续处理";
+  return action.label || t("actions.continue");
 }
 
 function artifactTypeLabel(type: string): string {
   const labels: Record<string, string> = {
-    book_contract: "书级约定",
-    story_macro: "故事规划",
-    character_cast: "角色",
-    volume_strategy: "分卷",
-    chapter_task_sheet: "任务单",
-    chapter_draft: "正文",
-    audit_report: "审校",
-    repair_ticket: "修复",
-    reader_promise: "读者承诺",
-    character_governance_state: "角色状态",
-    world_skeleton: "世界框架",
-    source_knowledge_pack: "资料包",
-    chapter_retention_contract: "留存约定",
-    continuity_state: "连续性",
-    rolling_window_review: "近期复盘",
+    book_contract: "artifact.bookContract", story_macro: "artifact.storyMacro", character_cast: "artifact.characterCast",
+    volume_strategy: "artifact.volumeStrategy", chapter_task_sheet: "artifact.chapterTaskSheet", chapter_draft: "artifact.chapterDraft",
+    audit_report: "artifact.auditReport", repair_ticket: "artifact.repairTicket", reader_promise: "artifact.readerPromise",
+    character_governance_state: "artifact.characterState", world_skeleton: "artifact.worldSkeleton", source_knowledge_pack: "artifact.sourcePack",
+    chapter_retention_contract: "artifact.retentionContract", continuity_state: "artifact.continuity", rolling_window_review: "artifact.rollingReview",
   };
-  return labels[type] ?? type;
+  return labels[type] ? t(labels[type]) : type;
 }
 
 function recoveryActionLabel(
   action: NonNullable<DirectorBookAutomationProjection["circuitBreaker"]>["recoveryAction"],
 ): string | null {
   const labels: Record<string, string> = {
-    retry: "重试当前步骤",
-    resume_after_review: "查看原因后继续",
-    switch_model: "切换模型后继续",
-    confirm_protected_content: "确认保护内容边界",
-    manual_repair: "先处理章节问题",
+    retry: "recovery.retry", resume_after_review: "recovery.resumeAfterReview", switch_model: "recovery.switchModel",
+    confirm_protected_content: "recovery.confirmProtected", manual_repair: "recovery.manualRepair",
   };
-  return action ? labels[action] ?? null : null;
+  return action ? (labels[action] ? t(labels[action]) : null) : null;
 }
 
 function workerStateLabel(
   state: NonNullable<DirectorBookAutomationProjection["workerHealth"]>["derivedState"],
 ): string {
   const labels: Record<NonNullable<DirectorBookAutomationProjection["workerHealth"]>["derivedState"], string> = {
-    idle: "未运行",
-    queued_waiting_worker: "等待接手",
-    leased_starting: "正在接手",
-    running_step: "自动推进中",
-    waiting_gate: "等待确认",
-    auto_recovering: "恢复中",
-    cancelled: "已停止",
-    failed_recoverable: "等待恢复",
-    failed_hard: "需要处理",
-    succeeded: "已完成",
+    idle: "worker.idle", queued_waiting_worker: "worker.queued", leased_starting: "worker.leased", running_step: "worker.running",
+    waiting_gate: "worker.waiting", auto_recovering: "worker.recovering", cancelled: "worker.cancelled",
+    failed_recoverable: "worker.failedRecoverable", failed_hard: "worker.failedHard", succeeded: "worker.succeeded",
   };
-  return labels[state] ?? state;
+  return labels[state] ? t(labels[state]) : state;
 }
 
 function workerStateDetail(health: NonNullable<DirectorBookAutomationProjection["workerHealth"]>): string {
@@ -330,15 +310,16 @@ export default function AICockpit(props: AICockpitProps) {
           <div className="flex min-w-0 items-start gap-2">
             <span className="mt-0.5 shrink-0 text-muted-foreground">{stateIcon("idle")}</span>
             <div className="min-w-0">
-              <div className="text-sm font-semibold text-foreground">AI 驾驶舱</div>
+              <div className="text-sm font-semibold text-foreground">{translateUi("AI 驾驶舱")}</div>
               <div className="mt-1 text-xs leading-5 text-muted-foreground">{fallbackProjectionReason(props)}</div>
             </div>
           </div>
-          <Badge variant="secondary" className="shrink-0">{fallbackStatusLabel ?? "未开启"}</Badge>
+          <Badge variant="secondary" className="shrink-0">{fallbackStatusLabel ?? translateUi("未开启")}</Badge>
         </div>
         {onOpenFallbackDetails ? (
           <Button type="button" size="sm" variant="outline" className="mt-3 w-full" onClick={onOpenFallbackDetails}>
-            查看
+
+            {translateUi("查看")}
           </Button>
         ) : null}
       </div>
@@ -414,7 +395,7 @@ export default function AICockpit(props: AICockpitProps) {
           <div className="flex min-w-0 items-start gap-2">
             <span className="mt-0.5 shrink-0 text-foreground">{stateIcon(focusProjection.displayState)}</span>
             <div className="min-w-0">
-              <div className="text-sm font-semibold text-foreground">AI 驾驶舱</div>
+              <div className="text-sm font-semibold text-foreground">{translateUi("AI 驾驶舱")}</div>
               <div className="mt-1 line-clamp-1 text-xs leading-5 text-muted-foreground">
                 {focusProjection.userHeadline || focusProjection.headline || reason}
               </div>
@@ -425,7 +406,8 @@ export default function AICockpit(props: AICockpitProps) {
           </Badge>
         </div>
         <Button type="button" size="sm" variant="outline" className="mt-3 w-full" onClick={handleCompactOpen}>
-          查看
+
+          {translateUi("查看")}
         </Button>
       </div>
     );
@@ -453,33 +435,34 @@ export default function AICockpit(props: AICockpitProps) {
 
         <div className="mt-5 grid gap-3 rounded-xl bg-background/60 p-3 sm:grid-cols-3">
           <SummaryMetric
-            label="当前状态"
+            label={translateUi("当前状态")}
             value={displayStateLabel(focusProjection.displayState)}
             className={stateAccentClassName(focusProjection.displayState)}
           />
-          <SummaryMetric label="推进概览" value={focusProjection.progressSummary || "暂无进度摘要"} />
-          <SummaryMetric label="最近记录" value={latestRecordText} />
+          <SummaryMetric label={translateUi("推进概览")} value={focusProjection.progressSummary || translateUi("暂无进度摘要")} />
+          <SummaryMetric label={translateUi("最近记录")} value={latestRecordText} />
         </div>
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">
-            <div className="text-[11px] text-muted-foreground">下一步</div>
+            <div className="text-[11px] text-muted-foreground">{translateUi("下一步")}</div>
             <div className="mt-1 text-sm font-medium leading-5 text-foreground">
-              {focusProjection.nextActionLabel || "打开小说查看当前内容"}
+              {focusProjection.nextActionLabel || translateUi("打开小说查看当前内容")}
             </div>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <Button type="button" size="sm" onClick={handlePrimaryAction} disabled={isActionPending}>
-              {isActionPending ? "处理中..." : renderActionLabel(primaryAction ?? {
+              {isActionPending ? translateUi("处理中...") : renderActionLabel(primaryAction ?? {
                 type: "open_novel",
-                label: "打开小说",
+                label: translateUi("打开小说"),
                 target: { novelId: focusProjection.novelId },
               }, focusProjection.displayState)}
             </Button>
             {canOpenDetails ? (
               <Button type="button" size="sm" variant="secondary" onClick={handleDetails}>
                 <ExternalLink className="h-4 w-4" />
-                执行详情
+
+                {translateUi("执行详情")}
               </Button>
             ) : null}
           </div>
@@ -488,9 +471,9 @@ export default function AICockpit(props: AICockpitProps) {
 
       {circuitBreaker ? (
         <section className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm leading-6 text-destructive">
-          <div className="font-medium">自动推进已暂停</div>
-          <div className="mt-1">{circuitBreaker.message || "系统检测到继续自动推进可能反复失败。"}</div>
-          {circuitRecovery ? <div className="mt-1">建议：{circuitRecovery}。</div> : null}
+          <div className="font-medium">{translateUi("自动推进已暂停")}</div>
+          <div className="mt-1">{circuitBreaker.message || translateUi("系统检测到继续自动推进可能反复失败。")}</div>
+          {circuitRecovery ? <div className="mt-1">{translateUi("建议：")}{circuitRecovery}{translateUi("。")}</div> : null}
         </section>
       ) : null}
 
@@ -499,20 +482,22 @@ export default function AICockpit(props: AICockpitProps) {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Database className="h-4 w-4 text-muted-foreground" />
-              后台执行
+
+              {translateUi("后台执行")}
             </div>
             <span className="text-xs text-muted-foreground">{workerStateLabel(workerHealth.derivedState)}</span>
           </div>
           <div className="mt-1 text-xs leading-5 text-muted-foreground">{workerStateDetail(workerHealth)}</div>
           <div className="mt-3 grid grid-cols-4 gap-3">
-            <SummaryMetric label="排队" value={workerHealth.queuedCommandCount} />
-            <SummaryMetric label="接手" value={workerHealth.leasedCommandCount} />
-            <SummaryMetric label="执行" value={workerHealth.runningCommandCount} />
-            <SummaryMetric label="恢复" value={workerHealth.staleCommandCount} />
+            <SummaryMetric label={translateUi("排队")} value={workerHealth.queuedCommandCount} />
+            <SummaryMetric label={translateUi("接手")} value={workerHealth.leasedCommandCount} />
+            <SummaryMetric label={translateUi("执行")} value={workerHealth.runningCommandCount} />
+            <SummaryMetric label={translateUi("恢复")} value={workerHealth.staleCommandCount} />
           </div>
           {workerHealth.oldestQueuedWaitMs ? (
             <div className="mt-2 text-[11px] text-muted-foreground">
-              等待接手 {formatDuration(workerHealth.oldestQueuedWaitMs) ?? "<1 秒"}
+
+              {translateUi("等待接手")} {formatDuration(workerHealth.oldestQueuedWaitMs) ?? translateUi("<1 秒")}
             </div>
           ) : null}
         </section>
@@ -523,7 +508,8 @@ export default function AICockpit(props: AICockpitProps) {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Database className="h-4 w-4 text-muted-foreground" />
-              产物记录
+
+              {translateUi("产物记录")}
             </div>
             {artifactInsightLines.length > 0 ? (
               <span className="text-xs text-muted-foreground">{artifactInsightLines[0]}</span>
@@ -549,15 +535,15 @@ export default function AICockpit(props: AICockpitProps) {
 
       {usageSummary ? (
         <DetailPanel
-          title="AI 用量"
-          summary={`${formatTokenCount(usageSummary.llmCallCount)} 次 · ${formatTokenCount(usageSummary.totalTokens)} Tokens`}
+          title={translateUi("AI 用量")}
+          summary={translateUi("{{value0}} 次 · {{value1}} Tokens", { value0: formatTokenCount(usageSummary.llmCallCount), value1: formatTokenCount(usageSummary.totalTokens) })}
           icon={<Activity className="h-4 w-4" />}
         >
           <div className="space-y-3 text-xs leading-5 text-muted-foreground">
             <div>{formatUsageLine(usageSummary)}</div>
             {promptUsage.length > 0 ? (
               <div className="space-y-1">
-                <div className="font-medium text-foreground">阶段用量</div>
+                <div className="font-medium text-foreground">{translateUi("阶段用量")}</div>
                 <div className="divide-y divide-border/60">
                   {promptUsage.map((item) => (
                     <div key={`${item.promptAssetKey}:${item.promptVersion ?? ""}:${item.nodeKey ?? ""}`} className="grid gap-1 py-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
@@ -572,7 +558,7 @@ export default function AICockpit(props: AICockpitProps) {
             ) : null}
             {stepUsage.length > 0 ? (
               <div className="space-y-1">
-                <div className="font-medium text-foreground">推进步骤</div>
+                <div className="font-medium text-foreground">{translateUi("推进步骤")}</div>
                 <div className="divide-y divide-border/60">
                   {stepUsage.map((item) => (
                     <div key={item.stepIdempotencyKey} className="grid gap-1 py-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
@@ -591,8 +577,8 @@ export default function AICockpit(props: AICockpitProps) {
 
       {recentItems.length > 0 ? (
         <DetailPanel
-          title="自动化记录"
-          summary={`${recentItems.length} 条`}
+          title={translateUi("自动化记录")}
+          summary={translateUi("{{value0}} 条", { value0: recentItems.length })}
           icon={<History className="h-4 w-4" />}
         >
           <div className="divide-y divide-border/60 text-xs leading-5">
@@ -602,7 +588,7 @@ export default function AICockpit(props: AICockpitProps) {
                 {item.usage ? (
                   <div className="mt-1 text-muted-foreground">{formatUsageLine(item.usage)}</div>
                 ) : item.durationMs ? (
-                  <div className="mt-1 text-muted-foreground">耗时 {formatDuration(item.durationMs)}</div>
+                  <div className="mt-1 text-muted-foreground">{translateUi("耗时")} {formatDuration(item.durationMs)}</div>
                 ) : null}
                 <div className="mt-1 text-muted-foreground">{formatDate(item.occurredAt)}</div>
               </div>

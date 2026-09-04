@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -109,20 +110,22 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
         <details className="group">
           <summary className="cursor-pointer list-none p-5">
             <CollapsibleSummary
-              title="全书 Canonical 伏笔账本"
-              description="这块是整本书级别的 canonical 伏笔账本，不跟随当前卷切换。默认收起，需要检查整条伏笔链或整体回收压力时再展开。"
-              collapsedLabel="展开全书账本"
-              expandedLabel="收起全书账本"
+              title={translateUi("全书 Canonical 伏笔账本")}
+              description={translateUi("这块是整本书级别的 canonical 伏笔账本，不跟随当前卷切换。默认收起，需要检查整条伏笔链或整体回收压力时再展开。")}
+              collapsedLabel={translateUi("展开全书账本")}
+              expandedLabel={translateUi("收起全书账本")}
               meta={(
                 <>
-                  <Badge variant="outline">待兑现 {ledgerSummary?.pendingCount ?? 0}</Badge>
+                  <Badge variant="outline">{translateUi("待兑现")} {ledgerSummary?.pendingCount ?? 0}</Badge>
                   <Badge variant={ledgerSummary?.urgentCount ? "secondary" : "outline"}>
-                    紧急 {ledgerSummary?.urgentCount ?? 0}
+
+                    {translateUi("紧急")} {ledgerSummary?.urgentCount ?? 0}
                   </Badge>
                   <Badge variant={ledgerSummary?.overdueCount ? "secondary" : "outline"}>
-                    逾期 {ledgerSummary?.overdueCount ?? 0}
+
+                    {translateUi("逾期")} {ledgerSummary?.overdueCount ?? 0}
                   </Badge>
-                  <Badge variant="outline">已回收 {ledgerSummary?.paidOffCount ?? 0}</Badge>
+                  <Badge variant="outline">{translateUi("已回收")} {ledgerSummary?.paidOffCount ?? 0}</Badge>
                 </>
               )}
             />
@@ -131,11 +134,12 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
           <div className="space-y-3 border-t border-border/70 px-5 pb-5 pt-4">
             <div className="rounded-xl border border-border/70 bg-muted/20 p-4">
               <div className="flex items-center justify-between gap-2">
-                <div className="font-medium text-foreground">Canonical 伏笔账本</div>
+                <div className="font-medium text-foreground">{translateUi("Canonical 伏笔账本")}</div>
                 <Badge variant="outline">{ledgerItems.length}</Badge>
               </div>
               <div className="mt-1 text-xs text-muted-foreground">
-                后续规划、写作、审查和修复优先消费这里的 canonical 结果，不再只盯某一处原始字段。
+
+                {translateUi("后续规划、写作、审查和修复优先消费这里的 canonical 结果，不再只盯某一处原始字段。")}
               </div>
               <div className="mt-3 space-y-2 text-sm">
                 {hasCanonicalLedgerContent ? (
@@ -158,27 +162,30 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
                       <div className="mt-2 text-xs text-muted-foreground">{item.summary}</div>
                       <div className="mt-2 grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
                         <div>
-                          最近触碰：
+
+                          {translateUi("最近触碰：")}
                           {typeof item.lastTouchedChapterOrder === "number"
-                            ? `第 ${item.lastTouchedChapterOrder} 章`
-                            : "暂无"}
+                            ? translateUi("第 {{value0}} 章", { value0: item.lastTouchedChapterOrder })
+                            : translateUi("暂无")}
                         </div>
-                        <div>来源摘要：{sourceSummary(item)}</div>
+                        <div>{translateUi("来源摘要：")}{sourceSummary(item)}</div>
                         <div>
-                          风险信号：
+
+                          {translateUi("风险信号：")}
                           {item.riskSignals.length > 0
-                            ? ` ${item.riskSignals
+                            ? translateUi(" {{value0}}", { value0: item.riskSignals
                               .slice(0, 2)
                               .map((signal) => signal.summary)
-                              .join("；")}`
-                            : " 暂无"}
+                              .join(translateUi("；")) })
+                            : translateUi(" 暂无")}
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
                   <div className="rounded-lg border border-dashed border-border/70 bg-background p-3 text-xs text-muted-foreground">
-                    当前还没有可用的 canonical 伏笔账本。首次进入老项目时，系统会懒同步这份账本；如果现在仍为空，说明相关规划或状态材料还不够。
+
+                    {translateUi("当前还没有可用的 canonical 伏笔账本。首次进入老项目时，系统会懒同步这份账本；如果现在仍为空，说明相关规划或状态材料还不够。")}
                   </div>
                 )}
               </div>
@@ -186,11 +193,12 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
 
             <div className="rounded-xl border border-border/70 bg-muted/20 p-4">
               <div className="flex items-center justify-between gap-2">
-                <div className="font-medium text-foreground">全书最新状态快照</div>
+                <div className="font-medium text-foreground">{translateUi("全书最新状态快照")}</div>
                 <Badge variant="outline">{snapshotForeshadows.length}</Badge>
               </div>
               <div className="mt-1 text-xs text-muted-foreground">
-                这里显示的是全书最新状态，不只限当前卷，用来辅助判断整体回收压力。
+
+                {translateUi("这里显示的是全书最新状态，不只限当前卷，用来辅助判断整体回收压力。")}
               </div>
               {latestStateSnapshot?.summary ? (
                 <div className="mt-3 rounded-lg border border-border/70 bg-background p-3 text-xs text-muted-foreground">
@@ -201,7 +209,7 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
                 {hasSnapshotContent ? (
                   <>
                     <div className="space-y-2">
-                      <div className="text-xs font-medium text-muted-foreground">待跟进</div>
+                      <div className="text-xs font-medium text-muted-foreground">{translateUi("待跟进")}</div>
                       {pendingForeshadows.length > 0 ? (
                         pendingForeshadows.slice(0, 5).map((item) => (
                           <div
@@ -221,20 +229,21 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
                         ))
                       ) : (
                         <div className="rounded-lg border border-dashed border-border/70 bg-background p-3 text-xs text-muted-foreground">
-                          当前没有待跟进的伏笔状态。
+
+                          {translateUi("当前没有待跟进的伏笔状态。")}
                         </div>
                       )}
                     </div>
 
                     <div className="grid gap-2 sm:grid-cols-2">
                       <div className="rounded-lg border border-border/70 bg-background p-3">
-                        <div className="text-xs text-muted-foreground">已回收</div>
+                        <div className="text-xs text-muted-foreground">{translateUi("已回收")}</div>
                         <div className="mt-1 text-lg font-semibold text-foreground">
                           {paidOffForeshadows.length}
                         </div>
                       </div>
                       <div className="rounded-lg border border-border/70 bg-background p-3">
-                        <div className="text-xs text-muted-foreground">已失效</div>
+                        <div className="text-xs text-muted-foreground">{translateUi("已失效")}</div>
                         <div className="mt-1 text-lg font-semibold text-foreground">
                           {failedForeshadows.length}
                         </div>
@@ -243,7 +252,8 @@ export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {
                   </>
                 ) : (
                   <div className="rounded-lg border border-dashed border-border/70 bg-background p-3 text-xs text-muted-foreground">
-                    还没有可用的伏笔状态快照。先执行章节生成或审计后，这里的状态会逐步充实。
+
+                    {translateUi("还没有可用的伏笔状态快照。先执行章节生成或审计后，这里的状态会逐步充实。")}
                   </div>
                 )}
               </div>

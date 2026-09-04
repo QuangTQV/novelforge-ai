@@ -1,0 +1,42 @@
+{
+  "boolean": {
+    "yes": "是",
+    "no": "否",
+    "multiPov": {
+      "yes": "允许多视角切换",
+      "no": "尽量保持单视角"
+    },
+    "looping": {
+      "yes": "允许循环回钩",
+      "no": "尽量直线推进"
+    },
+    "selfReflection": {
+      "yes": "允许明确自省",
+      "no": "尽量少做直白自省"
+    },
+    "facePriority": {
+      "yes": "优先保住体面",
+      "no": "不强求体面"
+    },
+    "incompleteSentences": {
+      "yes": "允许不完整句",
+      "no": "句子尽量完整"
+    },
+    "swearing": {
+      "yes": "允许带一点粗口",
+      "no": "尽量避免粗口"
+    },
+    "uselessDetails": {
+      "yes": "允许保留生活杂音",
+      "no": "尽量减少无关杂音"
+    },
+    "fragmentedFlow": {
+      "yes": "允许碎片化推进",
+      "no": "尽量保持完整推进"
+    },
+    "actionOverExplanation": {
+      "yes": "动作先于解释",
+      "no": "解释比动作更重要"
+    }
+  }
+}

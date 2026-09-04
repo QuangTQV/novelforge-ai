@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Select,
   SelectContent,
@@ -96,7 +97,7 @@ export default function SelectControl({
   className,
   triggerClassName,
   contentClassName,
-  placeholder = "请选择",
+  placeholder: placeholderProp,
   disabled,
   id,
   name,
@@ -104,6 +105,8 @@ export default function SelectControl({
   "aria-label": ariaLabel,
   ...props
 }: SelectControlProps) {
+  const { t } = useTranslation("components");
+  const placeholder = placeholderProp ?? t("select.placeholder");
   const options = React.useMemo(
     () => deduplicateSelectControlOptions(collectOptions(children)),
     [children],

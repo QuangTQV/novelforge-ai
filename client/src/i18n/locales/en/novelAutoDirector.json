@@ -1,0 +1,33 @@
+{
+  "approvalPoints": {
+    "risk": {
+      "high": "High risk",
+      "low": "Low risk",
+      "medium": "Medium risk"
+    },
+    "summary": {
+      "andMore": "{{items}} and {{count}} items",
+      "none": "No approval points will be auto-approved",
+      "separator": ", "
+    }
+  },
+  "approvalStrategy": {
+    "advanced": "Advanced approval authorization",
+    "auto": {
+      "description": "Fully automatic progression within the target scope; it only stops when the model is unavailable, the service fails, the main text needs protection, or there is an unrecoverable risk.",
+      "title": "AI auto-progression"
+    },
+    "copilot": {
+      "description": "Low-risk nodes are cleared per the advanced approval authorization; the remaining approval points are left to your judgment.",
+      "title": "AI copilot confirmation"
+    },
+    "heading": "Auto-progression mode",
+    "note": {
+      "auto": "Auto progression: within the target scope the system automatically confirms planning, chapter execution, quality fixes, and necessary re-planning.",
+      "copilot": "Copilot confirmation boundary: {{summary}}. Approval points not included will wait for your confirmation."
+    }
+  },
+  "directorBookAutomationCard": {
+    "projectNav": "Project navigation"
+  }
+}

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,7 +56,7 @@ export default function DesktopLegacyDataImportCard({
       })
       .catch((error) => {
         if (!cancelled) {
-          toast.error(error instanceof Error ? error.message : "旧数据探测失败。");
+          toast.error(error instanceof Error ? error.message : translateUi("旧数据探测失败。"));
         }
       })
       .finally(() => {
@@ -90,7 +91,7 @@ export default function DesktopLegacyDataImportCard({
         toast("正在准备导入旧数据，应用会自动重启一次。");
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "导入旧数据失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("导入旧数据失败。"));
     } finally {
       setIsImporting(false);
     }
@@ -102,30 +103,33 @@ export default function DesktopLegacyDataImportCard({
         <div className="flex flex-wrap items-center gap-2">
           <CardTitle>{title}</CardTitle>
           <Badge variant="outline">Desktop</Badge>
-          {snapshot?.currentDatabaseLikelyFresh ? <Badge variant="outline">当前桌面库看起来是空的</Badge> : null}
+          {snapshot?.currentDatabaseLikelyFresh ? <Badge variant="outline">{translateUi("当前桌面库看起来是空的")}</Badge> : null}
         </div>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         {snapshot?.suggestedSourcePath ? (
           <div className="rounded-md border border-dashed bg-background/70 p-3 text-sm text-muted-foreground">
-            已检测到旧库：{snapshot.suggestedSourcePath}
+
+            {translateUi("已检测到旧库：")}{snapshot.suggestedSourcePath}
             {snapshot.suggestedSourceLabel ? ` (${snapshot.suggestedSourceLabel})` : ""}
           </div>
         ) : null}
 
         <div className="rounded-md border border-dashed bg-background/70 p-3 text-sm text-muted-foreground">
-          导入前会自动备份当前桌面数据库到：{snapshot?.backupDirectory ?? "-"}
+
+          {translateUi("导入前会自动备份当前桌面数据库到：")}{snapshot?.backupDirectory ?? "-"}
         </div>
 
         <div className="text-xs text-muted-foreground">
-          导入前请先关闭旧的 web/开发版进程，避免同一份 SQLite 文件还在被写入。
+
+          {translateUi("导入前请先关闭旧的 web/开发版进程，避免同一份 SQLite 文件还在被写入。")}
         </div>
 
         <div className="flex flex-wrap gap-3">
           {hasSuggestedSource ? (
             <Button onClick={() => void importData(true)} disabled={isImporting || isLoadingSnapshot}>
-              {isImporting ? "Preparing..." : "导入检测到的旧数据"}
+              {isImporting ? "Preparing..." : translateUi("导入检测到的旧数据")}
             </Button>
           ) : null}
           <Button
@@ -133,7 +137,7 @@ export default function DesktopLegacyDataImportCard({
             onClick={() => void importData(false)}
             disabled={isImporting || isLoadingSnapshot}
           >
-            {isImporting ? "Preparing..." : hasSuggestedSource ? "选择其他 dev.db" : "选择旧 dev.db 导入"}
+            {isImporting ? "Preparing..." : hasSuggestedSource ? translateUi("选择其他 dev.db") : translateUi("选择旧 dev.db 导入")}
           </Button>
         </div>
       </CardContent>

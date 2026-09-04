@@ -1,0 +1,9 @@
+{
+  "title": "Tạo nhân vật",
+  "actions": { "open": "Tạo nhân vật", "creating": "Đang tạo...", "create": "Tạo nhân vật", "generating": "Đang tạo...", "generate": "Tạo và lưu vào thư viện" },
+  "manual": { "title": "Tạo nhân vật thủ công" },
+  "ai": { "title": "AI tạo nhân vật", "descriptionPlaceholder": "Nhập mô tả nhân vật, ví dụ: kiếm sĩ trẻ bình tĩnh nhưng mang mối thù gia tộc" },
+  "advanced": { "title": "Thiết lập nâng cao (tùy chọn)", "clear": "Xóa toàn bộ thiết lập nâng cao", "storyFunction": "Vai trò nhân vật", "growthStage": "Giai đoạn phát triển" },
+  "fields": { "name": "Tên nhân vật", "role": "Vai trò nhân vật (chính/phản diện/phụ)", "personality": "Đặc điểm tính cách", "background": "Câu chuyện nền", "development": "Quỹ đạo phát triển", "externalGoal": "Mục tiêu bên ngoài (muốn đạt gì)", "internalNeed": "Nhu cầu bên trong (thật sự khao khát gì)", "coreFear": "Nỗi sợ cốt lõi", "moralBottomLine": "Giới hạn đạo đức", "secret": "Bí mật không thể nói", "coreFlaw": "Khiếm khuyết cốt lõi", "relationshipHooks": "Móc quan hệ (xung đột/ràng buộc với người khác)", "toneStyle": "Phong cách giọng điệu (ví dụ: điềm tĩnh lạnh, hài hước sắc bén)" },
+  "options": { "unspecified": "Không chỉ định", "protagonist": "Nhân vật chính", "antagonist": "Phản diện", "mentor": "Người dẫn dắt", "foil": "Nhân vật đối chiếu", "supporting": "Nhân vật phụ", "start": "Khởi đầu", "setback": "Gặp trở ngại", "turningPoint": "Bước ngoặt", "awakening": "Thức tỉnh", "resolution": "Kết thúc" }
+}

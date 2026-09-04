@@ -1,0 +1,113 @@
+{
+  "groups": {
+    "creation": "创作",
+    "assets": "资产",
+    "system": "系统"
+  },
+  "items": {
+    "home": "首页",
+    "help": "创作向导",
+    "marketRadar": "热门题材雷达",
+    "novels": "小说列表",
+    "drama": "短剧工作台",
+    "comic": "漫画工作台",
+    "creativeHub": "创作中枢",
+    "bookAnalysis": "拆书",
+    "genres": "题材基底库",
+    "storyModes": "推进模式库",
+    "titles": "标题工坊",
+    "knowledge": "知识库",
+    "worlds": "世界样本库",
+    "styleEngine": "写法引擎",
+    "antiAiRules": "反 AI 规则",
+    "baseCharacters": "基础角色库",
+    "visualAssets": "视觉资源库",
+    "tasks": "运行记录",
+    "autoDirectorFollowUps": "导演跟进",
+    "promptWorkbench": "提示词管理",
+    "settings": "系统设置"
+  },
+  "sidebar": {
+    "expand": "展开导航栏",
+    "collapse": "收起导航栏",
+    "comicBeta": "漫画工作台仍在 Beta 阶段"
+  },
+  "navbar": {
+    "projectNav": "项目导航",
+    "creationNav": "创作导航",
+    "modelSettings": "模型设置"
+  },
+  "mobile": {
+    "openBook": "开书",
+    "moreOpen": "打开更多入口",
+    "moreClose": "关闭更多入口",
+    "openVisualAssets": "打开视觉资源库",
+    "morePanelTitle": "更多入口",
+    "morePanelDescription": "选择要继续处理的工作区。",
+    "primary": {
+      "home": "首页",
+      "novels": "小说",
+      "creation": "创作",
+      "tasks": "任务",
+      "more": "更多"
+    },
+    "groups": {
+      "creationAids": "创作辅助",
+      "assetLibrary": "资产库",
+      "worldsAndSystem": "世界与系统"
+    },
+    "items": {
+      "help": "创作向导",
+      "drama": "短剧工作台",
+      "bookAnalysis": "拆书",
+      "marketRadar": "热门题材雷达",
+      "chatLegacy": "旧版聊天",
+      "knowledge": "知识库",
+      "genres": "题材基底",
+      "storyModes": "推进模式",
+      "titles": "标题工坊",
+      "styleEngine": "写法引擎",
+      "antiAiRules": "反 AI 规则",
+      "baseCharacters": "基础角色",
+      "tasks": "运行记录",
+      "autoDirectorFollowUps": "导演跟进",
+      "worlds": "世界样本库",
+      "worldGenerator": "创建世界样本",
+      "promptWorkbench": "提示词管理",
+      "settings": "系统设置"
+    },
+    "pages": {
+      "home": "首页",
+      "help": "创作向导",
+      "novels": "小说",
+      "novelCreate": "创建小说",
+      "novelPreview": "小说预览",
+      "novelEdit": "小说工作区",
+      "chapterEdit": "章节正文",
+      "drama": "短剧",
+      "creativeHub": "创作中枢",
+      "chatLegacy": "旧版聊天",
+      "bookAnalysis": "拆书",
+      "marketRadar": "热门题材雷达",
+      "tasks": "任务",
+      "autoDirectorFollowUps": "导演跟进",
+      "knowledge": "知识库",
+      "genres": "题材基底",
+      "storyModes": "推进模式",
+      "titles": "标题工坊",
+      "promptWorkbench": "提示词管理",
+      "settingsModels": "模型与厂商",
+      "settingsDirector": "自动导演设置",
+      "settingsKnowledge": "知识库与写法",
+      "settingsMaintenance": "桌面与维护",
+      "settings": "系统设置",
+      "worlds": "世界样本库",
+      "worldGenerator": "创建世界样本",
+      "worldWorkspace": "世界手册",
+      "styleEngine": "写法引擎",
+      "antiAiRules": "反 AI 规则",
+      "baseCharacters": "基础角色",
+      "fallback": "更多功能"
+    }
+  }
+}

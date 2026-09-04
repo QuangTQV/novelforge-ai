@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 import type { CreativeHubResourceBinding } from "@ai-novel/shared/types/creativeHub";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { buildCreativeHubPath } from "@/lib/creativeHubLinks";
@@ -14,14 +15,15 @@ interface OpenInCreativeHubButtonProps {
 
 export default function OpenInCreativeHubButton({
   bindings,
-  label = "在创作中枢中继续",
+  label,
   variant = "outline",
   size = "sm",
   className,
 }: OpenInCreativeHubButtonProps) {
+  const { t } = useTranslation("creativeHub");
   return (
     <Button asChild variant={variant} size={size} className={className}>
-      <Link to={buildCreativeHubPath(bindings)}>{label}</Link>
+      <Link to={buildCreativeHubPath(bindings)}>{label ?? t("openInButton.label")}</Link>
     </Button>
   );
 }

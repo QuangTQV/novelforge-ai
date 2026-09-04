@@ -1,0 +1,101 @@
+{
+  "generator": {
+    "title": "创建世界样本",
+    "steps": {
+      "intent": "想法",
+      "scale": "规模",
+      "skeletonPreview": "骨架预览",
+      "save": "保存"
+    },
+    "analyze": {
+      "analyzing": "分析中…",
+      "referenceCta": "分析参考资料",
+      "freeCta": "从想法开始"
+    },
+    "stepOne": {
+      "name": {
+        "label": "世界名称",
+        "hint": "起一个易识别的名字",
+        "placeholder": "例如：雾隐王国"
+      },
+      "genre": {
+        "label": "题材基底",
+        "hint": "为世界选择题材基底",
+        "loadingOption": "加载中…",
+        "selectPlaceholder": "选择题材基底",
+        "currentPath": "当前路径",
+        "description": "描述",
+        "template": "模板",
+        "loadingTree": "加载题材库…",
+        "emptyLibrary": "题材库暂无数据",
+        "goToLibrary": "打开题材基底库",
+        "footerHint": "之后可以更改选择"
+      },
+      "mode": {
+        "label": "推进模式"
+      },
+      "reference": {
+        "knowledgeTitle": "参考资料",
+        "knowledgeDescription": "用资料作为世界的基底",
+        "modeLabel": "资料使用方式",
+        "preserveLabel": "保留",
+        "preservePlaceholder": "需要保留的要素",
+        "allowedLabel": "允许",
+        "allowedPlaceholder": "允许添加的要素",
+        "forbiddenLabel": "禁止使用",
+        "forbiddenPlaceholder": "需要避免的要素"
+      },
+      "inspirationText": {
+        "referencePlaceholder": "粘贴参考内容…",
+        "randomPlaceholder": "描述灵感…",
+        "freePlaceholder": "描述你想创建的世界…"
+      },
+      "preferences": {
+        "title": "详细偏好",
+        "hint": "调整输出的详细程度",
+        "collapse": "收起",
+        "expand": "展开",
+        "refinementLabel": "精细程度",
+        "refinement": {
+          "basic": "基础",
+          "standard": "标准",
+          "detailed": "详细"
+        },
+        "countLabel": "建议数量"
+      },
+      "progress": {
+        "title": "分析进度",
+        "starting": "正在开始…",
+        "referenceHint": "正在读取参考资料",
+        "freeHint": "正在发展世界想法"
+      },
+      "sourceMeta": {
+        "extracted": "已从资料中提取"
+      },
+      "concept": {
+        "referenceTitle": "来自资料的概念",
+        "title": "世界概念",
+        "worldType": "世界类型",
+        "tone": "基调",
+        "keywords": "关键词",
+        "propertyOptions": "属性建议",
+        "anchorsTitle": "锚点",
+        "anchorLine": "{{label}}：{{value}}"
+      }
+    },
+    "stepTwo": {
+      "scaleTitle": "世界规模",
+      "scaleHint": "选择与故事相称的范围",
+      "adjustTitle": "调整数量",
+      "adjustHint": "生成前可以微调",
+      "generating": "生成中…",
+      "generate": "生成骨架",
+      "preview": {
+        "forces": "{{count}} 个势力",
+        "locations": "{{count}} 个地点",
+        "conflicts": "{{count}} 个冲突",
+        "entries": "{{count}} 条故事线索"
+      }
+    }
+  }
+}

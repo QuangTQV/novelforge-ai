@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { CreativeHubTurnSummary } from "@ai-novel/shared/types/creativeHub";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,9 +43,10 @@ export default function CreativeHubTurnSummaryCard({
     <div className="mt-3 rounded-md border border-border bg-muted/20 p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <div className="text-sm font-medium text-foreground">创作推进摘要</div>
+          <div className="text-sm font-medium text-foreground">{translateUi("创作推进摘要")}</div>
           <div className="mt-1 text-xs text-muted-foreground">
-            当前阶段：{summary.currentStage}
+
+            {translateUi("当前阶段：")}{summary.currentStage}
           </div>
         </div>
         <Badge variant={toVariant(summary.status)}>{toStatusLabel(summary.status)}</Badge>
@@ -52,19 +54,19 @@ export default function CreativeHubTurnSummaryCard({
 
       <div className="mt-4 divide-y divide-border rounded-md border border-border bg-background px-3">
         <div className="py-3">
-          <div className="text-xs font-medium text-muted-foreground">本轮判断</div>
+          <div className="text-xs font-medium text-muted-foreground">{translateUi("本轮判断")}</div>
           <div className="mt-2 text-sm leading-6 text-foreground">{summary.intentSummary}</div>
         </div>
         <div className="py-3">
-          <div className="text-xs font-medium text-muted-foreground">本轮推进</div>
+          <div className="text-xs font-medium text-muted-foreground">{translateUi("本轮推进")}</div>
           <div className="mt-2 text-sm leading-6 text-foreground">{summary.actionSummary}</div>
         </div>
         <div className="py-3">
-          <div className="text-xs font-medium text-muted-foreground">已确认变化</div>
+          <div className="text-xs font-medium text-muted-foreground">{translateUi("已确认变化")}</div>
           <div className="mt-2 text-sm leading-6 text-foreground">{summary.impactSummary}</div>
         </div>
         <div className="py-3">
-          <div className="text-xs font-medium text-muted-foreground">建议下一轮</div>
+          <div className="text-xs font-medium text-muted-foreground">{translateUi("建议下一轮")}</div>
           <div className="mt-2 text-sm leading-6 text-foreground">{summary.nextSuggestion}</div>
           {onQuickAction && summary.nextSuggestion.trim() ? (
             <div className="mt-3">
@@ -74,7 +76,8 @@ export default function CreativeHubTurnSummaryCard({
                 variant="outline"
                 onClick={() => onQuickAction(summary.nextSuggestion)}
               >
-                查看建议
+
+                {translateUi("查看建议")}
               </Button>
             </div>
           ) : null}

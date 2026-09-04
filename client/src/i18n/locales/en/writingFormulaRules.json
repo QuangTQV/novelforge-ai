@@ -1,0 +1,42 @@
+{
+  "boolean": {
+    "yes": "Yes",
+    "no": "No",
+    "multiPov": {
+      "yes": "Allow multiple POV switches",
+      "no": "Try to keep a single POV"
+    },
+    "looping": {
+      "yes": "Allow looping hooks",
+      "no": "Try to progress linearly"
+    },
+    "selfReflection": {
+      "yes": "Allow explicit self-reflection",
+      "no": "Limit direct self-reflection"
+    },
+    "facePriority": {
+      "yes": "Prioritize keeping face",
+      "no": "Don't force keeping face"
+    },
+    "incompleteSentences": {
+      "yes": "Allow incomplete sentences",
+      "no": "Keep sentences complete"
+    },
+    "swearing": {
+      "yes": "Allow some swearing",
+      "no": "Limit swearing"
+    },
+    "uselessDetails": {
+      "yes": "Allow slice-of-life noise",
+      "no": "Reduce irrelevant noise"
+    },
+    "fragmentedFlow": {
+      "yes": "Allow fragmented progression",
+      "no": "Try to keep progression whole"
+    },
+    "actionOverExplanation": {
+      "yes": "Action before explanation",
+      "no": "Explanation matters more than action"
+    }
+  }
+}

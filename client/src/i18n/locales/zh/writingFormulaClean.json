@@ -1,0 +1,22 @@
+{
+  "title": "为这段稿子去 AI 味",
+  "description": "系统先指出哪段读起来像范文，再生成一版修订供你对照。反复出现的问题会汇总成规则建议，由你决定要不要带回写法编辑。",
+  "input": "输入稿件",
+  "placeholder": "先粘贴一段要去 AI 味的文本。",
+  "detect": "先跑一次检测",
+  "detecting": "检测中...",
+  "rewrite": "生成一次修订",
+  "rewriting": "生成修订中...",
+  "issues": "问题卡与风险点",
+  "riskScore": "风险分",
+  "runFirst": "先跑一次检测；结果会告诉你哪段最像 AI 腔、为什么让读者出戏。",
+  "diffTitle": "修订前后对照",
+  "diffDescription": "按段落逐行轻量对照，帮你判断修订是在减少范文感，还是不小心改掉了原有语气。",
+  "before": "原文 {{index}}",
+  "after": "修订 {{index}}",
+  "emptyDiff": "生成一次修订后，前后对照会出现在这里。",
+  "suggestions": "可沉淀为规则的重复问题",
+  "suggestionsDescription": "这个版本不会自动写入系统；先把问题汇总成建议，由你决定要不要固定进当前写法。",
+  "openEditor": "打开当前写法编辑",
+  "emptySuggestions": "检测出问题后，可沉淀的规则建议才会出现在这里。"
+}

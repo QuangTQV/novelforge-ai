@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { Dispatch, SetStateAction } from "react";
 import { Bot, Image, KeyRound, Link2, SlidersHorizontal } from "lucide-react";
 import type { APIKeyStatus } from "@/api/settings";
@@ -80,7 +81,7 @@ export default function ProviderConfigDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <AppDialogContent
         className="max-w-lg"
-        title={isCreatingCustomProvider ? "新增自定义厂商" : isCustomDialog ? "编辑自定义厂商" : "配置模型厂商"}
+        title={isCreatingCustomProvider ? translateUi("新增自定义厂商") : isCustomDialog ? translateUi("编辑自定义厂商") : translateUi("配置模型厂商")}
         footer={(
           <>
             <Button className="w-full sm:w-auto" onClick={onSubmit} disabled={submitDisabled}>
@@ -93,7 +94,8 @@ export default function ProviderConfigDialog({
               onClick={onTest}
               disabled={testDisabled}
             >
-              测试连接
+
+              {translateUi("测试连接")}
             </Button>
 
             {editingConfig?.kind === "custom" ? (
@@ -113,10 +115,10 @@ export default function ProviderConfigDialog({
         <div className="space-y-5">
           {isCustomDialog ? (
             <div className="space-y-1">
-              <div className="text-xs text-muted-foreground">厂商名称</div>
+              <div className="text-xs text-muted-foreground">{translateUi("厂商名称")}</div>
               <Input
                 value={form.displayName}
-                placeholder="例如：我的模型网关"
+                placeholder={translateUi("例如：我的模型网关")}
                 onChange={(event) => setForm((prev) => ({ ...prev, displayName: event.target.value }))}
               />
             </div>
@@ -124,7 +126,8 @@ export default function ProviderConfigDialog({
 
           {(isCustomDialog || editingConfig?.requiresApiKey === false) ? (
             <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-              API Key 可以留空；填写 API 地址后可获取模型列表，系统会选择一个默认模型。
+
+              {translateUi("API Key 可以留空；填写 API 地址后可获取模型列表，系统会选择一个默认模型。")}
             </div>
           ) : null}
 
@@ -133,7 +136,7 @@ export default function ProviderConfigDialog({
             <Input
               type="password"
               value={form.key}
-              placeholder={editingConfig?.isConfigured ? "留空则沿用保存的 API Key" : "输入 API Key"}
+              placeholder={editingConfig?.isConfigured ? translateUi("留空则沿用保存的 API Key") : translateUi("输入 API Key")}
               onChange={(event) => {
                 setForm((prev) => ({ ...prev, key: event.target.value }));
                 if (isCreatingCustomProvider) {
@@ -144,7 +147,7 @@ export default function ProviderConfigDialog({
           </div>
 
           <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><Link2 className="h-3.5 w-3.5" /> API 地址</div>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><Link2 className="h-3.5 w-3.5" />  {translateUi("API 地址")}</div>
             <Input
               value={form.baseURL}
               placeholder={editingConfig?.defaultBaseURL ?? "https://api.example.com/v1"}
@@ -161,8 +164,8 @@ export default function ProviderConfigDialog({
             />
             <div className="text-xs text-muted-foreground">
               {isCreatingCustomProvider
-                ? "填写 OpenAI 兼容 API 地址，通常以 /v1 结尾；本地 Ollama 常见地址是 http://127.0.0.1:11434/v1。"
-                : "留空会使用默认地址；本地 Ollama 常见地址是 http://127.0.0.1:11434/v1。"}
+                ? translateUi("填写 OpenAI 兼容 API 地址，通常以 /v1 结尾；本地 Ollama 常见地址是 http://127.0.0.1:11434/v1。")
+                : translateUi("留空会使用默认地址；本地 Ollama 常见地址是 http://127.0.0.1:11434/v1。")}
             </div>
           </div>
 
@@ -175,7 +178,7 @@ export default function ProviderConfigDialog({
                 onClick={onPreviewModels}
                 disabled={isPreviewingModels || !form.baseURL.trim()}
               >
-                {isPreviewingModels ? "获取中..." : "获取模型列表"}
+                {isPreviewingModels ? translateUi("获取中...") : translateUi("获取模型列表")}
               </Button>
               {previewModelsResult ? (
                 <div className="break-words text-xs text-muted-foreground [overflow-wrap:anywhere]">
@@ -187,14 +190,14 @@ export default function ProviderConfigDialog({
 
           {canSelectListedModels ? (
             <div className="space-y-1">
-              <div className="text-xs text-muted-foreground">可用模型</div>
+              <div className="text-xs text-muted-foreground">{translateUi("可用模型")}</div>
               <SearchableSelect
                 value={form.model}
                 onValueChange={(value) => setForm((prev) => ({ ...prev, model: value }))}
                 options={selectableModels.map((model) => ({ value: model }))}
-                placeholder="选择模型"
-                searchPlaceholder="搜索模型"
-                emptyText="没有可用模型"
+                placeholder={translateUi("选择模型")}
+                searchPlaceholder={translateUi("搜索模型")}
+                emptyText={translateUi("没有可用模型")}
               />
             </div>
           ) : null}
@@ -205,15 +208,16 @@ export default function ProviderConfigDialog({
           </div>
           <Input
             value={form.model}
-            placeholder="也可以直接手动输入模型名"
+            placeholder={translateUi("也可以直接手动输入模型名")}
             onChange={(event) => setForm((prev) => ({ ...prev, model: event.target.value }))}
           />
 
           <div className="space-y-3 rounded-xl border bg-muted/20 p-4">
             <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><Image className="h-3.5 w-3.5" /> 图像模型（可选）</div>
+              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><Image className="h-3.5 w-3.5" />  {translateUi("图像模型（可选）")}</div>
               <div className="text-xs text-muted-foreground">
-                填写后，角色形象图生成可以选择这个厂商；留空则只用于文本模型。
+
+                {translateUi("填写后，角色形象图生成可以选择这个厂商；留空则只用于文本模型。")}
               </div>
             </div>
             {canSelectImageModels ? (
@@ -222,24 +226,25 @@ export default function ProviderConfigDialog({
                   value={form.imageModel}
                   onValueChange={(value) => setForm((prev) => ({ ...prev, imageModel: value }))}
                   options={imageModelOptions.map((model) => ({ value: model }))}
-                  placeholder="选择图像模型"
-                  searchPlaceholder="搜索图像模型"
-                  emptyText="没有可用的图像模型"
+                  placeholder={translateUi("选择图像模型")}
+                  searchPlaceholder={translateUi("搜索图像模型")}
+                  emptyText={translateUi("没有可用的图像模型")}
                 />
               </div>
             ) : null}
             <Input
               value={form.imageModel}
-              placeholder={editingConfig?.defaultImageModel ?? "输入图像模型名"}
+              placeholder={editingConfig?.defaultImageModel ?? translateUi("输入图像模型名")}
               onChange={(event) => setForm((prev) => ({ ...prev, imageModel: event.target.value }))}
             />
             <div className="text-xs text-muted-foreground">
-              图片生成会调用这个厂商的 OpenAI 兼容图像接口。
+
+              {translateUi("图片生成会调用这个厂商的 OpenAI 兼容图像接口。")}
             </div>
           </div>
 
           <div className="rounded-xl border border-dashed bg-muted/10 p-4">
-            <div className="mb-3 flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><SlidersHorizontal className="h-3.5 w-3.5" /> 请求限制</div>
+            <div className="mb-3 flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><SlidersHorizontal className="h-3.5 w-3.5" />  {translateUi("请求限制")}</div>
             <ProviderRequestLimitFields
               concurrencyLimit={form.concurrencyLimit}
               requestIntervalMs={form.requestIntervalMs}

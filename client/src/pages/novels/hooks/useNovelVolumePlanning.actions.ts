@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   VolumeBeatSheet,
   VolumeChapterListGenerationMode,
@@ -41,16 +42,16 @@ export function startStrategyGenerationAction(params: {
     return;
   }
   const confirmed = window.confirm([
-    "将生成卷战略建议，帮助决定推荐卷数、硬规划卷数和各卷角色定位。",
-    "这一步不会直接生成卷骨架，也不会拆章节。",
+    translateUi("将生成卷战略建议，帮助决定推荐卷数、硬规划卷数和各卷角色定位。"),
+    translateUi("这一步不会直接生成卷骨架，也不会拆章节。"),
     params.userPreferredVolumeCount != null
-      ? `本次将固定为 ${params.userPreferredVolumeCount} 卷生成分卷策略。`
+      ? translateUi("本次将固定为 {{value0}} 卷生成分卷策略。", { value0: params.userPreferredVolumeCount })
       : params.forceSystemRecommendedVolumeCount
-        ? `本次将按系统建议卷数生成（当前建议 ${params.volumeCountGuidance.systemRecommendedVolumeCount} 卷），不沿用现有草稿卷数。`
+        ? translateUi("本次将按系统建议卷数生成（当前建议 {{value0}} 卷），不沿用现有草稿卷数。", { value0: params.volumeCountGuidance.systemRecommendedVolumeCount })
         : params.volumeCountGuidance.respectedExistingVolumeCount != null
-          ? `本次会优先沿用当前草稿的 ${params.volumeCountGuidance.respectedExistingVolumeCount} 卷结构，同时保持在允许区间 ${params.volumeCountGuidance.allowedVolumeCountRange.min}-${params.volumeCountGuidance.allowedVolumeCountRange.max} 内。`
-          : `当前系统建议 ${params.volumeCountGuidance.systemRecommendedVolumeCount} 卷，结构建议区间 ${params.volumeCountGuidance.decisionVolumeCountRange.min}-${params.volumeCountGuidance.decisionVolumeCountRange.max} 卷。`,
-    params.hasUnsavedVolumeDraft ? "本次会直接使用当前页面未保存草稿作为参考。" : "本次会基于当前工作区状态生成建议。",
+          ? translateUi("本次会优先沿用当前草稿的 {{value0}} 卷结构，同时保持在允许区间 {{value1}}-{{value2}} 内。", { value0: params.volumeCountGuidance.respectedExistingVolumeCount, value1: params.volumeCountGuidance.allowedVolumeCountRange.min, value2: params.volumeCountGuidance.allowedVolumeCountRange.max })
+          : translateUi("当前系统建议 {{value0}} 卷，结构建议区间 {{value1}}-{{value2}} 卷。", { value0: params.volumeCountGuidance.systemRecommendedVolumeCount, value1: params.volumeCountGuidance.decisionVolumeCountRange.min, value2: params.volumeCountGuidance.decisionVolumeCountRange.max }),
+    params.hasUnsavedVolumeDraft ? translateUi("本次会直接使用当前页面未保存草稿作为参考。") : translateUi("本次会基于当前工作区状态生成建议。"),
   ].join("\n\n"));
   if (!confirmed) {
     return;
@@ -77,9 +78,9 @@ export function startSkeletonGenerationAction(params: {
     return;
   }
   const confirmed = window.confirm([
-    "将根据当前卷战略建议生成或重生成全书卷骨架。",
-    "这一步会清空已有节奏板和相邻卷再平衡建议，但不会直接删除章节正文。",
-    params.hasUnsavedVolumeDraft ? "本次会直接使用当前页面草稿作为卷骨架上下文。" : "本次会基于当前卷工作区继续推进。",
+    translateUi("将根据当前卷战略建议生成或重生成全书卷骨架。"),
+    translateUi("这一步会清空已有节奏板和相邻卷再平衡建议，但不会直接删除章节正文。"),
+    params.hasUnsavedVolumeDraft ? translateUi("本次会直接使用当前页面草稿作为卷骨架上下文。") : translateUi("本次会基于当前卷工作区继续推进。"),
   ].join("\n\n"));
   if (!confirmed) {
     return;
@@ -111,9 +112,9 @@ export function startBeatSheetGenerationAction(params: {
   const existingBeatSheet = findBeatSheet(params.beatSheets, params.volumeId);
   if (existingBeatSheet) {
     const confirmed = window.confirm([
-      `将重新生成「${targetVolume.title?.trim() || `第${targetVolume.sortOrder}卷`}」的节奏板。`,
-      "这一步会覆盖当前卷现有节奏段与交付项。",
-      "已有章节列表和章节细化资产不会被直接删除，但如果新节奏区间发生变化，建议随后检查章节列表是否仍然匹配。",
+      translateUi("将重新生成「{{value0}}」的节奏板。", { value0: targetVolume.title?.trim() || translateUi("第{{value0}}卷", { value0: targetVolume.sortOrder }) }),
+      translateUi("这一步会覆盖当前卷现有节奏段与交付项。"),
+      translateUi("已有章节列表和章节细化资产不会被直接删除，但如果新节奏区间发生变化，建议随后检查章节列表是否仍然匹配。"),
     ].join("\n\n"));
     if (!confirmed) {
       return;
@@ -171,15 +172,16 @@ export function buildChapterListSuccessMessage(params: {
     ? params.document.volumes.find((volume) => volume.id === params.targetVolumeId)
     : undefined;
   const updatedChapterCount = updatedVolume?.chapters.length ?? 0;
-  const syncSuffix = params.autoSyncedToChapterExecution ? "，并连接到章节执行区" : "";
+  const syncSuffix = params.autoSyncedToChapterExecution ? translateUi("，并连接到章节执行区") : "";
   if (params.generationMode === "single_beat" && params.targetVolumeId && params.targetBeatKey) {
     const targetBeat = findBeatSheet(params.document.beatSheets, params.targetVolumeId)?.beats
       .find((beat) => beat.key === params.targetBeatKey);
+    const targetBeatLabel = targetBeat ? `${targetBeat.label}${targetBeat.title ? ` · ${targetBeat.title}` : ""}` : params.targetBeatKey;
     return updatedChapterCount > 0
-      ? `当前卷节奏段「${targetBeat ? `${targetBeat.label}${targetBeat.title ? ` · ${targetBeat.title}` : ""}` : params.targetBeatKey}」已生成并自动保存${syncSuffix}，本卷现有 ${updatedChapterCount} 章。`
-      : `当前卷节奏段「${targetBeat ? `${targetBeat.label}${targetBeat.title ? ` · ${targetBeat.title}` : ""}` : params.targetBeatKey}」已生成并自动保存${syncSuffix}。`;
+      ? translateUi("当前卷节奏段「{{value0}}」已生成并自动保存{{value1}}，本卷现有 {{value2}} 章。", { value0: targetBeatLabel, value1: syncSuffix, value2: updatedChapterCount })
+      : translateUi("当前卷节奏段「{{value0}}」已生成并自动保存{{value1}}。", { value0: targetBeatLabel, value1: syncSuffix });
   }
   return updatedChapterCount > 0
-    ? `当前卷章节列表已生成并自动保存${syncSuffix}，现已更新为 ${updatedChapterCount} 章，相邻卷再平衡建议也已同步更新。`
-    : `当前卷章节列表已生成并自动保存${syncSuffix}，相邻卷再平衡建议也已同步更新。`;
+    ? translateUi("当前卷章节列表已生成并自动保存{{value0}}，现已更新为 {{value1}} 章，相邻卷再平衡建议也已同步更新。", { value0: syncSuffix, value1: updatedChapterCount })
+    : translateUi("当前卷章节列表已生成并自动保存{{value0}}，相邻卷再平衡建议也已同步更新。", { value0: syncSuffix });
 }

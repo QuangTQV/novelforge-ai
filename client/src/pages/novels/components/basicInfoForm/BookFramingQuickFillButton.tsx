@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { formatCommercialTagsInput, type NovelBasicFormState } from "../../novelBasicInfo.shared";
 import { suggestBookFraming } from "@/api/novelFraming";
@@ -31,6 +32,7 @@ function hasExistingFramingContent(basicForm: NovelBasicFormState): boolean {
 
 export function BookFramingQuickFillButton(props: BookFramingQuickFillButtonProps) {
   const { basicForm, genreOptions, onApplySuggestion, descriptionOverride } = props;
+  const { t } = useTranslation("novelOutline");
   const llm = useLLMStore();
   const effectiveDescription = basicForm.description.trim() || descriptionOverride?.trim() || "";
   const selectedGenreLabel = useMemo(
@@ -53,7 +55,7 @@ export function BookFramingQuickFillButton(props: BookFramingQuickFillButtonProp
     onSuccess: (response) => {
       const suggestion = response.data;
       if (!suggestion) {
-        toast.error("AI 没有返回可用的读者与卖点建议。");
+        toast.error(t("bookFramingQuickFill.noSuggestion"));
         return;
       }
       onApplySuggestion({
@@ -63,20 +65,20 @@ export function BookFramingQuickFillButton(props: BookFramingQuickFillButtonProp
         bookSellingPoint: suggestion.bookSellingPoint,
         first30ChapterPromise: suggestion.first30ChapterPromise,
       });
-      toast.success("已根据当前书名和概述填入读者与卖点建议。");
+      toast.success(t("bookFramingQuickFill.applied"));
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "读者与卖点自动填写失败，请稍后再试。");
+      toast.error(error instanceof Error ? error.message : t("bookFramingQuickFill.failed"));
     },
   });
 
   const handleGenerate = () => {
     if (!basicForm.title.trim() && !effectiveDescription) {
-      toast.error("请先填写书名或一句话概述，再让 AI 帮你填写。");
+      toast.error(t("bookFramingQuickFill.needInput"));
       return;
     }
     if (hasExistingFramingContent(basicForm)) {
-      const confirmed = window.confirm("将用 AI 建议覆盖当前读者与卖点填写，是否继续？");
+      const confirmed = window.confirm(t("bookFramingQuickFill.confirmOverwrite"));
       if (!confirmed) {
         return;
       }
@@ -92,7 +94,7 @@ export function BookFramingQuickFillButton(props: BookFramingQuickFillButtonProp
       onClick={handleGenerate}
       disabled={suggestionMutation.isPending}
     >
-      {suggestionMutation.isPending ? "填写中..." : "帮我填写"}
+      {suggestionMutation.isPending ? t("bookFramingQuickFill.filling") : t("bookFramingQuickFill.trigger")}
     </AiButton>
   );
 }

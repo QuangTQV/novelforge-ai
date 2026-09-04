@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { DirectorAutoApprovalPreferenceSettings } from "@ai-novel/shared/types/autoDirectorApproval";
@@ -30,9 +31,10 @@ export function AutoDirectorApprovalPreferenceCard(props: {
     <Card className="min-w-0 overflow-hidden">
       <CardHeader className="flex-row items-start justify-between gap-3 space-y-0">
         <div className="min-w-0 space-y-1.5">
-          <CardTitle>审批授权偏好</CardTitle>
+          <CardTitle>{translateUi("审批授权偏好")}</CardTitle>
           <CardDescription className={AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}>
-            自动导演按范围执行时，会先带入这里的默认授权。未授权的审批点仍会停下等待你确认。
+
+            {translateUi("自动导演按范围执行时，会先带入这里的默认授权。未授权的审批点仍会停下等待你确认。")}
           </CardDescription>
         </div>
         <Button
@@ -52,7 +54,8 @@ export function AutoDirectorApprovalPreferenceCard(props: {
       {isOpen ? (
         <CardContent id="auto-director-approval-preference-content" className="space-y-4">
           <div className={`rounded-md border bg-muted/15 p-3 text-sm text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-            当前默认：{summarizeDirectorAutoApprovalPoints(draftCodes)}
+
+            {translateUi("当前默认：")}{summarizeDirectorAutoApprovalPoints(draftCodes)}
           </div>
           <AutoDirectorApprovalPointMultiSelect
             value={draftCodes}
@@ -62,7 +65,7 @@ export function AutoDirectorApprovalPreferenceCard(props: {
           />
           <div className={AUTO_DIRECTOR_MOBILE_CLASSES.settingsActionRow}>
             <Button className={AUTO_DIRECTOR_MOBILE_CLASSES.fullWidthAction} onClick={onSave} disabled={isSaving}>
-              {isSaving ? "保存中..." : "保存审批授权偏好"}
+              {isSaving ? translateUi("保存中...") : translateUi("保存审批授权偏好")}
             </Button>
           </div>
         </CardContent>

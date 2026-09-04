@@ -1,0 +1,84 @@
+{
+  "planning": {
+    "title": "世界资产规划",
+    "description": "地图、势力图谱、时间线和体系树都从世界手册长出来。先完善规则、势力、地点和张力，再生成视觉资产。",
+    "reserved": "功能即将推出"
+  },
+  "references": {
+    "title": "参考素材"
+  },
+  "library": {
+    "title": "世界资产",
+    "keyword": "关键词",
+    "saveCurrent": "把当前设定保存为世界资产",
+    "name": "资产名称",
+    "descriptionPlaceholder": "可选描述（留空则使用当前分层内容）",
+    "addToLayer": "加入当前分层（{{field}}）",
+    "addToForces": "加入势力手册",
+    "addToLocations": "加入地点手册"
+  },
+  "categories": {
+    "all": "全部分类",
+    "terrain": "地形",
+    "race": "种族",
+    "power": "力量体系",
+    "organization": "组织/势力",
+    "resource": "资源",
+    "event": "事件",
+    "artifact": "道具/奇物",
+    "custom": "自定义"
+  },
+  "actions": {
+    "refresh": "刷新",
+    "saving": "保存中...",
+    "saveAsset": "保存资产"
+  },
+  "snapshots": {
+    "title": "版本快照",
+    "labelPlaceholder": "快照标签（可选）",
+    "create": "创建快照",
+    "restore": "恢复",
+    "from": "起始快照",
+    "to": "目标快照",
+    "compare": "对比差异"
+  },
+  "export": {
+    "title": "导出备份",
+    "markdown": "导出 Markdown（复制到剪贴板）",
+    "json": "导出 JSON（复制到剪贴板）"
+  },
+  "import": {
+    "title": "导入文本",
+    "text": "纯文本",
+    "placeholder": "粘贴要导入的内容",
+    "importing": "导入中...",
+    "createWorld": "导入为新世界"
+  },
+  "presets": {
+    "map": {
+      "title": "世界地图",
+      "description": "用区域、路线、边界和故事地点，说明角色如何移动、冲突在哪里爆发。",
+      "readiness": "补充故事舞台、地点风险和势力控制区。"
+    },
+    "factions": {
+      "title": "势力图谱",
+      "description": "把势力、阵营、盟友、敌对和附庸关系变成可视网络。",
+      "readiness": "补充主要势力、当前目标和各方压力。"
+    },
+    "timeline": {
+      "title": "世界时间线",
+      "description": "记录大事件、灾变、改朝换代和局势变化，让世界有清晰进程。",
+      "readiness": "补充核心冲突、共同后果和关键历史节点。"
+    },
+    "characters": {
+      "title": "角色关系网",
+      "description": "把角色和势力、地点、资源、禁忌连起来，减少设定漂移。",
+      "readiness": "补充角色的阵营、压力和关键地点。"
+    },
+    "power": {
+      "title": "力量体系树",
+      "description": "把力量来源、升级路线、代价和禁忌边界整理成层级结构。",
+      "readiness": "补充核心规则、代价和不可逾越的边界。"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "roles": { "protagonist": "Nhân vật chính", "antagonist": "Đối thủ chính", "ally": "Đồng minh", "foil": "Nhân vật đối chiếu", "mentor": "Người dẫn dắt", "loveInterest": "Mối quan hệ tình cảm", "pressureSource": "Nguồn áp lực", "catalyst": "Chất xúc tác" },
+  "gender": { "male": "Nam", "female": "Nữ", "other": "Khác", "unknown": "Chưa biết" },
+  "unclassified": "Chưa phân loại",
+  "confirm": {
+    "qualityWarning": "Đội hình “{{title}}” chưa hoàn toàn khớp với thiết lập câu chuyện hiện tại.",
+    "applyAnyway": "Vẫn áp dụng vào workspace tài sản nhân vật? Sau đó bạn có thể tiếp tục chỉnh sửa.",
+    "deleteApplied": "Xác nhận xóa phương án “{{title}}”? Chỉ xóa bản ghi, không hoàn tác nhân vật và quan hệ đã đồng bộ.",
+    "delete": "Xác nhận xóa phương án “{{title}}”?",
+    "clearApplied": "Xác nhận xóa toàn bộ bản ghi phương án? Nhân vật và quan hệ đã đồng bộ sẽ không tự động hoàn tác.",
+    "clear": "Xác nhận xóa {{count}} phương án đội hình hiện có?"
+  },
+  "status": {
+    "generated": "Đã tạo phương án đội hình nhân vật.",
+    "generateFailed": "Tạo phương án đội hình thất bại.",
+    "backgroundHint": " Hồ sơ hiển thị và diễn biến nhân vật sẽ được bổ sung ở nền; hãy làm mới workspace tài sản sau.",
+    "applied": "Đã áp dụng đội hình theo xác nhận của bạn, đồng bộ {{createdCount}} nhân vật mới và cập nhật {{updatedCount}} nhân vật hiện có.{{backgroundHint}}",
+    "synced": "Đã đồng bộ {{createdCount}} nhân vật mới và cập nhật {{updatedCount}} nhân vật hiện có.",
+    "applyFailed": "Áp dụng phương án đội hình thất bại.",
+    "deletedApplied": "Đã xóa bản ghi phương án; dữ liệu tương ứng trong thư viện nhân vật và mạng quan hệ vẫn được giữ.",
+    "deleted": "Đã xóa phương án đội hình.",
+    "deleteFailed": "Xóa phương án đội hình thất bại.",
+    "clearEmpty": "Không có phương án đội hình để xóa.",
+    "clearApplied": "Đã xóa {{count}} bản ghi phương án đội hình; nhân vật và quan hệ đã đồng bộ không tự động hoàn tác.",
+    "clearOptions": "Đã xóa {{count}} phương án đội hình.",
+    "clearFailed": "Xóa các phương án đội hình thất bại."
+  }
+  ,"ui": { "title": "Phương án đội hình nhân vật AI", "description": "Phù hợp để xây dựng hệ thống nhân vật ở giai đoạn đầu hoặc lập kế hoạch lại đội hình sau khi hướng truyện thay đổi lớn.", "candidateCount": "{{count}} phương án ứng viên", "relationCount": "{{count}} quan hệ nhân vật", "appliedOption": "Đã áp dụng phương án", "current": "Đang áp dụng", "members": "{{count}} nhân vật chính", "relations": "{{count}} quan hệ chính", "recommendation": "Đề xuất: {{value}}", "viewOthers": "Xem các phương án khác", "replan": "Lập kế hoạch lại đội hình", "instruction": "Chỉ dẫn tạo", "instructionHint": "Có thể bổ sung mong muốn của nhân vật chính, áp lực từ đối thủ, sức căng quan hệ hoặc hướng nhân vật cần nhấn mạnh.", "instructionPlaceholder": "Ví dụ: Nhân vật chính phải chọn giữa trách nhiệm gia tộc và tự do cá nhân; phản diện không hoàn toàn xấu mà có cả ham muốn bảo vệ và kiểm soát.", "worldBased": "Tạo dựa trên thế giới của sách", "worldCompliance": "Kiểm tra tuân thủ quy tắc thế giới", "worldLoading": "Đang đọc phạm vi sử dụng thế giới của sách...", "noWorld": "Thế giới của sách chưa sẵn sàng. Lần này hệ thống sẽ ưu tiên dựa vào thông tin cấp sách và chỉ dẫn của bạn để thiết kế nhân vật.", "worldNotOrganized": "Thế giới của sách tồn tại nhưng phạm vi sử dụng chưa được sắp xếp. Nên sắp xếp phạm vi sử dụng ở trang thông tin cơ bản hoặc tiếp tục để AI tạo thận trọng theo sổ tay thế giới.", "faction": "Khuynh hướng thế lực", "aiJudge": "Để AI phán đoán", "worldHint": "Nhân vật sẽ ưu tiên phù hợp với thế lực, địa điểm, ranh giới thân phận và các kết hợp bị cấm trong thế giới của sách.", "worldHintEmpty": "Sau khi sắp xếp phạm vi sử dụng thế giới của sách, bạn có thể chỉ định thêm khuynh hướng thế lực.", "generate": "Tạo 3 phương án đội hình", "generating": "Đang tạo...", "clear": "Không thích phương án nào", "clearing": "Đang xóa...", "collapse": "Thu gọn khu vực phương án", "applyNotice": "Sau khi áp dụng một đội hình, hệ thống sẽ đồng bộ tạo/cập nhật nhân vật và làm mới workspace tài sản nhân vật.", "loadingOptions": "Đang tải phương án đội hình...", "applied": "Đã áp dụng", "recommended": "Đề xuất", "needsConfirmation": "Cần xác nhận", "applying": "Đang áp dụng...", "reapply": "Áp dụng lại", "applyConfirmed": "Xác nhận rồi áp dụng", "applyThis": "Áp dụng đội hình này", "deleting": "Đang xóa...", "delete": "Xóa", "qualityTitle": "Phương án này cần bạn xác nhận trước khi áp dụng", "qualityDescription": "Hệ thống phát hiện một số điểm chưa hoàn toàn khớp với thiết lập câu chuyện hiện tại. Bạn có thể áp dụng trước rồi chỉnh sửa trong tài sản nhân vật.", "reason": "Lý do đề xuất: {{value}}", "whyWorks": "Lý do phù hợp: {{value}}", "storyRole": "Vai trò: {{value}}", "relation": "Quan hệ với nhân vật chính: {{value}}", "goal": "Mục tiêu bên ngoài: {{value}}", "emptyOptions": "Chưa có phương án đội hình. Hãy nhập một chút định hướng nhân vật rồi bấm “Tạo 3 phương án đội hình”.", "relationNetwork": "Mạng lưới quan hệ nhân vật", "focus": "Đang tập trung: {{name}} ({{role}})", "undefined": "Chưa xác định", "defaultRelations": "Khi chưa chọn nhân vật, hệ thống mặc định hiển thị các quan hệ gần đây nhất.", "loadingRelations": "Đang tải mạng lưới quan hệ...", "unnamed": "Nhân vật chưa đặt tên", "hiddenTension": "Sức căng ẩn: {{value}}", "conflictSource": "Nguồn xung đột: {{value}}", "nextTurn": "Điểm đảo chiều tiếp theo: {{value}}", "emptyRelations": "Chưa có quan hệ nhân vật. Sau khi áp dụng một đội hình, quan hệ sẽ xuất hiện tại đây." }
+}

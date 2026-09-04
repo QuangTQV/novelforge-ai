@@ -1,0 +1,47 @@
+{
+  "title": "Complete the world handbook",
+  "description": "Confirm the impression and core conflict first, then refine rules, forces, locations and conflict tension as needed.",
+  "loading": {
+    "title": "Loading the world handbook",
+    "description": "When needed, you can let AI organize the existing settings into a full handbook."
+  },
+  "actions": {
+    "organizing": "Organizing...",
+    "organizeWithAi": "Let AI organize the world handbook",
+    "viewHandbook": "View handbook",
+    "saving": "Saving...",
+    "save": "Save handbook",
+    "editProfile": "Organize the world overview",
+    "generating": "Filling in...",
+    "generateSection": "Fill in the selected section",
+    "editRules": "Organize rules"
+  },
+  "sections": {
+    "profile": "World impression",
+    "rules": "Rules",
+    "factions": "Forces",
+    "locations": "Locations",
+    "relations": "Tension"
+  },
+  "profile": {
+    "identity": "One-sentence world impression",
+    "identityFallback": "Add a one-line impression so the author sees the world's genre, era feel and core wonder at a glance.",
+    "summary": "The reader's first look at the world",
+    "summaryFallback": "Add the world's imagery, order, danger or core wonder.",
+    "tone": "Reading tone",
+    "toneFallback": "Add the reading tone, e.g. hot-blooded leveling, dark epic, light comedic adventure or power struggle.",
+    "coreConflict": "The conflict that keeps driving the plot",
+    "coreConflictFallback": "Add the problem that repeatedly forces character choices, faction clashes and chapter events."
+  },
+  "ai": {
+    "title": "AI-assisted organizing",
+    "description": "Let AI fill in part of the handbook from existing content; you can still edit before saving."
+  },
+  "rules": {
+    "description": "{{count}} rules constrain power, resources, taboos and costs.",
+    "summary": "Rule overview",
+    "summaryFallback": "Add the hard rules that run the world so powers and plot solutions don't spiral out of control.",
+    "axioms": "Representative rules",
+    "axiomsFallback": "Add 2-3 core rules that must be followed."
+  }
+}

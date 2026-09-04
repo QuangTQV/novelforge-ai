@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   DirectorAutoExecutionMode,
   DirectorAutoExecutionPlan,
@@ -35,18 +36,18 @@ const NEW_BOOK_SCOPE_OPTIONS: Array<{
 }> = [
   {
     value: "book",
-    label: "全书",
-    description: "适合直接让 AI 从规划到正文执行覆盖整本书。",
+    label: translateUi("全书"),
+    description: translateUi("适合直接让 AI 从规划到正文执行覆盖整本书。"),
   },
   {
     value: "chapter_range",
-    label: "第 1-N 章",
-    description: "适合先跑出开局样章，默认第 1-10 章，可按整书章节数调整。",
+    label: translateUi("第 1-N 章"),
+    description: translateUi("适合先跑出开局样章，默认第 1-10 章，可按整书章节数调整。"),
   },
   {
     value: "volume",
-    label: "前 1 卷",
-    description: "适合先让 AI 完成第一卷的拆章、写作、审校和修复。",
+    label: translateUi("前 1 卷"),
+    description: translateUi("适合先让 AI 完成第一卷的拆章、写作、审校和修复。"),
   },
 ];
 
@@ -57,18 +58,18 @@ const TAKEOVER_SCOPE_OPTIONS: Array<{
 }> = [
   {
     value: "book",
-    label: "全书",
-    description: "适合让 AI 重新校验全本规划，并按整本书范围继续执行。",
+    label: translateUi("全书"),
+    description: translateUi("适合让 AI 重新校验全本规划，并按整本书范围继续执行。"),
   },
   {
     value: "chapter_range",
-    label: "章节范围",
-    description: "适合只让 AI 接手某一段，比如第 11-20 章。",
+    label: translateUi("章节范围"),
+    description: translateUi("适合只让 AI 接手某一段，比如第 11-20 章。"),
   },
   {
     value: "volume",
-    label: "卷范围",
-    description: "适合让 AI 接管指定卷及卷下章节。",
+    label: translateUi("卷范围"),
+    description: translateUi("适合让 AI 接管指定卷及卷下章节。"),
   },
 ];
 
@@ -253,8 +254,8 @@ export function DirectorAutoExecutionPlanFields({
   return (
     <div className="mt-3 min-w-0 rounded-md border border-primary/15 bg-primary/5 p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs font-medium text-foreground">自动执行范围</div>
-        <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>当前将执行：{scopeLabel}</div>
+        <div className="text-xs font-medium text-foreground">{translateUi("自动执行范围")}</div>
+        <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>{translateUi("当前将执行：")}{scopeLabel}</div>
       </div>
 
       <div className="mt-3 grid min-w-0 gap-3 sm:grid-cols-3">
@@ -280,7 +281,7 @@ export function DirectorAutoExecutionPlanFields({
 
       {canEditChapterCount ? (
         <div className="mt-4 max-w-xs">
-          <div className="text-xs font-medium text-foreground">章节数量</div>
+          <div className="text-xs font-medium text-foreground">{translateUi("章节数量")}</div>
           <Input
             className="mt-2"
             type="number"
@@ -288,10 +289,10 @@ export function DirectorAutoExecutionPlanFields({
             max={maxChapterCount ?? undefined}
             value={draft.endOrder}
             onChange={(event) => onChange({ endOrder: event.target.value })}
-            placeholder="例如 10"
+            placeholder={translateUi("例如 10")}
           />
           {maxChapterCount ? (
-            <div className="mt-1 text-xs text-muted-foreground">最多不超过全书规划的 {maxChapterCount} 章。</div>
+            <div className="mt-1 text-xs text-muted-foreground">{translateUi("最多不超过全书规划的")} {maxChapterCount}  {translateUi("章。")}</div>
           ) : null}
         </div>
       ) : null}
@@ -299,7 +300,7 @@ export function DirectorAutoExecutionPlanFields({
       {canEditChapterRange ? (
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <div>
-            <div className="text-xs font-medium text-foreground">起始章节</div>
+            <div className="text-xs font-medium text-foreground">{translateUi("起始章节")}</div>
             <Input
               className="mt-2"
               type="number"
@@ -307,11 +308,11 @@ export function DirectorAutoExecutionPlanFields({
               max={maxChapterCount ?? undefined}
               value={draft.startOrder}
               onChange={(event) => onChange({ startOrder: event.target.value })}
-              placeholder="例如 11"
+              placeholder={translateUi("例如 11")}
             />
           </div>
           <div>
-            <div className="text-xs font-medium text-foreground">结束章节</div>
+            <div className="text-xs font-medium text-foreground">{translateUi("结束章节")}</div>
             <Input
               className="mt-2"
               type="number"
@@ -319,7 +320,7 @@ export function DirectorAutoExecutionPlanFields({
               max={maxChapterCount ?? undefined}
               value={draft.endOrder}
               onChange={(event) => onChange({ endOrder: event.target.value })}
-              placeholder="例如 20"
+              placeholder={translateUi("例如 20")}
             />
           </div>
         </div>
@@ -327,14 +328,14 @@ export function DirectorAutoExecutionPlanFields({
 
       {canEditVolumeOrder ? (
         <div className="mt-4 max-w-xs">
-          <div className="text-xs font-medium text-foreground">卷序号</div>
+          <div className="text-xs font-medium text-foreground">{translateUi("卷序号")}</div>
           <Input
             className="mt-2"
             type="number"
             min={1}
             value={draft.volumeOrder}
             onChange={(event) => onChange({ volumeOrder: event.target.value })}
-            placeholder="例如 2"
+            placeholder={translateUi("例如 2")}
           />
         </div>
       ) : null}
@@ -342,9 +343,10 @@ export function DirectorAutoExecutionPlanFields({
       <div className="mt-4 rounded-xl border bg-background/80 p-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 space-y-1">
-            <div className="text-sm font-medium text-foreground">正文生成后自动审核</div>
+            <div className="text-sm font-medium text-foreground">{translateUi("正文生成后自动审核")}</div>
             <div className={`text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-              关闭后，正文生成完成即结束当前章节，质量校验交给你手动处理。
+
+              {translateUi("关闭后，正文生成完成即结束当前章节，质量校验交给你手动处理。")}
             </div>
           </div>
           <Switch
@@ -353,29 +355,30 @@ export function DirectorAutoExecutionPlanFields({
               autoReview: checked,
               autoRepair: checked ? draft.autoRepair : false,
             })}
-            aria-label="切换正文生成后是否自动审核"
+            aria-label={translateUi("切换正文生成后是否自动审核")}
           />
         </div>
 
         <div className="mt-4 flex items-start justify-between gap-3">
           <div className="min-w-0 space-y-1">
-            <div className="text-sm font-medium text-foreground">审核不通过时自动修复</div>
+            <div className="text-sm font-medium text-foreground">{translateUi("审核不通过时自动修复")}</div>
             <div className={`text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-              只在开启自动审核后生效；关闭时会保留问题，等待你手动处理或重跑。
+
+              {translateUi("只在开启自动审核后生效；关闭时会保留问题，等待你手动处理或重跑。")}
             </div>
           </div>
           <Switch
             checked={draft.autoReview && draft.autoRepair}
             disabled={!draft.autoReview}
             onCheckedChange={(checked) => onChange({ autoRepair: checked })}
-            aria-label="切换审核后是否自动修复"
+            aria-label={translateUi("切换审核后是否自动修复")}
           />
         </div>
       </div>
 
       <div className={`mt-3 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-        系统会按你选定的范围，自动准备节奏板、拆章和章节执行资源，再继续写作。
-        当前质量策略：{reviewLabel}。
+
+        {translateUi("系统会按你选定的范围，自动准备节奏板、拆章和章节执行资源，再继续写作。\n        当前质量策略：")}{reviewLabel}{translateUi("。")}
       </div>
     </div>
   );

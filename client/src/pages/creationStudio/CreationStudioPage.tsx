@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, ArrowUpRight, Check, Loader2, RefreshCw, Sparkles } from "lucide-react";
@@ -80,9 +81,9 @@ export default function CreationStudioPage() {
       const created = response.data;
       if (!created) return;
       setSearchParams({ taskId: created.taskId }, { replace: true });
-      toast.success("AI 已整理好两个可选方向。");
+      toast.success(translateUi("AI 已整理好两个可选方向。"));
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "暂时无法理解这个想法，请重试。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("暂时无法理解这个想法，请重试。")),
   });
 
   const regenerateMutation = useMutation({
@@ -96,9 +97,9 @@ export default function CreationStudioPage() {
       setConfirmedBaseline(`${narrativeForm}:${normalizeTarget(narrativeForm, targetWordCount)}:${writingPlatform}`);
       setSelectedDirectionId(response.data?.interpretation?.directions[0].id ?? "");
       await queryClient.invalidateQueries({ queryKey: ["creation-studio", taskId] });
-      toast.success("方向已按新的作品规模更新。");
+      toast.success(translateUi("方向已按新的作品规模更新。"));
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "更新方向失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("更新方向失败。")),
   });
 
   const confirmMutation = useMutation({
@@ -115,22 +116,23 @@ export default function CreationStudioPage() {
     onSuccess: (response) => {
       if (response.data?.resumeRoute) navigate(response.data.resumeRoute);
     },
-    onError: (error) => toast.error(error instanceof Error ? error.message : "开始创作失败。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("开始创作失败。")),
   });
 
   if (taskId && taskQuery.isLoading) {
-    return <CenteredStatus label="正在恢复你的创作想法…" />;
+    return <CenteredStatus label={translateUi("正在恢复你的创作想法…")} />;
   }
 
   return (
     <div className="w-full space-y-10 px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
       <div className="flex w-full flex-wrap items-center justify-between gap-3">
         <Button asChild variant="ghost" size="sm" className="-ml-3 text-muted-foreground hover:text-foreground">
-          <Link to="/novels"><ArrowLeft className="mr-2 h-4 w-4" />返回作品列表</Link>
+          <Link to="/novels"><ArrowLeft className="mr-2 h-4 w-4" />{translateUi("返回作品列表")}</Link>
         </Button>
         <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
           <Link to="/novels/create">
-            完整设置
+
+            {translateUi("完整设置")}
             <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </Button>
@@ -138,15 +140,15 @@ export default function CreationStudioPage() {
 
       <section className="w-full pt-3 sm:pt-8">
         <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
-          {shortStoryEntry ? "短篇创作 · 3,000—30,000 字" : "AI 创作工作室"}
+          {shortStoryEntry ? translateUi("短篇创作 · 3,000—30,000 字") : translateUi("AI 创作工作室")}
         </div>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.045em] text-foreground sm:text-5xl lg:text-[3.5rem]">
-          {shortStoryEntry ? "从一个念头，抵达完整短篇" : "从一个念头，抵达完整作品"}
+          {shortStoryEntry ? translateUi("从一个念头，抵达完整短篇") : translateUi("从一个念头，抵达完整作品")}
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
           {shortStoryEntry
-            ? "写下一段画面、一个人物，或者某种很想表达的情绪。AI 会把它整理成两个清晰方向，确认后直接写成完整作品。"
-            : "不必先理解结构和规划。写下最想表达的部分，AI 会整理作品规模和两个清晰方向。"}
+            ? translateUi("写下一段画面、一个人物，或者某种很想表达的情绪。AI 会把它整理成两个清晰方向，确认后直接写成完整作品。")
+            : translateUi("不必先理解结构和规划。写下最想表达的部分，AI 会整理作品规模和两个清晰方向。")}
         </p>
       </section>
 
@@ -157,9 +159,10 @@ export default function CreationStudioPage() {
         >
           <div className="flex items-start justify-between gap-4 px-1 pt-1">
             <div>
-              <div className="text-xs font-medium text-muted-foreground">01 · 起点</div>
+              <div className="text-xs font-medium text-muted-foreground">{translateUi("01 · 起点")}</div>
               <h2 id="creation-idea-heading" className="mt-2 text-xl font-semibold tracking-[-0.02em]">
-                故事从哪里开始？
+
+                {translateUi("故事从哪里开始？")}
               </h2>
             </div>
             {idea ? (
@@ -171,33 +174,33 @@ export default function CreationStudioPage() {
           <textarea
             value={idea}
             onChange={(event) => setIdea(event.target.value)}
-            placeholder="例如：一个总能听见谎言的女孩，遇见了唯一无法判断真假的人……"
-            aria-label={shortStoryEntry ? "写下短篇故事想法" : "写下故事想法"}
+            placeholder={translateUi("例如：一个总能听见谎言的女孩，遇见了唯一无法判断真假的人……")}
+            aria-label={shortStoryEntry ? translateUi("写下短篇故事想法") : translateUi("写下故事想法")}
             className="mt-5 min-h-[180px] w-full resize-none bg-transparent px-1 py-1 text-base leading-7 text-foreground outline-none placeholder:text-muted-foreground/60 sm:text-lg sm:leading-8"
             maxLength={12000}
             autoFocus
           />
           <div className="flex flex-col gap-3 border-t border-border/60 pt-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
-              <span className="shrink-0">目标平台</span>
+              <span className="shrink-0">{translateUi("目标平台")}</span>
               <Select
                 value={initialPlatformPreference}
                 onValueChange={(value) => setInitialPlatformPreference(value as WritingPlatformPreference)}
               >
-                <SelectTrigger aria-label="选择目标平台" className="h-9 min-w-[11rem] rounded-md px-2.5 text-sm">
+                <SelectTrigger aria-label={translateUi("选择目标平台")} className="h-9 min-w-[11rem] rounded-md px-2.5 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ai_recommend">让 AI 推荐</SelectItem>
-                  <SelectItem value="fanqie_free">番茄免费网文</SelectItem>
-                  {!shortStoryEntry ? <SelectItem value="qidian_male">起点男频</SelectItem> : null}
-                  {!shortStoryEntry ? <SelectItem value="jinjiang_female">晋江女频</SelectItem> : null}
-                  <SelectItem value="zhihu_story">知乎短故事</SelectItem>
+                  <SelectItem value="ai_recommend">{translateUi("让 AI 推荐")}</SelectItem>
+                  <SelectItem value="fanqie_free">{translateUi("番茄免费网文")}</SelectItem>
+                  {!shortStoryEntry ? <SelectItem value="qidian_male">{translateUi("起点男频")}</SelectItem> : null}
+                  {!shortStoryEntry ? <SelectItem value="jinjiang_female">{translateUi("晋江女频")}</SelectItem> : null}
+                  <SelectItem value="zhihu_story">{translateUi("知乎短故事")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <span className="text-xs leading-5 text-muted-foreground">人物、画面、冲突，写下任何一个就够了。</span>
+              <span className="text-xs leading-5 text-muted-foreground">{translateUi("人物、画面、冲突，写下任何一个就够了。")}</span>
               <Button
                 size="lg"
                 className="h-11 rounded-full px-6 shadow-none"
@@ -205,7 +208,8 @@ export default function CreationStudioPage() {
                 disabled={!idea.trim() || interpretMutation.isPending}
               >
                 {interpretMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                生成创作方向
+
+                {translateUi("生成创作方向")}
               </Button>
             </div>
           </div>
@@ -215,13 +219,13 @@ export default function CreationStudioPage() {
           <Card className="border-border/70 bg-muted/20">
             <CardContent className="grid gap-5 p-5 md:grid-cols-[minmax(0,1fr)_18rem]">
               <div>
-                <div className="text-xs font-medium uppercase tracking-wider text-primary">AI 对作品的理解</div>
+                <div className="text-xs font-medium uppercase tracking-wider text-primary">{translateUi("AI 对作品的理解")}</div>
                 <p className="mt-2 text-sm leading-7 text-foreground">{interpretation.understanding}</p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{interpretation.recommendationReason}</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">平台建议：{interpretation.writingPlatformReason}</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{translateUi("平台建议：")}{interpretation.writingPlatformReason}</p>
                 {interpretation.productionFoundation ? (
                   <div className="mt-4 border-t border-border/60 pt-3">
-                    <div className="text-xs text-muted-foreground">AI 建议的创作底座</div>
+                    <div className="text-xs text-muted-foreground">{translateUi("AI 建议的创作底座")}</div>
                     <div className="mt-1 text-sm font-medium text-foreground">
                       {interpretation.productionFoundation.genre.path}
                       <span className="mx-2 text-muted-foreground">×</span>
@@ -253,14 +257,15 @@ export default function CreationStudioPage() {
 
           {scaleNeedsRefresh ? (
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300/60 bg-amber-50/50 px-4 py-3 dark:bg-amber-950/10">
-              <p className="text-sm text-muted-foreground">作品规模或目标平台变了，先让 AI 重新适配方向。</p>
+              <p className="text-sm text-muted-foreground">{translateUi("作品规模或目标平台变了，先让 AI 重新适配方向。")}</p>
               <Button
                 variant="outline"
                 onClick={() => regenerateMutation.mutate()}
                 disabled={regenerateMutation.isPending}
               >
                 <RefreshCw className={cn("mr-2 h-4 w-4", regenerateMutation.isPending && "animate-spin")} />
-                按新规模更新方向
+
+                {translateUi("按新规模更新方向")}
               </Button>
             </div>
           ) : null}
@@ -278,9 +283,9 @@ export default function CreationStudioPage() {
 
           <div className="sticky bottom-3 z-10 flex flex-col gap-3 rounded-2xl border bg-background/95 p-4 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-sm font-medium">{selectedDirection ? `将以《${selectedDirection.title}》开始` : "请选择一个方向"}</div>
+              <div className="text-sm font-medium">{selectedDirection ? translateUi("将以《{{value0}}》开始", { value0: selectedDirection.title }) : translateUi("请选择一个方向")}</div>
               <div className="mt-1 text-xs text-muted-foreground">
-                {narrativeForm === "short_story" ? "会直接生成一篇连续完整的短篇作品。" : "会交给长篇自动导演继续完成整书准备。"}
+                {narrativeForm === "short_story" ? translateUi("会直接生成一篇连续完整的短篇作品。") : translateUi("会交给长篇自动导演继续完成整书准备。")}
               </div>
             </div>
             <Button
@@ -289,7 +294,8 @@ export default function CreationStudioPage() {
               disabled={!selectedDirection || scaleNeedsRefresh || confirmMutation.isPending}
             >
               {confirmMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Check className="mr-2 h-4 w-4" />}
-              确认这个方向并开始
+
+              {translateUi("确认这个方向并开始")}
             </Button>
           </div>
         </div>
@@ -322,10 +328,10 @@ function DirectionCard(props: {
           </div>
           <p className="text-sm leading-7 text-foreground">{direction.premise}</p>
           <div className="grid gap-3 text-sm sm:grid-cols-2">
-            <DirectionFact label="核心体验" value={direction.coreExperience} />
-            <DirectionFact label="主角" value={direction.protagonist} />
-            <DirectionFact label="主要冲突" value={direction.centralConflict} />
-            <DirectionFact label="结尾回报" value={direction.endingPromise} />
+            <DirectionFact label={translateUi("核心体验")} value={direction.coreExperience} />
+            <DirectionFact label={translateUi("主角")} value={direction.protagonist} />
+            <DirectionFact label={translateUi("主要冲突")} value={direction.centralConflict} />
+            <DirectionFact label={translateUi("结尾回报")} value={direction.endingPromise} />
           </div>
           <div className="flex flex-wrap gap-2">
             {direction.styleKeywords.map((keyword) => (
@@ -357,7 +363,7 @@ function ScaleControls(props: {
 }) {
   return (
     <div className="space-y-3 rounded-xl border bg-background p-4">
-      <div className="text-xs font-medium text-muted-foreground">作品规模</div>
+      <div className="text-xs font-medium text-muted-foreground">{translateUi("作品规模")}</div>
       <div className="grid grid-cols-2 gap-2">
         <Button
           type="button"
@@ -365,7 +371,8 @@ function ScaleControls(props: {
           variant={props.narrativeForm === "short_story" ? "default" : "outline"}
           onClick={() => props.onFormChange("short_story")}
         >
-          短篇
+
+          {translateUi("短篇")}
         </Button>
         <Button
           type="button"
@@ -373,11 +380,12 @@ function ScaleControls(props: {
           variant={props.narrativeForm === "long_novel" ? "default" : "outline"}
           onClick={() => props.onFormChange("long_novel")}
         >
-          长篇
+
+          {translateUi("长篇")}
         </Button>
       </div>
       <label className="block">
-        <span className="text-xs text-muted-foreground">目标字数</span>
+        <span className="text-xs text-muted-foreground">{translateUi("目标字数")}</span>
         <Input
           className="mt-1"
           type="number"
@@ -389,7 +397,7 @@ function ScaleControls(props: {
         />
       </label>
       <div className="block">
-        <span className="text-xs text-muted-foreground">目标平台</span>
+        <span className="text-xs text-muted-foreground">{translateUi("目标平台")}</span>
         <Select
           value={props.writingPlatform}
           onValueChange={(value) => props.onPlatformChange(value as WritingPlatform)}
@@ -398,13 +406,13 @@ function ScaleControls(props: {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="fanqie_free">番茄免费网文</SelectItem>
-            {props.narrativeForm === "long_novel" ? <SelectItem value="qidian_male">起点男频</SelectItem> : null}
-            {props.narrativeForm === "long_novel" ? <SelectItem value="jinjiang_female">晋江女频</SelectItem> : null}
-            {props.narrativeForm === "short_story" ? <SelectItem value="zhihu_story">知乎短故事</SelectItem> : null}
+            <SelectItem value="fanqie_free">{translateUi("番茄免费网文")}</SelectItem>
+            {props.narrativeForm === "long_novel" ? <SelectItem value="qidian_male">{translateUi("起点男频")}</SelectItem> : null}
+            {props.narrativeForm === "long_novel" ? <SelectItem value="jinjiang_female">{translateUi("晋江女频")}</SelectItem> : null}
+            {props.narrativeForm === "short_story" ? <SelectItem value="zhihu_story">{translateUi("知乎短故事")}</SelectItem> : null}
           </SelectContent>
         </Select>
-        <p className="mt-2 text-[11px] leading-5 text-muted-foreground">AI 会按平台调整开篇、推进、回报和语言读感。</p>
+        <p className="mt-2 text-[11px] leading-5 text-muted-foreground">{translateUi("AI 会按平台调整开篇、推进、回报和语言读感。")}</p>
       </div>
     </div>
   );

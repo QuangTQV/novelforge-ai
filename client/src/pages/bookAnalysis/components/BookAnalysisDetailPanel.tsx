@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { RefObject } from "react";
 import type {
@@ -229,15 +230,16 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
       {selectedAnalysis.lastError ? (
         <div className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
           {budgetExceeded
-            ? `预算用尽，任务已停止。累计用量 ${formatTokenCount(usedTokens)} / ${formatTokenCount(budgetTokens)} tokens。建议先扩容预算后续跑。`
-            : `最近错误：${selectedAnalysis.lastError}`}
+            ? translateUi("预算用尽，任务已停止。累计用量 {{value0}} / {{value1}} tokens。建议先扩容预算后续跑。", { value0: formatTokenCount(usedTokens), value1: formatTokenCount(budgetTokens) })
+            : translateUi("最近错误：{{value0}}", { value0: selectedAnalysis.lastError })}
         </div>
       ) : null}
 
       {sourceLoading || chaptersLoading ? (
         <div className="flex items-center gap-2 rounded-md border border-info/25 bg-info/5 p-3 text-sm text-muted-foreground" aria-live="polite">
           <Loader2 className="h-4 w-4 animate-spin text-info" aria-hidden="true" />
-          正在加载原文阅读位置，拆书结果仍可继续查看。
+
+          {translateUi("正在加载原文阅读位置，拆书结果仍可继续查看。")}
         </div>
       ) : null}
 
@@ -246,9 +248,9 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
           <div className="flex min-w-0 items-start gap-2">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
             <div>
-              <div className="font-medium text-foreground">原文对照暂时不可用</div>
+              <div className="font-medium text-foreground">{translateUi("原文对照暂时不可用")}</div>
               <div className="mt-1 text-muted-foreground">
-                {chaptersError || sourceError} 已生成的拆书结果不会被隐藏或删除。
+                {chaptersError || sourceError}  {translateUi("已生成的拆书结果不会被隐藏或删除。")}
               </div>
             </div>
           </div>
@@ -259,7 +261,8 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
             onClick={chaptersError ? onRetryChapters : onRetrySource}
           >
             <RefreshCw className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-            重试原文加载
+
+            {translateUi("重试原文加载")}
           </Button>
         </div>
       ) : null}
@@ -279,20 +282,22 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
             <summary className="cursor-pointer list-none">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div className="text-sm font-medium">分析信息与发布</div>
+                  <div className="text-sm font-medium">{translateUi("分析信息与发布")}</div>
                   <div className="mt-1 text-xs text-muted-foreground">
-                    计划小节 {sectionStats.readableExpected}/{sectionStats.expected} 可阅读
-                    {sectionStats.unselected > 0 ? `，本次未选择 ${sectionStats.unselected} 节` : ""}
-                    {sectionStats.frozenReadable > 0 ? `，已冻结结果 ${sectionStats.frozenReadable} 节` : ""}
+
+                    {translateUi("计划小节")} {sectionStats.readableExpected}/{sectionStats.expected}  {translateUi("可阅读")}
+                    {sectionStats.unselected > 0 ? translateUi("，本次未选择 {{value0}} 节", { value0: sectionStats.unselected }) : ""}
+                    {sectionStats.frozenReadable > 0 ? translateUi("，已冻结结果 {{value0}} 节", { value0: sectionStats.frozenReadable }) : ""}
                   </div>
                 </div>
-                <Badge variant="secondary" className="border-0 bg-muted/60 font-normal">展开</Badge>
+                <Badge variant="secondary" className="border-0 bg-muted/60 font-normal">{translateUi("展开")}</Badge>
               </div>
             </summary>
             <div className="mt-3 space-y-3">
               {!selectedAnalysis.isCurrentVersion ? (
                 <div className="rounded-md border border-warning/30 bg-warning/5 p-3 text-sm text-foreground">
-                  该分析基于旧版源文档，当前激活文档版本为 v{selectedAnalysis.currentDocumentVersionNumber}。
+
+                  {translateUi("该分析基于旧版源文档，当前激活文档版本为 v")}{selectedAnalysis.currentDocumentVersionNumber}{translateUi("。")}
                 </div>
               ) : null}
               {styleProfileFeedback ? (
@@ -301,14 +306,14 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
                 </div>
               ) : null}
               <div className="rounded-xl bg-muted/25 p-4 text-sm">
-                <div className="mb-2 font-medium">发布到小说知识库</div>
+                <div className="mb-2 font-medium">{translateUi("发布到小说知识库")}</div>
                 <div className="flex flex-wrap items-center gap-2">
                   <SelectControl
                     className="h-9 min-w-[220px] rounded-md border bg-background px-2 text-sm"
                     value={selectedNovelId}
                     onChange={(event) => onSelectedNovelChange(event.target.value)}
                   >
-                    <option value="">选择目标小说</option>
+                    <option value="">{translateUi("选择目标小说")}</option>
                     {novelOptions.map((novel) => (
                       <option key={novel.id} value={novel.id}>
                         {novel.title}
@@ -320,38 +325,40 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
                     onClick={onPublish}
                     disabled={!selectedNovelId || pending.publish || selectedAnalysis.status === "archived"}
                   >
-                    发布并绑定
+
+                    {translateUi("发布并绑定")}
                   </Button>
                 </div>
                 {publishFeedback ? <div className="mt-2 text-xs text-muted-foreground">{publishFeedback}</div> : null}
                 {lastPublishResult ? (
-                  <div className="mt-1 text-xs text-muted-foreground">发布时间：{formatDate(lastPublishResult.publishedAt)}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{translateUi("发布时间：")}{formatDate(lastPublishResult.publishedAt)}</div>
                 ) : null}
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="rounded-xl bg-muted/20 p-4 text-sm">
-                  <div className="font-medium">概要</div>
+                  <div className="font-medium">{translateUi("概要")}</div>
                   <div className="mt-2 whitespace-pre-wrap text-muted-foreground">
-                    {selectedAnalysis.summary?.trim() || "生成总览后会在此显示概要内容。"}
+                    {selectedAnalysis.summary?.trim() || translateUi("生成总览后会在此显示概要内容。")}
                   </div>
                 </div>
                 <div className="rounded-xl bg-muted/20 p-4 text-sm">
-                  <div className="font-medium">运行元信息</div>
+                  <div className="font-medium">{translateUi("运行元信息")}</div>
                   <div className="mt-2 space-y-1 text-muted-foreground">
-                    <div>提供商：{selectedAnalysis.provider ?? "deepseek"}</div>
-                    <div>模型：{selectedAnalysis.model || "默认"}</div>
-                    <div>温度：{selectedAnalysis.temperature ?? "默认"}</div>
-                    <div>最大 Tokens：{selectedAnalysis.maxTokens ?? "默认"}</div>
+                    <div>{translateUi("提供商：")}{selectedAnalysis.provider ?? "deepseek"}</div>
+                    <div>{translateUi("模型：")}{selectedAnalysis.model || translateUi("默认")}</div>
+                    <div>{translateUi("温度：")}{selectedAnalysis.temperature ?? translateUi("默认")}</div>
+                    <div>{translateUi("最大 Tokens：")}{selectedAnalysis.maxTokens ?? translateUi("默认")}</div>
                     <div>
-                      预算用量：{budgetTokens
+
+                      {translateUi("预算用量：")}{budgetTokens
                         ? `${formatTokenCount(usedTokens)} / ${formatTokenCount(budgetTokens)} tokens`
-                        : "不限"}
+                        : translateUi("不限")}
                     </div>
                     {budgetTokens ? (
                       <div
                         className="h-1.5 overflow-hidden rounded-full bg-muted"
                         role="progressbar"
-                        aria-label="拆书预算使用进度"
+                        aria-label={translateUi("拆书预算使用进度")}
                         aria-valuemin={0}
                         aria-valuemax={100}
                         aria-valuenow={Math.round(budgetUsageRatio * 100)}
@@ -362,12 +369,12 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
                         />
                       </div>
                     ) : null}
-                    <div>原文范围：{selectedAnalysis.sourceRange?.label ?? "全文"}</div>
-                    <div>当前阶段：{formatStage(selectedAnalysis.currentStage)}</div>
-                    <div>当前 section：{selectedAnalysis.currentItemLabel ?? "暂无"}</div>
-                    <div>最近心跳：{formatDate(selectedAnalysis.heartbeatAt)}</div>
-                    <div>最近运行：{formatDate(selectedAnalysis.lastRunAt)}</div>
-                    <div>创建时间：{formatDate(selectedAnalysis.createdAt)}</div>
+                    <div>{translateUi("原文范围：")}{selectedAnalysis.sourceRange?.label ?? translateUi("全文")}</div>
+                    <div>{translateUi("当前阶段：")}{formatStage(selectedAnalysis.currentStage)}</div>
+                    <div>{translateUi("当前 section：")}{selectedAnalysis.currentItemLabel ?? translateUi("暂无")}</div>
+                    <div>{translateUi("最近心跳：")}{formatDate(selectedAnalysis.heartbeatAt)}</div>
+                    <div>{translateUi("最近运行：")}{formatDate(selectedAnalysis.lastRunAt)}</div>
+                    <div>{translateUi("创建时间：")}{formatDate(selectedAnalysis.createdAt)}</div>
                   </div>
                 </div>
               </div>
@@ -377,10 +384,10 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
           <section className="overflow-hidden rounded-2xl border border-border/45 bg-card shadow-[0_16px_46px_rgba(15,23,42,0.045)]">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/35 px-5 py-4">
               <div className="flex flex-wrap items-center gap-2">
-                <div className="text-lg font-semibold tracking-tight">拆书内容</div>
-                <Badge variant="secondary" className="border-0 bg-muted/70 font-normal">可读 {sectionStats.readableExpected}/{sectionStats.expected}</Badge>
-                {sectionStats.unselected > 0 ? <Badge variant="secondary" className="border-0 font-normal">本次未选择 {sectionStats.unselected}</Badge> : null}
-                {sectionStats.frozenReadable > 0 ? <Badge variant="secondary" className="border-0 font-normal">已冻结结果 {sectionStats.frozenReadable}</Badge> : null}
+                <div className="text-lg font-semibold tracking-tight">{translateUi("拆书内容")}</div>
+                <Badge variant="secondary" className="border-0 bg-muted/70 font-normal">{translateUi("可读")} {sectionStats.readableExpected}/{sectionStats.expected}</Badge>
+                {sectionStats.unselected > 0 ? <Badge variant="secondary" className="border-0 font-normal">{translateUi("本次未选择")} {sectionStats.unselected}</Badge> : null}
+                {sectionStats.frozenReadable > 0 ? <Badge variant="secondary" className="border-0 font-normal">{translateUi("已冻结结果")} {sectionStats.frozenReadable}</Badge> : null}
               </div>
               <div className="flex rounded-xl bg-muted/55 p-1">
                 <Button
@@ -388,14 +395,16 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
                   variant={readingMode === "summary" ? "default" : "ghost"}
                   onClick={() => setReadingMode("summary")}
                 >
-                  重点速览
+
+                  {translateUi("重点速览")}
                 </Button>
                 <Button
                   size="sm"
                   variant={readingMode === "full" ? "default" : "ghost"}
                   onClick={() => setReadingMode("full")}
                 >
-                  完整阅读
+
+                  {translateUi("完整阅读")}
                 </Button>
               </div>
             </div>
@@ -403,9 +412,10 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
               {selectedAnalysis.sections.length === 0 ? (
                 <div className="rounded-md border border-dashed border-warning/40 bg-warning/5 px-5 py-8 text-center">
                   <AlertTriangle className="mx-auto h-5 w-5 text-warning" aria-hidden="true" />
-                  <div className="mt-3 text-sm font-medium text-foreground">没有可展示的拆书小节</div>
+                  <div className="mt-3 text-sm font-medium text-foreground">{translateUi("没有可展示的拆书小节")}</div>
                   <p className="mx-auto mt-1 max-w-xl text-sm leading-6 text-muted-foreground">
-                    这份任务没有返回可阅读内容。源文档仍然安全，可以从上方重新生成或打开任务中心查看详情。
+
+                    {translateUi("这份任务没有返回可阅读内容。源文档仍然安全，可以从上方重新生成或打开任务中心查看详情。")}
                   </p>
                 </div>
               ) : (
@@ -420,7 +430,7 @@ export default function BookAnalysisDetailPanel(props: BookAnalysisDetailPanelPr
                       <span>{section.title}</span>
                       <span className="text-xs text-muted-foreground">
                         {section.frozen
-                          ? isUnselectedBookAnalysisSection(section) ? "本次未选择" : "已冻结"
+                          ? isUnselectedBookAnalysisSection(section) ? translateUi("本次未选择") : translateUi("已冻结")
                           : formatStatus(section.status)}
                       </span>
                     </TabsTrigger>

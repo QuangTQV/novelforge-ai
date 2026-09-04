@@ -1,0 +1,55 @@
+{
+  "options": {
+    "aiRecommendGenre": "让 AI 推荐题材",
+    "aiRecommendPrimary": "让 AI 推荐主要推进方式",
+    "noSecondary": "不添加次要推进模式"
+  },
+  "hints": {
+    "chapterLength": "建议先设 2500-3500；之后仍可按章调整。",
+    "estimatedChapterCount": "作为大纲、节奏和流水线的默认范围；之后仍可调整。",
+    "resourceScore": "0 表示刚开始；100 表示设定、角色和规划已经相当完整。",
+    "postGenerationReview": "开启后，生成章节正文后系统会检测 AI 味风险并在可行时生成修订。"
+  },
+  "summaries": {
+    "primaryTitle": "主要推进模式摘要",
+    "secondaryTitle": "次要推进模式摘要",
+    "coreDrive": "核心驱动：{{value}}",
+    "readerReward": "附加读者回报：{{value}}"
+  },
+  "sections": {
+    "advancedTitle": "关于叙事体验和 AI 协作的高级设置",
+    "advancedDescription": "这些设置影响内容生成风格和 AI 自动化程度，但新手不必立刻决定。",
+    "narrativeTitle": "叙事体验",
+    "narrativeDescription": "这些字段塑造读者对作品的感受，直接影响章节的语气、密度和推进节奏。",
+    "aiTitle": "与 AI 协作的方式",
+    "aiDescription": "确定你和 AI 如何分工，以及系统可以自动推进到什么程度。"
+  },
+  "world": {
+    "title": "参考世界样本",
+    "description": "仅用于记录初始参考。创建后，请在“本书世界”标签里完成导入、生成和同步。",
+    "unset": "不指定参考样本"
+  },
+  "platformHint": "保存后只影响后续规划、正文、审校和修订；不会重写已有内容。",
+  "fields": {
+    "writingMode": "创作模式",
+    "genreAndModeTitle": "区分题材基底和推进模式",
+    "genreAndModeDescription": "题材基底回答“这是什么类型的书”，例如修真、都市、历史架空；推进模式回答“书靠什么维持和兑现”，例如系统、无敌、种田。",
+    "genre": "题材基底",
+    "defaultChapterLength": "默认章节长度",
+    "estimatedChapterCount": "预计章节数",
+    "primaryMode": "主要推进模式",
+    "secondaryMode": "次要推进模式",
+    "platform": "目标平台",
+    "pov": "叙事视角",
+    "pace": "节奏",
+    "emotion": "情绪强度",
+    "styleTone": "文风关键词",
+    "projectMode": "项目模式",
+    "aiFreedom": "AI 自由度",
+    "resourceScore": "资源准备度",
+    "postGenerationReview": "生成后检测并修正 AI 味"
+  },
+  "placeholders": {
+    "styleTone": "例如：冷静、克制、黑色幽默"
+  }
+}

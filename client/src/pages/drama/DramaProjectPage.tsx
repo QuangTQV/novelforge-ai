@@ -1,4 +1,6 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
+import i18n from "@/i18n";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -53,30 +55,31 @@ import { toast } from "@/components/ui/toast";
 
 type DramaTab = "source" | "strategy" | "episodes" | "quality" | "characters" | "visual" | "export";
 
-const TABS: Array<{ key: DramaTab; label: string }> = [
-  { key: "source", label: "来源素材" },
-  { key: "strategy", label: "短剧策略" },
-  { key: "episodes", label: "分集台本" },
-  { key: "quality", label: "质量问题" },
-  { key: "characters", label: "角色" },
-  { key: "visual", label: "分镜视频" },
-  { key: "export", label: "导出" },
+const TABS: Array<{ key: DramaTab; labelKey: string }> = [
+  { key: "source", labelKey: "drama:drama.tabs.source" },
+  { key: "strategy", labelKey: "drama:drama.tabs.strategy" },
+  { key: "episodes", labelKey: "drama:drama.tabs.episodes" },
+  { key: "quality", labelKey: "drama:drama.tabs.quality" },
+  { key: "characters", labelKey: "drama:drama.tabs.characters" },
+  { key: "visual", labelKey: "drama:drama.tabs.visual" },
+  { key: "export", labelKey: "drama:drama.tabs.export" },
 ];
 
 function statusLabel(status: string): string {
   const labels: Record<string, string> = {
-    draft: "素材准备",
-    strategized: "策略已生成",
-    outlined: "分集已生成",
-    scripting: "台本生成中",
-    completed: "已完成",
-    planned: "待生成台本",
-    scripted: "台本已生成",
-    reviewed: "已检查",
-    needs_repair: "需要修复",
-    approved: "已通过",
+    draft: "drama:drama.status.draft",
+    strategized: "drama:drama.status.strategized",
+    outlined: "drama:drama.status.outlined",
+    scripting: "drama:drama.status.scripting",
+    completed: "drama:drama.status.completed",
+    planned: "drama:drama.status.planned",
+    scripted: "drama:drama.status.scripted",
+    reviewed: "drama:drama.status.reviewed",
+    needs_repair: "drama:drama.status.needsRepair",
+    approved: "drama:drama.status.approved",
   };
-  return labels[status] ?? status;
+  const key = labels[status];
+  return key ? i18n.t(key) : status;
 }
 
 function safeJson<T>(input: string | null | undefined, fallback: T): T {
@@ -101,22 +104,22 @@ function compactText(input: unknown): string {
 }
 
 const STRATEGY_LABELS: Record<string, string> = {
-  positioning: "受众定位",
-  mainPleasureLine: "主爽点线",
-  paywallNote: "付费卡点规划",
-  paywallPlan: "付费卡点计划",
-  emotionCurveNote: "情绪曲线",
-  deviationDeclaration: "改编边界",
+  positioning: "drama:drama.strategy.positioning",
+  mainPleasureLine: "drama:drama.strategy.mainPleasureLine",
+  paywallNote: "drama:drama.strategy.paywallNote",
+  paywallPlan: "drama:drama.strategy.paywallPlan",
+  emotionCurveNote: "drama:drama.strategy.emotionCurveNote",
+  deviationDeclaration: "drama:drama.strategy.deviationDeclaration",
 };
 
 const SCORE_LABELS: Record<string, string> = {
-  hook: "开场钩子",
-  density: "信息密度",
-  paywall: "付费卡点",
-  emotion: "情绪曲线",
-  duration: "时长",
-  consistency: "一致性",
-  overall: "综合",
+  hook: "drama:drama.score.hook",
+  density: "drama:drama.score.density",
+  paywall: "drama:drama.score.paywall",
+  emotion: "drama:drama.score.emotion",
+  duration: "drama:drama.score.duration",
+  consistency: "drama:drama.score.consistency",
+  overall: "drama:drama.score.overall",
 };
 
 function downloadBlob(blob: Blob, filename: string) {
@@ -164,11 +167,11 @@ function ProjectProgress(props: { project: DramaProjectDetail }) {
     ["reviewed", "needs_repair", "approved"].includes(episode.status)
   ).length ?? 0;
   const steps = [
-    { label: "素材包", done: hasBundle },
-    { label: "策略", done: hasStrategy },
-    { label: "分集", done: episodeCount > 0 },
-    { label: "台本", done: scriptedCount > 0 },
-    { label: "质量", done: reviewedCount > 0 },
+    { label: i18n.t("drama:drama.progress.bundle"), done: hasBundle },
+    { label: i18n.t("drama:drama.progress.strategy"), done: hasStrategy },
+    { label: i18n.t("drama:drama.progress.episodes"), done: episodeCount > 0 },
+    { label: i18n.t("drama:drama.progress.script"), done: scriptedCount > 0 },
+    { label: i18n.t("drama:drama.progress.quality"), done: reviewedCount > 0 },
   ];
 
   return (
@@ -187,14 +190,14 @@ function StrategyPanel({ project }: { project: DramaProjectDetail }) {
   const strategy = safeJson<Record<string, unknown>>(project.strategy, {});
   const entries = Object.entries(strategy);
   if (!project.strategy) {
-    return <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">还没有生成短剧策略。</div>;
+    return <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">{translateUi("还没有生成短剧策略。")}</div>;
   }
   return (
     <div className="grid gap-3 lg:grid-cols-2">
       {entries.length > 0 ? entries.map(([key, value]) => (
         <Card key={key} className="rounded-lg">
           <CardHeader>
-            <CardTitle className="text-base">{STRATEGY_LABELS[key] ?? key}</CardTitle>
+            <CardTitle className="text-base">{STRATEGY_LABELS[key] ? i18n.t(STRATEGY_LABELS[key]) : key}</CardTitle>
           </CardHeader>
           <CardContent>
             <pre className="whitespace-pre-wrap break-words text-sm leading-6 text-muted-foreground">{compactText(value)}</pre>
@@ -223,12 +226,12 @@ function EpisodeCard(props: {
       onClick={props.onSelect}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-medium">第 {props.episode.order} 集</span>
-        <Badge variant={props.episode.isPaywall ? "default" : "secondary"}>{props.episode.isPaywall ? "付费卡点" : "普通集"}</Badge>
+        <span className="font-medium">{translateUi("第")} {props.episode.order}  {translateUi("集")}</span>
+        <Badge variant={props.episode.isPaywall ? "default" : "secondary"}>{props.episode.isPaywall ? translateUi("付费卡点") : translateUi("普通集")}</Badge>
         <Badge variant="outline">{statusLabel(props.episode.status)}</Badge>
       </div>
       <div className="mt-2 font-medium">{props.episode.title}</div>
-      <div className="mt-1 line-clamp-2 text-muted-foreground">{props.episode.hookOpening || props.episode.cliffhanger || "暂无钩子信息"}</div>
+      <div className="mt-1 line-clamp-2 text-muted-foreground">{props.episode.hookOpening || props.episode.cliffhanger || translateUi("暂无钩子信息")}</div>
     </button>
   );
 }
@@ -241,19 +244,19 @@ function QualityFlags({ episode }: { episode: DramaEpisode }) {
     repairPlan?: { mode?: string; instruction?: string };
   }>(episode.qualityFlags, {});
   if (!episode.qualityFlags) {
-    return <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">还没有质量检查结果。</div>;
+    return <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">{translateUi("还没有质量检查结果。")}</div>;
   }
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <Badge variant={quality.status === "approved" ? "default" : "secondary"}>{quality.status || "已检查"}</Badge>
-        {quality.score?.overall != null ? <span className="text-sm text-muted-foreground">综合 {quality.score.overall}</span> : null}
+        <Badge variant={quality.status === "approved" ? "default" : "secondary"}>{quality.status || translateUi("已检查")}</Badge>
+        {quality.score?.overall != null ? <span className="text-sm text-muted-foreground">{translateUi("综合")} {quality.score.overall}</span> : null}
       </div>
       {quality.score ? (
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {Object.entries(quality.score).map(([key, value]) => (
             <div key={key} className="rounded-md border px-3 py-2 text-sm">
-              <div className="text-xs text-muted-foreground">{SCORE_LABELS[key] ?? key}</div>
+              <div className="text-xs text-muted-foreground">{SCORE_LABELS[key] ? i18n.t(SCORE_LABELS[key]) : key}</div>
               <div className="mt-1 font-medium">{value}</div>
             </div>
           ))}
@@ -265,7 +268,7 @@ function QualityFlags({ episode }: { episode: DramaEpisode }) {
             <div key={`${flag.code ?? "flag"}-${index}`} className="rounded-md border p-3 text-sm">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline">{flag.severity || "notice"}</Badge>
-                <span className="font-medium">{flag.code || "质量提示"}</span>
+                <span className="font-medium">{flag.code || translateUi("质量提示")}</span>
               </div>
               <p className="mt-2 text-muted-foreground">{flag.evidence}</p>
               <p className="mt-1">{flag.suggestion}</p>
@@ -275,7 +278,7 @@ function QualityFlags({ episode }: { episode: DramaEpisode }) {
       ) : null}
       {quality.repairPlan?.instruction ? (
         <div className="rounded-md border border-dashed p-3 text-sm">
-          <div className="font-medium">建议修复</div>
+          <div className="font-medium">{translateUi("建议修复")}</div>
           <p className="mt-1 text-muted-foreground">{quality.repairPlan.instruction}</p>
         </div>
       ) : null}
@@ -316,7 +319,7 @@ function EpisodesPanel(props: {
   }, [selectedEpisode?.id, selectedEpisode?.title, selectedEpisode?.hookOpening, selectedEpisode?.cliffhanger, selectedEpisode?.content, selectedEpisode?.durationSec]);
 
   if (episodes.length === 0) {
-    return <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">还没有分集大纲。先生成前 12 集分集。</div>;
+    return <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">{translateUi("还没有分集大纲。先生成前 12 集分集。")}</div>;
   }
 
   return (
@@ -335,66 +338,70 @@ function EpisodesPanel(props: {
         <Card className="rounded-lg">
           <CardHeader className="gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div className="space-y-2">
-              <CardTitle className="text-lg">第 {selectedEpisode.order} 集：{selectedEpisode.title}</CardTitle>
-              <CardDescription>{selectedEpisode.hookOpening || "本集尚未写入开场钩子。"}</CardDescription>
+              <CardTitle className="text-lg">{translateUi("第")} {selectedEpisode.order}  {translateUi("集：")}{selectedEpisode.title}</CardTitle>
+              <CardDescription>{selectedEpisode.hookOpening || translateUi("本集尚未写入开场钩子。")}</CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
               <Button size="sm" type="button" disabled={props.busy} onClick={() => props.onGenerateScript(selectedEpisode.order)}>
                 <Wand2 className="h-4 w-4" />
-                生成台本
+
+                {translateUi("生成台本")}
               </Button>
               <Button size="sm" type="button" variant="outline" disabled={props.busy || !selectedEpisode.content?.trim()} onClick={() => props.onReview(selectedEpisode.order)}>
                 <CheckCircle2 className="h-4 w-4" />
-                质量检查
+
+                {translateUi("质量检查")}
               </Button>
               <Button size="sm" type="button" variant="outline" disabled={props.busy || !selectedEpisode.content?.trim()} onClick={() => props.onRepair(selectedEpisode.order)}>
                 <RefreshCw className="h-4 w-4" />
-                修复
+
+                {translateUi("修复")}
               </Button>
               <Button size="sm" type="button" variant="outline" disabled={props.busy} onClick={() => props.onSave(selectedEpisode.order, draft)}>
                 <Save className="h-4 w-4" />
-                保存编辑
+
+                {translateUi("保存编辑")}
               </Button>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-3 md:grid-cols-3">
-              <div className="rounded-md border p-3 text-sm">时长：{selectedEpisode.durationSec ?? "待生成"} 秒</div>
-              <div className="rounded-md border p-3 text-sm">情绪净值：{selectedEpisode.emotionNet ?? "待生成"}</div>
-              <div className="rounded-md border p-3 text-sm">状态：{statusLabel(selectedEpisode.status)}</div>
+              <div className="rounded-md border p-3 text-sm">{translateUi("时长：")}{selectedEpisode.durationSec ?? translateUi("待生成")}  {translateUi("秒")}</div>
+              <div className="rounded-md border p-3 text-sm">{translateUi("情绪净值：")}{selectedEpisode.emotionNet ?? translateUi("待生成")}</div>
+              <div className="rounded-md border p-3 text-sm">{translateUi("状态：")}{statusLabel(selectedEpisode.status)}</div>
             </div>
             <section className="space-y-2">
-              <h3 className="text-sm font-medium">本集信息</h3>
+              <h3 className="text-sm font-medium">{translateUi("本集信息")}</h3>
               <div className="grid gap-3 lg:grid-cols-2">
                 <label className="block space-y-1.5 text-sm">
-                  <span className="font-medium">标题</span>
+                  <span className="font-medium">{translateUi("标题")}</span>
                   <input className="h-10 w-full rounded-md border bg-background px-3 text-sm" value={draft.title} onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))} />
                 </label>
                 <label className="block space-y-1.5 text-sm">
-                  <span className="font-medium">预计时长（秒）</span>
+                  <span className="font-medium">{translateUi("预计时长（秒）")}</span>
                   <input className="h-10 w-full rounded-md border bg-background px-3 text-sm" value={draft.durationSec} onChange={(event) => setDraft((current) => ({ ...current, durationSec: event.target.value }))} />
                 </label>
                 <label className="block space-y-1.5 text-sm lg:col-span-2">
-                  <span className="font-medium">开场钩子</span>
+                  <span className="font-medium">{translateUi("开场钩子")}</span>
                   <textarea className="min-h-20 w-full rounded-md border bg-background px-3 py-2 text-sm" value={draft.hookOpening} onChange={(event) => setDraft((current) => ({ ...current, hookOpening: event.target.value }))} />
                 </label>
                 <label className="block space-y-1.5 text-sm lg:col-span-2">
-                  <span className="font-medium">结尾卡点</span>
+                  <span className="font-medium">{translateUi("结尾卡点")}</span>
                   <textarea className="min-h-20 w-full rounded-md border bg-background px-3 py-2 text-sm" value={draft.cliffhanger} onChange={(event) => setDraft((current) => ({ ...current, cliffhanger: event.target.value }))} />
                 </label>
               </div>
             </section>
             <section className="space-y-2">
-              <h3 className="text-sm font-medium">台本</h3>
+              <h3 className="text-sm font-medium">{translateUi("台本")}</h3>
               <textarea
                 className="min-h-[420px] w-full rounded-md border bg-background px-3 py-2 text-sm leading-6"
                 value={draft.content}
-                placeholder="还没有生成台本。可以先生成，也可以手动写入。"
+                placeholder={translateUi("还没有生成台本。可以先生成，也可以手动写入。")}
                 onChange={(event) => setDraft((current) => ({ ...current, content: event.target.value }))}
               />
             </section>
             <section className="space-y-2">
-              <h3 className="text-sm font-medium">质量结果</h3>
+              <h3 className="text-sm font-medium">{translateUi("质量结果")}</h3>
               <QualityFlags episode={selectedEpisode} />
             </section>
             <DramaEpisodeAudioPanel
@@ -505,7 +512,7 @@ export default function DramaProjectPage() {
     }
     const durationSec = input.durationSec.trim() ? Number(input.durationSec) : undefined;
     if (!input.title.trim()) {
-      toast.error("请填写本集标题。");
+      toast.error(translateUi("请填写本集标题。"));
       return;
     }
     runAction(
@@ -521,16 +528,16 @@ export default function DramaProjectPage() {
   };
 
   if (projectQuery.isLoading) {
-    return <div className="rounded-md border p-4 text-sm text-muted-foreground">正在加载短剧项目...</div>;
+    return <div className="rounded-md border p-4 text-sm text-muted-foreground">{translateUi("正在加载短剧项目...")}</div>;
   }
 
   if (!project) {
     return (
       <div className="space-y-4">
         <Button asChild variant="outline" size="sm">
-          <Link to="/drama"><ArrowLeft className="h-4 w-4" />返回短剧工作台</Link>
+          <Link to="/drama"><ArrowLeft className="h-4 w-4" />{translateUi("返回短剧工作台")}</Link>
         </Button>
-        <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">没有找到这个短剧项目。</div>
+        <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">{translateUi("没有找到这个短剧项目。")}</div>
       </div>
     );
   }
@@ -540,26 +547,29 @@ export default function DramaProjectPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-2">
           <Button asChild variant="ghost" size="sm" className="px-0">
-            <Link to="/drama"><ArrowLeft className="h-4 w-4" />短剧工作台</Link>
+            <Link to="/drama"><ArrowLeft className="h-4 w-4" />{translateUi("短剧工作台")}</Link>
           </Button>
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-semibold tracking-normal">{project.title}</h1>
             <Badge variant="secondary">{statusLabel(project.status)}</Badge>
             <Badge variant="outline">{dramaTrackLabel(project.track)}</Badge>
-            <Badge variant="outline">{project.targetEpisodes} 集</Badge>
+            <Badge variant="outline">{project.targetEpisodes}  {translateUi("集")}</Badge>
             {batchCostSummary ? (
               <Badge variant="outline">
-                生产费用：已用 {formatBatchCost(batchCostSummary, batchCostSummary.actual)} / 预计 {formatBatchCost(batchCostSummary, batchCostSummary.estimated)}
+
+                {translateUi("生产费用：已用")} {formatBatchCost(batchCostSummary, batchCostSummary.actual)}  {translateUi("/ 预计")} {formatBatchCost(batchCostSummary, batchCostSummary.estimated)}
               </Badge>
             ) : null}
           </div>
           <p className="text-sm text-muted-foreground">
-            按“素材 → 策略 → 分集 → 台本 → 质量 → 分镜视频”的顺序推进这部短剧。
+
+            {translateUi("按“素材 → 策略 → 分集 → 台本 → 质量 → 分镜视频”的顺序推进这部短剧。")}
           </p>
         </div>
         <Button type="button" variant="outline" disabled={projectQuery.isFetching} onClick={() => void projectQuery.refetch()}>
           <RefreshCw className="h-4 w-4" />
-          刷新
+
+          {translateUi("刷新")}
         </Button>
       </div>
 
@@ -570,15 +580,15 @@ export default function DramaProjectPage() {
         busy={actionMutation.isPending}
         onSetTab={setActiveTab}
         onSelectEpisode={setSelectedOrder}
-        onAssembleSource={() => runAction(() => assembleDramaSourceBundle(project.id), "短剧素材已整理。")}
-        onGenerateStrategy={() => runAction(() => generateDramaStrategy(project.id), "短剧策略已生成。")}
-        onGenerateOutline={() => runAction(() => generateDramaOutline(project.id, { startOrder: 1, count: 12 }), "前 12 集分集已生成。")}
-        onGenerateScript={(order) => runAction(() => generateDramaEpisodeScript(project.id, order), `第 ${order} 集台本已生成。`)}
-        onReviewEpisode={(order) => runAction(() => reviewDramaEpisode(project.id, order), `第 ${order} 集质量检查完成。`)}
-        onRepairEpisode={(order) => runAction(() => repairDramaEpisode(project.id, order), `第 ${order} 集已按质量建议修复。`)}
-        onGenerateStoryboard={(order) => runAction(() => generateDramaStoryboard(project.id, order), `第 ${order} 集分镜已生成。`)}
-        onGenerateVideoPrompt={(shot) => runAction(() => generateDramaVideoPrompt(project.id, shot.id), `镜头 ${shot.order} 的视频提示词已生成。`)}
-        onCreateProviderTask={(prompt) => runAction(() => createDramaVideoProviderTask(prompt.id, activeVideoProvider), "视频任务已创建。")}
+        onAssembleSource={() => runAction(() => assembleDramaSourceBundle(project.id), translateUi("短剧素材已整理。"))}
+        onGenerateStrategy={() => runAction(() => generateDramaStrategy(project.id), translateUi("短剧策略已生成。"))}
+        onGenerateOutline={() => runAction(() => generateDramaOutline(project.id, { startOrder: 1, count: 12 }), translateUi("前 12 集分集已生成。"))}
+        onGenerateScript={(order) => runAction(() => generateDramaEpisodeScript(project.id, order), translateUi("第 {{value0}} 集台本已生成。", { value0: order }))}
+        onReviewEpisode={(order) => runAction(() => reviewDramaEpisode(project.id, order), translateUi("第 {{value0}} 集质量检查完成。", { value0: order }))}
+        onRepairEpisode={(order) => runAction(() => repairDramaEpisode(project.id, order), translateUi("第 {{value0}} 集已按质量建议修复。", { value0: order }))}
+        onGenerateStoryboard={(order) => runAction(() => generateDramaStoryboard(project.id, order), translateUi("第 {{value0}} 集分镜已生成。", { value0: order }))}
+        onGenerateVideoPrompt={(shot) => runAction(() => generateDramaVideoPrompt(project.id, shot.id), translateUi("镜头 {{value0}} 的视频提示词已生成。", { value0: shot.order }))}
+        onCreateProviderTask={(prompt) => runAction(() => createDramaVideoProviderTask(prompt.id, activeVideoProvider), translateUi("视频任务已创建。"))}
         onExportMarkdown={() => void handleExport("markdown")}
       />
 
@@ -591,7 +601,7 @@ export default function DramaProjectPage() {
             variant={activeTab === tab.key ? "default" : "ghost"}
             onClick={() => setActiveTab(tab.key)}
           >
-            {tab.label}
+            {i18n.t(tab.labelKey)}
           </Button>
         ))}
       </div>
@@ -604,11 +614,11 @@ export default function DramaProjectPage() {
           selectedOrder={selectedOrderValue}
           onSelectOrder={setSelectedOrder}
           ttsProviders={ttsProviders}
-          onBatchJob={(order, input) => runAction(() => createDramaEpisodeBatchJob(project.id, order, input), "配音任务已创建。")}
+          onBatchJob={(order, input) => runAction(() => createDramaEpisodeBatchJob(project.id, order, input), translateUi("配音任务已创建。"))}
           busy={actionMutation.isPending}
-          onGenerateScript={(order) => runAction(() => generateDramaEpisodeScript(project.id, order), `第 ${order} 集台本已生成。`)}
-          onReview={(order) => runAction(() => reviewDramaEpisode(project.id, order), `第 ${order} 集质量检查完成。`)}
-          onRepair={(order) => runAction(() => repairDramaEpisode(project.id, order), `第 ${order} 集已按质量建议修复。`)}
+          onGenerateScript={(order) => runAction(() => generateDramaEpisodeScript(project.id, order), translateUi("第 {{value0}} 集台本已生成。", { value0: order }))}
+          onReview={(order) => runAction(() => reviewDramaEpisode(project.id, order), translateUi("第 {{value0}} 集质量检查完成。", { value0: order }))}
+          onRepair={(order) => runAction(() => repairDramaEpisode(project.id, order), translateUi("第 {{value0}} 集已按质量建议修复。", { value0: order }))}
           onSave={handleSaveEpisode}
         />
       ) : null}
@@ -618,9 +628,9 @@ export default function DramaProjectPage() {
           busy={actionMutation.isPending}
           onSelectEpisode={setSelectedOrder}
           onOpenEpisodes={() => setActiveTab("episodes")}
-          onReview={(order) => runAction(() => reviewDramaEpisode(project.id, order), `第 ${order} 集质量检查完成。`)}
-          onComplianceAll={() => runAction(() => checkDramaProjectCompliance(project.id), "合规预检完成。")}
-          onRepair={(order) => runAction(() => repairDramaEpisode(project.id, order), `第 ${order} 集已按质量建议修复。`)}
+          onReview={(order) => runAction(() => reviewDramaEpisode(project.id, order), translateUi("第 {{value0}} 集质量检查完成。", { value0: order }))}
+          onComplianceAll={() => runAction(() => checkDramaProjectCompliance(project.id), translateUi("合规预检完成。"))}
+          onRepair={(order) => runAction(() => repairDramaEpisode(project.id, order), translateUi("第 {{value0}} 集已按质量建议修复。", { value0: order }))}
         />
       ) : null}
       {activeTab === "characters" ? (
@@ -630,7 +640,7 @@ export default function DramaProjectPage() {
           busy={actionMutation.isPending}
           onSave={(character, input) => {
             if (!input.name.trim()) {
-              toast.error("请填写角色名。");
+              toast.error(translateUi("请填写角色名。"));
               return;
             }
             runAction(
@@ -643,16 +653,16 @@ export default function DramaProjectPage() {
                 voiceProfile: input.voiceAnchor.trim() || undefined,
                 relations: input.relationMap.trim() || undefined,
               }),
-              `${input.name || character.name} 已保存。`,
+              translateUi("{{value0}} 已保存。", { value0: input.name || character.name }),
             );
           }}
           onSaveToLibrary={(character) => runAction(
             () => saveDramaCharacterToLibrary(project.id, character.id),
-            `${character.name} 已保存到角色库。`,
+            translateUi("{{value0}} 已保存到角色库。", { value0: character.name }),
           )}
           onImportFromLibrary={(libraryId) => runAction(
             () => importDramaCharacterFromLibrary(project.id, libraryId),
-            "角色已导入当前项目。",
+            translateUi("角色已导入当前项目。"),
           )}
           onRefreshProject={() => void projectQuery.refetch()}
         />
@@ -663,41 +673,45 @@ export default function DramaProjectPage() {
           selectedOrder={selectedOrderValue}
           onSelectOrder={setSelectedOrder}
           busy={actionMutation.isPending}
-          onStoryboard={(order) => runAction(() => generateDramaStoryboard(project.id, order), `第 ${order} 集分镜已生成。`)}
-          onBatchJob={(order, input) => runAction(() => createDramaEpisodeBatchJob(project.id, order, input), "批量任务已创建。")}
-          onKeyframe={(shot, provider, useCharacterRefImages, overrides) => runAction(() => generateDramaShotKeyframe(project.id, shot.id, provider, useCharacterRefImages, overrides), `镜头 ${shot.order} 的首帧图已生成。`)}
-          onVideoPrompt={(shot) => runAction(() => generateDramaVideoPrompt(project.id, shot.id), `镜头 ${shot.order} 的视频提示词已生成。`)}
+          onStoryboard={(order) => runAction(() => generateDramaStoryboard(project.id, order), translateUi("第 {{value0}} 集分镜已生成。", { value0: order }))}
+          onBatchJob={(order, input) => runAction(() => createDramaEpisodeBatchJob(project.id, order, input), translateUi("批量任务已创建。"))}
+          onKeyframe={(shot, provider, useCharacterRefImages, overrides) => runAction(() => generateDramaShotKeyframe(project.id, shot.id, provider, useCharacterRefImages, overrides), translateUi("镜头 {{value0}} 的首帧图已生成。", { value0: shot.order }))}
+          onVideoPrompt={(shot) => runAction(() => generateDramaVideoPrompt(project.id, shot.id), translateUi("镜头 {{value0}} 的视频提示词已生成。", { value0: shot.order }))}
           videoProviders={videoProviders}
           selectedProvider={activeVideoProvider}
           onSelectProvider={setSelectedVideoProvider}
-          onProviderTask={(prompt, provider) => runAction(() => createDramaVideoProviderTask(prompt.id, provider), "视频任务已创建。")}
-          onRefreshProviderTask={(prompt) => runAction(() => refreshDramaVideoProviderTask(prompt.id), "视频任务状态已刷新。")}
+          onProviderTask={(prompt, provider) => runAction(() => createDramaVideoProviderTask(prompt.id, provider), translateUi("视频任务已创建。"))}
+          onRefreshProviderTask={(prompt) => runAction(() => refreshDramaVideoProviderTask(prompt.id), translateUi("视频任务状态已刷新。"))}
         />
       ) : null}
       {activeTab === "export" ? (
         <Card className="rounded-lg">
           <CardHeader>
-            <CardTitle className="text-lg">导出短剧资料</CardTitle>
-            <CardDescription>导出当前项目的角色、分集和已生成台本。</CardDescription>
+            <CardTitle className="text-lg">{translateUi("导出短剧资料")}</CardTitle>
+            <CardDescription>{translateUi("导出当前项目的角色、分集和已生成台本。")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             <Button type="button" onClick={() => void handleExport("markdown")}>
               <Download className="h-4 w-4" />
-              导出 Markdown
+
+              {translateUi("导出 Markdown")}
             </Button>
             <Button type="button" variant="outline" onClick={() => void handleExport("json")}>
               <Download className="h-4 w-4" />
-              导出 JSON
+
+              {translateUi("导出 JSON")}
             </Button>
             {selectedOrderValue ? (
               <>
                 <Button type="button" variant="outline" onClick={() => void handleEpisodeExport(selectedOrderValue, "srt")}>
                   <Download className="h-4 w-4" />
-                  导出本集 SRT
+
+                  {translateUi("导出本集 SRT")}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => void handleEpisodeExport(selectedOrderValue, "timeline-json")}>
                   <Download className="h-4 w-4" />
-                  导出剪辑草稿
+
+                  {translateUi("导出剪辑草稿")}
                 </Button>
               </>
             ) : null}

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useState } from "react";
 import type { ReactNode } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -37,9 +38,12 @@ export default function FullscreenView(props: FullscreenViewProps) {
     headerClassName,
     bodyClassName,
     fullscreenBodyClassName,
-    toggleLabel = "全屏查看",
-    exitLabel = "退出全屏",
+    toggleLabel: toggleLabelProp,
+    exitLabel: exitLabelProp,
   } = props;
+  const { t } = useTranslation("components");
+  const toggleLabel = toggleLabelProp ?? t("fullscreenView.enter");
+  const exitLabel = exitLabelProp ?? t("fullscreenView.exit");
   const headingId = useId();
   const [internalFullscreen, setInternalFullscreen] = useState(defaultFullscreen);
   const isControlled = fullscreen !== undefined;

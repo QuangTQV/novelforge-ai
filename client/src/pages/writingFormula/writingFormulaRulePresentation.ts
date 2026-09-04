@@ -1,9 +1,13 @@
+import { translateUi } from "../../i18n/legacy.ts";
 import type {
   CharacterRules,
   LanguageRules,
   NarrativeRules,
   RhythmRules,
 } from "@ai-novel/shared/types/styleEngine";
+import i18n from "@/i18n";
+
+const t = (key: string, options?: Record<string, unknown>) => i18n.t(`writingFormulaRules:${key}`, options);
 
 export type RuleSection = "narrativeRules" | "characterRules" | "languageRules" | "rhythmRules";
 type RuleObject = NarrativeRules | CharacterRules | LanguageRules | RhythmRules;
@@ -52,7 +56,7 @@ const FIELD_ORDER: Record<RuleSection, string[]> = {
 
 const FIELD_LABELS: Record<RuleSection, Record<string, string>> = {
   narrativeRules: {
-    summary: "整体推进感",
+    summary: translateUi("整体推进感"),
     progressionMode: "推进方式",
     sceneUnitPattern: "场景单位",
     multiPov: "多视角",
@@ -61,7 +65,7 @@ const FIELD_LABELS: Record<RuleSection, Record<string, string>> = {
     povSwitchStyle: "视角切换",
   },
   characterRules: {
-    summary: "人物表达总述",
+    summary: translateUi("人物表达总述"),
     dialogueStyle: "对白风格",
     emotionExpression: "情绪外显",
     defenseMechanisms: "防御机制",
@@ -69,7 +73,7 @@ const FIELD_LABELS: Record<RuleSection, Record<string, string>> = {
     facePriority: "体面优先",
   },
   languageRules: {
-    summary: "语言质感总述",
+    summary: translateUi("语言质感总述"),
     register: "语言基调",
     roughness: "粗粝度",
     sentenceVariation: "句式变化",
@@ -78,7 +82,7 @@ const FIELD_LABELS: Record<RuleSection, Record<string, string>> = {
     allowUselessDetails: "生活杂音",
   },
   rhythmRules: {
-    summary: "节奏控制总述",
+    summary: translateUi("节奏控制总述"),
     pace: "推进速度",
     paragraphDensity: "段落密度",
     allowFragmentedFlow: "碎片化推进",
@@ -172,33 +176,33 @@ function humanizeUnknownToken(value: string): string {
 
 function formatBooleanValue(key: string, value: boolean): string {
   if (key === "multiPov") {
-    return value ? "允许多视角切换" : "尽量保持单视角";
+    return t(value ? "boolean.multiPov.yes" : "boolean.multiPov.no");
   }
   if (key === "looping") {
-    return value ? "允许循环回钩" : "尽量直线推进";
+    return t(value ? "boolean.looping.yes" : "boolean.looping.no");
   }
   if (key === "allowSelfReflection") {
-    return value ? "允许明确自省" : "尽量少做直白自省";
+    return t(value ? "boolean.selfReflection.yes" : "boolean.selfReflection.no");
   }
   if (key === "facePriority") {
-    return value ? "优先保住体面" : "不强求体面";
+    return t(value ? "boolean.facePriority.yes" : "boolean.facePriority.no");
   }
   if (key === "allowIncompleteSentences") {
-    return value ? "允许不完整句" : "句子尽量完整";
+    return t(value ? "boolean.incompleteSentences.yes" : "boolean.incompleteSentences.no");
   }
   if (key === "allowSwearing") {
-    return value ? "允许带一点粗口或脏字" : "尽量避免粗口";
+    return t(value ? "boolean.swearing.yes" : "boolean.swearing.no");
   }
   if (key === "allowUselessDetails") {
-    return value ? "允许保留生活杂音" : "尽量减少无关杂音";
+    return t(value ? "boolean.uselessDetails.yes" : "boolean.uselessDetails.no");
   }
   if (key === "allowFragmentedFlow") {
-    return value ? "允许碎片化推进" : "尽量保持完整推进";
+    return t(value ? "boolean.fragmentedFlow.yes" : "boolean.fragmentedFlow.no");
   }
   if (key === "actionOverExplanation") {
-    return value ? "动作先于解释" : "解释比动作更重要";
+    return t(value ? "boolean.actionOverExplanation.yes" : "boolean.actionOverExplanation.no");
   }
-  return value ? "是" : "否";
+  return t(value ? "boolean.yes" : "boolean.no");
 }
 
 function formatArrayValue(value: unknown[]): string {

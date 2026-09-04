@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useRef, useState } from "react";
 import { Download, RefreshCw, RotateCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -205,7 +206,7 @@ function DesktopBootstrapUpdatePanel({ snapshot }: { snapshot: DesktopBootstrapS
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">版本检查</div>
+        <div className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">{translateUi("版本检查")}</div>
         <Badge
           variant="outline"
           className={cn(
@@ -219,22 +220,22 @@ function DesktopBootstrapUpdatePanel({ snapshot }: { snapshot: DesktopBootstrapS
 
       <div className="mt-3 grid gap-2 text-sm text-muted-foreground">
         <div className="flex items-center justify-between gap-3">
-          <span>本机版本</span>
+          <span>{translateUi("本机版本")}</span>
           <span className="font-medium text-foreground">{updater.currentVersion}</span>
         </div>
         <div className="flex items-center justify-between gap-3">
-          <span>可用版本</span>
+          <span>{translateUi("可用版本")}</span>
           <span className="font-medium text-foreground">{updater.availableVersion ?? "-"}</span>
         </div>
         <div className="flex items-center justify-between gap-3 text-muted-foreground">
-          <span>检查时间</span>
+          <span>{translateUi("检查时间")}</span>
           <span className="font-medium text-foreground">{formatSnapshotTime(updater.lastCheckedAt ?? "")}</span>
         </div>
       </div>
 
       <div className="mt-3 rounded-xl border border-border/60 bg-muted/35 px-4 py-3 text-sm leading-6 text-muted-foreground">
         {resolveUpdaterHint(updater, snapshot.state)}
-        {typeof updater.progressPercent === "number" ? ` 下载进度 ${Math.round(updater.progressPercent)}%。` : ""}
+        {typeof updater.progressPercent === "number" ? translateUi(" 下载进度 {{value0}}%。", { value0: Math.round(updater.progressPercent) }) : ""}
       </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
@@ -248,7 +249,7 @@ function DesktopBootstrapUpdatePanel({ snapshot }: { snapshot: DesktopBootstrapS
             onClick={() => void runUpdaterAction("check")}
           >
             <RefreshCw className={cn("h-4 w-4", updater.status === "checking" ? "animate-spin" : null)} aria-hidden="true" />
-            {updater.status === "checking" ? "检查中" : updater.status === "error" || updater.status === "not-available" ? "重新检查" : "检查更新"}
+            {updater.status === "checking" ? translateUi("检查中") : updater.status === "error" || updater.status === "not-available" ? translateUi("重新检查") : translateUi("检查更新")}
           </Button>
         ) : null}
         {showDownloadButton ? (
@@ -260,7 +261,8 @@ function DesktopBootstrapUpdatePanel({ snapshot }: { snapshot: DesktopBootstrapS
             onClick={() => void runUpdaterAction("check")}
           >
             <Download className="h-4 w-4" aria-hidden="true" />
-            下载更新
+
+            {translateUi("下载更新")}
           </Button>
         ) : null}
         {showInstallButton ? (
@@ -272,7 +274,8 @@ function DesktopBootstrapUpdatePanel({ snapshot }: { snapshot: DesktopBootstrapS
             onClick={() => void runUpdaterAction("install")}
           >
             <RotateCw className="h-4 w-4" aria-hidden="true" />
-            重启安装
+
+            {translateUi("重启安装")}
           </Button>
         ) : null}
       </div>
@@ -298,10 +301,10 @@ export default function DesktopBootstrapShell({ snapshot, overlay = false }: Des
                   <div className="rounded-[24px] bg-primary/10 p-2 ring-1 ring-primary/20"><DesktopBrandMark className="h-16 w-16" /></div>
                   <div>
                     <div className="text-xs font-medium uppercase tracking-[0.24em] text-info">AI NOVEL STUDIO</div>
-                    <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">AI 小说创作工作台</h1>
+                    <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{translateUi("AI 小说创作工作台")}</h1>
                   </div>
                 </div>
-                <Badge variant="outline" className="hidden border-info/30 bg-info/10 text-info sm:inline-flex">桌面版 · {resolveStageLabel(snapshot)}</Badge>
+                <Badge variant="outline" className="hidden border-info/30 bg-info/10 text-info sm:inline-flex">{translateUi("桌面版 ·")} {resolveStageLabel(snapshot)}</Badge>
               </div>
 
               <div className="mt-20 max-w-xl">
@@ -312,34 +315,34 @@ export default function DesktopBootstrapShell({ snapshot, overlay = false }: Des
             </div>
 
             <div className="mt-12 space-y-3">
-              <div className="flex items-center justify-between text-xs text-muted-foreground"><span>正在连接你的创作空间</span><span>{resolveStageLabel(snapshot)}</span></div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground"><span>{translateUi("正在连接你的创作空间")}</span><span>{resolveStageLabel(snapshot)}</span></div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                 {snapshot.state === "error" ? <span className="block h-full w-full rounded-full bg-destructive" /> : <span className="block h-full w-1/2 animate-[desktop-shell-progress_1.4s_ease-in-out_infinite] rounded-full bg-[linear-gradient(90deg,hsl(var(--info)),hsl(var(--primary)))]" />}
               </div>
-              <p className="text-xs leading-5 text-muted-foreground">启动页只在准备本地服务时短暂出现，工作区就绪后会自动进入。</p>
+              <p className="text-xs leading-5 text-muted-foreground">{translateUi("启动页只在准备本地服务时短暂出现，工作区就绪后会自动进入。")}</p>
             </div>
           </section>
 
           <section className="space-y-4 bg-muted/20 px-7 py-8 sm:px-8 sm:py-10">
             <div className="rounded-2xl border border-border/60 bg-background/55 p-5">
-              <div className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">启动状态</div>
+              <div className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">{translateUi("启动状态")}</div>
               <div className="mt-4 space-y-3 text-sm">
-                <div className="flex items-center justify-between gap-3"><span className="text-muted-foreground">当前阶段</span><span className="font-medium">{resolveStateLabel(snapshot)}</span></div>
+                <div className="flex items-center justify-between gap-3"><span className="text-muted-foreground">{translateUi("当前阶段")}</span><span className="font-medium">{resolveStateLabel(snapshot)}</span></div>
                 <div className="rounded-xl border border-border/60 bg-muted/35 px-3.5 py-3 text-sm leading-6 text-muted-foreground">{resolveProgressHint(snapshot)}</div>
-                <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground"><span>最近更新</span><span>{formatSnapshotTime(snapshot.updatedAt)}</span></div>
+                <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground"><span>{translateUi("最近更新")}</span><span>{formatSnapshotTime(snapshot.updatedAt)}</span></div>
               </div>
             </div>
 
             <DesktopBootstrapUpdatePanel snapshot={snapshot} />
 
             <details className="group rounded-2xl border border-border/60 bg-background/45 p-5">
-              <summary className="cursor-pointer list-none text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">日志与排查 <span className="float-right transition-transform group-open:rotate-180">⌄</span></summary>
-              <div className="mt-4 text-sm leading-6 text-muted-foreground">如果启动卡住或本地服务提前退出，可以打开日志目录定位问题。</div>
+              <summary className="cursor-pointer list-none text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">{translateUi("日志与排查")} <span className="float-right transition-transform group-open:rotate-180">⌄</span></summary>
+              <div className="mt-4 text-sm leading-6 text-muted-foreground">{translateUi("如果启动卡住或本地服务提前退出，可以打开日志目录定位问题。")}</div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Button variant="secondary" size="sm" onClick={() => void bundleDesktopLogs()}>下载近期日志包</Button>
-                <Button variant="outline" size="sm" onClick={() => void openDesktopLogsDirectory()}>打开日志目录</Button>
-                <Button variant="outline" size="sm" onClick={() => void copyDesktopLogPath()}>复制日志路径</Button>
-                {snapshot.state === "error" && snapshot.canRetry ? <Button size="sm" onClick={() => void restartDesktopApp()}>重新启动</Button> : null}
+                <Button variant="secondary" size="sm" onClick={() => void bundleDesktopLogs()}>{translateUi("下载近期日志包")}</Button>
+                <Button variant="outline" size="sm" onClick={() => void openDesktopLogsDirectory()}>{translateUi("打开日志目录")}</Button>
+                <Button variant="outline" size="sm" onClick={() => void copyDesktopLogPath()}>{translateUi("复制日志路径")}</Button>
+                {snapshot.state === "error" && snapshot.canRetry ? <Button size="sm" onClick={() => void restartDesktopApp()}>{translateUi("重新启动")}</Button> : null}
               </div>
             </details>
           </section>

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
@@ -54,8 +55,8 @@ export default function TakeoverDiagnosisPanel({
     <div className="min-w-0 rounded-xl border border-primary/20 bg-primary/5 p-3 sm:p-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 space-y-2">
-          <div className="text-sm font-medium text-foreground">接续诊断</div>
-          {isLoadingReadiness ? <Badge variant="outline">读取项目进度</Badge> : null}
+          <div className="text-sm font-medium text-foreground">{translateUi("接续诊断")}</div>
+          {isLoadingReadiness ? <Badge variant="outline">{translateUi("读取项目进度")}</Badge> : null}
           {readinessErrorMessage ? (
             <div className={`rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
               {readinessErrorMessage}
@@ -95,7 +96,8 @@ export default function TakeoverDiagnosisPanel({
               className={AUTO_DIRECTOR_MOBILE_CLASSES.fullWidthAction}
               onClick={onEnterCurrentTask}
             >
-              进入当前任务
+
+              {translateUi("进入当前任务")}
             </Button>
           ) : (
             <>
@@ -125,12 +127,13 @@ export default function TakeoverDiagnosisPanel({
                 disabled={startDisabled}
                 onClick={onStart}
               >
-                {isStarting ? "启动中..." : quickActionLabel}
+                {isStarting ? translateUi("启动中...") : quickActionLabel}
               </Button>
             </>
           )}
           <div className={`text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-            默认保留已有资产，仅在高级设置选择重跑时才会重建对应步骤。
+
+            {translateUi("默认保留已有资产，仅在高级设置选择重跑时才会重建对应步骤。")}
           </div>
         </div>
       </div>

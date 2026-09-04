@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { AntiAiRule } from "@ai-novel/shared/types/styleEngine";
 import { CheckCircle2, Edit3, FileText, FlaskConical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -27,15 +28,15 @@ export default function AntiAiRuleList(props: AntiAiRuleListProps) {
       <CardHeader className="gap-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <CardTitle className="text-xl">规则列表</CardTitle>
-            <CardDescription>快速启停规则、调整全局默认、维护生成指令和修正建议。</CardDescription>
+            <CardTitle className="text-xl">{translateUi("规则列表")}</CardTitle>
+            <CardDescription>{translateUi("快速启停规则、调整全局默认、维护生成指令和修正建议。")}</CardDescription>
           </div>
           <div className="flex flex-wrap gap-2">
             {[
-              ["all", "全部"],
-              ["global", "全局默认"],
-              ["style", "写法专属可用"],
-              ["disabled", "已停用"],
+              ["all", translateUi("全部")],
+              ["global", translateUi("全局默认")],
+              ["style", translateUi("写法专属可用")],
+              ["disabled", translateUi("已停用")],
             ].map(([value, label]) => (
               <Button
                 key={value}
@@ -52,11 +53,12 @@ export default function AntiAiRuleList(props: AntiAiRuleListProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         {props.loading ? (
-          <div className="text-sm text-muted-foreground">正在加载反 AI 规则...</div>
+          <div className="text-sm text-muted-foreground">{translateUi("正在加载反 AI 规则...")}</div>
         ) : null}
         {!props.loading && props.rules.length === 0 ? (
           <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            这个筛选下没有规则。
+
+            {translateUi("这个筛选下没有规则。")}
           </div>
         ) : null}
         {props.rules.map((rule) => {
@@ -66,13 +68,13 @@ export default function AntiAiRuleList(props: AntiAiRuleListProps) {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <div className="text-base font-semibold text-foreground">{rule.name}</div>
-                    <Badge variant={rule.enabled ? "secondary" : "outline"}>{rule.enabled ? "启用" : "停用"}</Badge>
-                    {rule.globalBaselineEnabled ? <Badge>全局默认</Badge> : <Badge variant="outline">可绑定</Badge>}
-                    {isTesting ? <Badge variant="secondary">测试中</Badge> : null}
+                    <div className="text-base font-semibold text-foreground">{translateUi(rule.name)}</div>
+                    <Badge variant={rule.enabled ? "secondary" : "outline"}>{rule.enabled ? translateUi("启用") : translateUi("停用")}</Badge>
+                    {rule.globalBaselineEnabled ? <Badge>{translateUi("全局默认")}</Badge> : <Badge variant="outline">{translateUi("可绑定")}</Badge>}
+                    {isTesting ? <Badge variant="secondary">{translateUi("测试中")}</Badge> : null}
                     <Badge variant="outline">{typeLabels[rule.type]} / {severityLabels[rule.severity]}</Badge>
                   </div>
-                  <div className="mt-2 text-sm leading-6 text-muted-foreground">{rule.description}</div>
+                  <div className="mt-2 text-sm leading-6 text-muted-foreground">{translateUi(rule.description)}</div>
                   {rule.detectPatterns.length > 0 ? (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {rule.detectPatterns.slice(0, 8).map((pattern) => (
@@ -84,45 +86,48 @@ export default function AntiAiRuleList(props: AntiAiRuleListProps) {
                     <div className="rounded-md border bg-muted/20 p-3">
                       <div className="mb-1 flex items-center gap-2 text-xs font-medium text-muted-foreground">
                         <FileText className="h-3.5 w-3.5" />
-                        生成指令
+
+                        {translateUi("生成指令")}
                       </div>
-                      <div className="leading-6 text-foreground">{rule.promptInstruction || "未填写"}</div>
+                      <div className="leading-6 text-foreground">{rule.promptInstruction ? translateUi(rule.promptInstruction) : translateUi("未填写")}</div>
                     </div>
                     <div className="rounded-md border bg-muted/20 p-3">
                       <div className="mb-1 flex items-center gap-2 text-xs font-medium text-muted-foreground">
                         <CheckCircle2 className="h-3.5 w-3.5" />
-                        修正建议
+
+                        {translateUi("修正建议")}
                       </div>
-                      <div className="leading-6 text-foreground">{rule.rewriteSuggestion || "未填写"}</div>
+                      <div className="leading-6 text-foreground">{rule.rewriteSuggestion ? translateUi(rule.rewriteSuggestion) : translateUi("未填写")}</div>
                     </div>
                   </div>
                 </div>
                 <div className="grid min-w-[210px] gap-2">
                   <AntiAiToggleLine
-                    label="启用"
+                    label={translateUi("启用")}
                     checked={rule.enabled}
                     disabled={props.isSaving}
                     onCheckedChange={(checked) => props.onQuickToggle(rule, "enabled", checked)}
                   />
                   <AntiAiToggleLine
-                    label="全局默认"
+                    label={translateUi("全局默认")}
                     checked={rule.globalBaselineEnabled}
                     disabled={props.isSaving}
                     onCheckedChange={(checked) => props.onQuickToggle(rule, "globalBaselineEnabled", checked)}
                   />
                   <AntiAiToggleLine
-                    label="自动改写"
+                    label={translateUi("自动改写")}
                     checked={rule.autoRewrite}
                     disabled={props.isSaving}
                     onCheckedChange={(checked) => props.onQuickToggle(rule, "autoRewrite", checked)}
                   />
                   <Button type="button" variant={isTesting ? "secondary" : "outline"} size="sm" onClick={() => props.onToggleTestingRule(rule.id)}>
                     <FlaskConical className="h-4 w-4" />
-                    {isTesting ? "移出测试" : "加入测试"}
+                    {isTesting ? translateUi("移出测试") : translateUi("加入测试")}
                   </Button>
                   <Button type="button" variant="outline" size="sm" onClick={() => props.onEditRule(rule)}>
                     <Edit3 className="h-4 w-4" />
-                    编辑
+
+                    {translateUi("编辑")}
                   </Button>
                 </div>
               </div>

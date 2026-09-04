@@ -1,3 +1,4 @@
+import { translateUi } from "../../../../i18n/legacy.ts";
 import {
   forceCenter,
   forceCollide,
@@ -45,14 +46,14 @@ export const GRAPH_NODE_SIZE = {
 } as const;
 
 export const ROUTE_STYLES: Record<string, { stroke: string; dash?: string; label: string }> = {
-  road: { stroke: "#64748b", label: "道路" },
-  river: { stroke: "#0284c7", dash: "6 5", label: "河流" },
-  sea: { stroke: "#2563eb", dash: "10 6", label: "海路" },
-  portal: { stroke: "#7c3aed", dash: "3 5", label: "传送" },
-  trade: { stroke: "#16a34a", dash: "8 5", label: "商道" },
-  military: { stroke: "#dc2626", dash: "5 4", label: "军道" },
-  border: { stroke: "#f59e0b", dash: "4 4", label: "边界" },
-  other: { stroke: "#64748b", label: "其他" },
+  road: { stroke: "#64748b", label: translateUi("道路") },
+  river: { stroke: "#0284c7", dash: "6 5", label: translateUi("河流") },
+  sea: { stroke: "#2563eb", dash: "10 6", label: translateUi("海路") },
+  portal: { stroke: "#7c3aed", dash: "3 5", label: translateUi("传送") },
+  trade: { stroke: "#16a34a", dash: "8 5", label: translateUi("商道") },
+  military: { stroke: "#dc2626", dash: "5 4", label: translateUi("军道") },
+  border: { stroke: "#f59e0b", dash: "4 4", label: translateUi("边界") },
+  other: { stroke: "#64748b", label: translateUi("其他") },
 };
 
 const DIRECTION_COORDINATES: Record<WorldGeographyDirection, Point> = {

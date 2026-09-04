@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   WorldReferenceSeedBundle,
   WorldReferenceSeedSelection,
@@ -15,23 +16,23 @@ const GROUP_META: Record<
   }
 > = {
   rules: {
-    title: "原作规则",
-    description: "这个世界默认怎么运转，后面自动生成会参考这些底层规则。",
+    title: translateUi("原作规则"),
+    description: translateUi("这个世界默认怎么运转，后面自动生成会参考这些底层规则。"),
     selectionKey: "ruleIds",
   },
   factions: {
-    title: "阵营立场",
-    description: "谁站哪边、信什么、想推动什么。适合保留原作里的大方向。",
+    title: translateUi("阵营立场"),
+    description: translateUi("谁站哪边、信什么、想推动什么。适合保留原作里的大方向。"),
     selectionKey: "factionIds",
   },
   forces: {
-    title: "组织与势力",
-    description: "具体公司、部门、帮派、人脉圈这类可直接上场的组织。",
+    title: translateUi("组织与势力"),
+    description: translateUi("具体公司、部门、帮派、人脉圈这类可直接上场的组织。"),
     selectionKey: "forceIds",
   },
   locations: {
-    title: "地点与场景",
-    description: "城市、街区、公司、住处等可以直接拿来用的场景。",
+    title: translateUi("地点与场景"),
+    description: translateUi("城市、街区、公司、住处等可以直接拿来用的场景。"),
     selectionKey: "locationIds",
   },
 };
@@ -61,7 +62,8 @@ export default function WorldReferenceSeedSelector(props: {
   if (visibleGroups.length === 0) {
     return (
       <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
-        这次没有从参考作品里稳定提取出可直接沿用的组织、地点或规则，后面会继续按你的改造方向生成。
+
+        {translateUi("这次没有从参考作品里稳定提取出可直接沿用的组织、地点或规则，后面会继续按你的改造方向生成。")}
       </div>
     );
   }
@@ -69,9 +71,10 @@ export default function WorldReferenceSeedSelector(props: {
   return (
     <div className="rounded-md border p-3 text-sm space-y-4">
       <div className="space-y-1">
-        <div className="font-medium">直接沿用原作设定</div>
+        <div className="font-medium">{translateUi("直接沿用原作设定")}</div>
         <div className="text-xs text-muted-foreground">
-          系统会从参考作品里提取一批可沿用设定，并默认勾选。保留它们可以明显减少后续手动填写。
+
+          {translateUi("系统会从参考作品里提取一批可沿用设定，并默认勾选。保留它们可以明显减少后续手动填写。")}
         </div>
       </div>
 
@@ -93,7 +96,7 @@ export default function WorldReferenceSeedSelector(props: {
                 variant="outline"
                 onClick={() => onToggleAll(group, !allSelected)}
               >
-                {allSelected ? "全部取消" : "全部保留"}
+                {allSelected ? translateUi("全部取消") : translateUi("全部保留")}
               </Button>
             </div>
 
@@ -114,7 +117,7 @@ export default function WorldReferenceSeedSelector(props: {
                       {summary ? (
                         <div className="text-xs text-muted-foreground">{summary}</div>
                       ) : (
-                        <div className="text-xs text-muted-foreground">已识别为可直接沿用的原作设定。</div>
+                        <div className="text-xs text-muted-foreground">{translateUi("已识别为可直接沿用的原作设定。")}</div>
                       )}
                     </div>
                   </label>

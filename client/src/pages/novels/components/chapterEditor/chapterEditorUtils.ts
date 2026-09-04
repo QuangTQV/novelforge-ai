@@ -6,13 +6,14 @@ import type {
   SelectionToolbarPosition,
 } from "./chapterEditorTypes";
 
+/** i18n keys (namespace `novelChapters`); translate at the render site. */
 export const CHAPTER_EDITOR_OPERATION_LABELS: Record<ChapterEditorOperation, string> = {
-  polish: "优化表达",
-  expand: "扩写",
-  compress: "精简",
-  emotion: "强化情绪",
-  conflict: "强化冲突",
-  custom: "自定义指令",
+  polish: "chapterEditor.operations.polish",
+  expand: "chapterEditor.operations.expand",
+  compress: "chapterEditor.operations.compress",
+  emotion: "chapterEditor.operations.emotion",
+  conflict: "chapterEditor.operations.conflict",
+  custom: "chapterEditor.operations.custom",
 };
 
 export function normalizeEditorText(text: string): string {
@@ -331,15 +332,16 @@ export function buildAiRevisionRequest(input: ChapterEditorRequestBuilderInput) 
   };
 }
 
+/** Returns an i18n key (namespace `novelChapters`); translate at the render site. */
 export function getSaveStatusLabel(status: "idle" | "saving" | "saved" | "error", isDirty: boolean): string {
   if (status === "saving") {
-    return "保存中";
+    return "chapterEditor.saveStatus.saving";
   }
   if (status === "saved") {
-    return "已保存";
+    return "chapterEditor.saveStatus.saved";
   }
   if (status === "error") {
-    return "保存失败";
+    return "chapterEditor.saveStatus.error";
   }
-  return isDirty ? "待保存" : "已同步";
+  return isDirty ? "chapterEditor.saveStatus.dirty" : "chapterEditor.saveStatus.synced";
 }

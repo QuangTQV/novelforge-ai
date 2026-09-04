@@ -1,0 +1,59 @@
+{
+  "lengthPolicy": {
+    "natural": "自然优先",
+    "standard": "标准字数控制",
+    "mixed": "混合字数控制"
+  },
+  "trigger": {
+    "manual": "手动",
+    "autoMilestone": "自动里程碑",
+    "beforePipeline": "流程前"
+  },
+  "length": {
+    "title": "长度控制与执行回放",
+    "mode": "控制模式",
+    "closing": "已进入收尾区",
+    "normal": "仍在正常推进",
+    "targetResult": "目标与结果",
+    "words": "{{actual}} / {{target}} 字",
+    "variance": "偏差 {{value}}",
+    "budget": "预算区间",
+    "range": "{{min}} - {{max}} 字",
+    "hardMax": "硬上限 {{value}} 字"
+  },
+  "ui": {
+    "signal": "执行信号",
+    "hardStops": "硬停 {{count}} 次",
+    "scenes": "场景 {{actual}}/{{planned}}",
+    "repairPath": "长度调整路径",
+    "noRepair": "本次没有触发额外的长度调整。",
+    "overlength": "本次触发了超长调整。",
+    "noOverlength": "本次没有触发超长调整。",
+    "rounds": "{{round}} 轮：建议 {{suggested}} 字，实际 {{actual}} 字",
+    "finalRound": "最后一轮",
+    "middleRound": "中间轮",
+    "hardStop": "已硬停",
+    "naturalEnd": "自然结束",
+    "sentenceTrim": "已按句子边界裁剪",
+    "noLengthData": "还没有长度控制回放数据。生成章节后，预算执行结果会显示在这里。",
+    "contextTitle": "章节目标与上下文",
+    "plan": "章节计划",
+    "role": "角色：{{value}}",
+    "phase": "阶段：{{value}}",
+    "participants": "参与角色：{{value}}",
+    "mustAdvance": "本章必须推进：{{value}}",
+    "mustPreserve": "本章必须保留：{{value}}",
+    "replanned": "本章来自一次规划调整。",
+    "sourceIssues": "本章引用了 {{count}} 个待处理的检查问题。",
+    "noSupplement": "没有补充",
+    "noPlan": "还没有章节计划。",
+    "stateSnapshot": "状态快照",
+    "noSummary": "还没有摘要",
+    "knowledgeState": "知识状态：{{value}}",
+    "noSnapshot": "还没有状态快照。",
+    "activeConflicts": "活跃冲突",
+    "lastSeen": "最近出现：第 {{chapter}} 章",
+    "suggestion": "建议：{{value}}",
+    "noConflicts": "还没有活跃冲突。"
+  }
+}

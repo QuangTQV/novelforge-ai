@@ -1,0 +1,36 @@
+{
+  "emptySummary": "这套写法还没有写清楚读感定位。",
+  "recentBinding": "最近绑定：{{title}}",
+  "actions": {
+    "edit": "编辑设定",
+    "apply": "应用与测试",
+    "clean": "去 AI 味"
+  },
+  "panels": {
+    "feel": {
+      "title": "读感定位",
+      "description": "帮你快速判断这套写法想营造什么感觉、适合哪类项目。"
+    },
+    "sourceSample": "原文样本片段",
+    "rules": {
+      "title": "规则摘要",
+      "description": "展示真正约束读感的四层规则，让你从列表就能看懂。",
+      "narrative": "剧情推进",
+      "character": "人物表达",
+      "language": "语言质感",
+      "rhythm": "节奏控制"
+    },
+    "antiAi": {
+      "title": "反 AI 约束",
+      "description": "确定系统在稿件里会优先检测和修正的风险点。"
+    },
+    "asset": {
+      "title": "资产概览",
+      "description": "帮你评估这套写法目前完善到什么程度。"
+    },
+    "next": {
+      "title": "下一步",
+      "description": "每个按钮只负责一件事，避免把你带回同一个区域。"
+    }
+  }
+}

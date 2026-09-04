@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import WorkflowProgressBar, {
@@ -84,7 +85,7 @@ export default function MobileAutoDirectorStatusCard({ takeover }: MobileAutoDir
             <div className="truncate text-foreground">{takeover.currentAction}</div>
           ) : null}
           {takeover.checkpointLabel ? (
-            <div className="truncate text-muted-foreground">检查点：{takeover.checkpointLabel}</div>
+            <div className="truncate text-muted-foreground">{translateUi("检查点：")}{takeover.checkpointLabel}</div>
           ) : null}
         </div>
       ) : null}

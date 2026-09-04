@@ -1,3 +1,4 @@
+import { translateUi } from "../../i18n/legacy.ts";
 import type {
   VolumeBeatSheet,
   VolumeChapterPlan,
@@ -69,7 +70,7 @@ export function createEmptyVolume(sortOrder: number): VolumePlan {
     id: createLocalId("volume"),
     novelId: "",
     sortOrder,
-    title: `第${sortOrder}卷`,
+    title: translateUi("第{{sortOrder}}卷", { sortOrder }),
     summary: "",
     openingHook: "",
     mainPromise: "",
@@ -97,7 +98,7 @@ export function createEmptyChapter(chapterOrder: number): VolumeChapterPlan {
     volumeId: "",
     chapterOrder,
     beatKey: null,
-    title: `第${chapterOrder}章`,
+    title: translateUi("第{{chapterOrder}}章", { chapterOrder }),
     summary: "",
     purpose: "",
     conflictLevel: null,

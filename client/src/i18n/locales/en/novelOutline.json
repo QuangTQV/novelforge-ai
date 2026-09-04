@@ -1,0 +1,295 @@
+{
+  "basicInfoTab": {
+    "directorTakeover": {
+      "title": "Let AI take over the current project",
+      "description": "If the basic info is fairly complete, AI can take over automatically from the selected step, either continuing existing progress or rerunning the current step."
+    },
+    "section": {
+      "title": "Book-level positioning",
+      "description": "First decide who this book is for, what draws readers in, and what must be delivered early, then let the world, characters and chapters revolve around the same set of promises."
+    },
+    "submitLabel": "Save basic info",
+    "styleAdvice": {
+      "title": "Writing style advice",
+      "description": "Confirm the book's narrative flavor, expressive density and style reference so later chapters stay consistent.",
+      "meta": "Style reference"
+    },
+    "ui": {
+      "volumeUnit": "volume",
+      "currentStructure": "Current structure level: {{profile}}.",
+      "chapterBudget": "The chapter budget still references {{min}}–{{max}} chapters per volume, but the system prioritizes stage promises, selling-point shifts, situation escalation and stage rewards when suggesting the volume count.",
+      "collapseCustom": "Collapse the custom volume count",
+      "customCount": "Custom volume count",
+      "restore": "Restore the system suggestion",
+      "fixedCount": "Fixed volume count",
+      "applyCount": "Apply the fixed volume count",
+      "allowedRange": "Allowed range: {{min}}–{{max}} volumes. A fixed count overrides the structure suggestion.",
+      "critiqueTitle": "Volume strategy review",
+      "risk": "Risk {{risk}}",
+      "derivedTitle": "Derived text, version management and impact analysis",
+      "derivedDescription": "This part focuses on refinement and comparison; you don't need to watch it constantly while editing the current volume skeleton.",
+      "preview": "Preview the derived text",
+      "versions": "Version management",
+      "createdAt": "Created at: {{date}}",
+      "noDiff": "No diff summary yet",
+      "noVersions": "No volume versions yet; save a draft version first.",
+      "saveDraft": "Save as a draft version",
+      "overwrite": "Overwrite the current draft",
+      "activate": "Set as the active version",
+      "freeze": "Freeze the current version",
+      "diff": "View the version diff",
+      "diffLoading": "Loading...",
+      "versionDiff": "Preview the V{{version}} diff",
+      "changed": "Volumes changed {{volumes}} | Chapters affected {{chapters}} | Lines changed {{lines}}",
+      "impactTitle": "Impact analysis",
+      "analyzeDraft": "Analyze the current draft",
+      "analyzeVersion": "Analyze the current version",
+      "analyzing": "Analyzing...",
+      "impactPreview": "Preview the volume-level impact",
+      "affected": "Volumes affected {{volumes}} | Chapters affected {{chapters}} | Lines changed {{lines}}",
+      "unwritten": "Unwritten segments {{count}}",
+      "locked": "Locked segments {{count}}",
+      "advancedActions": "Advanced actions: {{actions}}",
+      "impactAdvice": "Analyze the volume-level impact before applying.",
+      "tabsCurrent": "Current volume",
+      "tabsStrategy": "Strategy overview",
+      "tabsAssets": "Asset constraints",
+      "strategySummary": "Volume strategy summary",
+      "strategyDescription": "Review the whole book's volume-level rewards and escalation path first, then pick a volume below for detailed editing.",
+      "recommendedVolumes": "Suggested {{count}} volumes",
+      "plannedVolumes": "Hard-planned {{count}} volumes",
+      "rewardLadder": "Reader reward ladder",
+      "escalationLadder": "Escalation ladder",
+      "midpoint": "Midpoint turn",
+      "volumeOverview": "Volume-level rhythm overview",
+      "noStrategy": "No volume strategy suggestion yet. Click \"Generate a volume strategy suggestion\" first.",
+      "volumeLabel": "Volume {{order}}: {{role}}, {{reward}}"
+    }
+  },
+  "basicInfoForm": {
+    "recommended": "Recommended"
+  },
+  "bookFramingQuickFill": {
+    "noSuggestion": "AI did not return any usable reader and selling-point suggestions.",
+    "applied": "Filled in reader and selling-point suggestions based on the current title and summary.",
+    "failed": "Auto-filling reader and selling points failed, please try again later.",
+    "needInput": "Please enter a title or a one-line summary before letting AI fill this in.",
+    "confirmOverwrite": "This will overwrite the current reader and selling-point entries with AI suggestions. Continue?",
+    "filling": "Filling in...",
+    "trigger": "Fill in for me"
+  },
+  "bookFramingSection": {
+    "heading": "Readers and reasons to keep reading",
+    "subtitle": "No need for professional planning jargon, just say intuitively who will like it, what they most want to see, and what payoff they get early on.",
+    "targetAudience": {
+      "label": "Target readers",
+      "placeholder": "e.g. readers who love high-pressure urban comebacks, relationship tension and constant hooks"
+    },
+    "commercialTags": {
+      "label": "Core commercial tags",
+      "placeholder": "e.g. comeback, strong conflict, high suspense, workplace maneuvering"
+    },
+    "competingFeel": {
+      "label": "Competing-title feel / familiar reading feel",
+      "placeholder": "e.g. real workplace pressure with a touch of dark humor and dense relationship tension"
+    },
+    "sellingPoint": {
+      "label": "The book's core selling point",
+      "placeholder": "e.g. every time the protagonist solves a real-world bind, it leverages a bigger web of relationships and interests, keeping readers anticipating the next counterstrike."
+    },
+    "first30": {
+      "label": "First 30 chapters promise",
+      "placeholder": "e.g. the first 30 chapters must show the protagonist securing a phase-one foothold, the core rival surfacing, the first sharp reversal in the relationship line, and make clear the book only gets fiercer from there."
+    }
+  },
+  "continuationSource": {
+    "section": {
+      "title": "Continuation source",
+      "description": "In continuation mode, you must specify the upstream novel or knowledge document referenced, and decide whether to inject book-analysis results."
+    },
+    "typeLabel": "Continuation source type",
+    "novel": {
+      "label": "In-app novel",
+      "summary": "Best for continuing from a novel that already exists in the current system."
+    },
+    "knowledge": {
+      "label": "Knowledge base document",
+      "summary": "Best for continuing from an externally imported original work, setting compendium or book-analysis document."
+    },
+    "priorNovel": "Prior novel",
+    "selectPriorNovel": "Please select the prior novel",
+    "knowledgeDoc": "Knowledge base document",
+    "selectKnowledgeDoc": "Please select a knowledge base document",
+    "bookAnalysisRef": "Book-analysis reference",
+    "bookAnalysisRefHint": "Book-analysis results are injected as high-weight structured context into subsequent planning and chapter generation.",
+    "bookAnalysisResult": "Book-analysis result",
+    "noBookAnalysis": "Do not reference book analysis",
+    "loadingBookAnalyses": "Loading book-analysis results available for the current source...",
+    "noBookAnalysesAvailable": "The current continuation source has no available book-analysis results yet; complete a successful book analysis first.",
+    "selectSectionsPrompt": "Select the book-analysis sections to inject into the generation context:",
+    "selectAll": "Select all",
+    "clear": "Clear"
+  },
+  "outline": {
+    "title": "Volume strategy console",
+    "description": "Decide how each volume unfolds, then review promises, pressure, rewards and the pull into the next volume.",
+    "readyCount": "{{completed}}/{{total}} ready",
+    "unsaved": "Unsaved draft",
+    "generating": "Generating…",
+    "reviewing": "Reviewing…",
+    "saving": "Saving…",
+    "ready": "Ready",
+    "notReady": "Not ready",
+    "nextLabel": "Suggested next step",
+    "characterHint": "Complete characters before generating the strategy and volume skeleton.",
+    "goCharacters": "Open character management",
+    "takeover": {
+      "title": "Take over from the volume strategy",
+      "description": "AI checks the volume strategy and skeleton, then fills gaps or reruns the current step."
+    },
+    "actions": {
+      "generateStrategy": "Generate a volume strategy suggestion",
+      "reviewStrategy": "AI review the volume strategy",
+      "regenerateSkeleton": "Regenerate the whole-book skeleton",
+      "generateSkeleton": "Generate the whole-book skeleton",
+      "save": "Save the volume workspace"
+    },
+    "readiness": {
+      "title": "Stage readiness",
+      "ready": "The volume stage is ready to proceed.",
+      "blocked": "{{count}} conditions still need handling.",
+      "canContinue": "You can continue this stage.",
+      "workspaceReady": "The workspace now meets the basic conditions to continue."
+    },
+    "next": {
+      "generateStrategy": "Generate a volume strategy suggestion first",
+      "generateSkeleton": "You can generate the whole-book skeleton",
+      "generateBeatSheet": "The skeleton is ready; move to rhythm or chapter split",
+      "generateChapterList": "Generate the current volume's rhythm board first",
+      "ready": "The volume strategy is sufficient; move to rhythm or chapter split"
+    },
+    "volumeCount": {
+      "fixed": "Fixing {{count}} volumes",
+      "draft": "Using the draft's {{count}} volumes",
+      "system": "Using the system-suggested {{count}} volumes"
+    },
+    "chapterCount": "{{count}} chapters",
+    "volumeCountLabel": "{{count}} volumes",
+    "volumeRange": "{{min}}–{{max}} volumes",
+    "volumeReview": {
+      "title": "Volume count suggestion & strategy review",
+      "description": "This is decision-support info. Look at the next step and current volume first; expand this only when you need to control the volume count.",
+      "countTitle": "Volume count suggestion",
+      "chapterBudget": "Total chapter budget",
+      "range": "Suggested structure range",
+      "recommended": "System-suggested volume count",
+      "hardRange": "Default hard-plan range"
+    },
+    "structure": {
+      "short": "Short-story structure",
+      "compact": "Compact novella",
+      "standard": "Standard novel",
+      "long": "Extended novel",
+      "epic": "Long epic",
+      "mega": "Mega epic",
+      "default": "Structure suggestion"
+    },
+    "versionStatus": {
+      "draft": "Draft",
+      "active": "Active",
+      "frozen": "Frozen"
+    },
+    "impact": {
+      "locked": "Locked by the text",
+      "pending": "Pending",
+      "unwritten": "Can be written into unwritten segments",
+      "pendingChapters": "Pending chapters",
+      "singleChapter": "Chapter {{chapter}}",
+      "chapterRange": "Chapters {{start}}–{{end}}"
+    },
+    "pipeline": {
+      "takeover": {
+        "title": "Take over from quality repair",
+        "description": "AI checks running chapter batches or checkpoints awaiting repair, then resumes the current repair or opens a new batch."
+      },
+      "title": "Batch generation & quality check",
+      "characterHint": "Add at least one character before running the pipeline.",
+      "goCharacters": "Open character management",
+      "focus": "Current focus",
+      "lowScoreFocus": "Handle {{count}} low-score chapters first",
+      "noLowScore": "No chapters below the threshold.",
+      "qualityThreshold": "Quality threshold",
+      "runMode": "Run mode",
+      "riskQueue": "Quality risk queue",
+      "chapterOption": "Chapter {{order}} – {{title}}",
+      "empty": "No data yet",
+      "repairAfterHint": "Shown after repair completes",
+      "configTitle": "Model & configuration",
+      "configDescription": "Batch tasks, model and advanced parameters are here.",
+      "currentSettings": "Current settings: {{mode}} | Threshold {{threshold}} | {{repairMode}}",
+      "reportsTitle": "Quality reports & derived artifacts",
+      "reportsDescription": "Quality reports, the novel bible and saved beats are collapsed by default.",
+      "chapterLabel": "Chapter: {{chapter}}",
+      "book": "Whole book",
+      "reviewScore": "Review score",
+      "coherence": "Coherence",
+      "repetition": "Repetition rate",
+      "pacing": "Pacing",
+      "voice": "Voice",
+      "engagement": "Engagement",
+      "overall": "Overall",
+      "lowScoreFilter": "Filter low-score chapters (threshold {{threshold}})",
+      "startChapter": "Start chapter",
+      "endChapter": "End chapter",
+      "maxRetries": "Retries on failure",
+      "repairModeTitle": "Repair mode",
+      "autoReview": "Auto review",
+      "autoRepair": "Auto repair",
+      "skipCompleted": "Skip completed chapters",
+      "stageVisualization": "Stage visualization",
+      "runPanel": "Run panel",
+      "startBatch": "Start batch generation",
+      "rerunLowScore": "Rerun low-score chapters",
+      "exportReport": "Export the task report",
+      "generateBible": "Generate the bible",
+      "stopBible": "Stop the bible",
+      "generateBeats": "Generate beats",
+      "stopBeats": "Stop beats",
+      "lowScoreSummary": "There are {{count}} low-score chapters; rerun range: chapters {{start}}–{{end}}.",
+      "taskStatus": "Task status",
+      "jobId": "Job ID",
+      "status": "Status",
+      "currentStage": "Current stage",
+      "currentChapter": "Current chapter",
+      "progress": "Progress",
+      "completed": "Completed",
+      "retries": "Retries",
+      "failureType": "Failure type",
+      "error": "Error",
+      "noRunningTask": "No pipeline task is running right now.",
+      "actions": {
+        "review": "Review the chapter",
+        "repair": "Repair the chapter",
+        "hook": "Generate a hook"
+      },
+      "repairMode": {
+        "detectOnly": "Detect only, no repair",
+        "light": "Light auto repair",
+        "heavy": "Deep auto repair",
+        "continuity": "Continuity only",
+        "character": "Character only",
+        "ending": "Ending pull only"
+      },
+      "stage": {
+        "active": "Running",
+        "completed": "Completed",
+        "failed": "Failed",
+        "pending": "Pending"
+      },
+      "modes": {
+        "fast": "Fast",
+        "polish": "Polish"
+      }
+    }
+  }
+}

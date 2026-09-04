@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -17,7 +18,7 @@ export interface TaskQueueMetricItem {
 
 export function TaskQueueMetricGrid(props: { items: TaskQueueMetricItem[]; className?: string }) {
   return (
-    <section aria-label="任务状态摘要" className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-4", props.className)}>
+    <section aria-label={translateUi("任务状态摘要")} className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-4", props.className)}>
       {props.items.map((item) => {
         const tone = item.tone ?? "neutral";
         return (
@@ -104,7 +105,7 @@ export function TaskQueueActionRow(props: {
     <div className={cn("flex flex-col gap-3 rounded-md border px-3 py-3 sm:flex-row sm:items-center sm:justify-between", workspaceToneSurfaceClass[tone])}>
       <div className="min-w-0">
         <div className="text-sm font-medium text-foreground">{props.title}</div>
-        <div className="mt-1 text-xs leading-5 text-muted-foreground">执行后：{props.consequence}</div>
+        <div className="mt-1 text-xs leading-5 text-muted-foreground">{translateUi("执行后：")}{props.consequence}</div>
       </div>
       <div className="mobile-full-actions shrink-0">{props.action}</div>
     </div>

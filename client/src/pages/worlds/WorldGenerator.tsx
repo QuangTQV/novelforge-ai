@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createEmptyWorldReferenceSeedBundle,
@@ -44,6 +45,7 @@ import {
 } from "./components/generator/worldGeneratorShared";
 import { useWorldGeneratorDerivedState } from "./components/generator/useWorldGeneratorDerivedState";
 export default function WorldGenerator() {
+  const { t } = useTranslation("worlds");
   const llm = useLLMStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -290,22 +292,22 @@ export default function WorldGenerator() {
     <div className="space-y-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>创建世界样本</CardTitle>
+          <CardTitle>{t("generator.title")}</CardTitle>
           <LLMSelector />
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-2 md:grid-cols-4">
             <Button variant={step === 1 ? "default" : "secondary"} onClick={() => setStep(1)}>
-              1. 世界意图
+              {t("generator.steps.intent")}
             </Button>
             <Button variant={step === 2 ? "default" : "secondary"} onClick={() => setStep(2)} disabled={!concept}>
-              2. 世界规模
+              {t("generator.steps.scale")}
             </Button>
             <Button variant={step === 3 ? "default" : "secondary"} onClick={() => setStep(3)} disabled={!skeleton}>
-              3. 骨架预览
+              {t("generator.steps.skeletonPreview")}
             </Button>
             <Button variant={step === 4 ? "default" : "secondary"} onClick={() => setStep(4)} disabled={!skeleton}>
-              4. 保存世界
+              {t("generator.steps.save")}
             </Button>
           </div>
 
@@ -329,8 +331,8 @@ export default function WorldGenerator() {
               analyzeStreaming={analyzeStream.isStreaming}
               analyzeButtonLabel={
                 analyzeStream.isStreaming
-                  ? (analyzeStream.latestRun?.message ?? "分析中...")
-                  : (isReferenceMode ? "提取原作锚点与架空方向" : "生成概念卡与属性选项")
+                  ? (analyzeStream.latestRun?.message ?? t("generator.analyze.analyzing"))
+                  : (isReferenceMode ? t("generator.analyze.referenceCta") : t("generator.analyze.freeCta"))
               }
               analyzeProgressMessage={analyzeStream.latestRun?.message}
               inspirationSourceMeta={inspirationSourceMeta}

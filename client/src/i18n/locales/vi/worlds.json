@@ -1,0 +1,22 @@
+{
+  "generator": {
+    "title": "Tạo mẫu thế giới",
+    "steps": { "intent": "Ý tưởng", "scale": "Quy mô", "skeletonPreview": "Xem trước khung sườn", "save": "Lưu" },
+    "analyze": { "analyzing": "Đang phân tích…", "referenceCta": "Phân tích tài liệu tham khảo", "freeCta": "Bắt đầu từ ý tưởng" },
+    "stepOne": {
+      "name": { "label": "Tên thế giới", "hint": "Đặt tên dễ nhận biết", "placeholder": "Ví dụ: Vương quốc sương mù" },
+      "genre": { "label": "Nền đề tài", "hint": "Chọn nền đề tài cho thế giới", "loadingOption": "Đang tải…", "selectPlaceholder": "Chọn nền đề tài", "currentPath": "Đường dẫn hiện tại", "description": "Mô tả", "template": "Mẫu", "loadingTree": "Đang tải thư viện…", "emptyLibrary": "Thư viện chưa có dữ liệu", "goToLibrary": "Mở thư viện nền đề tài", "footerHint": "Bạn có thể đổi lựa chọn sau" },
+      "mode": { "label": "Chế độ triển khai" },
+      "reference": { "knowledgeTitle": "Tài liệu tham khảo", "knowledgeDescription": "Dùng tài liệu làm nền cho thế giới", "modeLabel": "Cách dùng tài liệu", "preserveLabel": "Giữ lại", "preservePlaceholder": "Các yếu tố cần giữ", "allowedLabel": "Được phép", "allowedPlaceholder": "Các yếu tố được phép thêm", "forbiddenLabel": "Không được dùng", "forbiddenPlaceholder": "Các yếu tố cần tránh" },
+      "inspirationText": { "referencePlaceholder": "Dán nội dung tham khảo…", "randomPlaceholder": "Mô tả cảm hứng…", "freePlaceholder": "Mô tả thế giới bạn muốn tạo…" },
+      "preferences": { "title": "Tùy chọn chi tiết", "hint": "Điều chỉnh mức độ chi tiết đầu ra", "collapse": "Thu gọn", "expand": "Mở rộng", "refinementLabel": "Mức độ tinh chỉnh", "refinement": { "basic": "Cơ bản", "standard": "Tiêu chuẩn", "detailed": "Chi tiết" }, "countLabel": "Số lượng gợi ý" },
+      "progress": { "title": "Tiến độ phân tích", "starting": "Đang bắt đầu…", "referenceHint": "Đang đọc tài liệu tham khảo", "freeHint": "Đang phát triển ý tưởng thế giới" },
+      "sourceMeta": { "extracted": "Đã trích xuất từ tài liệu" },
+      "concept": { "referenceTitle": "Khái niệm từ tài liệu", "title": "Khái niệm thế giới", "worldType": "Loại thế giới", "tone": "Sắc thái", "keywords": "Từ khóa", "propertyOptions": "Thuộc tính gợi ý", "anchorsTitle": "Mốc neo", "anchorLine": "{{label}}: {{value}}" }
+    },
+    "stepTwo": {
+      "scaleTitle": "Quy mô thế giới", "scaleHint": "Chọn phạm vi phù hợp với câu chuyện", "adjustTitle": "Điều chỉnh số lượng", "adjustHint": "Bạn có thể tinh chỉnh trước khi tạo", "generating": "Đang tạo…", "generate": "Tạo khung sườn",
+      "preview": { "forces": "{{count}} thế lực", "locations": "{{count}} địa điểm", "conflicts": "{{count}} xung đột", "entries": "{{count}} gợi ý truyện" }
+    }
+  }
+}

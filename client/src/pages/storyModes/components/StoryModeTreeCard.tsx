@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
 import type { StoryModeTreeNode } from "@/api/storyMode";
@@ -55,19 +56,22 @@ export default function StoryModeTreeCard({
 
           <div className="min-w-0 flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <div className="text-sm font-semibold text-foreground">{node.name}</div>
+              <div className="text-sm font-semibold text-foreground">{translateUi(node.name)}</div>
               <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
-                小说 {node.novelCount}
+
+                {translateUi("小说")} {node.novelCount}
               </span>
               <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
-                子类 {node.childCount}
+
+                {translateUi("子类")} {node.childCount}
               </span>
             </div>
             <div className="text-sm leading-6 text-muted-foreground">
-              {node.description?.trim() || node.profile.coreDrive}
+              {node.description?.trim() ? translateUi(node.description.trim()) : translateUi(node.profile.coreDrive)}
             </div>
             <div className="text-xs leading-5 text-muted-foreground">
-              核心驱动：{node.profile.coreDrive}
+
+              {translateUi("核心驱动：")}{translateUi(node.profile.coreDrive)}
             </div>
           </div>
 
@@ -75,12 +79,14 @@ export default function StoryModeTreeCard({
             {depth === 0 ? (
               <Button type="button" variant="ghost" size="sm" onClick={() => onCreateChild(node.id)}>
                 <Plus className="mr-1 h-4 w-4" />
-                新增子类
+
+                {translateUi("新增子类")}
               </Button>
             ) : null}
             <Button type="button" variant="ghost" size="sm" onClick={() => onEdit(node.id)}>
               <Pencil className="mr-1 h-4 w-4" />
-              编辑
+
+              {translateUi("编辑")}
             </Button>
             <Button
               type="button"
@@ -88,11 +94,11 @@ export default function StoryModeTreeCard({
               size="sm"
               className="text-destructive hover:text-destructive"
               disabled={deleteDisabled || deletingId === node.id}
-              title={deleteDisabled ? "请先解绑当前推进模式或其子类下引用的小说后再删除。" : undefined}
+              title={deleteDisabled ? translateUi("请先解绑当前推进模式或其子类下引用的小说后再删除。") : undefined}
               onClick={() => onDelete(node)}
             >
               <Trash2 className="mr-1 h-4 w-4" />
-              {deletingId === node.id ? "删除中..." : "删除"}
+              {deletingId === node.id ? translateUi("删除中...") : translateUi("删除")}
             </Button>
           </div>
         </div>

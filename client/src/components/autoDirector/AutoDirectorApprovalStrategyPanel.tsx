@@ -2,6 +2,7 @@ import type {
   DirectorAutoApprovalGroup,
   DirectorAutoApprovalPoint,
 } from "@ai-novel/shared/types/autoDirectorApproval";
+import { useTranslation } from "react-i18next";
 import AutoDirectorApprovalPointMultiSelect, {
   summarizeDirectorAutoApprovalPoints,
 } from "./AutoDirectorApprovalPointMultiSelect";
@@ -24,9 +25,10 @@ export default function AutoDirectorApprovalStrategyPanel({
   onEnabledChange,
   onApprovalPointCodesChange,
 }: AutoDirectorApprovalStrategyPanelProps) {
+  const { t } = useTranslation("novelAutoDirector");
   return (
     <div className="mt-3 min-w-0 rounded-md border border-primary/15 bg-primary/5 p-3">
-      <div className="text-xs font-medium text-foreground">自动推进方式</div>
+      <div className="text-xs font-medium text-foreground">{t("approvalStrategy.heading")}</div>
       <div className={AUTO_DIRECTOR_MOBILE_CLASSES.approvalStrategyGrid}>
         <button
           type="button"
@@ -35,9 +37,9 @@ export default function AutoDirectorApprovalStrategyPanel({
           }`}
           onClick={() => onEnabledChange(true)}
         >
-          <div className="text-sm font-medium text-foreground">AI 自动推进</div>
+          <div className="text-sm font-medium text-foreground">{t("approvalStrategy.auto.title")}</div>
           <div className={`mt-1 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-            目标范围内全自动推进；只有模型不可用、服务异常、保护正文或不可恢复风险会停下。
+            {t("approvalStrategy.auto.description")}
           </div>
         </button>
         <button
@@ -47,23 +49,25 @@ export default function AutoDirectorApprovalStrategyPanel({
           }`}
           onClick={() => onEnabledChange(false)}
         >
-          <div className="text-sm font-medium text-foreground">AI 副驾确认</div>
+          <div className="text-sm font-medium text-foreground">{t("approvalStrategy.copilot.title")}</div>
           <div className={`mt-1 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-            按高级审批授权放行低风险节点，其余审批点交给你判断。
+            {t("approvalStrategy.copilot.description")}
           </div>
         </button>
       </div>
 
       <div className={`mt-3 rounded-md border bg-background/80 p-3 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
         {enabled
-          ? "自动推进：系统会在目标范围内自动确认规划、章节执行、质量修复和必要重规划。"
-          : `副驾确认边界：${summarizeDirectorAutoApprovalPoints(approvalPointCodes)}。未包含的审批点会等待你确认。`}
+          ? t("approvalStrategy.note.auto")
+          : t("approvalStrategy.note.copilot", {
+              summary: summarizeDirectorAutoApprovalPoints(approvalPointCodes, t),
+            })}
       </div>
 
       {!enabled ? (
         <details className="mt-3 rounded-md border bg-background">
           <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-foreground">
-            高级审批授权
+            {t("approvalStrategy.advanced")}
           </summary>
           <div className="border-t p-3">
             <AutoDirectorApprovalPointMultiSelect

@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import type { AssetLibraryTone } from "./AssetLibraryStatusGrid";
 
@@ -19,9 +20,10 @@ export function AssetLibraryRecommendation(props: {
   tone?: AssetLibraryTone;
 }) {
   const Icon = props.icon;
+  const { t } = useTranslation("components");
   return (
     <section
-      aria-label="推荐下一步"
+      aria-label={t("assetLibrary.recommendation.ariaLabel")}
       className={cn(
         "flex flex-col gap-4 rounded-md border px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
         recommendationToneClass[props.tone ?? "info"],

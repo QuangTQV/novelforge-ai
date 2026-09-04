@@ -1,0 +1,64 @@
+{
+  "appearance": {
+    "title": "外观与主题",
+    "description": "选择适合长时间创作的界面颜色和显示密度。",
+    "cardTitle": "界面外观",
+    "cardDescription": "主题只保存在当前设备，不会影响小说内容和任务状态。",
+    "mode": {
+      "label": "显示模式",
+      "system": "跟随系统",
+      "light": "浅色",
+      "dark": "深色"
+    },
+    "palette": {
+      "label": "主题风格",
+      "ink": { "label": "墨砚", "description": "克制的蓝灰色，适合日常创作。" },
+      "paper": { "label": "暖纸", "description": "柔和的米白色，适合阅读和章节编辑。" },
+      "night": { "label": "夜航", "description": "深靛蓝与青绿色，适合 AI 执行和日志查看。" }
+    },
+    "density": {
+      "label": "界面密度",
+      "comfortable": "舒适",
+      "compact": "紧凑"
+    },
+    "reset": "恢复默认主题"
+  },
+  "language": {
+    "cardTitle": "界面语言",
+    "cardDescription": "选择应用界面的显示语言。该选择只保存在当前设备。",
+    "label": "语言",
+    "selectPlaceholder": "选择语言"
+  },
+  "overview": {
+    "title": "系统设置",
+    "description": "查看创作环境状态，并进入需要调整的设置。",
+    "open": "打开",
+    "entries": {
+      "models": {
+        "title": "模型与厂商",
+        "description": "选择创作模型、检查任务路由，并管理连接。",
+        "summaryConfigured": "{{provider}} · {{model}} · {{routeCount}} 条任务路由",
+        "summaryEmpty": "尚未配置可用的文本模型",
+        "noModel": "未选择模型"
+      },
+      "director": {
+        "title": "自动导演",
+        "description": "安排问题处理、确认偏好与提醒方式。",
+        "summary": "设置确认偏好、问题处理和通知方式"
+      },
+      "knowledge": {
+        "title": "知识库与写法",
+        "description": "让资料和写法偏好参与后续创作。",
+        "summaryEnabled": "资料检索已开启 · {{model}}",
+        "summaryDisabled": "可选增强，暂不影响开始创作",
+        "noModel": "未选择向量模型"
+      },
+      "maintenance": {
+        "title": "桌面与维护",
+        "description": "查看适用于当前设备的更新和数据维护。",
+        "summaryDesktop": "可检查桌面更新和本机旧数据",
+        "summaryWeb": "网页端无需桌面维护"
+      }
+    }
+  }
+}

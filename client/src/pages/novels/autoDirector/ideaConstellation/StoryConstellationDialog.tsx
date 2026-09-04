@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   DirectorIdeaConstellationOption,
@@ -5,11 +6,12 @@ import type {
 } from "@ai-novel/shared/types/novelDirector";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Loader2, RotateCcw, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { AppDialogContent, Dialog } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import {
-  IDEA_CONSTELLATION_CATEGORY_LABELS,
+  IDEA_CONSTELLATION_CATEGORY_LABEL_KEYS,
   orderIdeaConstellationOptions,
   selectRotatingFoundationOptions,
   toggleIdeaConstellationSelection,
@@ -68,6 +70,7 @@ export default function StoryConstellationDialog({
   onCompose,
   onUseIdea,
 }: StoryConstellationDialogProps) {
+  const { t } = useTranslation("novelAutoDirector");
   const reducedMotion = useReducedMotion();
   const [selected, setSelected] = useState<DirectorIdeaConstellationSelection[]>([]);
   const [activeHint, setActiveHint] = useState("");
@@ -87,7 +90,7 @@ export default function StoryConstellationDialog({
   const foundationGroups = [
     {
       kind: "genre",
-      label: "故事类型",
+      label: translateUi("故事类型"),
       options: visibleGenreOptions,
       selectedId: selectedGenreId,
       onSelect: onSelectGenre,
@@ -95,7 +98,7 @@ export default function StoryConstellationDialog({
     },
     {
       kind: "story-mode",
-      label: "推进方式",
+      label: translateUi("推进方式"),
       options: visibleStoryModeOptions,
       selectedId: selectedStoryModeId,
       onSelect: onSelectStoryMode,
@@ -188,7 +191,7 @@ export default function StoryConstellationDialog({
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-3 rounded-2xl border border-border/60 bg-background/80 px-4 py-3 shadow-[0_18px_70px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:px-5">
       <div className="min-w-0 text-xs text-muted-foreground" aria-live="polite">{statusText}</div>
       <div className="flex shrink-0 flex-wrap justify-end gap-2">
-        <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={isComposing}>取消</Button>
+        <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={isComposing}>{translateUi("取消")}</Button>
         <Button
           type="button"
           className="rounded-full px-5"
@@ -196,7 +199,7 @@ export default function StoryConstellationDialog({
           disabled={isComposing || isUpdatingFoundation}
         >
           {isComposing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-          {isComposing ? "正在确认..." : "确认"}
+          {isComposing ? translateUi("正在确认...") : translateUi("确认")}
         </Button>
       </div>
     </div>
@@ -205,8 +208,8 @@ export default function StoryConstellationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <AppDialogContent
-        title="故事星图"
-        description="选择主角、金手指、首章爆点和推进素材，确认后会回到开书页继续修改。"
+        title={translateUi("故事星图")}
+        description={translateUi("选择主角、金手指、首章爆点和推进素材，确认后会回到开书页继续修改。")}
         className="left-0 top-0 h-dvh max-h-none w-screen max-w-none translate-x-0 translate-y-0 rounded-none border-0 bg-background/95 shadow-none backdrop-blur-2xl"
         headerClassName="border-0 bg-transparent px-6 pb-2 pt-5 pr-16 sm:px-8 sm:pt-6 lg:px-10"
         bodyClassName="relative overflow-hidden p-0"
@@ -215,7 +218,8 @@ export default function StoryConstellationDialog({
       >
         <div className="absolute left-6 top-3 z-20 hidden items-center gap-2 text-xs text-muted-foreground sm:flex lg:left-10">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-          类型和推进方式可直接切换；每类开书素材最多选择一个。
+
+          {translateUi("类型和推进方式可直接切换；每类开书素材最多选择一个。")}
         </div>
         <Button
           type="button"
@@ -226,7 +230,7 @@ export default function StoryConstellationDialog({
           disabled={isGenerating || isComposing}
         >
           {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
-          {isGenerating ? "正在换一组..." : "换一组"}
+          {isGenerating ? translateUi("正在换一组...") : translateUi("换一组")}
         </Button>
 
         {isGenerating ? (
@@ -235,17 +239,17 @@ export default function StoryConstellationDialog({
               <div className="absolute inset-0 animate-pulse rounded-full bg-primary/10 blur-xl" />
               <Loader2 className="relative h-7 w-7 animate-spin text-primary" />
             </div>
-            <div className="text-sm font-medium text-foreground">AI 正在点亮你的故事星图</div>
-            <div className="text-xs text-muted-foreground">会结合当前题材、推进方式和创作偏好。</div>
+            <div className="text-sm font-medium text-foreground">{translateUi("AI 正在点亮你的故事星图")}</div>
+            <div className="text-xs text-muted-foreground">{translateUi("会结合当前题材、推进方式和创作偏好。")}</div>
           </div>
         ) : orderedOptions.length === 0 ? (
           <div className="flex h-full min-h-[420px] flex-col items-center justify-center gap-4 px-6 text-center">
             <div>
-              <div className="text-sm font-medium text-foreground">故事星图暂时没有生成成功</div>
-              <div className="mt-2 text-xs text-muted-foreground">你的起始想法不会受到影响，可以重新尝试。</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("故事星图暂时没有生成成功")}</div>
+              <div className="mt-2 text-xs text-muted-foreground">{translateUi("你的起始想法不会受到影响，可以重新尝试。")}</div>
             </div>
             <Button type="button" variant="outline" className="rounded-full" onClick={onGenerate}>
-              <RotateCcw className="h-4 w-4" />重新生成
+              <RotateCcw className="h-4 w-4" />{translateUi("重新生成")}
             </Button>
           </div>
         ) : (
@@ -271,7 +275,7 @@ export default function StoryConstellationDialog({
                     <motion.button
                       type="button"
                       aria-pressed={selectedOption}
-                      aria-label={`${IDEA_CONSTELLATION_CATEGORY_LABELS[option.category]}：${option.label}。${option.hint}`}
+                      aria-label={`${t(IDEA_CONSTELLATION_CATEGORY_LABEL_KEYS[option.category])}: ${option.label}. ${option.hint}`}
                       initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.88 }}
                       animate={{ opacity: 1, scale: selectedOption ? 1.06 : 1 }}
                       transition={{ duration: reducedMotion ? 0 : 0.2, delay: reducedMotion ? 0 : index * 0.018 }}
@@ -332,7 +336,7 @@ export default function StoryConstellationDialog({
                 <div className="absolute inset-[15%] rounded-full border border-primary/15" />
                 <div className="absolute inset-[24%] rounded-full bg-primary/10 blur-2xl" />
                 <div className="relative z-10 max-w-[290px] px-5 text-center">
-                  <div className="text-[11px] font-medium tracking-[0.24em] text-muted-foreground">故事核心</div>
+                  <div className="text-[11px] font-medium tracking-[0.24em] text-muted-foreground">{translateUi("故事核心")}</div>
                   {selected.length > 0 ? (
                     <div className="mt-5 flex flex-wrap justify-center gap-2">
                       {selected.map((item) => (
@@ -344,17 +348,17 @@ export default function StoryConstellationDialog({
                             const option = options.find((candidate) => candidate.id === item.id);
                             if (option) handleToggle(option);
                           }}
-                          aria-label={`移除${item.label}`}
+                          aria-label={translateUi("移除{{value0}}", { value0: item.label })}
                         >
                           {item.label} ×
                         </button>
                       ))}
                     </div>
                   ) : (
-                    <div className="mt-4 text-sm leading-7 text-muted-foreground">可以只调整创作方向<br />或选择具体的开书素材</div>
+                    <div className="mt-4 text-sm leading-7 text-muted-foreground">{translateUi("可以只调整创作方向")}<br />{translateUi("或选择具体的开书素材")}</div>
                   )}
                   <div className="mx-auto mt-5 line-clamp-3 max-w-[260px] text-xs leading-5 text-muted-foreground" aria-live="polite">
-                    {activeHint || "把鼠标移到词语上，可以查看它会怎样落到开局和连载推进。"}
+                    {activeHint || translateUi("把鼠标移到词语上，可以查看它会怎样落到开局和连载推进。")}
                   </div>
                 </div>
               </div>
@@ -385,9 +389,9 @@ export default function StoryConstellationDialog({
                     </div>
                   </section>
                 ))}
-                {Object.entries(IDEA_CONSTELLATION_CATEGORY_LABELS).map(([category, label]) => (
+                {Object.entries(IDEA_CONSTELLATION_CATEGORY_LABEL_KEYS).map(([category, labelKey]) => (
                   <section key={category} aria-labelledby={`constellation-${category}`}>
-                    <h3 id={`constellation-${category}`} className="text-xs font-medium tracking-wide text-muted-foreground">{label}</h3>
+                    <h3 id={`constellation-${category}`} className="text-xs font-medium tracking-wide text-muted-foreground">{t(labelKey)}</h3>
                     <div className="mt-2 flex flex-wrap gap-2">
                       {plotOptions.filter((option) => option.category === category).map((option) => {
                         const selectedOption = selected.some((item) => item.id === option.id);
@@ -410,7 +414,7 @@ export default function StoryConstellationDialog({
                   </section>
                 ))}
                 <div className="rounded-xl bg-muted/30 px-4 py-3 text-xs leading-5 text-muted-foreground" aria-live="polite">
-                  {activeHint || "点击一项具体素材，可以查看并组合它带来的开书方向。"}
+                  {activeHint || translateUi("点击一项具体素材，可以查看并组合它带来的开书方向。")}
                 </div>
               </div>
             </div>

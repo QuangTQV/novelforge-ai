@@ -6,12 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { translateUi } from "@/i18n/legacy";
 import {
   getChapterExecutionDetailStatus,
   type ChapterDetailBatchSelection,
 } from "../chapterDetailPlanning.shared";
 import type { StructuredTabViewProps } from "./NovelEditView.types";
 import SelectControl from "@/components/common/SelectControl";
+import i18n from "@/i18n";
+
+const t = (key: string, options?: Record<string, unknown>) => i18n.t(`chapterDetail:${key}`, options);
 
 const textareaClassName =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
@@ -30,12 +34,12 @@ function renderChapterDetailStatusBadge(
   status: ReturnType<typeof getChapterExecutionDetailStatus>,
 ) {
   if (status === "complete") {
-    return <Badge variant="secondary">已细化</Badge>;
+    return <Badge variant="secondary">{t("status.complete")}</Badge>;
   }
   if (status === "partial") {
-    return <Badge>细化中</Badge>;
+    return <Badge>{t("status.partial")}</Badge>;
   }
-  return <Badge variant="outline">待细化</Badge>;
+  return <Badge variant="outline">{t("status.empty")}</Badge>;
 }
 
 interface StructuredChapterDetailCardProps {
@@ -132,20 +136,20 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
     if (batchMode === "visible_all" && hasVisibleBatch) {
       return {
         count: visibleChapters.length,
-        hint: `会按照当前节奏筛选，一次补齐当前可见的 ${visibleChapters.length} 章。`,
+        hint: t("batchHints.visible", { count: visibleChapters.length }),
         request: {
           chapterIds: visibleChapters.map((chapter) => chapter.id),
-          label: `当前可见的 ${visibleChapters.length} 章`,
+          label: translateUi("当前可见的 {{count}} 章", { count: visibleChapters.length }),
         },
       };
     }
     if (batchMode === "volume_all" && hasVolumeBatch) {
       return {
         count: volumeChapters.length,
-        hint: `会从第 1 章到第 ${volumeChapters.length} 章，连续补齐当前卷全部章节的细化资产。`,
+        hint: t("batchHints.volume", { count: volumeChapters.length }),
         request: {
           chapterIds: volumeChapters.map((chapter) => chapter.id),
-          label: `本卷全部 ${volumeChapters.length} 章`,
+          label: translateUi("本卷全部 {{count}} 章", { count: volumeChapters.length }),
         },
       };
     }
@@ -155,10 +159,10 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
     const count = Math.min(Math.max(batchCount, 2), remainingChapters.length);
     return {
       count,
-      hint: `会从第${selectedChapter.chapterOrder}章开始，顺次细化接下来的 ${count} 章。`,
+      hint: t("batchHints.count", { chapter: selectedChapter.chapterOrder, count }),
       request: {
         chapterIds: remainingChapters.slice(0, count).map((chapter) => chapter.id),
-        label: `从第${selectedChapter.chapterOrder}章起连续 ${count} 章`,
+        label: translateUi("从第{{chapter}}章起连续 {{count}} 章", { chapter: selectedChapter.chapterOrder, count }),
       },
     };
   }, [
@@ -186,10 +190,10 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="text-base leading-none">当前章节细化</CardTitle>
+              <CardTitle className="text-base leading-none">{t("ui.title")}</CardTitle>
               {selectedChapter ? (
                 <>
-                  <Badge variant="outline">第{selectedChapter.chapterOrder}章</Badge>
+                  <Badge variant="outline">{t("ui.chapter", { order: selectedChapter.chapterOrder })}</Badge>
                   {selectedChapterBeatLabel ? <Badge variant="secondary">{selectedChapterBeatLabel}</Badge> : null}
                   {renderChapterDetailStatusBadge(chapterDetailStatus)}
                 </>
@@ -197,8 +201,8 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
             </div>
             <div className="text-sm text-muted-foreground">
               {selectedChapter
-                ? "先补标题、摘要、目标和任务单；写本章时如果执行计划缺失，系统会自动基于这里补齐运行时规划。"
-                : "先在左侧章节列表中选中一章，再开始细化。"}
+                ? t("ui.selectedHint")
+                : t("ui.emptyHint")}
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -208,11 +212,11 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                 onClick={() => onGenerateChapterDetailBundle(selectedVolume.id, selectedChapter.id)}
                 disabled={isGeneratingChapterDetail || locked}
               >
-                {currentBundleRunning ? "当前章细化中..." : "细化当前章"}
+                {currentBundleRunning ? t("ui.refiningCurrent") : t("ui.refineCurrent")}
               </AiButton>
             ) : null}
             <Button size="sm" variant="outline" onClick={onToggleAdvanced}>
-              {showChapterAdvanced ? "收起高级设置" : "展开高级设置"}
+              {showChapterAdvanced ? t("ui.advancedOpen") : t("ui.advancedClosed")}
             </Button>
           </div>
         </div>
@@ -221,12 +225,12 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
         {chapterDetailFailure ? (
           <div className="flex flex-col gap-3 rounded-xl border border-destructive/40 bg-destructive/5 p-3 text-sm sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <div className="font-medium">第{chapterDetailFailure.chapterOrder}章的{chapterDetailFailure.mode === "purpose" ? "章节目标" : chapterDetailFailure.mode === "boundary" ? "执行边界" : "任务单"}未完成</div>
-              <div className="text-xs text-muted-foreground">已完成的内容已保留，未完成部分会从这里继续。</div>
+              <div className="font-medium">{t("ui.failureTitle", { chapter: t("ui.chapter", { order: chapterDetailFailure.chapterOrder }), field: chapterDetailFailure.mode === "purpose" ? t("ui.purpose") : chapterDetailFailure.mode === "boundary" ? t("ui.boundary") : t("ui.taskSheet") })}</div>
+              <div className="text-xs text-muted-foreground">{t("ui.failureDescription")}</div>
             </div>
             {onRetryFailedChapterDetail ? (
               <AiButton size="sm" onClick={onRetryFailedChapterDetail} disabled={isGeneratingChapterDetail || locked}>
-                从失败处继续
+                {t("ui.continueFailure")}
               </AiButton>
             ) : null}
           </div>
@@ -236,9 +240,9 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
             <div className="rounded-xl border border-border/70 bg-muted/20 p-4">
               <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                 <div className="space-y-1">
-                  <div className="text-sm font-medium">批量细化</div>
+                  <div className="text-sm font-medium">{t("ui.batch")}</div>
                   <div className="text-xs leading-6 text-muted-foreground">
-                    可以从当前章起按数量连续细化，也可以直接补齐当前可见章节或本卷全部章节。
+                    {t("ui.batchDescription")}
                   </div>
                 </div>
                 <AiButton
@@ -247,25 +251,25 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                   onClick={() => onGenerateChapterDetailBundle(selectedVolume.id, batchPlan?.request ?? { chapterIds: [] })}
                   disabled={isGeneratingChapterDetail || locked || !batchPlan}
                 >
-                  {isGeneratingChapterDetailBundle ? "批量细化中..." : `批量细化${batchPlan ? ` ${batchPlan.count} 章` : ""}`}
+                  {isGeneratingChapterDetailBundle ? t("ui.batchRunning") : t("ui.batch", { count: batchPlan?.count ?? 0 })}
                 </AiButton>
               </div>
 
               <div className="mt-3 grid gap-3 md:grid-cols-[minmax(0,1fr)_160px]">
                 <label className="space-y-2 text-sm">
-                  <span className="text-xs text-muted-foreground">范围</span>
+                  <span className="text-xs text-muted-foreground">{t("ui.range")}</span>
                   <SelectControl
                     className="w-full rounded-xl border bg-background px-3 py-2 text-sm text-foreground"
                     value={batchMode}
                     onChange={(event) => setBatchMode(event.target.value as BatchMode)}
                   >
-                    <option value="count" disabled={!hasCountBatch}>从当前章起连续细化</option>
-                    {hasVisibleBatch ? <option value="visible_all">当前可见章节</option> : null}
-                    {hasVolumeBatch ? <option value="volume_all">本卷全部章节</option> : null}
+                    <option value="count" disabled={!hasCountBatch}>{t("ui.fromCurrent")}</option>
+                    {hasVisibleBatch ? <option value="visible_all">{t("ui.visible")}</option> : null}
+                    {hasVolumeBatch ? <option value="volume_all">{t("ui.volume")}</option> : null}
                   </SelectControl>
                 </label>
                 <label className="space-y-2 text-sm">
-                  <span className="text-xs text-muted-foreground">{batchMode === "count" ? "章节数" : "本次范围"}</span>
+                  <span className="text-xs text-muted-foreground">{batchMode === "count" ? t("ui.chapterCount") : t("ui.thisRange")}</span>
                   {batchMode === "count" ? (
                     <Input
                       type="number"
@@ -277,7 +281,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                     />
                   ) : (
                     <div className="rounded-xl border border-border/70 bg-background px-3 py-2 text-sm text-foreground">
-                      {batchPlan ? `${batchPlan.count} 章` : "不可用"}
+                      {batchPlan ? t("ui.batch", { count: batchPlan.count }) : t("ui.unavailable")}
                     </div>
                   )}
                 </label>
@@ -285,13 +289,13 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
 
               <div className="mt-2 text-xs leading-6 text-muted-foreground">
                 {locked
-                  ? "请先生成当前卷节奏板，再做整章或批量细化。"
-                  : batchPlan?.hint ?? "当前卷只有 1 章，先细化当前章。"}
+                  ? t("ui.batchHintLocked")
+                  : batchPlan?.hint ?? t("ui.batchHintSingle")}
               </div>
             </div>
 
             <label className="space-y-2 text-sm">
-              <span className="text-xs text-muted-foreground">章节标题</span>
+              <span className="text-xs text-muted-foreground">{t("ui.title")}</span>
               <Input
                 value={selectedChapter.title}
                 onChange={(event) => onChapterFieldChange(selectedVolume.id, selectedChapter.id, "title", event.target.value)}
@@ -299,7 +303,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
             </label>
 
             <label className="space-y-2 text-sm">
-              <span className="text-xs text-muted-foreground">章节摘要</span>
+              <span className="text-xs text-muted-foreground">{t("ui.summary")}</span>
               <textarea
                 className={cn(textareaClassName, "min-h-[130px]")}
                 value={selectedChapter.summary}
@@ -309,14 +313,14 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
 
             <label className="space-y-2 text-sm">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs text-muted-foreground">章节目标</span>
+                <span className="text-xs text-muted-foreground">{t("ui.purpose")}</span>
                 <AiButton
                   size="sm"
                   variant="outline"
                   onClick={() => onGenerateChapterDetail(selectedVolume.id, selectedChapter.id, "purpose")}
                   disabled={isGeneratingChapterDetail || locked}
                 >
-                  {isGeneratingChapterDetail && generatingChapterDetailMode === "purpose" && generatingChapterDetailChapterId === selectedChapter.id ? "修正中..." : "AI修正"}
+                  {isGeneratingChapterDetail && generatingChapterDetailMode === "purpose" && generatingChapterDetailChapterId === selectedChapter.id ? t("ui.correcting") : t("ui.aiCorrect")}
                 </AiButton>
               </div>
               <textarea
@@ -328,14 +332,14 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
 
             <label className="space-y-2 text-sm">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs text-muted-foreground">任务单</span>
+                <span className="text-xs text-muted-foreground">{t("ui.taskSheet")}</span>
                 <AiButton
                   size="sm"
                   variant="outline"
                   onClick={() => onGenerateChapterDetail(selectedVolume.id, selectedChapter.id, "task_sheet")}
                   disabled={isGeneratingChapterDetail || locked}
                 >
-                  {isGeneratingChapterDetail && generatingChapterDetailMode === "task_sheet" && generatingChapterDetailChapterId === selectedChapter.id ? "修正中..." : "AI修正"}
+                  {isGeneratingChapterDetail && generatingChapterDetailMode === "task_sheet" && generatingChapterDetailChapterId === selectedChapter.id ? t("ui.correcting") : t("ui.aiCorrect")}
                 </AiButton>
               </div>
               <textarea
@@ -347,18 +351,18 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
 
             {showChapterAdvanced ? (
               <div className="space-y-4 rounded-xl border border-border/70 bg-muted/20 p-4">
-                <div className="text-sm font-medium">高级设置</div>
+                <div className="text-sm font-medium">{t("ui.advanced")}</div>
                 <div className="grid gap-3 md:grid-cols-3">
                   <label className="space-y-2 text-sm">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs text-muted-foreground">冲突等级</span>
+                      <span className="text-xs text-muted-foreground">{t("ui.conflict")}</span>
                       {selectedChapter.conflictLevelSource === "user" && typeof selectedChapter.conflictLevel === "number" ? (
                         <Button
                           type="button"
                           size="sm"
                           variant="outline"
                           className="h-7 px-2 text-xs"
-                          title="解除锚定，交还 AI 优化"
+                          title={t("ui.releaseAi")}
                           onClick={() => {
                             const conflictLevel = selectedChapter.conflictLevel;
                             if (typeof conflictLevel !== "number") {
@@ -370,7 +374,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                           }}
                         >
                           <UnlockKeyhole className="mr-1 h-3.5 w-3.5" aria-hidden="true" />
-                          交还 AI
+                          {t("ui.returnAi")}
                         </Button>
                       ) : null}
                     </div>
@@ -388,7 +392,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                     />
                   </label>
                   <label className="space-y-2 text-sm">
-                    <span className="text-xs text-muted-foreground">揭露等级</span>
+                    <span className="text-xs text-muted-foreground">{t("ui.reveal")}</span>
                     <Input
                       type="number"
                       min={0}
@@ -398,7 +402,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                     />
                   </label>
                   <label className="space-y-2 text-sm">
-                    <span className="text-xs text-muted-foreground">目标字数</span>
+                    <span className="text-xs text-muted-foreground">{t("ui.targetWords")}</span>
                     <Input
                       type="number"
                       min={200}
@@ -410,7 +414,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                 </div>
 
                 <label className="space-y-2 text-sm">
-                  <span className="text-xs text-muted-foreground">禁止事项</span>
+                  <span className="text-xs text-muted-foreground">{t("ui.mustAvoid")}</span>
                   <textarea
                     className={cn(textareaClassName, "min-h-[100px]")}
                     value={selectedChapter.mustAvoid ?? ""}
@@ -419,7 +423,7 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
                 </label>
 
                 <label className="space-y-2 text-sm">
-                  <span className="text-xs text-muted-foreground">兑现关联</span>
+                  <span className="text-xs text-muted-foreground">{t("ui.payoffRefs")}</span>
                   <textarea
                     className={cn(textareaClassName, "min-h-[100px]")}
                     value={selectedChapter.payoffRefs.join("\n")}
@@ -429,25 +433,25 @@ export default function StructuredChapterDetailCard(props: StructuredChapterDeta
 
                 <div className="flex flex-wrap gap-2">
                   <Button size="sm" variant="outline" onClick={() => onMoveChapter(selectedVolume.id, selectedChapter.id, -1)} disabled={selectedChapterIndex <= 0}>
-                    上移
+                    {t("ui.moveUp")}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => onMoveChapter(selectedVolume.id, selectedChapter.id, 1)} disabled={selectedChapterIndex < 0 || selectedChapterIndex >= selectedVolume.chapters.length - 1}>
-                    下移
+                    {t("ui.moveDown")}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => onRemoveChapter(selectedVolume.id, selectedChapter.id)} disabled={selectedVolume.chapters.length <= 1}>
-                    删除
+                    {t("ui.delete")}
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="rounded-xl border border-dashed p-3 text-sm text-muted-foreground">
-                冲突等级、揭露等级、字数、禁止事项和兑现关联已收进高级设置，避免一上来就把表单铺满。
+                {t("ui.advancedHint")}
               </div>
             )}
           </>
         ) : (
           <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
-            先在左侧选择一个章节，再开始细化。
+            {t("ui.selectChapter")}
           </div>
         )}
       </CardContent>

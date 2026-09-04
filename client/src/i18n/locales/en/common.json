@@ -1,0 +1,24 @@
+{
+  "appName": "AI Novel Studio",
+  "appTagline": "AI Novel Production Engine",
+  "badge": {
+    "beta": "Beta"
+  },
+  "state": {
+    "comingSoon": "Coming soon"
+  },
+  "links": {
+    "github": "Open GitHub repository"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "reset": "Reset",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "retry": "Retry"
+  }
+}

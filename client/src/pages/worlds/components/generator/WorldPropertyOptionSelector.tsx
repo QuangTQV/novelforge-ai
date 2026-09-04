@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { WorldPropertyOption } from "@ai-novel/shared/types/worldWizard";
 
 interface WorldPropertyOptionSelectorProps {
@@ -31,7 +32,8 @@ export default function WorldPropertyOptionSelector({
   if (options.length === 0) {
     return (
       <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
-        当前还没有拿到可用的关键方向。通常说明上一步分析失败了，可以返回第 1 步重新生成。
+
+        {translateUi("当前还没有拿到可用的关键方向。通常说明上一步分析失败了，可以返回第 1 步重新生成。")}
       </div>
     );
   }
@@ -56,13 +58,14 @@ export default function WorldPropertyOptionSelector({
                     {WORLD_LAYER_LABELS[option.targetLayer]}
                   </span>
                   <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
-                    {option.source === "library" ? "素材库" : "系统建议"}
+                    {option.source === "library" ? translateUi("素材库") : translateUi("系统建议")}
                   </span>
                 </div>
                 <div className="text-muted-foreground">{option.description}</div>
                 {option.reason ? (
                   <div className="text-xs text-muted-foreground">
-                    为什么建议先定它：{option.reason}
+
+                    {translateUi("为什么建议先定它：")}{option.reason}
                   </div>
                 ) : null}
               </div>
@@ -72,7 +75,7 @@ export default function WorldPropertyOptionSelector({
               <div className="space-y-3">
                 {option.choices && option.choices.length > 0 ? (
                   <div className="space-y-2 rounded-md border border-dashed p-3">
-                    <div className="text-xs font-medium text-muted-foreground">先选一个方向</div>
+                    <div className="text-xs font-medium text-muted-foreground">{translateUi("先选一个方向")}</div>
                     <div className="space-y-2">
                       {option.choices.map((choice) => {
                         const selected = selectedChoiceIds[option.id] === choice.id;
@@ -98,7 +101,7 @@ export default function WorldPropertyOptionSelector({
 
                 <textarea
                   className="min-h-[88px] w-full rounded-md border p-2 text-sm"
-                  placeholder="可选：补充你的偏好，比如希望保留什么、放大什么、限制什么。"
+                  placeholder={translateUi("可选：补充你的偏好，比如希望保留什么、放大什么、限制什么。")}
                   value={details[option.id] ?? ""}
                   onChange={(event) => onDetailChange(option.id, event.target.value)}
                 />

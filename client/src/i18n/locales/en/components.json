@@ -1,0 +1,58 @@
+{
+  "assetLibrary": {
+    "recommendation": {
+      "ariaLabel": "Resource recommendation"
+    },
+    "statusGrid": {
+      "ariaLabel": "Resource status"
+    },
+    "tree": {
+      "collapseNode": "Collapse {{name}}",
+      "expandNode": "Expand {{name}}",
+      "selectNode": "Select {{name}}"
+    }
+  },
+  "streamOutput": {
+    "title": "AI result",
+    "waiting": "Waiting for a result…",
+    "generating": "Generating…",
+    "wordCount": "{{count}} words",
+    "stop": "Stop"
+  },
+  "select": {
+    "placeholder": "Select an item",
+    "empty": "No options",
+    "search": "Search",
+    "noOptions": "No results found"
+  },
+  "fullscreenView": {
+    "enter": "Open fullscreen",
+    "exit": "Exit fullscreen"
+  },
+  "aiRevisionWorkspace": {
+    "instructionLabel": "Revision request",
+    "instructionPlaceholder": "Describe how you want AI to revise…",
+    "selectionTitle": "Selected range",
+    "noSelectionHint": "Select a passage to revise it separately.",
+    "optimizing": "AI optimizing…",
+    "optimizeFullPreview": "Optimize the whole preview",
+    "optimizeSelectionOnly": "Optimize the selection only",
+    "previewLabel": "Preview",
+    "applyPreview": "Apply the preview",
+    "cancelPreview": "Cancel the preview"
+  },
+  "llmSelector": {
+    "model": "Model",
+    "selectProvider": "Select a provider",
+    "configureProvider": "Please configure an available provider",
+    "selectModel": "Select a model",
+    "noModels": "No models available yet",
+    "searchModel": "Search models",
+    "temperatureHint": "Higher temperature means more varied output; use 0.3-0.7 for planning",
+    "temperature": "Temperature",
+    "modelTemperature": "Model temperature",
+    "noConfiguredProvider": "No model provider is available yet. Complete the API key and model config in System Settings.",
+    "temperatureRange": "Temperature (0-2)",
+    "maxTokens": "Max tokens (blank = unlimited)"
+  }
+}

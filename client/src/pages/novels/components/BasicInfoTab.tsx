@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { BasicTabProps } from "./NovelEditView.types";
 import NovelBasicInfoForm from "./NovelBasicInfoForm";
 import NovelStyleRecommendationCard from "./NovelStyleRecommendationCard";
@@ -8,16 +9,17 @@ import { NovelCoverCard } from "./cover/NovelCoverCard";
 import { DetailDisclosure, SectionBlock } from "./workspaceShell";
 
 export default function BasicInfoTab(props: BasicTabProps) {
+  const { t } = useTranslation("novelOutline");
   return (
     <div className="space-y-5">
       <DirectorTakeoverEntryPanel
-        title="让 AI 从当前项目继续接管"
-        description="如果基础信息较完整，可以直接从选定步骤开始自动接管，并选择继续已有进度或重跑当前步。"
+        title={t("basicInfoTab.directorTakeover.title")}
+        description={t("basicInfoTab.directorTakeover.description")}
         entry={props.directorTakeoverEntry}
       />
       <SectionBlock
-        title="书级定位"
-        description="先确认这本书面向谁、靠什么吸引读者、前期必须兑现什么，再让后续世界、角色和章节围绕同一组承诺展开。"
+        title={t("basicInfoTab.section.title")}
+        description={t("basicInfoTab.section.description")}
       >
         <NovelBasicInfoForm
           basicForm={props.basicForm}
@@ -32,7 +34,7 @@ export default function BasicInfoTab(props: BasicTabProps) {
           onFormChange={props.onFormChange}
           onSubmit={props.onSave}
           isSubmitting={props.isSaving}
-          submitLabel="保存基本信息"
+          submitLabel={t("basicInfoTab.submitLabel")}
           titleQuickFill={(
             <NovelCreateTitleQuickFill
               basicForm={props.basicForm}
@@ -61,9 +63,9 @@ export default function BasicInfoTab(props: BasicTabProps) {
       </SectionBlock>
 
       <DetailDisclosure
-        title="写法建议"
-        description="确认本书的叙述口味、表达密度和风格参考，帮助后续章节保持统一。"
-        meta="写法参考"
+        title={t("basicInfoTab.styleAdvice.title")}
+        description={t("basicInfoTab.styleAdvice.description")}
+        meta={t("basicInfoTab.styleAdvice.meta")}
       >
         <NovelStyleRecommendationCard novelId={props.novelId} />
       </DetailDisclosure>

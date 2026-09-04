@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { Character } from "@ai-novel/shared/types/novel";
 import { Crown, Trash2, UsersRound } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +27,7 @@ function getCharacterCardClass(isSelected: boolean, isProtagonist: boolean): str
 }
 
 function confirmDeleteCharacter(character: Character, onDeleteCharacter: (characterId: string) => void) {
-  const confirmed = window.confirm(`确认删除角色“${character.name}”？此操作不可恢复。`);
+  const confirmed = window.confirm(translateUi("确认删除角色“{{value0}}”？此操作不可恢复。", { value0: character.name }));
   if (!confirmed) {
     return;
   }
@@ -77,16 +78,18 @@ function CharacterCard(props: {
             {isProtagonist ? (
               <Badge variant="secondary" className="gap-1 px-1.5">
                 <Crown className="h-3 w-3" />
-                主角
+
+                {translateUi("主角")}
               </Badge>
             ) : null}
           </div>
           <div className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
-            {isProtagonist ? `身份：${character.role || "待补全"}` : `${supportingLabel}：${supportingLine}`}
+            {isProtagonist ? translateUi("身份：{{value0}}", { value0: character.role || translateUi("待补全") }) : translateUi("{{value0}}：{{value1}}", { value0: supportingLabel, value1: supportingLine })}
           </div>
           {isProtagonist ? (
             <div className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
-              目标：{supportingLine}
+
+              {translateUi("目标：")}{supportingLine}
             </div>
           ) : null}
         </div>
@@ -97,7 +100,7 @@ function CharacterCard(props: {
         disabled={isDeletingThis}
         onClick={() => confirmDeleteCharacter(character, onDeleteCharacter)}
         className="h-8 w-8 shrink-0 self-center p-0 text-muted-foreground opacity-60 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-        title="删除角色"
+        title={translateUi("删除角色")}
       >
         {isDeletingThis ? "..." : <Trash2 className="h-4 w-4" />}
       </Button>
@@ -123,9 +126,10 @@ export default function CharacterAssetSidebar(props: CharacterAssetSidebarProps)
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
             <Crown className="h-3.5 w-3.5 text-emerald-600" />
-            主角位
+
+            {translateUi("主角位")}
           </div>
-          {protagonist ? <Badge variant="outline">主角</Badge> : null}
+          {protagonist ? <Badge variant="outline">{translateUi("主角")}</Badge> : null}
         </div>
         {protagonist ? (
           <CharacterCard
@@ -139,7 +143,8 @@ export default function CharacterAssetSidebar(props: CharacterAssetSidebarProps)
           />
         ) : (
           <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-3 text-xs leading-5 text-muted-foreground">
-            当前阵容还没有标记主角，可在角色定位中补充主角信息。
+
+            {translateUi("当前阵容还没有标记主角，可在角色定位中补充主角信息。")}
           </div>
         )}
       </section>
@@ -147,11 +152,13 @@ export default function CharacterAssetSidebar(props: CharacterAssetSidebarProps)
       <section className="space-y-2">
         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
           <UsersRound className="h-3.5 w-3.5 text-sky-600" />
-          配角与关系角色
+
+          {translateUi("配角与关系角色")}
         </div>
         {characters.length === 0 ? (
           <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
-            当前小说还没有角色，先在上方向导里创建或导入角色。
+
+            {translateUi("当前小说还没有角色，先在上方向导里创建或导入角色。")}
           </div>
         ) : supportingCharacters.length > 0 ? (
           <div className="max-h-[460px] space-y-2 overflow-auto pr-1">
@@ -169,7 +176,8 @@ export default function CharacterAssetSidebar(props: CharacterAssetSidebarProps)
           </div>
         ) : (
           <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
-            当前阵容只有主角，后续可补充对手、同盟或关系压力角色。
+
+            {translateUi("当前阵容只有主角，后续可补充对手、同盟或关系压力角色。")}
           </div>
         )}
       </section>

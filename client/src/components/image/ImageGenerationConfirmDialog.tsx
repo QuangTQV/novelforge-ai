@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 /**
  * 生图前统一确认弹窗
  *
@@ -18,9 +19,9 @@ import { toast } from "@/components/ui/toast";
 import SelectControl from "@/components/common/SelectControl";
 
 const SIZE_OPTIONS = [
-  { value: "1024x1024", label: "1024×1024（方形 1:1）" },
-  { value: "1024x1536", label: "1024×1536（竖版 2:3，漫画/角色）" },
-  { value: "1536x1024", label: "1536×1024（横版 3:2，三视图/表情稿）" },
+  { value: "1024x1024", label: translateUi("1024×1024（方形 1:1）") },
+  { value: "1024x1536", label: translateUi("1024×1536（竖版 2:3，漫画/角色）") },
+  { value: "1536x1024", label: translateUi("1536×1024（横版 3:2，三视图/表情稿）") },
 ];
 
 const REF_KIND_LABEL: Record<string, string> = {
@@ -175,7 +176,7 @@ export function ImageGenerationConfirmDialog({
     } catch (error) {
       const message = error instanceof Error ? error.message : "Prompt 处理失败。";
       setPromptAssistError(message);
-      toast.error("Prompt 处理失败", { description: message });
+      toast.error(translateUi("Prompt 处理失败"), { description: message });
     } finally {
       setPromptAssistLoading(null);
     }
@@ -184,15 +185,16 @@ export function ImageGenerationConfirmDialog({
   const footer = preview ? (
     <div className="flex w-full items-center justify-between gap-3">
       <p className="text-[11px] text-muted-foreground">
-        {anyDirty ? "本次将使用上方修改后的参数生图（仅一次性，不保存到角色）" : "点击「开始生图」按当前参数生成"}
+        {anyDirty ? translateUi("本次将使用上方修改后的参数生图（仅一次性，不保存到角色）") : translateUi("点击「开始生图」按当前参数生成")}
       </p>
       <div className="flex gap-2">
         <Button type="button" size="sm" variant="outline" onClick={onCancel} disabled={submitting}>
-          取消
+
+          {translateUi("取消")}
         </Button>
         <Button type="button" size="sm" onClick={handleConfirm} disabled={submitting || !prompt.trim()}>
           {submitting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
-          {submitting ? "生成中..." : "开始生图"}
+          {submitting ? translateUi("生成中...") : translateUi("开始生图")}
         </Button>
       </div>
     </div>
@@ -201,7 +203,7 @@ export function ImageGenerationConfirmDialog({
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) onCancel(); }}>
       <AppDialogContent
-        title="生图前确认"
+        title={translateUi("生图前确认")}
         description={preview?.title}
         footer={footer}
         className="max-w-3xl"
@@ -210,17 +212,19 @@ export function ImageGenerationConfirmDialog({
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" />
-            正在准备生图素材...
+
+            {translateUi("正在准备生图素材...")}
           </div>
         ) : !preview ? (
-          <div className="py-12 text-center text-sm text-muted-foreground">无预览数据</div>
+          <div className="py-12 text-center text-sm text-muted-foreground">{translateUi("无预览数据")}</div>
         ) : (
           <div className="space-y-4">
             {/* 参考图素材 */}
             <div>
               <div className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
                 <ImageIcon className="h-3 w-3" />
-                参考素材
+
+                {translateUi("参考素材")}
                 <span className="rounded border bg-muted px-1.5 py-0.5 text-[10px] font-normal">
                   {referenceImages.length}/{preview.referenceImages.length}
                 </span>
@@ -231,17 +235,20 @@ export function ImageGenerationConfirmDialog({
                     onClick={() => setIncludedReferenceImageUrls(preview.referenceImages.map((ref) => ref.url))}
                     disabled={submitting || !!promptAssistLoading}
                   >
-                    恢复全部
+
+                    {translateUi("恢复全部")}
                   </button>
                 )}
               </div>
               {preview.referenceImages.length === 0 ? (
                 <div className="rounded-md border border-dashed bg-muted/20 px-3 py-3 text-center text-[11px] text-muted-foreground">
-                  本次生图不附带参考图（纯文生图）
+
+                  {translateUi("本次生图不附带参考图（纯文生图）")}
                 </div>
               ) : referenceImages.length === 0 ? (
                 <div className="rounded-md border border-dashed bg-muted/20 px-3 py-3 text-center text-[11px] text-muted-foreground">
-                  本次生成不会发送参考图
+
+                  {translateUi("本次生成不会发送参考图")}
                 </div>
               ) : (
                 <div className="flex flex-wrap items-end gap-2 rounded-md border bg-muted/10 p-2">
@@ -256,7 +263,7 @@ export function ImageGenerationConfirmDialog({
                         <button
                           type="button"
                           className="absolute right-1 top-1 z-10 inline-flex h-6 w-6 items-center justify-center rounded-full border bg-background/95 text-muted-foreground shadow-sm hover:text-destructive"
-                          title="本次不发送这张参考图"
+                          title={translateUi("本次不发送这张参考图")}
                           onClick={() => {
                             setIncludedReferenceImageUrls((urls) => urls.filter((url) => url !== ref.url));
                             clearPromptAssistResult();
@@ -270,7 +277,7 @@ export function ImageGenerationConfirmDialog({
                           href={resolveImageAssetUrl(ref.url)}
                           target="_blank"
                           rel="noreferrer"
-                          title={`${kindLabel} · ${ref.label}（点击查看大图）`}
+                          title={translateUi("{{value0}} · {{value1}}（点击查看大图）", { value0: kindLabel, value1: ref.label })}
                           className="flex h-32 items-center justify-center bg-muted/30"
                         >
                           <img
@@ -297,7 +304,7 @@ export function ImageGenerationConfirmDialog({
               <div className="mb-1 flex items-center justify-between">
                 <p className="text-xs font-semibold text-muted-foreground">
                   Prompt
-                  {promptDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">已修改</span>}
+                  {promptDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">{translateUi("已修改")}</span>}
                 </p>
                 <div className="flex flex-wrap items-center justify-end gap-1.5">
                   <Button
@@ -309,7 +316,8 @@ export function ImageGenerationConfirmDialog({
                     disabled={submitting || !!promptAssistLoading || !prompt.trim()}
                   >
                     {promptAssistLoading === "explain" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Info className="h-3.5 w-3.5" />}
-                    解释 Prompt
+
+                    {translateUi("解释 Prompt")}
                   </Button>
                   {promptDirty && (
                     <button
@@ -321,7 +329,8 @@ export function ImageGenerationConfirmDialog({
                       }}
                       disabled={submitting || !!promptAssistLoading}
                     >
-                      恢复默认
+
+                      {translateUi("恢复默认")}
                     </button>
                   )}
                 </div>
@@ -336,10 +345,10 @@ export function ImageGenerationConfirmDialog({
                 }}
                 disabled={submitting || !!promptAssistLoading}
               />
-              <p className="mt-1 text-[10px] text-muted-foreground">{prompt.length} 字符 · 临时修改不会改动角色/项目设置</p>
+              <p className="mt-1 text-[10px] text-muted-foreground">{prompt.length}  {translateUi("字符 · 临时修改不会改动角色/项目设置")}</p>
               <div className="mt-2">
                 <div className="mb-1 flex items-center justify-between">
-                  <p className="text-xs font-semibold text-muted-foreground">优化要求</p>
+                  <p className="text-xs font-semibold text-muted-foreground">{translateUi("优化要求")}</p>
                   <div className="flex items-center justify-end gap-1.5">
                     <Button
                       type="button"
@@ -350,7 +359,8 @@ export function ImageGenerationConfirmDialog({
                       disabled={submitting || !!promptAssistLoading || !prompt.trim()}
                     >
                       {promptAssistLoading === "optimize" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-                      优化 Prompt
+
+                      {translateUi("优化 Prompt")}
                     </Button>
                     {optimizationInstruction && (
                       <button
@@ -362,7 +372,8 @@ export function ImageGenerationConfirmDialog({
                         }}
                         disabled={submitting || !!promptAssistLoading}
                       >
-                        清空
+
+                        {translateUi("清空")}
                       </button>
                     )}
                   </div>
@@ -375,10 +386,10 @@ export function ImageGenerationConfirmDialog({
                     setOptimizationInstruction(e.target.value);
                     clearPromptAssistResult();
                   }}
-                  placeholder="例如：更像水彩、画面更温柔、保留服装和发型"
+                  placeholder={translateUi("例如：更像水彩、画面更温柔、保留服装和发型")}
                   disabled={submitting || !!promptAssistLoading}
                 />
-                <p className="mt-1 text-[10px] text-muted-foreground">{optimizationInstruction.length} 字符 · 仅用于「优化 Prompt」</p>
+                <p className="mt-1 text-[10px] text-muted-foreground">{optimizationInstruction.length}  {translateUi("字符 · 仅用于「优化 Prompt」")}</p>
               </div>
               {(promptAssistResult || promptAssistError) && (
                 <div className="mt-2 rounded-md border bg-muted/20 p-2.5 text-xs">
@@ -401,7 +412,7 @@ export function ImageGenerationConfirmDialog({
                       </ul>
                       {promptAssistAction === "optimize" && promptAssistResult.changes.length > 0 && (
                         <div className="rounded border bg-background/70 px-2 py-1.5">
-                          <p className="mb-1 text-[11px] font-semibold text-muted-foreground">已调整</p>
+                          <p className="mb-1 text-[11px] font-semibold text-muted-foreground">{translateUi("已调整")}</p>
                           <ul className="space-y-1 pl-4 text-muted-foreground">
                             {promptAssistResult.changes.map((item, index) => (
                               <li key={`change-${index}`} className="list-disc leading-relaxed">{item}</li>
@@ -411,7 +422,7 @@ export function ImageGenerationConfirmDialog({
                       )}
                       {promptAssistResult.risks.length > 0 && (
                         <div className="rounded border border-amber-200 bg-amber-50 px-2 py-1.5 text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
-                          <p className="mb-1 text-[11px] font-semibold">注意事项</p>
+                          <p className="mb-1 text-[11px] font-semibold">{translateUi("注意事项")}</p>
                           <ul className="space-y-1 pl-4">
                             {promptAssistResult.risks.map((item, index) => (
                               <li key={`risk-${index}`} className="list-disc leading-relaxed">{item}</li>
@@ -429,8 +440,9 @@ export function ImageGenerationConfirmDialog({
               <div>
                 <div className="mb-1 flex items-center justify-between">
                   <p className="text-xs font-semibold text-muted-foreground">
-                    负面 Prompt
-                    {negativePromptDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">已修改</span>}
+
+                    {translateUi("负面 Prompt")}
+                    {negativePromptDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">{translateUi("已修改")}</span>}
                   </p>
                   {negativePromptDirty && (
                     <button
@@ -442,7 +454,8 @@ export function ImageGenerationConfirmDialog({
                       }}
                       disabled={submitting || !!promptAssistLoading}
                     >
-                      恢复默认
+
+                      {translateUi("恢复默认")}
                     </button>
                   )}
                 </div>
@@ -456,7 +469,7 @@ export function ImageGenerationConfirmDialog({
                   }}
                   disabled={submitting || !!promptAssistLoading}
                 />
-                <p className="mt-1 text-[10px] text-muted-foreground">{negativePrompt.length} 字符 · 仅用于本次生成</p>
+                <p className="mt-1 text-[10px] text-muted-foreground">{negativePrompt.length}  {translateUi("字符 · 仅用于本次生成")}</p>
               </div>
             )}
 
@@ -464,8 +477,9 @@ export function ImageGenerationConfirmDialog({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <p className="mb-1 text-xs font-semibold text-muted-foreground">
-                  图片模型
-                  {providerDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">已修改</span>}
+
+                  {translateUi("图片模型")}
+                  {providerDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">{translateUi("已修改")}</span>}
                 </p>
                 <SelectControl
                   className="w-full rounded-md border bg-background px-2.5 py-1.5 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
@@ -477,7 +491,7 @@ export function ImageGenerationConfirmDialog({
                   disabled={submitting || !!promptAssistLoading}
                 >
                   {providerChoices.length === 0 ? (
-                    <option value="">无可用图片服务，请先在系统设置配置</option>
+                    <option value="">{translateUi("无可用图片服务，请先在系统设置配置")}</option>
                   ) : (
                     providerChoices.map((p) => (
                       <option key={p.value} value={p.value}>{p.label}</option>
@@ -487,8 +501,9 @@ export function ImageGenerationConfirmDialog({
               </div>
               <div>
                 <p className="mb-1 text-xs font-semibold text-muted-foreground">
-                  图片尺寸
-                  {sizeDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">已修改</span>}
+
+                  {translateUi("图片尺寸")}
+                  {sizeDirty && <span className="ml-1.5 rounded bg-amber-100 px-1 py-px text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">{translateUi("已修改")}</span>}
                 </p>
                 <SelectControl
                   className="w-full rounded-md border bg-background px-2.5 py-1.5 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"

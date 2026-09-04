@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -170,7 +171,7 @@ export default function AITakeoverContainer({
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
                 </span>
               ) : null}
-              <span className="font-medium text-foreground">流程进度</span>
+              <span className="font-medium text-foreground">{translateUi("流程进度")}</span>
               {progressStatusLabel(mode) ? (
                 <span className="rounded-full bg-background/80 px-2 py-0.5 text-[11px] text-muted-foreground">
                   {progressStatusLabel(mode)}
@@ -195,10 +196,10 @@ export default function AITakeoverContainer({
             </div>
           ) : null}
           {checkpointLabel ? (
-            <div className="mt-2 text-xs text-muted-foreground">最近检查点：{checkpointLabel}</div>
+            <div className="mt-2 text-xs text-muted-foreground">{translateUi("最近检查点：")}{checkpointLabel}</div>
           ) : null}
           {taskId ? (
-            <div className="mt-2 text-[11px] text-muted-foreground/70">运行编号 {taskId.slice(0, 8)}</div>
+            <div className="mt-2 text-[11px] text-muted-foreground/70">{translateUi("运行编号")} {taskId.slice(0, 8)}</div>
           ) : null}
         </div>
       ) : null}

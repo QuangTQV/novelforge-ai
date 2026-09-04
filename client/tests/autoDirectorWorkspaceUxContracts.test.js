@@ -23,7 +23,7 @@ test("director pages use the global live view and omit passive task-center actio
 
 test("preparation journey only reports viewable resources instead of decorative mode choices", () => {
   assert.match(journey, /已完成的成果可以直接查看/);
-  assert.match(journey, /正文已生成 \$\{chapterProgress\.completed\}\/\$\{chapterProgress\.total\} 章/);
+  assert.match(journey, /正文已生成 \{\{value0\}\}\/\{\{value1\}\} 章[\s\S]*?value0: chapterProgress\.completed[\s\S]*?value1: chapterProgress\.total/);
   assert.match(progressPanel, /director-preparation-\$\{onboardingNovelId\}/);
   assert.doesNotMatch(journey, /正文尚未开始生成|简易创作 · AI 写完整本书|专业创作 · 进入完整工作台/);
 });
@@ -44,8 +44,8 @@ test("a failed director task cannot be shown as a running dashboard", () => {
 });
 
 test("candidate generation failures expose a quick retry on the current page", () => {
-  assert.match(candidateStage, /quickRetryLabel="快速重试"/);
+  assert.match(candidateStage, /quickRetryLabel=(?:"|\{translateUi\(")快速重试/);
   assert.match(candidateStage, /controller\.continueMutation\.mutate\(\)/);
   assert.match(progressPanel, /visualMode === "execution_failed" \|\| task\?\.pendingManualRecovery/);
-  assert.match(progressPanel, /isConfirmingAndContinuing \? "重试中\.\.\."/);
+  assert.match(progressPanel, /isConfirmingAndContinuing \? (?:"|translateUi\(")重试中\.\.\./);
 });

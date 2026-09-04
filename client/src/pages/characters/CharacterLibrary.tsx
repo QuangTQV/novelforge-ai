@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ImageAsset } from "@ai-novel/shared/types/image";
@@ -153,7 +154,7 @@ export default function CharacterLibrary() {
   };
 
   const handleDeleteCharacter = (character: BaseCharacter) => {
-    const confirmed = window.confirm(`确认删除角色「${character.name}」？此操作不可恢复。`);
+    const confirmed = window.confirm(translateUi("确认删除角色「{{value0}}」？此操作不可恢复。", { value0: character.name }));
     if (!confirmed) {
       return;
     }
@@ -164,12 +165,12 @@ export default function CharacterLibrary() {
     <div className="space-y-5">
       <AssetLibraryHeader
         icon={UsersRound}
-        context="跨小说复用资产"
-        title="基础角色库"
-        description="把常用角色原型、核心动机和形象资料沉淀为可复用资产。创建小说或完善人物时，可以让 AI 直接读取这些角色基础。"
+        context={translateUi("跨小说复用资产")}
+        title={translateUi("基础角色库")}
+        description={translateUi("把常用角色原型、核心动机和形象资料沉淀为可复用资产。创建小说或完善人物时，可以让 AI 直接读取这些角色基础。")}
         actions={(
           <>
-            <OpenInCreativeHubButton bindings={{}} label="带着角色库继续创作" />
+            <OpenInCreativeHubButton bindings={{}} label={translateUi("带着角色库继续创作")} />
             <CharacterCreateDialog />
           </>
         )}
@@ -179,7 +180,7 @@ export default function CharacterLibrary() {
         items={[
           {
             key: "characters",
-            label: "可复用角色",
+            label: translateUi("可复用角色"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : characters.length,
             detail: characterListQuery.isPending
               ? "正在读取角色资产"
@@ -195,14 +196,14 @@ export default function CharacterLibrary() {
           },
           {
             key: "categories",
-            label: "角色类型",
+            label: translateUi("角色类型"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : categoryCount,
             detail: "按主角、配角等角色定位整理",
             icon: UsersRound,
           },
           {
             key: "images",
-            label: "已有形象资料",
+            label: translateUi("已有形象资料"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : characterWithImageCount,
             detail: "至少保存一张角色形象图",
             icon: ImageIcon,
@@ -212,7 +213,7 @@ export default function CharacterLibrary() {
           },
           {
             key: "incomplete",
-            label: "待补核心资料",
+            label: translateUi("待补核心资料"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : incompleteCharacterCount,
             detail: "缺少性格、背景或成长轨迹",
             icon: CircleAlert,
@@ -228,23 +229,23 @@ export default function CharacterLibrary() {
       <AssetLibraryRecommendation
         icon={Sparkles}
         title={characterListQuery.isPending
-          ? "正在整理角色资产"
+          ? translateUi("正在整理角色资产")
           : characterListQuery.isError
-            ? "先重新加载角色库"
+            ? translateUi("先重新加载角色库")
             : characters.length === 0
-              ? "先建立第一个可复用角色"
+              ? translateUi("先建立第一个可复用角色")
               : incompleteCharacterCount > 0
-                ? "优先补齐角色为什么行动、会付出什么代价"
-                : "角色基础可用于小说筹备"}
+                ? translateUi("优先补齐角色为什么行动、会付出什么代价")
+                : translateUi("角色基础可用于小说筹备")}
         description={characterListQuery.isPending
-          ? "读取完成后会根据角色完整度推荐下一步。"
+          ? translateUi("读取完成后会根据角色完整度推荐下一步。")
           : characterListQuery.isError
-            ? "现有角色不会受到影响，重新加载后即可继续管理。"
+            ? translateUi("现有角色不会受到影响，重新加载后即可继续管理。")
             : characters.length === 0
-              ? "从一个主角开始即可。先写清目标、弱点和成长方向，AI 会更容易生成有推动力的人物。"
+              ? translateUi("从一个主角开始即可。先写清目标、弱点和成长方向，AI 会更容易生成有推动力的人物。")
               : incompleteCharacterCount > 0
-                ? `有 ${incompleteCharacterCount} 个角色缺少核心资料。补齐后，章节规划和人物对话会获得更稳定的依据。`
-                : "你可以带着整个角色库进入创作中枢，或为单个角色继续完善形象和对话。"}
+                ? translateUi("有 {{value0}} 个角色缺少核心资料。补齐后，章节规划和人物对话会获得更稳定的依据。", { value0: incompleteCharacterCount })
+                : translateUi("你可以带着整个角色库进入创作中枢，或为单个角色继续完善形象和对话。")}
         tone={characterListQuery.isError
           ? "danger"
           : characterListQuery.isPending || characters.length === 0
@@ -254,7 +255,8 @@ export default function CharacterLibrary() {
               : "success"}
         action={characterListQuery.isError ? (
           <Button type="button" size="sm" variant="outline" onClick={() => void characterListQuery.refetch()}>
-            重新加载
+
+            {translateUi("重新加载")}
           </Button>
         ) : undefined}
       />
@@ -303,26 +305,27 @@ export default function CharacterLibrary() {
       ) : null}
 
       <AssetLibrarySection
-        title="角色资产"
-        description="先维护能影响剧情选择的核心信息；形象图和扩展资料可以在需要时继续补充。"
+        title={translateUi("角色资产")}
+        description={translateUi("先维护能影响剧情选择的核心信息；形象图和扩展资料可以在需要时继续补充。")}
       >
         <div className="space-y-3">
           {characterListQuery.isLoading ? (
             <AssetLibraryEmptyState
               icon={UsersRound}
-              title="正在整理角色资产"
-              description="角色列表与形象资料加载完成后会显示在这里。"
+              title={translateUi("正在整理角色资产")}
+              description={translateUi("角色列表与形象资料加载完成后会显示在这里。")}
             />
           ) : null}
 
           {characterListQuery.isError ? (
             <AssetLibraryEmptyState
               icon={CircleAlert}
-              title="角色库暂时无法加载"
-              description="现有角色不会受到影响。可以重新加载列表后继续。"
+              title={translateUi("角色库暂时无法加载")}
+              description={translateUi("现有角色不会受到影响。可以重新加载列表后继续。")}
               action={(
                 <Button type="button" variant="outline" onClick={() => void characterListQuery.refetch()}>
-                  重新加载
+
+                  {translateUi("重新加载")}
                 </Button>
               )}
             />
@@ -348,7 +351,7 @@ export default function CharacterLibrary() {
                   extraActions={(
                     <OpenInCreativeHubButton
                       bindings={{ baseCharacterId: character.id }}
-                      label="带着角色继续"
+                      label={translateUi("带着角色继续")}
                     />
                   )}
                 />
@@ -356,8 +359,8 @@ export default function CharacterLibrary() {
               {characters.length === 0 ? (
                 <AssetLibraryEmptyState
                   icon={UsersRound}
-                  title="还没有基础角色"
-                  description="使用页面右上角的“创建角色”，先建立一个目标明确、弱点清晰的主角。"
+                  title={translateUi("还没有基础角色")}
+                  description={translateUi("使用页面右上角的“创建角色”，先建立一个目标明确、弱点清晰的主角。")}
                 />
               ) : null}
             </>

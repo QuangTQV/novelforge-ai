@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { Value } from "platejs";
 import { ParagraphPlugin, Plate, PlateContent, usePlateEditor } from "platejs/react";
 import type { ChapterEditorDiffChunk } from "@ai-novel/shared/types/novel";
@@ -110,6 +112,7 @@ function renderLoadingPreview(
   preview: Extract<ChapterEditorPreview, { mode: "loading" }>,
   previewContent: { before: string; after: string },
   surfaceRef: React.RefObject<HTMLDivElement | null>,
+  t: TFunction,
 ) {
   return (
     <div ref={surfaceRef} className={`space-y-4 rounded-2xl bg-muted/10 p-4 ${SURFACE_INNER_PADDING_CLASS_NAME}`}>
@@ -117,11 +120,11 @@ function renderLoadingPreview(
 
       <div className="space-y-3">
         <div className="rounded-2xl border border-amber-200/80 bg-amber-50/80 p-4">
-          <div className="mb-2 text-xs font-medium text-amber-700">待改写原文</div>
+          <div className="mb-2 text-xs font-medium text-amber-700">{t("textEditor.pendingOriginal")}</div>
           <TextBlock text={preview.originalText} className="text-amber-950" />
         </div>
         <div className="rounded-2xl border border-dashed border-border/70 bg-background/80 p-4">
-          <div className="mb-2 text-xs font-medium text-muted-foreground">AI 正在生成候选版本</div>
+          <div className="mb-2 text-xs font-medium text-muted-foreground">{t("textEditor.aiGeneratingCandidate")}</div>
           <div className="space-y-2">
             <div className="h-4 w-11/12 rounded-full bg-muted/70" />
             <div className="h-4 w-full rounded-full bg-muted/60" />
@@ -139,6 +142,7 @@ function renderBlockPreview(
   preview: Extract<ChapterEditorPreview, { mode: "block" }>,
   previewContent: { before: string; after: string },
   surfaceRef: React.RefObject<HTMLDivElement | null>,
+  t: TFunction,
 ) {
   return (
     <div ref={surfaceRef} className={`space-y-4 rounded-2xl bg-muted/10 p-4 ${SURFACE_INNER_PADDING_CLASS_NAME}`}>
@@ -146,11 +150,11 @@ function renderBlockPreview(
 
       <div className="space-y-3">
         <div className="rounded-2xl border border-rose-200/80 bg-rose-50/80 p-4">
-          <div className="mb-2 text-xs font-medium text-rose-700">原文</div>
+          <div className="mb-2 text-xs font-medium text-rose-700">{t("textEditor.original")}</div>
           <TextBlock text={preview.originalText} className="text-rose-950" />
         </div>
         <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/90 p-4">
-          <div className="mb-2 text-xs font-medium text-emerald-700">改写</div>
+          <div className="mb-2 text-xs font-medium text-emerald-700">{t("textEditor.rewrite")}</div>
           <TextBlock text={preview.candidateText} className="text-emerald-950" />
         </div>
       </div>
@@ -162,6 +166,7 @@ function renderBlockPreview(
 
 export default function ChapterTextEditor(props: ChapterTextEditorProps) {
   const { value, readOnly = false, onChange, onSelectionChange, preview, focusRange = null } = props;
+  const { t } = useTranslation("novelChapters");
   const [editorSeed, setEditorSeed] = useState(0);
   const [internalText, setInternalText] = useState(() => normalizeChapterContent(value));
   const [paragraphMarkerOffsets, setParagraphMarkerOffsets] = useState<Array<{ index: number; top: number }>>([]);
@@ -253,14 +258,14 @@ export default function ChapterTextEditor(props: ChapterTextEditorProps) {
   );
 
   const helperText = preview?.mode === "inline"
-    ? "当前正在显示细节标记 diff，适合确认具体删改。"
+    ? t("textEditor.helper.inlineDiff")
     : preview?.mode === "loading"
-      ? "AI 正在基于选中内容生成候选版本，原文位置会持续保留。"
+      ? t("textEditor.helper.loading")
       : preview?.mode === "block"
-        ? "当前正在显示段落 patch 对比，原文和改写会在正文原位置并排落成红绿块。"
+        ? t("textEditor.helper.blockPatch")
         : readOnly
-          ? "当前有待确认候选，正文暂时锁定，可在右侧切换候选或接受、拒绝。"
-      : "可直接编辑正文，选中内容后可发起 AI 改写。";
+          ? t("textEditor.helper.readOnly")
+      : t("textEditor.helper.editable");
 
   useEffect(() => {
     const surface = surfaceRef.current;
@@ -360,7 +365,7 @@ export default function ChapterTextEditor(props: ChapterTextEditorProps) {
   return (
     <div ref={containerRef} className="relative flex h-full min-h-[540px] flex-col overflow-hidden rounded-3xl border border-border/70 bg-background shadow-sm xl:min-h-0">
       <div className="shrink-0 flex items-center justify-between border-b border-border/70 px-4 py-3">
-        <div className="text-sm font-medium text-foreground">正文</div>
+        <div className="text-sm font-medium text-foreground">{t("textEditor.body")}</div>
         <div className="text-xs text-muted-foreground">{helperText}</div>
       </div>
 
@@ -376,9 +381,9 @@ export default function ChapterTextEditor(props: ChapterTextEditorProps) {
               {previewContent.after}
             </div>
           ) : preview?.mode === "loading" && previewContent ? (
-            renderLoadingPreview(preview, previewContent, surfaceRef)
+            renderLoadingPreview(preview, previewContent, surfaceRef, t)
           ) : preview?.mode === "block" && previewContent ? (
-            renderBlockPreview(preview, previewContent, surfaceRef)
+            renderBlockPreview(preview, previewContent, surfaceRef, t)
           ) : readOnly ? (
             <div
               ref={surfaceRef}

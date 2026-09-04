@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -189,11 +190,11 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
       setSavedContent(nextContent);
       setSaveStatus("saved");
       await invalidateChapterQueries();
-      toast.success("章节正文已保存。");
+      toast.success(translateUi("章节正文已保存。"));
     },
     onError: (error) => {
       setSaveStatus("error");
-      toast.error(error instanceof Error ? error.message : "章节保存失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("章节保存失败。"));
     },
   });
 
@@ -216,11 +217,11 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
       await invalidateChapterQueries();
       const assessment = response.data?.qualityAssessment;
       toast.success(assessment?.recommendedAction === "continue"
-        ? "重新审校通过，本章待优化项已关闭。"
-        : "重新审校完成，AI 仍发现需要处理的内容。");
+        ? translateUi("重新审校通过，本章待优化项已关闭。")
+        : translateUi("重新审校完成，AI 仍发现需要处理的内容。"));
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "重新审校失败，请稍后重试。");
+      toast.error(error instanceof Error ? error.message : translateUi("重新审校失败，请稍后重试。"));
     },
   });
 
@@ -306,10 +307,10 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
       setSession(EMPTY_SESSION);
       setRevisionInstruction("");
       await invalidateChapterQueries();
-      toast.success("已应用候选版本，并创建 AI 修改前快照。");
+      toast.success(translateUi("已应用候选版本，并创建 AI 修改前快照。"));
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "应用候选版本失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("应用候选版本失败。"));
     },
   });
 
@@ -334,7 +335,8 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
   if (!chapter) {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-muted/10 p-10 text-center text-sm text-muted-foreground">
-        请选择一个章节后开始编辑正文。
+
+        {translateUi("请选择一个章节后开始编辑正文。")}
       </div>
     );
   }
@@ -364,7 +366,7 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
       : null;
 
     if (scope === "selection" && !resolvedSelection) {
-      toast.error("请先选中正文片段，或先从问题卡定位到对应片段。");
+      toast.error(translateUi("请先选中正文片段，或先从问题卡定位到对应片段。"));
       return;
     }
 
@@ -466,12 +468,13 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
           <div className="flex min-w-0 items-start gap-3">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
             <div className="min-w-0 text-sm leading-6">
-              <div className="font-medium">本章正文可继续使用，但还有质量待优化项</div>
+              <div className="font-medium">{translateUi("本章正文可继续使用，但还有质量待优化项")}</div>
               <div className="text-xs text-amber-900/80">
-                来源：{formatQualityDebtSource(qualityDebtDetails.source)} · {qualityDebtDetails.reason || "AI 审校发现了局部问题。"}
-                {` · 自动修复：${formatQualityDebtAttempts(qualityDebtDetails)}`}
+
+                {translateUi("来源：")}{formatQualityDebtSource(qualityDebtDetails.source)} · {qualityDebtDetails.reason || translateUi("AI 审校发现了局部问题。")}
+                {translateUi(" · 自动修复：{{value0}}", { value0: formatQualityDebtAttempts(qualityDebtDetails) })}
               </div>
-              {isDirty ? <div className="mt-1 text-xs font-medium">请先保存正文，再让 AI 重新审校确认。</div> : null}
+              {isDirty ? <div className="mt-1 text-xs font-medium">{translateUi("请先保存正文，再让 AI 重新审校确认。")}</div> : null}
             </div>
           </div>
           <Button
@@ -483,7 +486,8 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
             onClick={() => reviewMutation.mutate()}
           >
             {reviewMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            重新审校确认
+
+            {translateUi("重新审校确认")}
           </Button>
         </div>
       ) : null}

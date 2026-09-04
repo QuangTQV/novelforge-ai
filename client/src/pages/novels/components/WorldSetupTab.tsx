@@ -1,19 +1,21 @@
+import { useTranslation } from "react-i18next";
 import type { BasicTabProps } from "./NovelEditView.types";
 import NovelWorldManagerCard from "./NovelWorldManagerCard";
 import DirectorTakeoverEntryPanel from "./DirectorTakeoverEntryPanel";
 import { SectionBlock } from "./workspaceShell";
 
 export default function WorldSetupTab(props: BasicTabProps) {
+  const { t } = useTranslation("novelWorld");
   return (
     <div className="space-y-5">
       <DirectorTakeoverEntryPanel
-        title="让 AI 完成本书世界观"
-        description="先确定世界规则、势力和关键约束，再让角色、卷规划与章节生产围绕同一份世界观继续推进。"
+        title={t("worldSetupTab.directorTakeover.title")}
+        description={t("worldSetupTab.directorTakeover.description")}
         entry={props.directorTakeoverEntry}
       />
       <SectionBlock
-        title="世界观准备"
-        description="这里维护本书实际使用的世界观。生成、检查和确认世界观时，AI 会以这些资产为依据。"
+        title={t("worldSetupTab.section.title")}
+        description={t("worldSetupTab.section.description")}
       >
         <NovelWorldManagerCard
           view={props.novelWorldView}

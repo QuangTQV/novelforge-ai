@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { TaskKind, TaskStatus, UnifiedTaskStep } from "@ai-novel/shared/types/task";
@@ -258,9 +259,9 @@ export default function TaskCenterPage() {
     <div className="space-y-5">
       <WorkspaceHeader
         icon={ListChecks}
-        context="执行历史与状态"
-        title="运行记录"
-        description="查看创作、拆书、知识索引和图片任务的状态、错误与来源位置。继续、恢复和重试请回到对应工作页面。"
+        context={translateUi("执行历史与状态")}
+        title={translateUi("运行记录")}
+        description={translateUi("查看创作、拆书、知识索引和图片任务的状态、错误与来源位置。继续、恢复和重试请回到对应工作页面。")}
         actions={(
           <Button
             type="button"
@@ -269,7 +270,8 @@ export default function TaskCenterPage() {
             disabled={overviewQuery.isFetching || recoveryCandidatesQuery.isFetching || listQuery.isFetching}
           >
             <RefreshCw className={overviewQuery.isFetching || recoveryCandidatesQuery.isFetching || listQuery.isFetching ? "h-4 w-4 animate-spin" : "h-4 w-4"} aria-hidden="true" />
-            刷新记录
+
+            {translateUi("刷新记录")}
           </Button>
         )}
       />
@@ -278,36 +280,37 @@ export default function TaskCenterPage() {
         className="rounded-2xl border-transparent px-5 py-3 shadow-none"
         icon={overviewErrorMessage ? RefreshCw : hasMustHandleTask ? ShieldAlert : Activity}
         tone={overviewQuery.isLoading ? "info" : overviewErrorMessage ? "danger" : hasMustHandleTask ? "danger" : waitingActionCount > 0 ? "info" : qualityReminderCount > 0 ? "warning" : runningCount + queuedCount > 0 ? "info" : allRows.length > 0 ? "success" : "neutral"}
-        title={overviewQuery.isLoading ? "正在读取全局任务状态" : overviewErrorMessage ? "重新读取任务概览" : hasMustHandleTask ? "先查看必须处理的任务" : waitingActionCount > 0 ? "完成等待中的操作" : qualityReminderCount > 0 ? "查看质量提醒" : runningCount + queuedCount > 0 ? "关注正在推进的任务" : allRows.length > 0 ? "当前没有阻塞任务" : "任务会在执行后汇总到这里"}
+        title={overviewQuery.isLoading ? translateUi("正在读取全局任务状态") : overviewErrorMessage ? translateUi("重新读取任务概览") : hasMustHandleTask ? translateUi("先查看必须处理的任务") : waitingActionCount > 0 ? translateUi("完成等待中的操作") : qualityReminderCount > 0 ? translateUi("查看质量提醒") : runningCount + queuedCount > 0 ? translateUi("关注正在推进的任务") : allRows.length > 0 ? translateUi("当前没有阻塞任务") : translateUi("任务会在执行后汇总到这里")}
         description={overviewQuery.isLoading
-          ? "正在汇总执行、等待操作、失败和可恢复任务，请稍候。"
+          ? translateUi("正在汇总执行、等待操作、失败和可恢复任务，请稍候。")
           : overviewErrorMessage
-            ? `${overviewErrorMessage} 当前不会据此判断是否存在阻塞任务。`
+            ? translateUi("{{value0}} 当前不会据此判断是否存在阻塞任务。", { value0: overviewErrorMessage })
             : hasMustHandleTask
               ? recoveryCandidatesQuery.isLoading && !recommendedBlockingTask && failedTaskCount === 0
-                ? "正在定位可恢复任务；读取完成后会显示对应来源位置。"
-                : "阻塞状态可能影响对应来源流程；先查看原因和恢复位置，再回到来源页面处理。"
+                ? translateUi("正在定位可恢复任务；读取完成后会显示对应来源位置。")
+                : translateUi("阻塞状态可能影响对应来源流程；先查看原因和恢复位置，再回到来源页面处理。")
               : waitingActionCount > 0
-                ? "候选确认、章节批次继续等节点需要你的操作，但不代表任务发生故障。"
+                ? translateUi("候选确认、章节批次继续等节点需要你的操作，但不代表任务发生故障。")
                 : qualityReminderCount > 0
-                  ? "这些提醒不会阻止全书继续执行，可以按影响范围安排局部修复。"
+                  ? translateUi("这些提醒不会阻止全书继续执行，可以按影响范围安排局部修复。")
                   : runningCount + queuedCount > 0
-                    ? "系统会持续刷新进度，普通运行状态不需要手动干预。"
+                    ? translateUi("系统会持续刷新进度，普通运行状态不需要手动干预。")
                     : allRows.length > 0
-                      ? "已完成记录和质量提醒会保留在详情中，便于后续追溯。"
-                      : "从小说、拆书、知识库或图片工作区发起任务后，可在这里查看状态。"}
+                      ? translateUi("已完成记录和质量提醒会保留在详情中，便于后续追溯。")
+                      : translateUi("从小说、拆书、知识库或图片工作区发起任务后，可在这里查看状态。")}
         consequence={overviewErrorMessage
-          ? "只重新读取任务概览，不会恢复、重试或取消任务。"
+          ? translateUi("只重新读取任务概览，不会恢复、重试或取消任务。")
           : !overviewQuery.isLoading && hasRecommendedAction
             ? recommendedTask
-              ? "只定位到推荐任务，不会自动继续、重试或取消。"
+              ? translateUi("只定位到推荐任务，不会自动继续、重试或取消。")
               : shouldOpenFailedFilter
-                ? "只筛选失败任务，不会自动恢复、重试或取消任务。"
-                : "只重新读取恢复候选，不会自动执行恢复。"
+                ? translateUi("只筛选失败任务，不会自动恢复、重试或取消任务。")
+                : translateUi("只重新读取恢复候选，不会自动执行恢复。")
             : undefined}
         action={overviewErrorMessage ? (
           <Button type="button" size="sm" variant="outline" onClick={() => void overviewQuery.refetch()}>
-            重新读取
+
+            {translateUi("重新读取")}
           </Button>
         ) : !overviewQuery.isLoading && hasRecommendedAction ? (
           <Button
@@ -334,7 +337,7 @@ export default function TaskCenterPage() {
               });
             }}
           >
-            {shouldRetryRecoveryLookup ? "重新读取恢复任务" : hasMustHandleTask ? "查看需处理任务" : "查看推荐任务"}
+            {shouldRetryRecoveryLookup ? translateUi("重新读取恢复任务") : hasMustHandleTask ? translateUi("查看需处理任务") : translateUi("查看推荐任务")}
           </Button>
         ) : undefined}
       />
@@ -387,7 +390,7 @@ export default function TaskCenterPage() {
           dashboardView={selectedDirectorDashboardView}
           runtimeProjection={selectedDirectorRuntimeProjectionForDisplay}
           noticeSeverity={selectedTask ? getTaskNoticeSeverity(selectedTask) : "normal"}
-          noticeTitle={selectedTask ? getTaskNoticeTitle(selectedTask) : "任务提醒"}
+          noticeTitle={selectedTask ? getTaskNoticeTitle(selectedTask) : translateUi("任务提醒")}
           failureIsQualityReminder={selectedTaskHasQualityFailure}
           steps={selectedTaskSteps}
           milestones={selectedTask?.kind === "novel_workflow" && Array.isArray(selectedTaskMeta.milestones)

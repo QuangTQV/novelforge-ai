@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   AutoDirectorAction,
   AutoDirectorFollowUpDetail,
@@ -63,26 +64,26 @@ export function AutoDirectorFollowUpDetailPanel({
 
   return (
     <TaskQueueSection
-      title="跟进详情"
-      description="每个动作都会说明后果；跟进项会保持对应的导演任务身份，不与手动工作区任务混用。"
+      title={translateUi("跟进详情")}
+      description={translateUi("每个动作都会说明后果；跟进项会保持对应的导演任务身份，不与手动工作区任务混用。")}
       className="min-w-0 overflow-hidden"
     >
       <div className="space-y-4">
         {loading ? (
-          <WorkspaceStateNotice loading title="正在读取跟进详情" description="正在同步导演任务、检查点和最近校验结果。" />
+          <WorkspaceStateNotice loading title={translateUi("正在读取跟进详情")} description={translateUi("正在同步导演任务、检查点和最近校验结果。")} />
         ) : null}
 
         {errorMessage ? (
           <WorkspaceStateNotice
             tone="danger"
-            title="跟进详情读取失败"
+            title={translateUi("跟进详情读取失败")}
             description={errorMessage}
-            action={<Button size="sm" variant="outline" onClick={() => void onRetry()}>重新读取</Button>}
+            action={<Button size="sm" variant="outline" onClick={() => void onRetry()}>{translateUi("重新读取")}</Button>}
           />
         ) : null}
 
         {!loading && !errorMessage && (!detail || !selectedItem) ? (
-          <WorkspaceStateNotice title="请选择一个导演跟进项" description="选择后可查看阻塞范围、下一步和安全动作。" />
+          <WorkspaceStateNotice title={translateUi("请选择一个导演跟进项")} description={translateUi("选择后可查看阻塞范围、下一步和安全动作。")} />
         ) : null}
 
         {detail && selectedItem ? (
@@ -106,15 +107,15 @@ export function AutoDirectorFollowUpDetailPanel({
               <WorkspaceStateNotice
                 compact
                 tone={tone === "danger" ? "danger" : tone === "warning" ? "warning" : "info"}
-                title="风险说明"
+                title={translateUi("风险说明")}
                 description={detail.riskNote}
               />
             ) : null}
 
             <div className={`grid gap-2 text-sm text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-              <div>下一步建议：{detail.nextStepSuggestion ?? "查看任务详情后再继续。"}</div>
-              <div>检查点摘要：{detail.checkpointSummary ?? "暂无"}</div>
-              <div>当前模型：{detail.currentModel ?? "暂无"}</div>
+              <div>{translateUi("下一步建议：")}{detail.nextStepSuggestion ?? translateUi("查看任务详情后再继续。")}</div>
+              <div>{translateUi("检查点摘要：")}{detail.checkpointSummary ?? translateUi("暂无")}</div>
+              <div>{translateUi("当前模型：")}{detail.currentModel ?? translateUi("暂无")}</div>
             </div>
 
             {selectedItem.section === "needs_validation" ? (
@@ -122,23 +123,24 @@ export function AutoDirectorFollowUpDetailPanel({
                 <div className="flex items-start gap-2">
                   <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                   <div>
-                    <div className="font-medium">先校验任务和资产状态</div>
+                    <div className="font-medium">{translateUi("先校验任务和资产状态")}</div>
                     <div className="mt-1 text-xs">
-                      安全修复只处理状态对账，不会清除正文、重写规划、确认候选、切换模型或替你做创作选择。
+
+                      {translateUi("安全修复只处理状态对账，不会清除正文、重写规划、确认候选、切换模型或替你做创作选择。")}
                     </div>
                   </div>
                 </div>
                 {(detail.validationSummary?.blockingReasons.length ?? 0) > 0 ? (
                   <div className="space-y-1 text-xs">
                     {detail.validationSummary?.blockingReasons.map((reason) => (
-                      <div key={reason}>阻塞：{reason}</div>
+                      <div key={reason}>{translateUi("阻塞：")}{reason}</div>
                     ))}
                   </div>
                 ) : null}
                 {(detail.validationSummary?.warnings.length ?? 0) > 0 ? (
                   <div className="space-y-1 text-xs">
                     {detail.validationSummary?.warnings.map((warning) => (
-                      <div key={warning}>提示：{warning}</div>
+                      <div key={warning}>{translateUi("提示：")}{warning}</div>
                     ))}
                   </div>
                 ) : null}
@@ -151,30 +153,32 @@ export function AutoDirectorFollowUpDetailPanel({
                     onClick={() => void onRefreshValidation()}
                   >
                     <RefreshCw className="h-4 w-4" aria-hidden="true" />
-                    一键重新校验
+
+                    {translateUi("一键重新校验")}
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     disabled={actionLoading}
                     className={`${AUTO_DIRECTOR_MOBILE_CLASSES.fullWidthAction} border-warning/40 bg-warning/10 text-warning hover:bg-warning/15 hover:text-warning`}
-                    title="仅修复校验标记为低风险的状态、检查点、进度、恢复目标、自动执行对账、替代原因、审计和通知记录；不会清除正文、重写资产、重规划、确认候选、切换模型或生成内容。"
+                    title={translateUi("仅修复校验标记为低风险的状态、检查点、进度、恢复目标、自动执行对账、替代原因、审计和通知记录；不会清除正文、重写资产、重规划、确认候选、切换模型或生成内容。")}
                     onClick={() => void onSafeFix()}
                   >
                     <AlertTriangle className="h-4 w-4" aria-hidden="true" />
-                    一键安全修复
+
+                    {translateUi("一键安全修复")}
                   </Button>
                 </div>
               </div>
             ) : null}
 
             <div className="space-y-2">
-              <div className="text-sm font-medium">可执行动作</div>
+              <div className="text-sm font-medium">{translateUi("可执行动作")}</div>
               {detail.availableActions.map((action) => (
                 <TaskQueueActionRow
                   key={action.code}
                   title={action.label}
-                  consequence={`${getFollowUpActionConsequence(action)} 风险：${getFollowUpActionRiskDescription(action)}`}
+                  consequence={translateUi("{{value0}} 风险：{{value1}}", { value0: getFollowUpActionConsequence(action), value1: getFollowUpActionRiskDescription(action) })}
                   tone={getFollowUpActionTone(action)}
                   action={(
                     <Button
@@ -192,10 +196,10 @@ export function AutoDirectorFollowUpDetailPanel({
             </div>
 
             <div className="space-y-2">
-              <div className="text-sm font-medium">最近里程碑</div>
+              <div className="text-sm font-medium">{translateUi("最近里程碑")}</div>
               <div className="space-y-2">
                 {detail.milestones.length === 0 ? (
-                  <div className="text-sm text-muted-foreground">暂无里程碑</div>
+                  <div className="text-sm text-muted-foreground">{translateUi("暂无里程碑")}</div>
                 ) : detail.milestones.map((milestone) => (
                   <div key={`${milestone.at}:${milestone.label}`} className={`rounded-md border p-3 text-sm ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
                     <div className="font-medium">{milestone.label}</div>
@@ -209,14 +213,14 @@ export function AutoDirectorFollowUpDetailPanel({
             </div>
 
             <div className="space-y-2">
-              <div className="text-sm font-medium">通道触达</div>
+              <div className="text-sm font-medium">{translateUi("通道触达")}</div>
               <div className="space-y-2">
                 {(detail.channelDeliveries?.length ?? 0) === 0 ? (
-                  <div className="text-sm text-muted-foreground">暂无通道投递记录</div>
+                  <div className="text-sm text-muted-foreground">{translateUi("暂无通道投递记录")}</div>
                 ) : detail.channelDeliveries?.map((delivery) => (
                   <div key={`${delivery.channelType}:${delivery.eventType}`} className={`rounded-md border p-3 text-sm ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
                     <div className="flex flex-wrap items-center gap-2">
-                      <TaskQueueStatusBadge label={delivery.channelType === "dingtalk" ? "钉钉" : "企微"} tone="neutral" />
+                      <TaskQueueStatusBadge label={delivery.channelType === "dingtalk" ? translateUi("钉钉") : translateUi("企微")} tone="neutral" />
                       <TaskQueueStatusBadge
                         label={deliveryStatusLabels[delivery.status]}
                         tone={delivery.status === "delivered" ? "success" : delivery.status === "failed" ? "danger" : "info"}
@@ -224,7 +228,8 @@ export function AutoDirectorFollowUpDetailPanel({
                       <span className="text-xs text-muted-foreground">{eventTypeLabels[delivery.eventType]}</span>
                     </div>
                     <div className="mt-2 text-xs text-muted-foreground">
-                      目标：{delivery.target ?? "未记录"} | 响应码：{delivery.responseStatus ?? "未记录"} | 时间：{delivery.deliveredAt ? new Date(delivery.deliveredAt).toLocaleString() : "未送达"}
+
+                      {translateUi("目标：")}{delivery.target ?? translateUi("未记录")}  {translateUi("| 响应码：")}{delivery.responseStatus ?? translateUi("未记录")}  {translateUi("| 时间：")}{delivery.deliveredAt ? new Date(delivery.deliveredAt).toLocaleString() : translateUi("未送达")}
                     </div>
                   </div>
                 ))}

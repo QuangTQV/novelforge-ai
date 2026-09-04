@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   forceCenter,
   forceCollide,
@@ -91,7 +92,7 @@ export function buildRelationshipGraphModel(input: {
       target: relation.targetCharacterId,
       sourceName: relation.sourceCharacterName || characterById.get(relation.sourceCharacterId)?.name || "未知角色",
       targetName: relation.targetCharacterName || characterById.get(relation.targetCharacterId)?.name || "未知角色",
-      label: compactText(relation.dynamicLabel) || compactText(relation.surfaceRelation) || "关系",
+      label: compactText(relation.dynamicLabel) || compactText(relation.surfaceRelation) || translateUi("关系"),
       staticRelation: relation,
       dynamicStages: [],
       isDynamic: false,
@@ -120,7 +121,7 @@ export function buildRelationshipGraphModel(input: {
         target: stage.targetCharacterId,
         sourceName: stage.sourceCharacterName || characterById.get(stage.sourceCharacterId)?.name || "未知角色",
         targetName: stage.targetCharacterName || characterById.get(stage.targetCharacterId)?.name || "未知角色",
-        label: compactText(stage.stageLabel) || "关系阶段",
+        label: compactText(stage.stageLabel) || translateUi("关系阶段"),
         dynamicStages: [stage],
         isDynamic: true,
         isHighTension: stageTension,
@@ -142,7 +143,7 @@ export function buildRelationshipGraphModel(input: {
           target: character.id,
           sourceName: protagonist.name,
           targetName: character.name,
-          label: compactText(character.relationToProtagonist) || "与主角关系",
+          label: compactText(character.relationToProtagonist) || translateUi("与主角关系"),
           dynamicStages: [],
           isDynamic: false,
           isHighTension: /敌|压|冲突|背叛|利用|怀疑|监视|威胁|秘密|隐瞒/.test(character.relationToProtagonist ?? ""),

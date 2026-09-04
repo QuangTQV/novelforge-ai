@@ -1,0 +1,110 @@
+{
+  "setupNotice": {
+    "title": "Hoàn tất cấu hình nhanh là có thể khởi động sáng tác AI",
+    "defaultReason": "Chọn một mô hình văn bản, hệ thống sẽ tự chuẩn bị định tuyến tác vụ cho khâu lập kế hoạch, viết chính văn, soát bản và sửa lỗi.",
+    "action": "Cấu hình nhanh"
+  },
+  "journeyStrip": {
+    "title": "Hướng dẫn cuốn sách đầu tiên",
+    "stepProgress": "Hoàn thành {{completed}}/{{total}} bước",
+    "completedAria": "Đã hoàn thành {{count}} bước"
+  },
+  "tip": {
+    "next": "Tiếp theo: {{next}}",
+    "dismiss": "Đóng gợi ý này"
+  },
+  "quickSetup": {
+    "title": "Cho môi trường sáng tác AI chạy trước đã",
+    "description": "Chỉ cần cấu hình một mô hình văn bản, hệ thống sẽ tự chuẩn bị định tuyến tác vụ cho lập kế hoạch, chính văn, soát bản và sửa lỗi.",
+    "reload": "Tải lại",
+    "steps": {
+      "chooseProvider": "Chọn nhà cung cấp",
+      "connectModel": "Kết nối mô hình",
+      "detect": "Kiểm tra hoàn tất"
+    },
+    "checkingEnv": "Đang kiểm tra môi trường sáng tác",
+    "readError": {
+      "title": "Tạm thời không đọc được cấu hình mô hình",
+      "description": "Sau khi tải lại, hệ thống sẽ tiếp tục xác định xem đã có thể bắt đầu sáng tác chưa."
+    },
+    "ready": {
+      "title": "Môi trường sáng tác đã sẵn sàng",
+      "summary": "{{provider}} · {{model}}, đã sẵn sàng {{count}} nhóm tác vụ lõi.",
+      "continue": "Tiếp tục sáng tác"
+    },
+    "providerDesc": {
+      "deepseek": "Đề xuất DeepSeek V4 Flash, cân bằng giữa chất lượng truyện dài tiếng Trung và tốc độ phản hồi",
+      "ollama": "Dùng mô hình trên máy, không cần API Key",
+      "openai": "Phù hợp cho lập kế hoạch, chính văn và tác vụ có cấu trúc",
+      "configured": "Đã có cấu hình, có thể kiểm tra trực tiếp và đặt làm mặc định toàn cục",
+      "default": "Sau khi cấu hình có thể dùng cho toàn bộ chuỗi sản xuất tiểu thuyết"
+    },
+    "footer": {
+      "fillConnection": "Điền thông tin kết nối",
+      "backToSelect": "Quay lại lựa chọn",
+      "detectAndComplete": "Kiểm tra và hoàn tất cấu hình",
+      "viewGuide": "Xem hướng dẫn sáng tác",
+      "startFirstNovel": "Bắt đầu cuốn tiểu thuyết đầu tiên bằng một câu",
+      "viewAdvanced": "Xem cài đặt nâng cao",
+      "startCreating": "Bắt đầu sáng tác",
+      "editConfig": "Sửa cấu hình"
+    },
+    "step1": {
+      "titleAll": "Chọn một nhà cung cấp mô hình tích hợp sẵn",
+      "titleRecommended": "Bắt đầu từ phương án đề xuất",
+      "hintAll": "Chọn một nhà cung cấp rồi điền thông tin kết nối.",
+      "hintRecommended": "Chỉ cần cấu hình một mô hình văn bản là có thể bắt đầu; khi cần hãy chọn nhà cung cấp khác.",
+      "viewAllProviders": "Xem tất cả nhà cung cấp tích hợp sẵn",
+      "viewAllProvidersHint": "Chọn nhà cung cấp mà bạn đã có tài khoản, rồi tiếp tục điền thông tin kết nối.",
+      "addCustom": "Thêm nhà cung cấp bên thứ ba",
+      "addCustomHint": "Thêm một cấu hình nhà cung cấp độc lập, phù hợp với dịch vụ trung chuyển, cổng nội bộ hoặc giao diện tương thích OpenAI.",
+      "backToRecommended": "Quay lại phương án đề xuất",
+      "recommendedModel": "Mô hình đề xuất: {{model}}"
+    },
+    "badge": {
+      "selected": "Đã chọn",
+      "configured": "Đã có cấu hình"
+    },
+    "step2": {
+      "connectTitle": "Kết nối {{name}}",
+      "providerFallback": "nhà cung cấp mô hình",
+      "apiKeyNote": "API Key chỉ được lưu vào kho khóa của máy hoặc máy chủ, không hiển thị trong kết quả hoàn tất.",
+      "customNote": "Tên nhà cung cấp, địa chỉ API và mô hình sẽ được lưu thành cấu hình độc lập, không ghi đè lên nhà cung cấp tích hợp sẵn.",
+      "providerName": "Tên nhà cung cấp",
+      "providerNamePlaceholder": "Ví dụ: Cổng mô hình của tôi",
+      "optional": "(tùy chọn)",
+      "apiKeyPlaceholderSaved": "Để trống để tiếp tục dùng Key đã lưu",
+      "apiKeyPlaceholderRequired": "Nhập API Key",
+      "apiKeyPlaceholderLocal": "Giao diện nội bộ có thể để trống",
+      "baseUrl": "Địa chỉ API",
+      "fetchModels": "Lấy danh sách mô hình",
+      "textModel": "Mô hình văn bản",
+      "modelPlaceholder": "Chọn mô hình phía trên, hoặc tự nhập tên mô hình",
+      "footnote": "Sau khi hoàn tất, mô hình này sẽ là giá trị mặc định ban đầu cho các tác vụ lõi như lập kế hoạch, chính văn, kiểm duyệt, sửa lỗi, lập lại kế hoạch và tóm tắt."
+    },
+    "customModels": {
+      "found": "Đã tìm thấy {{count}} mô hình khả dụng.",
+      "none": "Giao diện không trả về danh sách mô hình, bạn có thể tự điền.",
+      "failed": "Lấy danh sách mô hình thất bại, bạn có thể tự điền tên mô hình."
+    },
+    "step3": {
+      "detecting": "Đang kiểm tra văn bản thường và đầu ra có cấu trúc",
+      "detectingHint": "Sau khi kiểm tra đạt, hệ thống sẽ tự chuẩn bị toàn bộ tác vụ sáng tác lõi, không cần cấu hình định tuyến từng mục.",
+      "successTitle": "Đã hoàn tất cấu hình môi trường sáng tác",
+      "successDesc": "{{model}} đã sẵn sàng cho toàn bộ chuỗi sản xuất tiểu thuyết.",
+      "failTitle": "Kiểm tra mô hình chưa đạt",
+      "failDesc": "Vui lòng kiểm tra lại API Key, địa chỉ và tên mô hình rồi thử lại."
+    },
+    "handoff": {
+      "title": "Bắt đầu cuốn tiểu thuyết đầu tiên",
+      "configureMore": "Cấu hình thêm mô hình",
+      "heading": "Bắt đầu từ một câu chuyện bạn muốn viết",
+      "body": "Hãy nói cho AI biết bạn muốn viết gì, AI sẽ đưa ra các hướng để chọn; sau khi chốt sẽ tiếp tục chuẩn bị câu chuyện, thế giới, nhân vật và chương đầu.",
+      "steps": {
+        "idea": "Nói ý tưởng",
+        "direction": "Chọn hướng",
+        "firstChapter": "Đọc chương đầu"
+      }
+    }
+  }
+}

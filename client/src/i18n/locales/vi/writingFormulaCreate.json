@@ -1,0 +1,123 @@
+{
+  "recommended": "Đề xuất",
+  "submitNotice": "Hệ thống sẽ gửi tác vụ nền với chiến lược “{{preset}}”. Khi hoàn tất, lối viết sẽ tự động được lưu; bạn không cần bấm lưu lần nữa.",
+  "preset": {
+    "imitate": {
+      "label": "Bám sát văn bản gốc",
+      "summary": "Giữ nhiều dấu ấn và thói quen diễn đạt, phù hợp luyện theo phong cách ngắn hạn."
+    },
+    "balanced": {
+      "label": "Giữ cảm giác đọc chính",
+      "summary": "Giữ nhịp đọc và tiến triển, giảm dấu ấn quá mạnh, phù hợp đa số dự án."
+    },
+    "transfer": {
+      "label": "Chỉ chuyển khung có thể dùng lại",
+      "summary": "Ưu tiên nhịp, cấu trúc và logic đối thoại có thể tái sử dụng cho dự án dài."
+    }
+  },
+  "source": {
+    "directText": {
+      "label": "Dán văn bản trực tiếp",
+      "summary": "Gửi đoạn hoặc chương mẫu cho tác vụ trích xuất phía máy chủ."
+    },
+    "knowledge": {
+      "label": "Văn bản trong thư viện kiến thức",
+      "summary": "Chọn phiên bản hoạt động; hệ thống đóng băng ảnh chụp toàn văn rồi học từ mẫu đại diện."
+    },
+    "analysis": {
+      "label": "Kết quả phân tích sách",
+      "summary": "Dùng trực tiếp kết quả phân tích văn phong và kỹ thuật để tạo lối viết."
+    }
+  },
+  "processing": {
+    "sample": {
+      "label": "Lấy mẫu thông minh",
+      "summary": "Lấy mẫu đại diện ở đầu, giữa, cuối và đoạn kết; phù hợp văn bản dài, ổn định hơn."
+    },
+    "full": {
+      "label": "Trích xuất toàn văn",
+      "summary": "Đưa toàn bộ phiên bản hoạt động vào model, phù hợp tài liệu ngắn; tài liệu dài có thể chậm hoặc quá giới hạn ngữ cảnh."
+    }
+  },
+  "task": {
+    "none": "Chưa có tác vụ",
+    "queued": "Đang xếp hàng",
+    "running": "Đang xử lý",
+    "succeeded": "Đã hoàn tất",
+    "failed": "Thất bại",
+    "cancelled": "Đã hủy",
+    "waitingApproval": "Chờ duyệt"
+  },
+  "chars": "{{count}} ký tự",
+  "knowledge": {
+    "enabled": "Có thể dùng",
+    "disabled": "Đã tắt",
+    "archived": "Đã lưu trữ"
+  },
+  "ui": {
+    "title": "Bắt đầu từ một cảm giác đọc",
+    "description": "Chọn điểm bắt đầu bạn đang có. Hệ thống sẽ giúp bạn tạo một lối viết có thể thử ngay; chi tiết có thể chỉnh bất cứ lúc nào.",
+    "tabs": {
+      "template": "Bắt đầu bằng mẫu",
+      "brief": "Nói một ý tưởng",
+      "material": "Học từ tư liệu"
+    },
+    "templateHint": "Nếu chưa biết bắt đầu từ đâu, hãy chọn một công thức gần với mong muốn. Sau khi tạo, bạn có thể đổi thể loại, điều chỉnh nhịp rồi thử viết để kiểm tra cảm giác đọc.",
+    "templateBadge": "Mẫu",
+    "suitable": "Phù hợp: {{genres}}",
+    "creating": "Đang tạo...",
+    "createBased": "Tạo dựa trên mẫu này",
+    "briefHint": "Chỉ cần nói rõ cảm giác bạn muốn độc giả nhận được, AI sẽ dựng bản đầu tiên để thử viết; khi quen với quy tắc, bạn cũng có thể bắt đầu từ trang trắng.",
+    "blankTitle": "Tự bắt đầu từ trang trắng",
+    "blankDescription": "Phù hợp khi bạn đã biết muốn duy trì kiểu công thức nào và chỉ muốn tạo một khung trống trước.",
+    "manualPlaceholder": "Ví dụ: đô thị xung đột mạnh, tiến triển nhanh",
+    "createBlank": "Tạo công thức trống",
+    "aiTitle": "Để AI dựng trước một bộ",
+    "aiDescription": "Phù hợp khi bạn mới biết cảm giác muốn viết nhưng chưa muốn tự điền các trường quy tắc.",
+    "nameOptional": "Tên công thức (không bắt buộc)",
+    "categoryOptional": "Phân loại (không bắt buộc)",
+    "briefPlaceholder": "Ví dụ: tiến triển nhanh, xung đột dày, đối thoại trực tiếp, cảm xúc không kéo dài, phù hợp truyện đô thị và triển khai nhiệt huyết.",
+    "generating": "AI đang tạo...",
+    "generateFormula": "AI tạo một lối viết",
+    "extractHint": "Tạo lối viết từ tư liệu. Văn bản và nguyên văn thư viện sẽ đi vào tác vụ trích xuất phía máy chủ; kết quả phân tích sách sẽ dùng trực tiếp phân tích văn phong và kỹ thuật để tạo công thức.",
+    "name": "Tên lối viết",
+    "category": "Phân loại (không bắt buộc)",
+    "sourceTextPlaceholder": "Dán văn bản tham khảo bạn muốn trích xuất cảm giác đọc. Nên cung cấp ít nhất một cảnh hoàn chỉnh.",
+    "searchKnowledge": "Tìm tiêu đề tài liệu hoặc tên tệp trong thư viện kiến thức",
+    "loadingKnowledge": "Đang tìm tài liệu thư viện kiến thức...",
+    "emptyKnowledge": "Không tìm thấy tài liệu thư viện kiến thức khả dụng. Hãy tải văn bản lên thư viện trước rồi quay lại tạo công thức.",
+    "selected": "Đã chọn",
+    "activeVersion": "Phiên bản hoạt động v{{version}} · {{versions}} phiên bản · {{analyses}} kết quả phân tích sách",
+    "processingTitle": "Cách xử lý văn bản gốc",
+    "snapshot": "Ảnh chụp nguồn {{chars}}",
+    "reading": "Đang đọc phiên bản hoạt động của tài liệu đã chọn...",
+    "noActiveVersion": "Tài liệu đã chọn không có phiên bản hoạt động, không thể gửi.",
+    "emptyContent": "Nội dung phiên bản hoạt động trống, không thể gửi.",
+    "selectKnowledge": "Chọn một tài liệu trong thư viện, hệ thống sẽ đọc toàn văn phiên bản hoạt động và đóng băng ảnh chụp khi gửi tác vụ.",
+    "searchAnalysis": "Tìm tiêu đề phân tích sách hoặc tài liệu nguồn",
+    "loadingAnalysis": "Đang tìm kết quả phân tích sách...",
+    "emptyAnalysis": "Không tìm thấy kết quả phân tích sách khả dụng. Sau khi phân tích xong, bạn có thể tạo công thức trực tiếp tại đây.",
+    "canGenerate": "Có thể tạo",
+    "analysisMeta": "Phiên bản nguồn v{{version}} · {{summary}}",
+    "analysisFallback": "Kết quả phân tích sách có thể dùng để tạo công thức",
+    "sampleNotice": "Tài sản công thức vẫn giữ bản xem trước nguồn đầy đủ; model chỉ đọc mẫu đại diện để tránh toàn văn dài vượt quá khả năng xử lý.",
+    "fullNotice": "Trích xuất toàn văn sẽ gửi toàn bộ phiên bản hoạt động cho model. Với văn bản dài, nên dùng lấy mẫu thông minh.",
+    "analysisTitle": "Tạo từ kết quả phân tích sách",
+    "analysisDescription": "Luồng này đọc trực tiếp các mục văn phong và kỹ thuật trong kết quả phân tích sách; sau khi tạo sẽ mở ngay trình chỉnh sửa công thức.",
+    "analysisSelected": "Chọn một kết quả phân tích sách, hệ thống sẽ dùng phân tích văn phong và kỹ thuật để tạo công thức mà không tạo tác vụ nền.",
+    "keepTitle": "Chiến lược giữ lại",
+    "keepDescription": "Quyết định mức độ dấu ấn nguyên bản cần giữ; hệ thống sẽ tự động tạo và lưu công thức theo chiến lược này.",
+    "current": "Đang dùng",
+    "backgroundTask": "Tác vụ nền",
+    "taskTitle": "Tiêu đề tác vụ: {{title}}",
+    "stage": "Giai đoạn thực thi: {{stage}}",
+    "progress": "Tiến độ tác vụ: {{progress}}%",
+    "failure": "Nguyên nhân lỗi: {{reason}}",
+    "taskCenter": "Mở trung tâm tác vụ",
+    "afterSubmit": "Sau khi gửi, hệ thống sẽ trích xuất, áp dụng chiến lược giữ lại và tự động lưu công thức. Bạn có thể đóng hộp thoại; khi hoàn tất kết quả sẽ tự động mở.",
+    "creatingFormula": "Đang tạo...",
+    "submitting": "Đang gửi tác vụ...",
+    "taskActive": "Tác vụ nền đang chạy",
+    "sourceVersion": "Phiên bản nguồn v{{version}} · {{chars}}"
+  }
+}

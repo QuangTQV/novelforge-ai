@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 export type AssetLibraryTone = "neutral" | "info" | "success" | "warning" | "danger";
@@ -21,8 +22,9 @@ const toneClass: Record<AssetLibraryTone, string> = {
 };
 
 export default function AssetLibraryStatusGrid(props: { items: AssetLibraryStatusItem[] }) {
+  const { t } = useTranslation("components");
   return (
-    <section aria-label="资产状态" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <section aria-label={t("assetLibrary.statusGrid.ariaLabel")} className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       {props.items.map((item) => {
         const Icon = item.icon;
         return (

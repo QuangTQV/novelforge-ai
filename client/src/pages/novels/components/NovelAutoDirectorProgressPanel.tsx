@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 ﻿import type {
   NovelWorkflowMilestone,
   NovelWorkflowMilestoneType,
@@ -52,12 +53,12 @@ type DirectorStepDefinition = {
 };
 
 const DIRECTOR_EXECUTION_STEPS: DirectorStepDefinition[] = [
-  { key: "novel_create", label: "创建项目" },
-  { key: "book_contract", label: "Book Contract + 故事宏观规划" },
-  { key: "character_setup", label: "角色准备" },
-  { key: "volume_strategy", label: "卷战略 + 卷骨架" },
-  { key: "beat_sheet", label: "第 1 卷节奏板 + 章节列表" },
-  { key: "chapter_detail_bundle", label: "章节批量细化" },
+  { key: "novel_create", label: translateUi("创建项目") },
+  { key: "book_contract", label: translateUi("Book Contract + 故事宏观规划") },
+  { key: "character_setup", label: translateUi("角色准备") },
+  { key: "volume_strategy", label: translateUi("卷战略 + 卷骨架") },
+  { key: "beat_sheet", label: translateUi("第 1 卷节奏板 + 章节列表") },
+  { key: "chapter_detail_bundle", label: translateUi("章节批量细化") },
 ];
 
 const DIRECTOR_CANDIDATE_SETUP_STEP_KEYS = new Set<string>(
@@ -337,7 +338,7 @@ export default function NovelAutoDirectorProgressPanel({
     ? {
       summary: fallbackError?.trim() ?? "",
       route: null,
-      label: "快速修复章节标题",
+      label: translateUi("快速修复章节标题"),
     }
     : null;
   const rawChapterTitleWarning = taskChapterTitleWarning ?? fallbackChapterTitleWarning;
@@ -407,7 +408,7 @@ export default function NovelAutoDirectorProgressPanel({
   const resolveDashboardAction = (dashboardAction: DirectorDashboardAction) => {
     if (dashboardAction.type === "confirm_and_continue" && onConfirmAndContinue) {
       return {
-        label: isConfirmingAndContinuing ? "继续中..." : dashboardAction.label,
+        label: isConfirmingAndContinuing ? translateUi("继续中...") : dashboardAction.label,
         onClick: onConfirmAndContinue,
         variant: "default" as const,
         disabled: isConfirmingAndContinuing,
@@ -416,7 +417,7 @@ export default function NovelAutoDirectorProgressPanel({
     if (dashboardAction.type === "background_continue" || dashboardAction.type === "open_task_center") return null;
     if ((dashboardAction.type === "resume_from_checkpoint" || dashboardAction.type === "retry") && onConfirmAndContinue) {
       return {
-        label: isConfirmingAndContinuing ? "正在恢复..." : (isHighMemoryConflict ? "从检查点重新尝试" : dashboardAction.label),
+        label: isConfirmingAndContinuing ? translateUi("正在恢复...") : (isHighMemoryConflict ? translateUi("从检查点重新尝试") : dashboardAction.label),
         onClick: onConfirmAndContinue,
         variant: "default" as const,
         disabled: isConfirmingAndContinuing,
@@ -436,7 +437,7 @@ export default function NovelAutoDirectorProgressPanel({
     && onConfirmAndContinue
     && (visualMode === "execution_failed" || task?.pendingManualRecovery)
     ? {
-        label: isConfirmingAndContinuing ? "重试中..." : quickRetryLabel,
+        label: isConfirmingAndContinuing ? translateUi("重试中...") : quickRetryLabel,
         onClick: onConfirmAndContinue,
         variant: "default" as const,
         disabled: isConfirmingAndContinuing,
@@ -451,12 +452,12 @@ export default function NovelAutoDirectorProgressPanel({
       <AITakeoverContainer
         mode={containerMode}
         title={visualMode === "execution_failed"
-          ? (candidateSetupFlow ? "\u5019\u9009\u65b9\u6848\u751f\u6210\u5931\u8d25" : "\u5bfc\u6f14\u6267\u884c\u5931\u8d25")
+          ? (candidateSetupFlow ? translateUi("候选方案生成失败") : translateUi("导演执行失败"))
           : dashboardViewForDisplay?.mode === "recovering"
-            ? `\u300a${taskTitle}\u300b\u7b49\u5f85\u6062\u590d`
+            ? translateUi("《{{title}}》等待恢复", { title: taskTitle })
             : candidateSetupFlow
-              ? "\u6b63\u5728\u751f\u6210\u5bfc\u6f14\u5019\u9009\u65b9\u6848"
-              : `\u300a${taskTitle}\u300b\u6b63\u5728\u81ea\u52a8\u5bfc\u6f14`}
+              ? translateUi("正在生成导演候选方案")
+              : translateUi("《{{title}}》正在自动导演", { title: taskTitle })}
         description={description}
         progress={displayProgress}
         currentAction={currentAction}
@@ -475,7 +476,7 @@ export default function NovelAutoDirectorProgressPanel({
 
         {activityTags.length > 0 ? (
           <div className="mt-4">
-            <div className="text-xs font-medium text-muted-foreground">{"\u540e\u53f0\u9644\u5c5e\u5206\u6790"}</div>
+            <div className="text-xs font-medium text-muted-foreground">{translateUi("后台附属分析")}</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {activityTags.map((tag) => (
                 <Badge key={tag} variant="secondary">{tag}</Badge>
@@ -487,8 +488,8 @@ export default function NovelAutoDirectorProgressPanel({
         <details className="group mt-4 overflow-hidden rounded-2xl border border-border/70 bg-muted/[0.12]">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3.5">
             <div>
-              <div className="text-sm font-medium text-foreground">运行详情</div>
-              <div className="mt-0.5 text-xs text-muted-foreground">按需查看实时指标、事件记录、写法和 AI 用量</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("运行详情")}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">{translateUi("按需查看实时指标、事件记录、写法和 AI 用量")}</div>
             </div>
             <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition group-open:rotate-180" />
           </summary>
@@ -502,16 +503,16 @@ export default function NovelAutoDirectorProgressPanel({
         <div className="mt-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <div className="text-sm font-medium text-foreground">{"\u5168\u90e8\u8fdb\u5c55"}</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("全部进展")}</div>
               <div className="mt-1 text-xs text-muted-foreground">
-                {historyEvents.length > 0 ? `\u663e\u793a ${historyEvents.length} \u6761\u6700\u8fd1\u8fdb\u5c55` : "\u6b63\u5728\u8bfb\u53d6\u8fdb\u5c55\u8bb0\u5f55"}
+                {historyEvents.length > 0 ? translateUi("显示 {{count}} 条最近进展", { count: historyEvents.length }) : translateUi("正在读取进展记录")}
               </div>
             </div>
           </div>
 
           {snapshotQuery.isLoading ? (
             <div className="mt-3 text-sm text-muted-foreground">
-              {"\u6b63\u5728\u8bfb\u53d6\u8fdb\u5c55\u8bb0\u5f55\u3002"}
+              {translateUi("正在读取进展记录。")}
             </div>
           ) : historyEvents.length > 0 ? (
             <div className="mt-3 max-h-80 space-y-3 overflow-y-auto border-l border-border/60 pl-3 pr-1">
@@ -519,27 +520,27 @@ export default function NovelAutoDirectorProgressPanel({
                 <div key={event.eventId} className="text-sm">
                   <div className="font-medium text-foreground">{event.summary}</div>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                    <span>{"\u8bb0\u5f55\u65f6\u95f4\uff1a"}{formatDate(event.occurredAt)}</span>
-                    {event.nodeKey ? <span>{"\u6b65\u9aa4\uff1a"}{event.nodeKey}</span> : null}
-                    {event.artifactType ? <span>{"\u4ea7\u7269\uff1a"}{event.artifactType}</span> : null}
+                    <span>{translateUi("记录时间：")}{formatDate(event.occurredAt)}</span>
+                    {event.nodeKey ? <span>{translateUi("步骤：")}{event.nodeKey}</span> : null}
+                    {event.artifactType ? <span>{translateUi("产物：")}{event.artifactType}</span> : null}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="mt-3 text-sm text-muted-foreground">
-              {"\u4efb\u52a1\u8fd0\u884c\u540e\u4f1a\u5728\u8fd9\u91cc\u5199\u5165\u8fdb\u5c55\u8bb0\u5f55\u3002"}
+              {translateUi("任务运行后会在这里写入进展记录。")}
             </div>
           )}
         </div>
 
         {styleSeed ? (
           <div className="mt-5">
-            <div className="text-sm font-medium text-foreground">当前命中写法</div>
+            <div className="text-sm font-medium text-foreground">{translateUi("当前命中写法")}</div>
             <div className="mt-2 text-sm text-foreground">{styleSeed.title}</div>
             {styleSeed.summaryLines.length > 0 ? (
               <div className="mt-3 space-y-2">
-                <div className="text-xs font-medium text-muted-foreground">本阶段仅生效的写法摘要</div>
+                <div className="text-xs font-medium text-muted-foreground">{translateUi("本阶段仅生效的写法摘要")}</div>
                 {styleSeed.summaryLines.map((line) => (
                   <div key={line} className="text-xs leading-6 text-muted-foreground">
                     {line}
@@ -553,21 +554,21 @@ export default function NovelAutoDirectorProgressPanel({
         {tokenUsage ? (
           <div className="mt-4 grid gap-3 md:grid-cols-4">
             <div className="rounded-lg bg-muted/15 p-3">
-              <div className="text-xs text-muted-foreground">累计调用</div>
+              <div className="text-xs text-muted-foreground">{translateUi("累计调用")}</div>
               <div className="mt-1 text-sm font-medium text-foreground">{formatTokenCount(tokenUsage.llmCallCount)}</div>
             </div>
             <div className="rounded-lg bg-muted/15 p-3">
-              <div className="text-xs text-muted-foreground">输入 Tokens</div>
+              <div className="text-xs text-muted-foreground">{translateUi("输入 Tokens")}</div>
               <div className="mt-1 text-sm font-medium text-foreground">{formatTokenCount(tokenUsage.promptTokens)}</div>
             </div>
             <div className="rounded-lg bg-muted/15 p-3">
-              <div className="text-xs text-muted-foreground">输出 Tokens</div>
+              <div className="text-xs text-muted-foreground">{translateUi("输出 Tokens")}</div>
               <div className="mt-1 text-sm font-medium text-foreground">{formatTokenCount(tokenUsage.completionTokens)}</div>
             </div>
             <div className="rounded-lg bg-muted/15 p-3">
-              <div className="text-xs text-muted-foreground">累计总 Tokens</div>
+              <div className="text-xs text-muted-foreground">{translateUi("累计总 Tokens")}</div>
               <div className="mt-1 text-sm font-medium text-foreground">{formatTokenCount(tokenUsage.totalTokens)}</div>
-              <div className="mt-1 text-[11px] text-muted-foreground">最近记录：{formatDate(tokenUsage.lastRecordedAt)}</div>
+              <div className="mt-1 text-[11px] text-muted-foreground">{translateUi("最近记录：")}{formatDate(tokenUsage.lastRecordedAt)}</div>
             </div>
           </div>
         ) : null}
@@ -576,7 +577,7 @@ export default function NovelAutoDirectorProgressPanel({
 
         {chapterTitleWarning ? (
           <div className="mt-4 rounded-xl border border-amber-300/60 bg-amber-50/80 p-4 text-sm text-amber-950">
-            <div className="font-medium">当前提醒</div>
+            <div className="font-medium">{translateUi("当前提醒")}</div>
             <div className="mt-1">{chapterTitleWarning.summary}</div>
             <div className="mt-3 flex flex-wrap gap-2">
               {task && chapterTitleWarning ? (
@@ -589,7 +590,7 @@ export default function NovelAutoDirectorProgressPanel({
                   disabled={chapterTitleRepairMutation.isPending}
                 >
                   {chapterTitleRepairMutation.isPending && chapterTitleRepairMutation.pendingTaskId === task.id
-                    ? "AI 修复中..."
+                    ? translateUi("AI 修复中...")
                     : chapterTitleWarning.label}
                 </Button>
               ) : null}
@@ -597,15 +598,16 @@ export default function NovelAutoDirectorProgressPanel({
           </div>
         ) : visualMode === "execution_failed" ? (
           <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
-            <div className="font-medium">失败摘要</div>
+            <div className="font-medium">{translateUi("失败摘要")}</div>
             <div className="mt-1">{failureMessage}</div>
             {isHighMemoryConflict ? (
               <div className="mt-3 rounded-lg border border-destructive/20 bg-background/60 p-3 text-xs leading-5 text-destructive/90">
-                这是一项可恢复的资源冲突，已完成的设定和章节规划不会丢失。资源释放后可从当前安全检查点继续，不需要重新开始。
+
+                {translateUi("这是一项可恢复的资源冲突，已完成的设定和章节规划不会丢失。资源释放后可从当前安全检查点继续，不需要重新开始。")}
               </div>
             ) : null}
             {task?.recoveryHint ? (
-              <div className="mt-2 text-xs text-destructive/80">恢复建议：{task.recoveryHint}</div>
+              <div className="mt-2 text-xs text-destructive/80">{translateUi("恢复建议：")}{task.recoveryHint}</div>
             ) : null}
             {isHighMemoryConflict && onConfirmAndContinue ? (
               <div className="mt-3 flex flex-wrap gap-2">
@@ -615,7 +617,7 @@ export default function NovelAutoDirectorProgressPanel({
                   onClick={onConfirmAndContinue}
                   disabled={isConfirmingAndContinuing}
                 >
-                  {isConfirmingAndContinuing ? "正在恢复..." : "从检查点重新尝试"}
+                  {isConfirmingAndContinuing ? translateUi("正在恢复...") : translateUi("从检查点重新尝试")}
                 </Button>
               </div>
             ) : null}
@@ -626,8 +628,8 @@ export default function NovelAutoDirectorProgressPanel({
       <details className="group rounded-2xl border border-border/70 bg-background">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5">
           <div>
-            <div className="text-sm font-medium text-foreground">里程碑历史</div>
-            <div className="mt-0.5 text-xs text-muted-foreground">查看可恢复检查点与完成记录</div>
+            <div className="text-sm font-medium text-foreground">{translateUi("里程碑历史")}</div>
+            <div className="mt-0.5 text-xs text-muted-foreground">{translateUi("查看可恢复检查点与完成记录")}</div>
           </div>
           <ChevronDown className="h-4 w-4 text-muted-foreground transition group-open:rotate-180" />
         </summary>
@@ -641,13 +643,14 @@ export default function NovelAutoDirectorProgressPanel({
                 <div key={`${item.checkpointType}:${item.createdAt}`} className="text-sm">
                   <div className="font-medium text-foreground">{formatCheckpoint(item.checkpointType, task)}</div>
                   <div className="mt-1 text-sm text-muted-foreground">{item.summary}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">记录时间：{formatDate(item.createdAt)}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{translateUi("记录时间：")}{formatDate(item.createdAt)}</div>
                 </div>
               ))}
           </div>
         ) : (
           <div className="mt-3 text-sm text-muted-foreground">
-            任务已创建，正在等待第一个稳定里程碑写入。
+
+            {translateUi("任务已创建，正在等待第一个稳定里程碑写入。")}
           </div>
         )}
         </div>

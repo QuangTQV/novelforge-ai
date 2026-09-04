@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -37,12 +38,12 @@ const SOURCE_LABELS: Record<ComicSourceType, string> = {
 };
 
 const STYLE_PRESETS = [
-  { value: "webtoon_color", label: "彩色韩漫" },
-  { value: "bl_manga", label: "彩色少女漫" },
-  { value: "shounen_bw", label: "黑白少年漫" },
-  { value: "ink_traditional", label: "水墨国风" },
-  { value: "chibi", label: "Q 版萌漫" },
-  { value: "realistic", label: "写实风格" },
+  { value: "webtoon_color", label: translateUi("彩色韩漫") },
+  { value: "bl_manga", label: translateUi("彩色少女漫") },
+  { value: "shounen_bw", label: translateUi("黑白少年漫") },
+  { value: "ink_traditional", label: translateUi("水墨国风") },
+  { value: "chibi", label: translateUi("Q 版萌漫") },
+  { value: "realistic", label: translateUi("写实风格") },
 ];
 
 export interface ComicFormatDef {
@@ -58,7 +59,7 @@ export interface ComicFormatDef {
 export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "webtoon",
-    label: "条漫",
+    label: translateUi("条漫"),
     desc: "竖向长格，逐格下滑阅读，韩漫/手机主流形态",
     tag: "最流行",
     imageSize: "1024x1536",
@@ -75,7 +76,7 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   },
   {
     value: "4koma",
-    label: "四格漫",
+    label: translateUi("四格漫"),
     desc: "四格竖排一页，起承转合，适合日常喜剧",
     tag: "经典",
     imageSize: "1024x1536",
@@ -85,16 +86,16 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
         {[0, 1, 2, 3].map((i) => (
           <rect key={i} x="8" y={4 + i * 21} width="44" height="18" rx="1.5" fill="currentColor" opacity={0.18 - i * 0.02} stroke="currentColor" strokeWidth="1.5" />
         ))}
-        <text x="30" y="15" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">起</text>
-        <text x="30" y="36" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">承</text>
-        <text x="30" y="57" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">转</text>
-        <text x="30" y="78" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">合</text>
+        <text x="30" y="15" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">{translateUi("起")}</text>
+        <text x="30" y="36" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">{translateUi("承")}</text>
+        <text x="30" y="57" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">{translateUi("转")}</text>
+        <text x="30" y="78" textAnchor="middle" fontSize="5" fill="currentColor" opacity="0.4">{translateUi("合")}</text>
       </svg>
     ),
   },
   {
     value: "single_page",
-    label: "单页漫",
+    label: translateUi("单页漫"),
     desc: "一页多格，格子大小自由，传统日漫页面",
     tag: "传统",
     imageSize: "1024x1536",
@@ -111,7 +112,7 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   },
   {
     value: "cinematic",
-    label: "电影分镜",
+    label: translateUi("电影分镜"),
     desc: "宽幅横画面，电影感构图，史诗动作场面",
     tag: "大气",
     imageSize: "1536x1024",
@@ -128,7 +129,7 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   },
   {
     value: "chat_comic",
-    label: "聊天漫",
+    label: translateUi("聊天漫"),
     desc: "对话气泡主导，轻量日常，社交媒体友好",
     tag: "轻快",
     imageSize: "1024x1536",
@@ -149,7 +150,7 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   },
   {
     value: "chibi_comic",
-    label: "Q版萌漫",
+    label: translateUi("Q版萌漫"),
     desc: "圆润可爱的 Q 版人物，萌系轻松风",
     tag: "萌系",
     imageSize: "1024x1024",
@@ -169,7 +170,7 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   },
   {
     value: "ink_comic",
-    label: "水墨国风",
+    label: translateUi("水墨国风"),
     desc: "传统水墨笔触，古风意境，留白美学",
     tag: "国风",
     imageSize: "1024x1536",
@@ -187,7 +188,7 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   },
   {
     value: "drama_screenshot",
-    label: "短剧截图漫",
+    label: translateUi("短剧截图漫"),
     desc: "竖版视频帧风格，字幕条 + 场景感",
     tag: "新兴",
     imageSize: "1024x1536",
@@ -206,10 +207,10 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
 ];
 
 const WIZARD_STEPS = [
-  { key: "source", label: "来源" },
-  { key: "content", label: "内容" },
-  { key: "format", label: "形态" },
-  { key: "style", label: "画风" },
+  { key: "source", label: translateUi("来源") },
+  { key: "content", label: translateUi("内容") },
+  { key: "format", label: translateUi("形态") },
+  { key: "style", label: translateUi("画风") },
 ] as const;
 
 function statusBadgeVariant(status: string): "default" | "secondary" | "outline" | "destructive" {
@@ -246,15 +247,16 @@ function ProjectCard({
             <Badge variant={statusBadgeVariant(project.status)}>{statusLabel(project.status)}</Badge>
           </div>
           <CardDescription>
-            {project._count?.episodes ?? 0} 话 · {project._count?.characters ?? 0} 角色
-            {project.sourceBundle ? " · 已导入内容源" : ""}
+            {project._count?.episodes ?? 0}  {translateUi("话 ·")} {project._count?.characters ?? 0}  {translateUi("角色")}
+            {project.sourceBundle ? translateUi(" · 已导入内容源") : ""}
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="flex flex-wrap gap-2">
         <Button asChild type="button" size="sm">
           <Link to={`/comic/projects/${project.id}`}>
-            打开工作台
+
+            {translateUi("打开工作台")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
@@ -267,7 +269,8 @@ function ProjectCard({
             onClick={() => onImport(project)}
           >
             <Layers3 className="h-4 w-4" />
-            导入内容源
+
+            {translateUi("导入内容源")}
           </Button>
         )}
       </CardContent>
@@ -298,7 +301,7 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
   const createMut = useMutation({
     mutationFn: (payload: CreateComicProjectPayload) => createComicProject(payload),
     onSuccess: (proj) => {
-      toast.success("漫画项目已创建");
+      toast.success(translateUi("漫画项目已创建"));
       onCreated(proj.id);
     },
   });
@@ -330,7 +333,7 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
   return (
     <Card className="max-w-xl">
       <CardHeader>
-        <CardTitle className="text-base">新建漫画项目</CardTitle>
+        <CardTitle className="text-base">{translateUi("新建漫画项目")}</CardTitle>
         <div className="flex gap-2 pt-1">
           {WIZARD_STEPS.map((s, i) => (
             <span
@@ -346,15 +349,15 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
         {step === 0 && (
           <>
             <div className="space-y-1">
-              <label className="text-sm font-medium">项目标题</label>
+              <label className="text-sm font-medium">{translateUi("项目标题")}</label>
               <Input
-                placeholder="漫画标题"
+                placeholder={translateUi("漫画标题")}
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
               />
             </div>
             <div className="space-y-1">
-              <label className="text-sm font-medium">内容来源</label>
+              <label className="text-sm font-medium">{translateUi("内容来源")}</label>
               <div className="flex flex-wrap gap-2">
                 {(Object.keys(SOURCE_LABELS) as ComicSourceType[]).filter(t => t !== "comic_import").map((t) => (
                   <button
@@ -375,25 +378,25 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
           <>
             {form.sourceType === "novel_import" && (
               <div className="space-y-1">
-                <label className="text-sm font-medium">选择小说</label>
+                <label className="text-sm font-medium">{translateUi("选择小说")}</label>
                 <SelectControl
                   className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                   value={form.sourceRef}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setForm((f) => ({ ...f, sourceRef: e.target.value }))}
                 >
-                  <option value="">—— 选择小说 ——</option>
+                  <option value="">{translateUi("—— 选择小说 ——")}</option>
                   {novels?.data?.items?.map((n) => (
-                    <option key={n.id} value={n.id}>{n.title ?? "未命名"}</option>
+                    <option key={n.id} value={n.id}>{n.title ?? translateUi("未命名")}</option>
                   ))}
                 </SelectControl>
               </div>
             )}
             {form.sourceType === "original" && (
               <div className="space-y-1">
-                <label className="text-sm font-medium">故事灵感</label>
+                <label className="text-sm font-medium">{translateUi("故事灵感")}</label>
                 <textarea
                   className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-y min-h-[120px]"
-                  placeholder="简短描述故事的核心设定、主角和大方向（200-800 字）…"
+                  placeholder={translateUi("简短描述故事的核心设定、主角和大方向（200-800 字）…")}
                   rows={6}
                   value={form.inspiration}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setForm((f) => ({ ...f, inspiration: e.target.value }))}
@@ -402,10 +405,10 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
             )}
             {form.sourceType === "text_import" && (
               <div className="space-y-1">
-                <label className="text-sm font-medium">粘贴原文</label>
+                <label className="text-sm font-medium">{translateUi("粘贴原文")}</label>
                 <textarea
                   className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-y min-h-[160px]"
-                  placeholder="粘贴完整小说原文（最多 20 万字）…"
+                  placeholder={translateUi("粘贴完整小说原文（最多 20 万字）…")}
                   rows={8}
                   value={form.rawText}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setForm((f) => ({ ...f, rawText: e.target.value }))}
@@ -418,8 +421,8 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
         {step === 2 && (
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-medium">漫画形态</label>
-              <p className="text-xs text-muted-foreground mt-0.5">选择漫画的版式风格，影响构图和阅读方式</p>
+              <label className="text-sm font-medium">{translateUi("漫画形态")}</label>
+              <p className="text-xs text-muted-foreground mt-0.5">{translateUi("选择漫画的版式风格，影响构图和阅读方式")}</p>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {COMIC_FORMATS.map((fmt) => {
@@ -450,7 +453,7 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
 
         {step === 3 && (
           <div className="space-y-2">
-            <label className="text-sm font-medium">画风预设</label>
+            <label className="text-sm font-medium">{translateUi("画风预设")}</label>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {STYLE_PRESETS.map((p) => (
                 <button
@@ -474,7 +477,8 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
             disabled={step === 0}
             onClick={() => setStep((s) => s - 1)}
           >
-            上一步
+
+            {translateUi("上一步")}
           </Button>
           {step < WIZARD_STEPS.length - 1 ? (
             <Button
@@ -483,7 +487,8 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
               disabled={!canNext()}
               onClick={() => setStep((s) => s + 1)}
             >
-              下一步
+
+              {translateUi("下一步")}
             </Button>
           ) : (
             <Button
@@ -492,7 +497,7 @@ function CreateWizard({ onCreated }: { onCreated: (id: string) => void }) {
               disabled={createMut.isPending || !canNext()}
               onClick={handleSubmit}
             >
-              {createMut.isPending ? "创建中…" : "创建项目"}
+              {createMut.isPending ? translateUi("创建中…") : translateUi("创建项目")}
             </Button>
           )}
         </div>
@@ -519,7 +524,7 @@ export default function ComicWorkspacePage() {
     onMutate: (id) => setBusyId(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comic", "projects"] });
-      toast.success("内容源导入完成");
+      toast.success(translateUi("内容源导入完成"));
     },
     onSettled: () => setBusyId(""),
   });
@@ -530,15 +535,18 @@ export default function ComicWorkspacePage() {
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-semibold">
             <SquareStack className="h-6 w-6 text-primary" />
-            漫画改编工作台
+
+            {translateUi("漫画改编工作台")}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            将小说或原创故事一键生成条漫分格脚本与图像
+
+            {translateUi("将小说或原创故事一键生成条漫分格脚本与图像")}
           </p>
         </div>
         <Button type="button" onClick={() => setShowWizard((v) => !v)}>
           <Plus className="h-4 w-4" />
-          新建项目
+
+          {translateUi("新建项目")}
         </Button>
       </div>
 
@@ -555,17 +563,18 @@ export default function ComicWorkspacePage() {
       )}
 
       {isLoading && (
-        <div className="py-12 text-center text-muted-foreground text-sm">加载中…</div>
+        <div className="py-12 text-center text-muted-foreground text-sm">{translateUi("加载中…")}</div>
       )}
 
       {!isLoading && projects.length === 0 && !showWizard && (
         <Card className="py-16 text-center">
           <CardContent className="flex flex-col items-center gap-4">
             <FilePen className="h-10 w-10 text-muted-foreground/40" />
-            <p className="text-muted-foreground">还没有漫画项目，点击「新建项目」开始</p>
+            <p className="text-muted-foreground">{translateUi("还没有漫画项目，点击「新建项目」开始")}</p>
             <Button type="button" onClick={() => setShowWizard(true)}>
               <Plus className="h-4 w-4" />
-              新建项目
+
+              {translateUi("新建项目")}
             </Button>
           </CardContent>
         </Card>

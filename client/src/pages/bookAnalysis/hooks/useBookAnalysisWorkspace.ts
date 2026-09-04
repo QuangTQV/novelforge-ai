@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -300,7 +301,7 @@ export function useBookAnalysisWorkspace(): BookAnalysisWorkspace {
       await queryClient.invalidateQueries({ queryKey: queryKeys.knowledge.documents("book-analysis-source") });
       await queryClient.invalidateQueries({ queryKey: queryKeys.knowledge.detail(result.document.id) });
       await queryClient.invalidateQueries({ queryKey: queryKeys.bookAnalysis.list(listKey) });
-      toast.success("已导出小说正文并创建诊断拆书。");
+      toast.success(translateUi("已导出小说正文并创建诊断拆书。"));
     },
   });
 

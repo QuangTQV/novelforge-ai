@@ -1,0 +1,65 @@
+{
+  "empty": "None",
+  "state": {
+    "processing": "AI processing",
+    "needsConfirmation": "Waiting for your confirmation",
+    "paused": "Paused",
+    "needsAttention": "An error needs handling",
+    "completed": "Completed",
+    "idle": "Not started"
+  },
+  "duration": {
+    "lessThanSecond": "<1 s",
+    "seconds": "{{count}} s",
+    "minutes": "{{minutes}} min",
+    "minutesSeconds": "{{minutes}} min {{seconds}} s"
+  },
+  "usage": {
+    "calls": "{{count}} calls",
+    "input": "Input {{count}}",
+    "output": "Output {{count}}",
+    "total": "{{count}} tokens total",
+    "duration": "Total call time {{value}}"
+  },
+  "fallbackSummary": "No automated tasks need your attention.",
+  "actions": {
+    "confirmContinue": "Confirm and continue",
+    "continue": "Continue"
+  },
+  "artifact": {
+    "bookContract": "Book contract",
+    "storyMacro": "Story macro",
+    "characterCast": "Characters",
+    "volumeStrategy": "Volume strategy",
+    "chapterTaskSheet": "Task sheet",
+    "chapterDraft": "Chapter text",
+    "auditReport": "Audit",
+    "repairTicket": "Repair",
+    "readerPromise": "Reader promise",
+    "characterState": "Character state",
+    "worldSkeleton": "World skeleton",
+    "sourcePack": "Source pack",
+    "retentionContract": "Retention contract",
+    "continuity": "Continuity",
+    "rollingReview": "Rolling review"
+  },
+  "recovery": {
+    "retry": "Retry the current step",
+    "resumeAfterReview": "Continue after reviewing the cause",
+    "switchModel": "Switch model, then continue",
+    "confirmProtected": "Confirm the protected-content boundary",
+    "manualRepair": "Handle the previous chapter's issues first"
+  },
+  "worker": {
+    "idle": "Not running",
+    "queued": "Waiting to start",
+    "leased": "Starting",
+    "running": "Auto-advancing",
+    "waiting": "Awaiting confirmation",
+    "recovering": "Recovering",
+    "cancelled": "Stopped",
+    "failedRecoverable": "Awaiting recovery",
+    "failedHard": "Needs handling",
+    "succeeded": "Completed"
+  }
+}

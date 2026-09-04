@@ -1,3 +1,4 @@
+import { translateUi } from "../../i18n/legacy.ts";
 import type { BookAnalysisSectionKey } from "@ai-novel/shared/types/bookAnalysis";
 import { formatCommercialTagsInput, normalizeCommercialTags } from "@ai-novel/shared/types/novelFraming";
 import type { WritingPlatformPreference } from "@ai-novel/shared/types/writingPlatform";
@@ -52,168 +53,168 @@ export const DEFAULT_ESTIMATED_CHAPTER_COUNT = 80;
 export const WRITING_MODE_OPTIONS: BasicInfoOption<NovelBasicFormState["writingMode"]>[] = [
   {
     value: "original",
-    label: "原创",
-    summary: "从零开始创建世界、角色和主线，适合大多数新项目。",
+    label: translateUi("原创"),
+    summary: translateUi("从零开始创建世界、角色和主线，适合大多数新项目。"),
     recommended: true,
   },
   {
     value: "continuation",
-    label: "续写",
-    summary: "基于已有小说或知识文档继续创作，后续会优先注入既有设定和拆书内容。",
+    label: translateUi("续写"),
+    summary: translateUi("基于已有小说或知识文档继续创作，后续会优先注入既有设定和拆书内容。"),
   },
 ];
 
 export const PROJECT_MODE_OPTIONS: BasicInfoOption<NovelBasicFormState["projectMode"]>[] = [
   {
     value: "co_pilot",
-    label: "AI 副驾",
-    summary: "你定方向，AI 提方案和草稿，适合前期打磨和高频人工决策。",
+    label: translateUi("AI 副驾"),
+    summary: translateUi("你定方向，AI 提方案和草稿，适合前期打磨和高频人工决策。"),
     recommended: true,
   },
   {
     value: "ai_led",
-    label: "AI 接管",
-    summary: "AI 负责主推进，你在关键节点审核，适合已有明确目标的项目。",
+    label: translateUi("AI 接管"),
+    summary: translateUi("AI 负责主推进，你在关键节点审核，适合已有明确目标的项目。"),
   },
   {
     value: "draft_mode",
-    label: "草稿优先",
-    summary: "先快速产出文本和方向，结构约束较弱，适合试故事和找感觉。",
+    label: translateUi("草稿优先"),
+    summary: translateUi("先快速产出文本和方向，结构约束较弱，适合试故事和找感觉。"),
   },
   {
     value: "auto_pipeline",
-    label: "流水线优先",
-    summary: "适合设定较完整后按规划、生成、审计、修复连续推进。",
+    label: translateUi("流水线优先"),
+    summary: translateUi("适合设定较完整后按规划、生成、审计、修复连续推进。"),
   },
 ];
 
 export const READER_CHANNEL_OPTIONS: BasicInfoOption<NovelBasicFormState["readerChannelPreference"]>[] = [
   {
     value: "ai_judge",
-    label: "AI 判断",
-    summary: "让 AI 根据题材、卖点和起始想法判断默认读者频道倾向，适合作为默认选择。",
+    label: translateUi("AI 判断"),
+    summary: translateUi("让 AI 根据题材、卖点和起始想法判断默认读者频道倾向，适合作为默认选择。"),
     recommended: true,
   },
   {
     value: "male_oriented",
-    label: "男频向",
-    summary: "更强调目标、升级、竞争、爽点兑现和外部事件推进。",
+    label: translateUi("男频向"),
+    summary: translateUi("更强调目标、升级、竞争、爽点兑现和外部事件推进。"),
   },
   {
     value: "female_oriented",
-    label: "女频向",
-    summary: "更强调关系线、情绪牵引、人物选择和细腻的阶段性反馈。",
+    label: translateUi("女频向"),
+    summary: translateUi("更强调关系线、情绪牵引、人物选择和细腻的阶段性反馈。"),
   },
   {
     value: "general",
-    label: "泛读者 / 不限定",
-    summary: "不限定频道倾向，让 AI 优先按故事本身和目标读者描述来规划。",
+    label: translateUi("泛读者 / 不限定"),
+    summary: translateUi("不限定频道倾向，让 AI 优先按故事本身和目标读者描述来规划。"),
   },
 ];
 
 export const WRITING_PLATFORM_OPTIONS: BasicInfoOption<NovelBasicFormState["writingPlatformPreference"]>[] = [
-  { value: "ai_recommend", label: "AI 推荐", summary: "AI 根据故事体验、受众和长期推进方式推荐平台写法。", recommended: true },
-  { value: "fanqie_free", label: "番茄免费网文", summary: "快速入戏、移动端短段落、高冲突和明确回报。" },
-  { value: "qidian_male", label: "起点男频", summary: "成长目标、资源能力变化、稳定升级和伏笔兑现。" },
-  { value: "jinjiang_female", label: "晋江女频", summary: "人物关系、情绪因果、角色声音和关系状态变化。" },
+  { value: "ai_recommend", label: translateUi("AI 推荐"), summary: translateUi("AI 根据故事体验、受众和长期推进方式推荐平台写法。"), recommended: true },
+  { value: "fanqie_free", label: translateUi("番茄免费网文"), summary: translateUi("快速入戏、移动端短段落、高冲突和明确回报。") },
+  { value: "qidian_male", label: translateUi("起点男频"), summary: translateUi("成长目标、资源能力变化、稳定升级和伏笔兑现。") },
+  { value: "jinjiang_female", label: translateUi("晋江女频"), summary: translateUi("人物关系、情绪因果、角色声音和关系状态变化。") },
 ];
 
 export const POV_OPTIONS: BasicInfoOption<NovelBasicFormState["narrativePov"]>[] = [
   {
     value: "third_person",
-    label: "第三人称",
-    summary: "最稳，适合多角色和复杂主线。",
+    label: translateUi("第三人称"),
+    summary: translateUi("最稳，适合多角色和复杂主线。"),
     recommended: true,
   },
   {
     value: "first_person",
-    label: "第一人称",
-    summary: "代入感强，但信息受限，适合强主角视角叙事。",
+    label: translateUi("第一人称"),
+    summary: translateUi("代入感强，但信息受限，适合强主角视角叙事。"),
   },
   {
     value: "mixed",
-    label: "混合视角",
-    summary: "更灵活，但更容易失控，适合成熟项目。",
+    label: translateUi("混合视角"),
+    summary: translateUi("更灵活，但更容易失控，适合成熟项目。"),
   },
 ];
 
 export const PACE_OPTIONS: BasicInfoOption<NovelBasicFormState["pacePreference"]>[] = [
   {
     value: "balanced",
-    label: "均衡",
-    summary: "推进和铺垫兼顾，适合作为默认选择。",
+    label: translateUi("均衡"),
+    summary: translateUi("推进和铺垫兼顾，适合作为默认选择。"),
     recommended: true,
   },
   {
     value: "slow",
-    label: "慢节奏",
-    summary: "更重铺垫、氛围和情绪发酵。",
+    label: translateUi("慢节奏"),
+    summary: translateUi("更重铺垫、氛围和情绪发酵。"),
   },
   {
     value: "fast",
-    label: "快节奏",
-    summary: "更重事件驱动、钩子和连续推进。",
+    label: translateUi("快节奏"),
+    summary: translateUi("更重事件驱动、钩子和连续推进。"),
   },
 ];
 
 export const EMOTION_OPTIONS: BasicInfoOption<NovelBasicFormState["emotionIntensity"]>[] = [
   {
     value: "medium",
-    label: "中情绪浓度",
-    summary: "保留起伏但不过载，适合作为默认值。",
+    label: translateUi("中情绪浓度"),
+    summary: translateUi("保留起伏但不过载，适合作为默认值。"),
     recommended: true,
   },
   {
     value: "low",
-    label: "低情绪浓度",
-    summary: "更克制，适合冷静叙事或偏理性作品。",
+    label: translateUi("低情绪浓度"),
+    summary: translateUi("更克制，适合冷静叙事或偏理性作品。"),
   },
   {
     value: "high",
-    label: "高情绪浓度",
-    summary: "更强调爆发、冲突和强刺激场面。",
+    label: translateUi("高情绪浓度"),
+    summary: translateUi("更强调爆发、冲突和强刺激场面。"),
   },
 ];
 
 export const AI_FREEDOM_OPTIONS: BasicInfoOption<NovelBasicFormState["aiFreedom"]>[] = [
   {
     value: "medium",
-    label: "中自由度",
-    summary: "允许 AI 在设定内补充细节和局部推进，适合作为默认值。",
+    label: translateUi("中自由度"),
+    summary: translateUi("允许 AI 在设定内补充细节和局部推进，适合作为默认值。"),
     recommended: true,
   },
   {
     value: "low",
-    label: "低自由度",
-    summary: "严格按设定和规划执行，适合前期控盘。",
+    label: translateUi("低自由度"),
+    summary: translateUi("严格按设定和规划执行，适合前期控盘。"),
   },
   {
     value: "high",
-    label: "高自由度",
-    summary: "允许 AI 主动扩展剧情和细节，适合中后期稳定项目。",
+    label: translateUi("高自由度"),
+    summary: translateUi("允许 AI 主动扩展剧情和细节，适合中后期稳定项目。"),
   },
 ];
 
 export const PUBLICATION_STATUS_OPTIONS: BasicInfoOption<NovelBasicFormState["status"]>[] = [
   {
     value: "draft",
-    label: "草稿",
-    summary: "仍在开发和打磨阶段，适合绝大多数项目。",
+    label: translateUi("草稿"),
+    summary: translateUi("仍在开发和打磨阶段，适合绝大多数项目。"),
     recommended: true,
   },
   {
     value: "published",
-    label: "已发布",
-    summary: "用于标记已成型或已对外发布的作品。",
+    label: translateUi("已发布"),
+    summary: translateUi("用于标记已成型或已对外发布的作品。"),
   },
 ];
 
 export const PROJECT_STATUS_OPTIONS: Array<{ value: NovelBasicFormState["projectStatus"]; label: string }> = [
-  { value: "not_started", label: "未开始" },
-  { value: "in_progress", label: "进行中" },
-  { value: "completed", label: "已完成" },
-  { value: "rework", label: "返工" },
-  { value: "blocked", label: "阻塞" },
+  { value: "not_started", label: translateUi("未开始") },
+  { value: "in_progress", label: translateUi("进行中") },
+  { value: "completed", label: translateUi("已完成") },
+  { value: "rework", label: translateUi("返工") },
+  { value: "blocked", label: translateUi("阻塞") },
 ];
 
 export const BASIC_INFO_FIELD_HINTS = {

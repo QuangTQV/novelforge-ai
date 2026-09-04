@@ -1,3 +1,4 @@
+import { translateUi } from "../../../i18n/legacy.ts";
 import type {
   DirectorTaskSnapshot,
 } from "@ai-novel/shared/types/directorRuntime";
@@ -132,7 +133,7 @@ export function buildTakeoverGuidance(
         "继续当前任务不会新开一条重复接管。",
       ],
       riskLevel: "safe",
-      actionLabel: "进入当前任务",
+      actionLabel: translateUi("进入当前任务"),
     };
   }
   if (!readiness) {
@@ -141,7 +142,7 @@ export function buildTakeoverGuidance(
       nextStep: "读取完成后即可继续推进。",
       protectionNotes: ["默认保留已有写作资产。"],
       riskLevel: "safe",
-      actionLabel: RUN_MODE_ACTION_LABELS[runMode] ?? "继续推进",
+      actionLabel: RUN_MODE_ACTION_LABELS[runMode] ?? translateUi("继续推进"),
     };
   }
   const preview = findTakeoverPreview(readiness, entryStep, strategy);
@@ -161,7 +162,7 @@ export function buildTakeoverGuidance(
     protectionNotes,
     riskLevel,
     actionLabel: buildPrimaryActionLabel({
-      fallback: RUN_MODE_ACTION_LABELS[runMode] ?? "继续推进",
+      fallback: RUN_MODE_ACTION_LABELS[runMode] ?? translateUi("继续推进"),
       taskSnapshot,
       readiness,
     }),
@@ -269,10 +270,10 @@ export function buildTakeoverChapterTarget(
     maxOrder: totalChapters,
     selectedOrder: selected,
     plan,
-    actionLabel: `推进至第 ${selected} 章`,
+    actionLabel: translateUi("推进至第 {{number}} 章", { number: selected }),
     summary: selected === startOrder
-      ? `从第 ${startOrder} 章继续推进。`
-      : `从第 ${startOrder} 章开始，连续推进到第 ${selected} 章。`,
+      ? translateUi("从第 {{start}} 章继续推进。", { start: startOrder })
+      : translateUi("从第 {{start}} 章开始，连续推进到第 {{selected}} 章。", { start: startOrder, selected }),
   };
 }
 
@@ -300,10 +301,10 @@ export function buildTakeoverContinuousTarget(
     currentWindowEndOrder: currentWindow.maxOrder,
     targetOrder,
     selectedOrder: resolvedSelected,
-    actionLabel: resolvedSelected === targetOrder ? `持续推进至第 ${targetOrder} 章` : `推进至第 ${resolvedSelected} 章`,
+    actionLabel: resolvedSelected === targetOrder ? translateUi("持续推进至第 {{value0}} 章", { value0: targetOrder }) : translateUi("推进至第 {{value0}} 章", { value0: resolvedSelected }),
     summary: resolvedSelected === targetOrder
-      ? `先推进第 ${currentWindow.startOrder}-${currentWindow.maxOrder} 章；接近范围末尾时，AI 会补后续卷骨架和近期拆章，不会预先生成远期章节任务。`
-      : `本次只推进第 ${currentWindow.startOrder}-${resolvedSelected} 章；之后仍可从当前进度继续，预计章节数为 ${targetOrder} 章。`,
+      ? translateUi("先推进第 {{value0}}-{{value1}} 章；接近范围末尾时，AI 会补后续卷骨架和近期拆章，不会预先生成远期章节任务。", { value0: currentWindow.startOrder, value1: currentWindow.maxOrder })
+      : translateUi("本次只推进第 {{value0}}-{{value1}} 章；之后仍可从当前进度继续，预计章节数为 {{value2}} 章。", { value0: currentWindow.startOrder, value1: resolvedSelected, value2: targetOrder }),
   };
 }
 
@@ -331,28 +332,28 @@ export function buildTakeoverProgressInspection(
 
   const cards: TakeoverProgressCard[] = [
     {
-      title: "卷规划进度",
+      title: translateUi("卷规划进度"),
       status: factSummary?.hasVolumeStrategy || (snapshot?.volumeCount ?? 0) > 0 ? "已具备卷战略" : "待补卷战略",
       detail: snapshot
         ? `${snapshot.volumeCount} 卷；当前卷章节 ${snapshot.firstVolumeChapterCount} 章；已拆范围 ${volumeRanges.map((range) => `第${range.startOrder}-${range.endOrder}章`).join("、") || "暂无"}`
         : "正在读取卷规划。",
     },
     {
-      title: "拆章同步进度",
+      title: translateUi("拆章同步进度"),
       status: formatRatio(syncedChapterCount, plannedChapterCount),
       detail: selectedChapterCount > 0
         ? `当前可执行范围 ${readiness?.executableRange?.startOrder ?? 1}-${readiness?.executableRange?.endOrder ?? selectedChapterCount} 章。`
         : "尚未检测到可执行章节范围。",
     },
     {
-      title: "章节细化进度",
+      title: translateUi("章节细化进度"),
       status: formatRatio(detailDone, detailTotal),
       detail: outline?.chapterDetailReady || detailDone > 0
         ? `已准备 ${detailDone} 个章节任务单 / 执行资源。`
         : "尚未检测到章节细化资源。",
     },
     {
-      title: "正文与质量进度",
+      title: translateUi("正文与质量进度"),
       status: formatRatio(drafted, chapterProgress?.totalChapters ?? chapterFacts?.totalChapters ?? plannedChapterCount),
       detail: [
         reviewed > 0 ? `已审校 ${reviewed} 章` : "",
@@ -366,8 +367,8 @@ export function buildTakeoverProgressInspection(
   return {
     cards,
     summary: taskSnapshot?.task
-      ? `当前任务：${taskSnapshot.task.currentStage || taskSnapshot.displayState.stageLabel || "自动导演"} / ${taskSnapshot.task.currentItemLabel || taskSnapshot.displayState.currentAction || "等待继续"}`
-      : "以下为当前项目已检测到的资产进度。",
+      ? translateUi("当前任务：{{value0}} / {{value1}}", { value0: taskSnapshot.task.currentStage || taskSnapshot.displayState.stageLabel || translateUi("自动导演"), value1: taskSnapshot.task.currentItemLabel || taskSnapshot.displayState.currentAction || translateUi("等待继续") })
+      : translateUi("以下为当前项目已检测到的资产进度。"),
   };
 }
 

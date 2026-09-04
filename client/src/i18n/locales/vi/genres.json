@@ -1,0 +1,136 @@
+{
+  "page": {
+    "header": {
+      "context": "Tài sản sáng tác / Định vị tiểu thuyết",
+      "title": "Thư viện nền đề tài",
+      "description": "Duy trì định vị đề tài và phân cấp thể loại có thể tái sử dụng cho tiểu thuyết. Khi mở sách, hãy chọn nền đề tài phù hợp để AI hiểu được thể loại tác phẩm, kỳ vọng của độc giả và hướng sáng tác chính.",
+      "createRootTree": "Tạo cây nền đề tài mới"
+    },
+    "status": {
+      "genres": {
+        "label": "Nền đề tài",
+        "detail": "Các nút phân loại mà tiểu thuyết có thể chọn"
+      },
+      "roots": {
+        "label": "Phân loại gốc",
+        "detail": "Dùng để phân chia các hướng sáng tác chính"
+      },
+      "novels": {
+        "label": "Tiểu thuyết liên kết",
+        "detail": "Các tác phẩm đang dùng những đề tài này"
+      },
+      "descriptions": {
+        "label": "Mô tả đầy đủ",
+        "detail": "Các đề tài đã có mô tả định vị rõ ràng"
+      }
+    },
+    "delete": {
+      "confirmWithChildren_one": "Xác nhận xóa nền đề tài “{{name}}”? Thao tác này cũng xóa {{count}} phân loại con bên dưới và không thể khôi phục.",
+      "confirmWithChildren_other": "Xác nhận xóa nền đề tài “{{name}}”? Thao tác này cũng xóa {{count}} phân loại con bên dưới và không thể khôi phục.",
+      "confirm": "Xác nhận xóa nền đề tài “{{name}}”? Thao tác này không thể khôi phục.",
+      "success": "Đã xóa nền đề tài."
+    },
+    "recommendation": {
+      "errorTitle": "Tải lại nền đề tài",
+      "errorDescription": "Tạm thời không đọc được cấu trúc đề tài. Sau khi tải lại, bạn có thể tiếp tục xem, chỉnh sửa và duy trì đề tài.",
+      "reload": "Tải lại",
+      "loadingTitle": "Đang xác nhận trạng thái nền đề tài",
+      "loadingDescription": "Sau khi tải xong sẽ đưa ra gợi ý bước tiếp theo dựa trên độ phủ đề tài và mức độ đầy đủ của mô tả.",
+      "emptyTitle": "Hãy dựng cây nền đề tài đầu tiên",
+      "emptyDescription": "Mô tả hướng sáng tác bạn muốn bao phủ; bạn có thể tự dựng phân cấp, hoặc để AI tạo bản nháp rồi tinh chỉnh.",
+      "emptyAction": "Tạo nền đề tài",
+      "describeTitle": "Bổ sung mô tả đề tài cho “{{name}}”",
+      "describeDescription": "Làm rõ định vị tác phẩm, kỳ vọng độc giả và xung đột cốt lõi sẽ giúp AI hiểu chính xác hơn về đề tài này khi mở sách và lập kế hoạch.",
+      "describeAction": "Bổ sung mô tả",
+      "readyTitle": "Nền đề tài đã đủ để hỗ trợ chọn khi mở sách",
+      "readyDescription": "Mọi đề tài hiện có đều đã có mô tả rõ ràng. Khi cần bao phủ hướng sáng tác mới, hãy thêm đề tài gốc hoặc phân loại con.",
+      "readyAction": "Mở rộng đề tài"
+    },
+    "section": {
+      "title": "Cấu trúc đề tài",
+      "description": "Mở rộng các hướng chi tiết từ danh mục bên trái, xem định vị và duy trì các nút ở bên phải. Phân loại đang được tiểu thuyết sử dụng chỉ xóa được sau khi điều chỉnh tác phẩm liên kết.",
+      "loadingTitle": "Đang tải cấu trúc đề tài",
+      "loadingDescription": "Vui lòng chờ, liên kết giữa đề tài và tiểu thuyết đang được đồng bộ.",
+      "errorTitle": "Tạm thời không tải được nền đề tài",
+      "errorDescription": "Vui lòng kiểm tra kết nối dịch vụ rồi tải lại. Các đề tài hiện có không bị ảnh hưởng.",
+      "emptyTitle": "Chưa có nền đề tài nào để chọn khi mở sách",
+      "emptyDescription": "Hãy tạo một đề tài chính trước. Bạn có thể tự điền, hoặc mô tả hướng sáng tác để AI tạo bản nháp cây đề tài kèm phân loại con.",
+      "emptyAction": "Tạo cây đề tài đầu tiên"
+    }
+  },
+  "createDialog": {
+    "title": "Tạo cây nền đề tài mới",
+    "description": "Trước tiên xác định vị trí cấp cha, rồi tự điền cấu trúc hoặc để AI tạo bản nháp. Nơi này duy trì nền đề tài của tác phẩm, tức là “đây là sách gì”.",
+    "aiSectionTitle": "AI tạo",
+    "aiSectionHint": "Phù hợp để phác ra cùng lúc nhóm lớn, nhóm con và các nền đề tài cấp dưới, rồi tinh chỉnh thủ công.",
+    "promptPlaceholder": "Ví dụ: Tôi muốn làm tuyến trưởng thành siêu phàm đô thị thiên hướng nữ, điểm bán chính là đảo ngược thân phận, kinh doanh thế lực và giằng co quan hệ giàu cảm xúc.",
+    "generating": "Đang tạo...",
+    "generate": "Tạo cây nền đề tài",
+    "resetDraft": "Đặt lại bản nháp",
+    "parentLabel": "Nền đề tài cấp cha",
+    "parentNone": "Không có cấp cha, tạo làm nền đề tài gốc",
+    "cancel": "Hủy",
+    "saving": "Đang lưu...",
+    "save": "Lưu cây nền đề tài",
+    "createSuccess": "Đã tạo cây nền đề tài.",
+    "generateSuccess": "Đã tạo cây nền đề tài bằng AI."
+  },
+  "editDialog": {
+    "title": "Chỉnh sửa nền đề tài",
+    "description": "Có thể sửa tên, mô tả và vị trí gắn. Các nút con và tiểu thuyết đã gắn sẽ được giữ lại.",
+    "cancel": "Hủy",
+    "saving": "Đang lưu...",
+    "save": "Lưu thay đổi",
+    "nameLabel": "Tên",
+    "descriptionLabel": "Mô tả",
+    "parentLabel": "Nền đề tài cấp cha",
+    "parentNone": "Không có cấp cha, làm nền đề tài gốc",
+    "updateSuccess": "Đã cập nhật nền đề tài."
+  },
+  "browser": {
+    "navigatorTitle": "Danh mục đề tài",
+    "navigatorHint": "Nhấp vào nút để xem chi tiết",
+    "navigatorAriaLabel": "Cây nền đề tài",
+    "addChild": "Thêm cấp dưới",
+    "edit": "Chỉnh sửa",
+    "deleteBlockedTitle": "Đề tài hiện tại hoặc đề tài cấp dưới vẫn đang được tiểu thuyết sử dụng, hãy điều chỉnh tác phẩm liên kết trước.",
+    "deleting": "Đang xóa...",
+    "delete": "Xóa",
+    "sectionLabel": "Nền đề tài",
+    "descriptionFallback": "Chưa mô tả đề tài này hướng tới độc giả nào, hứa hẹn trải nghiệm gì. Sau khi bổ sung mô tả, AI có thể dùng chính xác hơn khi mở sách và lập kế hoạch.",
+    "directLinks": "Liên kết trực tiếp",
+    "childGenres": "Đề tài cấp dưới",
+    "branchNovels": "Tác phẩm nhánh",
+    "aiUsageTendency": "Xu hướng sử dụng của AI"
+  },
+  "treeEditor": {
+    "levelMain": "Loại chính",
+    "levelSub": "Loại con",
+    "levelLower": "Loại cấp dưới",
+    "rootHint": "Đây là nút gốc cuối cùng sẽ được tạo vào hệ thống.",
+    "childHint": "Phần này sẽ được lưu làm nút con của loại cấp trên.",
+    "addSub": "Thêm loại con",
+    "addLower": "Thêm loại cấp dưới",
+    "nameLabel": "Tên",
+    "namePlaceholderRoot": "Ví dụ: Dị năng đô thị",
+    "namePlaceholderChild": "Ví dụ: Chốn công sở siêu phàm",
+    "descriptionLabel": "Mô tả",
+    "descriptionPlaceholder": "Mô tả cốt lõi đề tài, điểm sướng, tuyến chính thường gặp hoặc kỳ vọng độc giả của loại này.",
+    "removeNode": "Xóa nút hiện tại"
+  },
+  "treeItem": {
+    "collapse": "Thu gọn “{{name}}”",
+    "expand": "Mở rộng “{{name}}”",
+    "usedInNovels_one": "Dùng cho {{count}} tiểu thuyết",
+    "usedInNovels_other": "Dùng cho {{count}} tiểu thuyết",
+    "notLinked": "Chưa liên kết tiểu thuyết",
+    "directChildren_one": "{{count}} loại con trực tiếp",
+    "directChildren_other": "{{count}} loại con trực tiếp",
+    "descriptionFallback": "Chưa mô tả định vị đề tài, nên bổ sung kỳ vọng độc giả và hướng sáng tác cốt lõi.",
+    "addChild": "Thêm loại con",
+    "edit": "Chỉnh sửa",
+    "deleteBlockedTitle": "Phân loại hiện tại hoặc phân loại cấp dưới vẫn đang được tiểu thuyết sử dụng, hãy điều chỉnh đề tài của tiểu thuyết liên kết trước.",
+    "deleting": "Đang xóa...",
+    "delete": "Xóa"
+  }
+}

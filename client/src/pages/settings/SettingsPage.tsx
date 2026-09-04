@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
@@ -400,7 +401,7 @@ export default function SettingsPage() {
     if (!editingProvider || !editingConfig) {
       return;
     }
-    if (!window.confirm(`确认删除自定义厂商 ${editingConfig.name} 吗？`)) {
+    if (!window.confirm(translateUi("确认删除自定义厂商 {{value0}} 吗？", { value0: editingConfig.name }))) {
       return;
     }
     deleteCustomProviderMutation.mutate(editingProvider);
@@ -408,7 +409,7 @@ export default function SettingsPage() {
 
   const handleRemoveProvider = (provider: APIKeyStatus) => {
     const label = provider.kind === "builtin" ? "从列表移除" : "删除";
-    if (!window.confirm(`确认${label} ${provider.name} 吗？`)) {
+    if (!window.confirm(translateUi("确认{{value0}} {{value1}} 吗？", { value0: label, value1: provider.name }))) {
       return;
     }
     removeProviderMutation.mutate(provider);
@@ -485,7 +486,7 @@ export default function SettingsPage() {
         testResult={dialogTestResult}
         onDeleteCustomProvider={handleDeleteCustomProvider}
         deleteDisabled={deleteCustomProviderMutation.isPending}
-        deleteLabel={deleteCustomProviderMutation.isPending ? "删除中..." : "删除"}
+        deleteLabel={deleteCustomProviderMutation.isPending ? translateUi("删除中...") : translateUi("删除")}
       />
     </div>
   );

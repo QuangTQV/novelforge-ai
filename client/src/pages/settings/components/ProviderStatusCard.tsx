@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { Bot, ChevronDown, Image, RefreshCw, Trash2, WalletCards } from "lucide-react";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
@@ -83,29 +84,29 @@ export default function ProviderStatusCard(props: {
         <div className="min-w-0 space-y-1">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <div className={`font-semibold ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>{provider.name}</div>
-            {provider.kind === "custom" ? <Badge variant="outline">自定义</Badge> : null}
+            {provider.kind === "custom" ? <Badge variant="outline">{translateUi("自定义")}</Badge> : null}
           </div>
           <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-            {canUseProvider ? "可用于创作任务。" : "完成配置后可用于创作任务。"}
+            {canUseProvider ? translateUi("可用于创作任务。") : translateUi("完成配置后可用于创作任务。")}
           </div>
         </div>
         <Badge
           variant={canUseProvider ? "default" : "outline"}
           className={canUseProvider ? "bg-emerald-600 text-white hover:bg-emerald-600" : ""}
         >
-          {canUseProvider ? "可用" : provider.isConfigured ? "已配置" : "未配置"}
+          {canUseProvider ? translateUi("可用") : provider.isConfigured ? translateUi("已配置") : translateUi("未配置")}
         </Badge>
       </div>
 
       <div className="mb-3 grid min-w-0 gap-2 text-sm md:grid-cols-2">
         <div className="min-w-0 rounded-lg border bg-muted/25 p-3">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Bot className="h-3.5 w-3.5" /> 文本模型</div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Bot className="h-3.5 w-3.5" />  {translateUi("文本模型")}</div>
           <div className={`mt-1 font-medium ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
             {provider.currentModel || "-"}
           </div>
         </div>
         <div className="min-w-0 rounded-lg border bg-muted/25 p-3">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Image className="h-3.5 w-3.5" /> 图像模型</div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Image className="h-3.5 w-3.5" />  {translateUi("图像模型")}</div>
           <div className={`mt-1 font-medium ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
             {imageModelLabel}
           </div>
@@ -129,7 +130,7 @@ export default function ProviderStatusCard(props: {
 
       <div className="flex flex-wrap gap-2">
         <Button size="sm" onClick={() => onOpenConfig(provider.provider)}>
-          {provider.kind === "custom" ? "管理连接" : "配置连接"}
+          {provider.kind === "custom" ? translateUi("管理连接") : translateUi("配置连接")}
         </Button>
         <Button
           size="sm"
@@ -138,7 +139,7 @@ export default function ProviderStatusCard(props: {
           onClick={() => onTest(provider)}
           disabled={!provider.isConfigured || item.isTesting}
         >
-          {item.isTesting ? "测试中..." : "测试连接"}
+          {item.isTesting ? translateUi("测试中...") : translateUi("测试连接")}
         </Button>
       </div>
 
@@ -149,7 +150,7 @@ export default function ProviderStatusCard(props: {
           aria-expanded={advancedOpen}
           onClick={() => setAdvancedOpen((prev) => !prev)}
         >
-          <span>高级详情与维护</span>
+          <span>{translateUi("高级详情与维护")}</span>
           <ChevronDown className={cn("h-4 w-4 transition-transform duration-200", advancedOpen ? "rotate-180" : "")} />
         </button>
       </div>
@@ -164,17 +165,17 @@ export default function ProviderStatusCard(props: {
               onClick={() => onRefreshModels(provider.provider)}
               disabled={!provider.isConfigured || isRefreshingModels}
             >
-              <RefreshCw className="h-3.5 w-3.5" /> {isRefreshingModels ? "刷新中..." : "刷新模型"}
+              <RefreshCw className="h-3.5 w-3.5" /> {isRefreshingModels ? translateUi("刷新中...") : translateUi("刷新模型")}
             </Button>
             {provider.kind === "builtin" ? (
               <Button
                 size="sm"
                 variant="outline"
-                title={item.canRefreshBalance ? "" : "当前厂商不能直接刷新余额。"}
+                title={item.canRefreshBalance ? "" : translateUi("当前厂商不能直接刷新余额。")}
                 onClick={() => onRefreshBalance(provider.provider)}
                 disabled={!item.canRefreshBalance || item.isBalanceRefreshing}
               >
-                <WalletCards className="h-3.5 w-3.5" /> {item.isBalanceRefreshing ? "余额刷新中..." : "刷新余额"}
+                <WalletCards className="h-3.5 w-3.5" /> {item.isBalanceRefreshing ? translateUi("余额刷新中...") : translateUi("刷新余额")}
               </Button>
             ) : null}
             <Button
@@ -184,11 +185,12 @@ export default function ProviderStatusCard(props: {
               onClick={onRemove}
               disabled={isRemoving}
             >
-              <Trash2 className="h-3.5 w-3.5" /> {isRemoving ? "移除中..." : provider.kind === "builtin" ? "从列表移除" : "删除"}
+              <Trash2 className="h-3.5 w-3.5" /> {isRemoving ? translateUi("移除中...") : provider.kind === "builtin" ? translateUi("从列表移除") : translateUi("删除")}
             </Button>
           </div>
           <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-            API 地址：{provider.currentBaseURL || "-"}
+
+            {translateUi("API 地址：")}{provider.currentBaseURL || "-"}
           </div>
           <ProviderRequestLimitSummary
             concurrencyLimit={provider.concurrencyLimit}
@@ -196,15 +198,15 @@ export default function ProviderStatusCard(props: {
           />
           <div className="flex flex-col gap-3 rounded-md border bg-background/60 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0 space-y-1">
-              <div className="text-xs font-medium text-muted-foreground">思考功能</div>
+              <div className="text-xs font-medium text-muted-foreground">{translateUi("思考功能")}</div>
               <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
                 {provider.reasoningEnabled
-                  ? "当前会返回并展示模型思考内容。"
-                  : "当前会隐藏思考内容；MiniMax 会自动清洗正文里的 thinking 内容。"}
+                  ? translateUi("当前会返回并展示模型思考内容。")
+                  : translateUi("当前会隐藏思考内容；MiniMax 会自动清洗正文里的 thinking 内容。")}
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <span className="text-xs text-muted-foreground">{provider.reasoningEnabled ? "已开启" : "已关闭"}</span>
+              <span className="text-xs text-muted-foreground">{provider.reasoningEnabled ? translateUi("已开启") : translateUi("已关闭")}</span>
               <Switch
                 checked={provider.reasoningEnabled}
                 disabled={item.isReasoningUpdating}
@@ -215,26 +217,27 @@ export default function ProviderStatusCard(props: {
 
           <div className="rounded-md border border-dashed bg-background/60 p-3">
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-              <div className="text-xs font-medium text-muted-foreground">余额明细</div>
+              <div className="text-xs font-medium text-muted-foreground">{translateUi("余额明细")}</div>
               {balance?.status === "available" ? (
-                <Badge variant="outline">最近刷新 {formatBalanceTime(balance.fetchedAt)}</Badge>
+                <Badge variant="outline">{translateUi("最近刷新")} {formatBalanceTime(balance.fetchedAt)}</Badge>
               ) : null}
             </div>
             {provider.kind === "custom" ? (
               <div className={`text-sm text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-                自定义 OpenAI 兼容厂商暂不接入余额查询。
+
+                {translateUi("自定义 OpenAI 兼容厂商暂不接入余额查询。")}
               </div>
             ) : balance?.status === "available" ? (
               <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
-                {balance.cashBalance !== null ? <div>现金余额：{formatBalanceAmount(balance.cashBalance, balance.currency)}</div> : null}
-                {balance.voucherBalance !== null ? <div>代金券余额：{formatBalanceAmount(balance.voucherBalance, balance.currency)}</div> : null}
-                {balance.chargeBalance !== null ? <div>充值余额：{formatBalanceAmount(balance.chargeBalance, balance.currency)}</div> : null}
-                {balance.toppedUpBalance !== null ? <div>累计充值：{formatBalanceAmount(balance.toppedUpBalance, balance.currency)}</div> : null}
-                {balance.grantedBalance !== null ? <div>赠送额度：{formatBalanceAmount(balance.grantedBalance, balance.currency)}</div> : null}
+                {balance.cashBalance !== null ? <div>{translateUi("现金余额：")}{formatBalanceAmount(balance.cashBalance, balance.currency)}</div> : null}
+                {balance.voucherBalance !== null ? <div>{translateUi("代金券余额：")}{formatBalanceAmount(balance.voucherBalance, balance.currency)}</div> : null}
+                {balance.chargeBalance !== null ? <div>{translateUi("充值余额：")}{formatBalanceAmount(balance.chargeBalance, balance.currency)}</div> : null}
+                {balance.toppedUpBalance !== null ? <div>{translateUi("累计充值：")}{formatBalanceAmount(balance.toppedUpBalance, balance.currency)}</div> : null}
+                {balance.grantedBalance !== null ? <div>{translateUi("赠送额度：")}{formatBalanceAmount(balance.grantedBalance, balance.currency)}</div> : null}
               </div>
             ) : (
               <div className={`text-sm text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-                {balance?.error ?? balance?.message ?? (provider.isConfigured ? "当前暂未获取余额信息。" : "请先配置 API Key。")}
+                {balance?.error ?? balance?.message ?? (provider.isConfigured ? translateUi("当前暂未获取余额信息。") : translateUi("请先配置 API Key。"))}
               </div>
             )}
           </div>
@@ -259,7 +262,7 @@ export default function ProviderStatusCard(props: {
                 className="text-xs font-medium text-primary transition-opacity hover:opacity-80"
                 onClick={() => setModelsOpen((prev) => !prev)}
               >
-                {modelsOpen ? "收起模型列表" : `展开全部 ${provider.models.length} 个模型`}
+                {modelsOpen ? translateUi("收起模型列表") : translateUi("展开全部 {{value0}} 个模型", { value0: provider.models.length })}
               </button>
             ) : null}
           </div>

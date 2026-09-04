@@ -1,3 +1,4 @@
+import { translateUi } from "../../i18n/legacy.ts";
 import type { TaskOverviewSummary } from "@ai-novel/shared/types/task";
 import type { NovelListResponse } from "@/api/novel/shared";
 import {
@@ -128,10 +129,10 @@ export function buildHomeNextAction(primaryNovel: HomeNovelItem | null): HomeNex
   if (!primaryNovel) {
     return {
       kind: "starter",
-      eyebrow: "开始第一本小说",
-      title: "选择适合你的第一种创作方式",
-      description: "想完成长篇，可以交给自动导演准备整本结构；想更快看到完整作品，可以直接从短篇开始。",
-      reason: "两种方式都只需要先说出一个模糊想法，AI 会继续帮你整理创作方向。",
+      eyebrow: translateUi("开始第一本小说"),
+      title: translateUi("选择适合你的第一种创作方式"),
+      description: translateUi("想完成长篇，可以交给自动导演准备整本结构；想更快看到完整作品，可以直接从短篇开始。"),
+      reason: translateUi("两种方式都只需要先说出一个模糊想法，AI 会继续帮你整理创作方向。"),
       tone: "info",
     };
   }
@@ -140,81 +141,81 @@ export function buildHomeNextAction(primaryNovel: HomeNovelItem | null): HomeNex
   if (primaryNovel.narrativeForm === "short_story") {
     return {
       kind: "novel",
-      eyebrow: task?.status === "succeeded" ? "完整作品" : "创作进行中",
-      title: task?.status === "succeeded" ? "继续完善这篇作品" : "查看成稿进度",
+      eyebrow: task?.status === "succeeded" ? translateUi("完整作品") : translateUi("创作进行中"),
+      title: task?.status === "succeeded" ? translateUi("继续完善这篇作品") : translateUi("查看成稿进度"),
       description: getNovelLeadSummary(primaryNovel),
       reason: task?.status === "succeeded"
-        ? "作品已完整生成，可以直接阅读、编辑、修改或导出。"
-        : "短篇正在后台写成一篇连续作品，打开后即可查看实时进度。",
+        ? translateUi("作品已完整生成，可以直接阅读、编辑、修改或导出。")
+        : translateUi("短篇正在后台写成一篇连续作品，打开后即可查看实时进度。"),
       tone: task?.status === "succeeded" ? "success" : "info",
     };
   }
   if (canContinueChapterBatchAutoExecution(task)) {
     return {
       kind: "novel",
-      eyebrow: "推荐下一步",
-      title: "恢复章节创作",
+      eyebrow: translateUi("推荐下一步"),
+      title: translateUi("恢复章节创作"),
       description: getNovelLeadSummary(primaryNovel),
-      reason: "章节批次停在可恢复节点，先恢复执行能最快回到正文生产。",
+      reason: translateUi("章节批次停在可恢复节点，先恢复执行能最快回到正文生产。"),
       tone: "danger",
     };
   }
   if (requiresCandidateSelection(task)) {
     return {
       kind: "novel",
-      eyebrow: "推荐下一步",
-      title: "确认整本故事方向",
+      eyebrow: translateUi("推荐下一步"),
+      title: translateUi("确认整本故事方向"),
       description: getNovelLeadSummary(primaryNovel),
-      reason: "确认方向后，系统才能继续准备世界观、角色和章节执行计划。",
+      reason: translateUi("确认方向后，系统才能继续准备世界观、角色和章节执行计划。"),
       tone: "warning",
     };
   }
   if (canContinueDirector(task)) {
     return {
       kind: "novel",
-      eyebrow: "推荐下一步",
-      title: "继续准备整本小说",
+      eyebrow: translateUi("推荐下一步"),
+      title: translateUi("继续准备整本小说"),
       description: getNovelLeadSummary(primaryNovel),
-      reason: "当前阶段等待确认，继续后会推进到下一段可执行准备。",
+      reason: translateUi("当前阶段等待确认，继续后会推进到下一段可执行准备。"),
       tone: "warning",
     };
   }
   if (task?.status === "running" || task?.status === "queued") {
     return {
       kind: "novel",
-      eyebrow: "AI 创作中",
-      title: "查看创作进度",
+      eyebrow: translateUi("AI 创作中"),
+      title: translateUi("查看创作进度"),
       description: getNovelLeadSummary(primaryNovel),
-      reason: "自动导演或章节执行仍在后台处理，可以查看进度和最近阶段。",
+      reason: translateUi("自动导演或章节执行仍在后台处理，可以查看进度和最近阶段。"),
       tone: "info",
     };
   }
   if (canEnterChapterExecution(task)) {
     return {
       kind: "novel",
-      eyebrow: "推荐下一步",
-      title: "开始创作章节",
+      eyebrow: translateUi("推荐下一步"),
+      title: translateUi("开始创作章节"),
       description: getNovelLeadSummary(primaryNovel),
-      reason: "规划资产已经能支撑章节生产，可以进入正文生成和审阅。",
+      reason: translateUi("规划资产已经能支撑章节生产，可以进入正文生成和审阅。"),
       tone: "success",
     };
   }
   if (task?.status === "failed" || task?.status === "cancelled") {
     return {
       kind: "novel",
-      eyebrow: "需要处理",
-      title: "处理创作中断",
+      eyebrow: translateUi("需要处理"),
+      title: translateUi("处理创作中断"),
       description: getNovelLeadSummary(primaryNovel),
-      reason: "任务存在暂停或失败记录，先查看详情再决定恢复、重试或调整。",
+      reason: translateUi("任务存在暂停或失败记录，先查看详情再决定恢复、重试或调整。"),
       tone: "danger",
     };
   }
   return {
     kind: "novel",
-    eyebrow: "推荐下一步",
-    title: "继续完善小说",
+    eyebrow: translateUi("推荐下一步"),
+    title: translateUi("继续完善小说"),
     description: getNovelLeadSummary(primaryNovel),
-    reason: "没有更高优先级的阻塞项，可以回到项目主页继续完善资料或章节。",
+    reason: translateUi("没有更高优先级的阻塞项，可以回到项目主页继续完善资料或章节。"),
     tone: "neutral",
   };
 }
@@ -239,30 +240,30 @@ export function buildHomeMetrics(input: {
   return [
     {
       id: "running",
-      title: "正在创作",
+      title: translateUi("正在创作"),
       value: liveWorkflowCount,
-      hint: "AI 正在推进的小说或章节。",
+      hint: translateUi("AI 正在推进的小说或章节。"),
       tone: "info",
     },
     {
       id: "attention",
-      title: "等待你确认",
+      title: translateUi("等待你确认"),
       value: actionRequiredCount,
-      hint: "确认后即可继续创作的项目。",
+      hint: translateUi("确认后即可继续创作的项目。"),
       tone: actionRequiredCount > 0 ? "warning" : "success",
     },
     {
       id: "chapter-ready",
-      title: "可以开始写",
+      title: translateUi("可以开始写"),
       value: readyForExecutionCount,
-      hint: "故事准备充分，可以进入正文。",
+      hint: translateUi("故事准备充分，可以进入正文。"),
       tone: readyForExecutionCount > 0 ? "success" : "neutral",
     },
     {
       id: "chapters",
-      title: "已沉淀章节",
+      title: translateUi("已沉淀章节"),
       value: totalChapterCount,
-      hint: "所有作品中持续积累的章节。",
+      hint: translateUi("所有作品中持续积累的章节。"),
       tone: totalChapterCount > 0 ? "info" : "neutral",
     },
   ];
@@ -289,39 +290,39 @@ export function buildHomeAttentionItems(input: {
   if (failedTaskCount > 0 || recoveryCandidateCount > 0) {
     items.push({
       id: "task-recovery",
-      title: failedTaskCount > 0 ? `${failedTaskCount} 个后台任务失败` : `${recoveryCandidateCount} 个任务可恢复`,
-      description: "先处理失败或可恢复任务，可以避免后续生成继续卡在同一位置。",
+      title: translateUi(failedTaskCount > 0 ? "{{count}} 个后台任务失败" : "{{count}} 个任务可恢复", { count: failedTaskCount > 0 ? failedTaskCount : recoveryCandidateCount }),
+      description: translateUi("先处理失败或可恢复任务，可以避免后续生成继续卡在同一位置。"),
       tone: failedTaskCount > 0 ? "danger" : "warning",
       to: "/tasks",
-      actionLabel: "查看任务中心",
+      actionLabel: translateUi("查看任务中心"),
     });
   }
   if (actionRequiredCount > 0 || waitingApprovalCount > 0) {
     items.push({
       id: "workflow-action-required",
-      title: `${Math.max(actionRequiredCount, waitingApprovalCount)} 个创作流程等待处理`,
-      description: "这些项目可能在等待方向确认、阶段继续或失败后的恢复决策。",
+      title: translateUi("{{count}} 个创作流程等待处理", { count: Math.max(actionRequiredCount, waitingApprovalCount) }),
+      description: translateUi("这些项目可能在等待方向确认、阶段继续或失败后的恢复决策。"),
       tone: "warning",
       to: "/auto-director/follow-ups",
-      actionLabel: "查看跟进事项",
+      actionLabel: translateUi("查看跟进事项"),
     });
   }
   if (readyForExecutionCount > 0) {
     items.push({
       id: "chapter-ready",
-      title: `${readyForExecutionCount} 个项目可进入章节执行`,
-      description: "这些项目的规划资产已经能支撑正文生产，可以继续推进章节。",
+      title: translateUi("{{count}} 个项目可进入章节执行", { count: readyForExecutionCount }),
+      description: translateUi("这些项目的规划资产已经能支撑正文生产，可以继续推进章节。"),
       tone: "success",
     });
   }
   if (runningCount > 0) {
     items.push({
       id: "running-tasks",
-      title: `${runningCount} 个任务处理中`,
-      description: "后台任务仍在推进，可以稍后回到首页查看结果。",
+      title: translateUi("{{count}} 个任务处理中", { count: runningCount }),
+      description: translateUi("后台任务仍在推进，可以稍后回到首页查看结果。"),
       tone: "info",
       to: "/tasks",
-      actionLabel: "查看进度",
+      actionLabel: translateUi("查看进度"),
     });
   }
 
@@ -343,32 +344,32 @@ export function buildHomeAssetHealthItems(novels: HomeNovelItem[]): HomeAssetHea
   return [
     {
       id: "world",
-      title: "世界观覆盖",
+      title: translateUi("世界观覆盖"),
       value: totalNovels > 0 ? `${worldBoundCount}/${totalNovels}` : "0",
       description: totalNovels > 0
-        ? "绑定世界观的项目更容易在后续章节中保持规则一致。"
-        : "创建小说后，这里会显示世界观资产状态。",
+        ? translateUi("绑定世界观的项目更容易在后续章节中保持规则一致。")
+        : translateUi("创建小说后，这里会显示世界观资产状态。"),
       tone: totalNovels === 0 ? "neutral" : worldBoundCount === totalNovels ? "success" : "warning",
     },
     {
       id: "characters",
-      title: "角色资产",
+      title: translateUi("角色资产"),
       value: String(totalCharacters),
-      description: "角色数量用于判断项目是否具备连续生成的基本资产。",
+      description: translateUi("角色数量用于判断项目是否具备连续生成的基本资产。"),
       tone: totalCharacters > 0 ? "success" : "warning",
     },
     {
       id: "chapters",
-      title: "章节沉淀",
+      title: translateUi("章节沉淀"),
       value: String(totalChapters),
-      description: "章节越多，摘要、事实和角色时间线越需要稳定回灌。",
+      description: translateUi("章节越多，摘要、事实和角色时间线越需要稳定回灌。"),
       tone: totalChapters > 0 ? "info" : "neutral",
     },
     {
       id: "readiness",
-      title: "资源准备度",
+      title: translateUi("资源准备度"),
       value: averageResourceScore == null ? "--" : `${averageResourceScore}`,
-      description: "来自项目资料准备度的平均信号，用于辅助判断开写基础。",
+      description: translateUi("来自项目资料准备度的平均信号，用于辅助判断开写基础。"),
       tone: averageResourceScore == null
         ? "neutral"
         : averageResourceScore >= 80

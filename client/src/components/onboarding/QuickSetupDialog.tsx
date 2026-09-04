@@ -27,6 +27,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { useLLMStore } from "@/store/llmStore";
 import {
   shouldInitializeProviderSelection,
@@ -62,13 +64,14 @@ const EMPTY_FORM: SetupForm = {
 };
 
 function providerDescription(provider: QuickSetupProviderOption): string {
-  if (provider.id === "deepseek") return "推荐 DeepSeek V4 Flash，兼顾中文长篇质量与响应速度";
-  if (provider.id === "ollama") return "使用本机模型，不要求 API Key";
-  if (provider.id === "openai") return "适合通用规划、正文与结构化任务";
-  return provider.configured ? "已有配置，可以直接检测并设为全局默认" : "配置后可用于整条小说生产链";
+  if (provider.id === "deepseek") return i18n.t("onboarding:quickSetup.providerDesc.deepseek");
+  if (provider.id === "ollama") return i18n.t("onboarding:quickSetup.providerDesc.ollama");
+  if (provider.id === "openai") return i18n.t("onboarding:quickSetup.providerDesc.openai");
+  return provider.configured ? i18n.t("onboarding:quickSetup.providerDesc.configured") : i18n.t("onboarding:quickSetup.providerDesc.default");
 }
 
 export default function QuickSetupDialog(props: QuickSetupDialogProps) {
+  const { t } = useTranslation("onboarding");
   const queryClient = useQueryClient();
   const llmStore = useLLMStore();
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -155,12 +158,12 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
     onSuccess: (response) => {
       const models = response.data?.models ?? [];
       setCustomModels(models);
-      setCustomModelsMessage(models.length > 0 ? `找到 ${models.length} 个可用模型。` : "接口没有返回模型列表，可以手动填写。");
+      setCustomModelsMessage(models.length > 0 ? t("quickSetup.customModels.found", { count: models.length }) : t("quickSetup.customModels.none"));
       setForm((current) => ({ ...current, model: current.model.trim() || models[0] || "" }));
     },
     onError: (error) => {
       setCustomModels([]);
-      setCustomModelsMessage(error instanceof Error ? error.message : "获取模型列表失败，可以手动填写模型名称。");
+      setCustomModelsMessage(error instanceof Error ? error.message : t("quickSetup.customModels.failed"));
     },
   });
 
@@ -225,14 +228,14 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
     : step === 1
       ? (
           <Button onClick={() => setStep(2)} disabled={!canContinueProvider}>
-            填写连接信息 <ArrowRight className="h-4 w-4" />
+            {t("quickSetup.footer.fillConnection")} <ArrowRight className="h-4 w-4" />
           </Button>
         )
       : step === 2
         ? (
             <>
-              <Button variant="ghost" onClick={() => setStep(1)}><ArrowLeft className="h-4 w-4" /> 返回选择</Button>
-              <Button onClick={submit} disabled={!canSubmit}>检测并完成配置 <PlugZap className="h-4 w-4" /></Button>
+              <Button variant="ghost" onClick={() => setStep(1)}><ArrowLeft className="h-4 w-4" /> {t("quickSetup.footer.backToSelect")}</Button>
+              <Button onClick={submit} disabled={!canSubmit}>{t("quickSetup.footer.detectAndComplete")} <PlugZap className="h-4 w-4" /></Button>
             </>
           )
         : completeMutation.isSuccess
@@ -240,20 +243,20 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
               showFirstNovelHandoff
                 ? (
                     <>
-                      <Button variant="outline" asChild><Link to="/help">查看创作向导</Link></Button>
-                      <Button asChild><Link to="/novels/auto-director">用一句话开始第一本小说 <ArrowRight className="h-4 w-4" /></Link></Button>
+                      <Button variant="outline" asChild><Link to="/help">{t("quickSetup.footer.viewGuide")}</Link></Button>
+                      <Button asChild><Link to="/novels/auto-director">{t("quickSetup.footer.startFirstNovel")} <ArrowRight className="h-4 w-4" /></Link></Button>
                     </>
                   )
                 : (
                     <>
-                      <Button variant="outline" asChild><Link to="/settings">查看高级设置</Link></Button>
-                      <Button onClick={() => props.onOpenChange(false)}>开始创作 <Sparkles className="h-4 w-4" /></Button>
+                      <Button variant="outline" asChild><Link to="/settings">{t("quickSetup.footer.viewAdvanced")}</Link></Button>
+                      <Button onClick={() => props.onOpenChange(false)}>{t("quickSetup.footer.startCreating")} <Sparkles className="h-4 w-4" /></Button>
                     </>
                   )
             )
           : completeMutation.isError
             ? (
-                <Button variant="outline" onClick={() => setStep(2)}><ArrowLeft className="h-4 w-4" /> 修改配置</Button>
+                <Button variant="outline" onClick={() => setStep(2)}><ArrowLeft className="h-4 w-4" /> {t("quickSetup.footer.editConfig")}</Button>
               )
             : null;
 
@@ -261,16 +264,16 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <AppDialogContent
         className="max-w-3xl"
-        title="让 AI 创作环境先跑起来"
-        description="只配置一个文本模型，系统会自动准备规划、正文、审校和修复所需的任务路由。"
+        title={t("quickSetup.title")}
+        description={t("quickSetup.description")}
         footer={footer}
         footerClassName="gap-2"
       >
         <div className="mb-6 grid grid-cols-3 gap-2">
           {[
-            { index: 1, label: "选择厂商" },
-            { index: 2, label: "连接模型" },
-            { index: 3, label: "检测完成" },
+            { index: 1, label: t("quickSetup.steps.chooseProvider") },
+            { index: 2, label: t("quickSetup.steps.connectModel") },
+            { index: 3, label: t("quickSetup.steps.detect") },
           ].map((item) => (
             <div key={item.index} className={cn(
               "rounded-lg border px-3 py-2 text-xs",
@@ -288,36 +291,36 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
 
         {props.loading ? (
           <div className="flex min-h-56 items-center justify-center text-sm text-muted-foreground">
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" /> 正在检查创作环境
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" /> {t("quickSetup.checkingEnv")}
           </div>
         ) : props.error ? (
           <div className="flex min-h-56 flex-col items-center justify-center gap-4 text-center">
             <CircleAlert className="h-9 w-9 text-amber-600" />
             <div>
-              <div className="font-semibold">暂时无法读取模型配置</div>
-              <div className="mt-1 text-sm text-muted-foreground">重新加载后，系统会继续判断是否可以开始创作。</div>
+              <div className="font-semibold">{t("quickSetup.readError.title")}</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t("quickSetup.readError.description")}</div>
             </div>
-            <Button variant="outline" onClick={props.onRetry}>重新加载</Button>
+            <Button variant="outline" onClick={props.onRetry}>{t("quickSetup.reload")}</Button>
           </div>
         ) : props.status?.readyForCreation && !props.forceConfiguration && !completeMutation.isSuccess ? (
           <div className="flex min-h-56 flex-col items-center justify-center gap-4 text-center">
             <CheckCircle2 className="h-10 w-10 text-emerald-600" />
             <div>
-              <div className="text-lg font-semibold">创作环境可以使用</div>
+              <div className="text-lg font-semibold">{t("quickSetup.ready.title")}</div>
               <div className="mt-2 text-sm text-muted-foreground">
-                {props.status.selectedProvider} · {props.status.selectedModel}，{props.status.routeCoverage.total} 类核心任务均已就绪。
+                {t("quickSetup.ready.summary", { provider: props.status.selectedProvider, model: props.status.selectedModel, count: props.status.routeCoverage.total })}
               </div>
             </div>
-            <Button onClick={() => props.onOpenChange(false)}>继续创作</Button>
+            <Button onClick={() => props.onOpenChange(false)}>{t("quickSetup.ready.continue")}</Button>
           </div>
         ) : step === 1 ? (
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold">{showAllProviderChoices ? "选择一个内置模型厂商" : "从推荐方案开始"}</h3>
+              <h3 className="font-semibold">{showAllProviderChoices ? t("quickSetup.step1.titleAll") : t("quickSetup.step1.titleRecommended")}</h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 {showAllProviderChoices
-                  ? "选择一个厂商后，再填写连接信息。"
-                  : "先配置一个文本模型即可开始创作；需要时再选择其他厂商。"}
+                  ? t("quickSetup.step1.hintAll")
+                  : t("quickSetup.step1.hintRecommended")}
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -337,10 +340,10 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
                       <div className="mt-1 text-xs leading-5 text-muted-foreground">{providerDescription(provider)}</div>
                     </div>
                     {form.provider === provider.id
-                      ? <Badge>已选择</Badge>
-                      : provider.configured ? <Badge variant="outline">已有配置</Badge> : null}
+                        ? <Badge>{t("quickSetup.badge.selected")}</Badge>
+                      : provider.configured ? <Badge variant="outline">{t("quickSetup.badge.configured")}</Badge> : null}
                   </div>
-                <div className="mt-3 text-xs text-muted-foreground">推荐模型：{provider.currentModel || provider.defaultModel}</div>
+                <div className="mt-3 text-xs text-muted-foreground">{t("quickSetup.step1.recommendedModel", { model: provider.currentModel || provider.defaultModel })}</div>
               </button>
               ))}
               {!showAllProviderChoices ? (
@@ -349,8 +352,8 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
                   className="rounded-xl border border-dashed p-4 text-left transition hover:border-primary/50 hover:bg-primary/5"
                   onClick={() => setShowAllProviderChoices(true)}
                 >
-                  <div className="flex items-center gap-2 font-semibold"><PlugZap className="h-4 w-4" /> 查看全部内置厂商</div>
-                  <div className="mt-2 text-xs leading-5 text-muted-foreground">选择你已有账号的厂商，再继续填写连接信息。</div>
+                  <div className="flex items-center gap-2 font-semibold"><PlugZap className="h-4 w-4" /> {t("quickSetup.step1.viewAllProviders")}</div>
+                  <div className="mt-2 text-xs leading-5 text-muted-foreground">{t("quickSetup.step1.viewAllProvidersHint")}</div>
                 </button>
               ) : null}
               <button
@@ -361,50 +364,50 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
                 )}
                 onClick={() => chooseCustom(true)}
               >
-                <div className="flex items-center gap-2 font-semibold"><ServerCog className="h-4 w-4" /> 添加第三方厂商 <ArrowRight className="h-4 w-4" /></div>
-                <div className="mt-2 text-xs leading-5 text-muted-foreground">新增一份独立的厂商配置，适合中转服务、本地网关或 OpenAI 兼容接口。</div>
+                <div className="flex items-center gap-2 font-semibold"><ServerCog className="h-4 w-4" /> {t("quickSetup.step1.addCustom")} <ArrowRight className="h-4 w-4" /></div>
+                <div className="mt-2 text-xs leading-5 text-muted-foreground">{t("quickSetup.step1.addCustomHint")}</div>
               </button>
             </div>
             {showAllProviderChoices ? (
               <Button type="button" variant="ghost" size="sm" onClick={() => setShowAllProviderChoices(false)}>
-                <ArrowLeft className="h-4 w-4" /> 返回推荐方案
+                <ArrowLeft className="h-4 w-4" /> {t("quickSetup.step1.backToRecommended")}
               </Button>
             ) : null}
           </div>
         ) : step === 2 ? (
           <div className="space-y-5">
             <div>
-              <h3 className="font-semibold">{form.providerKind === "custom" ? "添加第三方厂商" : `连接 ${selectedProvider?.name ?? "模型厂商"}`}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">API Key 只会保存到本机或服务端密钥存储，不会显示在完成结果中。</p>
+              <h3 className="font-semibold">{form.providerKind === "custom" ? t("quickSetup.step1.addCustom") : t("quickSetup.step2.connectTitle", { name: selectedProvider?.name ?? t("quickSetup.step2.providerFallback") })}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{t("quickSetup.step2.apiKeyNote")}</p>
               {form.providerKind === "custom" ? (
-                <p className="mt-1 text-xs text-muted-foreground">厂商名称、API 地址和模型将保存为独立配置，不会覆盖已有内置厂商。</p>
+                <p className="mt-1 text-xs text-muted-foreground">{t("quickSetup.step2.customNote")}</p>
               ) : null}
             </div>
             {form.providerKind === "custom" ? (
               <label className="block space-y-1.5">
-                <span className="text-sm font-medium">厂商名称</span>
-                <Input value={form.customProviderName} placeholder="例如：我的模型网关" onChange={(event) => setForm((current) => ({ ...current, customProviderName: event.target.value }))} />
+                <span className="text-sm font-medium">{t("quickSetup.step2.providerName")}</span>
+                <Input value={form.customProviderName} placeholder={t("quickSetup.step2.providerNamePlaceholder")} onChange={(event) => setForm((current) => ({ ...current, customProviderName: event.target.value }))} />
               </label>
             ) : null}
             <label className="block space-y-1.5">
-              <span className="flex items-center gap-2 text-sm font-medium"><KeyRound className="h-4 w-4" /> API Key {requiresApiKey ? "" : "（可选）"}</span>
+              <span className="flex items-center gap-2 text-sm font-medium"><KeyRound className="h-4 w-4" /> API Key {requiresApiKey ? "" : t("quickSetup.step2.optional")}</span>
               <Input
                 type="password"
                 autoComplete="off"
                 value={form.apiKey}
-                placeholder={hasSavedKey ? "留空则继续使用已保存的 Key" : requiresApiKey ? "输入 API Key" : "本地接口可以留空"}
+                placeholder={hasSavedKey ? t("quickSetup.step2.apiKeyPlaceholderSaved") : requiresApiKey ? t("quickSetup.step2.apiKeyPlaceholderRequired") : t("quickSetup.step2.apiKeyPlaceholderLocal")}
                 onChange={(event) => setForm((current) => ({ ...current, apiKey: event.target.value }))}
               />
             </label>
             <label className="block space-y-1.5">
-              <span className="text-sm font-medium">API 地址</span>
+              <span className="text-sm font-medium">{t("quickSetup.step2.baseUrl")}</span>
               <Input value={form.baseURL} placeholder="https://api.example.com/v1" onChange={(event) => setForm((current) => ({ ...current, baseURL: event.target.value }))} />
             </label>
             {form.providerKind === "custom" ? (
               <div className="flex flex-wrap items-center gap-3">
                 <Button type="button" variant="outline" size="sm" onClick={() => previewMutation.mutate()} disabled={!form.baseURL.trim() || previewMutation.isPending}>
                   {previewMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <ServerCog className="h-4 w-4" />}
-                  获取模型列表
+                  {t("quickSetup.step2.fetchModels")}
                 </Button>
                 {customModelsMessage ? <span className="text-xs text-muted-foreground">{customModelsMessage}</span> : null}
               </div>
@@ -424,11 +427,11 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
               </div>
             ) : null}
             <label className="block space-y-1.5">
-              <span className="text-sm font-medium">文本模型</span>
-              <Input value={form.model} placeholder="选择上方模型，或直接填写模型名称" onChange={(event) => setForm((current) => ({ ...current, model: event.target.value }))} />
+              <span className="text-sm font-medium">{t("quickSetup.step2.textModel")}</span>
+              <Input value={form.model} placeholder={t("quickSetup.step2.modelPlaceholder")} onChange={(event) => setForm((current) => ({ ...current, model: event.target.value }))} />
             </label>
             <div className="rounded-lg border bg-muted/20 p-3 text-xs leading-5 text-muted-foreground">
-              完成后，这个模型会作为规划、正文、审核、修复、重规划和摘要等核心任务的初始默认值。
+              {t("quickSetup.step2.footnote")}
             </div>
           </div>
         ) : (
@@ -439,8 +442,8 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
                   <Loader2 className="h-7 w-7 animate-spin text-primary" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">正在检测普通文本与结构化输出</div>
-                  <div className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">检测通过后，系统会自动准备全部核心创作任务，不需要逐项配置路由。</div>
+                  <div className="text-lg font-semibold">{t("quickSetup.step3.detecting")}</div>
+                  <div className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">{t("quickSetup.step3.detectingHint")}</div>
                 </div>
               </>
             ) : completeMutation.isSuccess ? (
@@ -449,19 +452,19 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
                   <CheckCircle2 className="h-8 w-8 text-emerald-700" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">创作环境配置完成</div>
-                  <div className="mt-2 text-sm text-muted-foreground">{completeMutation.data.data?.model} 已可用于整条小说生产链。</div>
+                  <div className="text-lg font-semibold">{t("quickSetup.step3.successTitle")}</div>
+                  <div className="mt-2 text-sm text-muted-foreground">{t("quickSetup.step3.successDesc", { model: completeMutation.data.data?.model })}</div>
                 </div>
                 {showFirstNovelHandoff ? (
                   <div className="w-full max-w-xl rounded-2xl border border-primary/15 bg-primary/[0.035] p-5 text-left shadow-sm">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="text-sm font-semibold text-primary">开始第一本小说</div>
-                      <Link to="/settings" className="text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">配置更多模型</Link>
+                      <div className="text-sm font-semibold text-primary">{t("quickSetup.handoff.title")}</div>
+                      <Link to="/settings" className="text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">{t("quickSetup.handoff.configureMore")}</Link>
                     </div>
-                    <h3 className="mt-2 text-xl font-semibold tracking-tight">从一句想写的故事开始</h3>
-                    <p className="mt-2 text-sm leading-6 text-muted-foreground">告诉 AI 你想写什么，它会先给出可选方向；选定后继续准备故事、世界、角色和首章。</p>
+                    <h3 className="mt-2 text-xl font-semibold tracking-tight">{t("quickSetup.handoff.heading")}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{t("quickSetup.handoff.body")}</p>
                     <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                      {["说想法", "选择方向", "阅读首章"].map((label, index) => (
+                      {[t("quickSetup.handoff.steps.idea"), t("quickSetup.handoff.steps.direction"), t("quickSetup.handoff.steps.firstChapter")].map((label, index) => (
                         <div key={label} className="rounded-xl border bg-background/80 px-3 py-2.5 text-sm font-medium">
                           <span className="mr-2 text-primary">{index + 1}</span>{label}
                         </div>
@@ -476,9 +479,9 @@ export default function QuickSetupDialog(props: QuickSetupDialogProps) {
                   <CircleAlert className="h-8 w-8 text-amber-700" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">模型检测没有通过</div>
+                  <div className="text-lg font-semibold">{t("quickSetup.step3.failTitle")}</div>
                   <div className="mt-2 max-w-lg text-sm leading-6 text-destructive">
-                    {completeMutation.error instanceof Error ? completeMutation.error.message : "请检查 API Key、地址和模型名称后重试。"}
+                    {completeMutation.error instanceof Error ? completeMutation.error.message : t("quickSetup.step3.failDesc")}
                   </div>
                 </div>
               </>

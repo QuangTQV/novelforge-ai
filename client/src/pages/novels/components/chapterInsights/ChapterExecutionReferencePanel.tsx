@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   AuditReport,
   Chapter,
@@ -132,7 +133,8 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
   if (!selectedChapter) {
     return (
       <div className="rounded-2xl border border-dashed border-border/70 bg-background p-4 text-sm leading-6 text-muted-foreground">
-        选中章节后，这里会显示任务单、场景拆解、质量反馈、修复记录和诊断信息。
+
+        {translateUi("选中章节后，这里会显示任务单、场景拆解、质量反馈、修复记录和诊断信息。")}
       </div>
     );
   }
@@ -153,33 +155,35 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
       <div className="rounded-2xl border border-border/70 bg-background p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="text-base font-semibold text-foreground">资料诊断</div>
+            <div className="text-base font-semibold text-foreground">{translateUi("资料诊断")}</div>
             <div className="mt-1 text-sm leading-6 text-muted-foreground">
-              查看本章任务、质量和修复依据，不占用正文阅读区。
+
+              {translateUi("查看本章任务、质量和修复依据，不占用正文阅读区。")}
             </div>
           </div>
-          <Badge variant="outline" className="shrink-0">第{selectedChapter.order}章</Badge>
+          <Badge variant="outline" className="shrink-0">{translateUi("第")}{selectedChapter.order}{translateUi("章")}</Badge>
         </div>
       </div>
 
       {qualityDebt ? (
         <div className="rounded-2xl bg-amber-50/80 p-4 text-sm text-amber-950">
-          <div className="font-semibold">本章有待回收的质量项</div>
+          <div className="font-semibold">{translateUi("本章有待回收的质量项")}</div>
           <div className="mt-2 leading-6 text-amber-900/85">{qualityDebt.reason}</div>
           <div className="mt-3 grid gap-2 text-xs text-amber-900/75 sm:grid-cols-2">
-            <span>来源：{qualityDebt.source ? QUALITY_DEBT_SOURCE_LABELS[qualityDebt.source] : "历史质量记录"}</span>
-            <span>自动修复：{formatQualityDebtAttempts(qualityDebt)}</span>
-            <span>记录时间：{formatQualityDebtTime(qualityDebt.evaluatedAt)}</span>
+            <span>{translateUi("来源：")}{qualityDebt.source ? QUALITY_DEBT_SOURCE_LABELS[qualityDebt.source] : translateUi("历史质量记录")}</span>
+            <span>{translateUi("自动修复：")}{formatQualityDebtAttempts(qualityDebt)}</span>
+            <span>{translateUi("记录时间：")}{formatQualityDebtTime(qualityDebt.evaluatedAt)}</span>
           </div>
           {qualityDebt.issueCodes.length > 0 ? (
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="mr-1 text-xs text-amber-900/70">问题标记</span>
+              <span className="mr-1 text-xs text-amber-900/70">{translateUi("问题标记")}</span>
               {qualityDebt.issueCodes.map((code) => <Badge key={code} variant="secondary">{code}</Badge>)}
             </div>
           ) : null}
           <Button asChild size="sm" variant="outline" className="mt-3 bg-background text-foreground">
             <Link to={`/novels/${selectedChapter.novelId}/edit?stage=pipeline&chapterId=${encodeURIComponent(selectedChapter.id)}`}>
-              进入质量修复
+
+              {translateUi("进入质量修复")}
             </Link>
           </Button>
         </div>
@@ -187,22 +191,22 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
 
       <Tabs value={detailTab} onValueChange={(value) => onAssetTabChange(value as AssetTabKey)}>
         <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl bg-muted/50 p-1.5">
-          <TabsTrigger value="taskSheet" className="rounded-xl text-xs">任务单</TabsTrigger>
-          <TabsTrigger value="sceneCards" className="rounded-xl text-xs">场景</TabsTrigger>
-          <TabsTrigger value="quality" className="rounded-xl text-xs">质量</TabsTrigger>
-          <TabsTrigger value="repair" className="rounded-xl text-xs">修复</TabsTrigger>
-          <TabsTrigger value="content" className="col-span-2 rounded-xl text-xs">上下文诊断</TabsTrigger>
+          <TabsTrigger value="taskSheet" className="rounded-xl text-xs">{translateUi("任务单")}</TabsTrigger>
+          <TabsTrigger value="sceneCards" className="rounded-xl text-xs">{translateUi("场景")}</TabsTrigger>
+          <TabsTrigger value="quality" className="rounded-xl text-xs">{translateUi("质量")}</TabsTrigger>
+          <TabsTrigger value="repair" className="rounded-xl text-xs">{translateUi("修复")}</TabsTrigger>
+          <TabsTrigger value="content" className="col-span-2 rounded-xl text-xs">{translateUi("上下文诊断")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="taskSheet" className="space-y-3">
           <div className="rounded-2xl border bg-muted/20 p-4">
-            <div className="text-xs text-muted-foreground">本章任务单</div>
+            <div className="text-xs text-muted-foreground">{translateUi("本章任务单")}</div>
             <div className="mt-3 whitespace-pre-wrap text-sm leading-7">
-              {selectedChapter.taskSheet?.trim() || "暂无任务单。你可以先让 AI 生成任务单，再回来继续写这章。"}
+              {selectedChapter.taskSheet?.trim() || translateUi("暂无任务单。你可以先让 AI 生成任务单，再回来继续写这章。")}
             </div>
           </div>
-          <PanelHintCard title="章节目标" content={chapterObjective} />
-          <PanelHintCard title="最新状态" content={latestStateSnapshot?.summary || "暂无状态摘要。"} />
+          <PanelHintCard title={translateUi("章节目标")} content={chapterObjective} />
+          <PanelHintCard title={translateUi("最新状态")} content={latestStateSnapshot?.summary || translateUi("暂无状态摘要。")} />
           <ChapterRuntimeContextCard
             runtimePackage={runtimePackage}
             chapterPlan={chapterPlan}
@@ -215,29 +219,30 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
           {scenePlan ? (
             <div className="space-y-3">
               <div className="rounded-2xl border bg-muted/20 p-4">
-                <div className="text-xs text-muted-foreground">场景预算合同</div>
+                <div className="text-xs text-muted-foreground">{translateUi("场景预算合同")}</div>
                 <div className="mt-3 grid grid-cols-2 gap-3">
-                  <MetricBadge label="章节目标" value={`${scenePlan.targetWordCount} 字`} />
-                  <MetricBadge label="场景数" value={String(scenePlan.scenes.length)} />
+                  <MetricBadge label={translateUi("章节目标")} value={translateUi("{{value0}} 字", { value0: scenePlan.targetWordCount })} />
+                  <MetricBadge label={translateUi("场景数")} value={String(scenePlan.scenes.length)} />
                 </div>
               </div>
               {scenePlan.scenes.map((scene, index) => (
                 <div key={scene.key} className="rounded-2xl border bg-background p-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="outline">场景 {index + 1}</Badge>
-                    <Badge variant="secondary">{scene.targetWordCount} 字</Badge>
+                    <Badge variant="outline">{translateUi("场景")} {index + 1}</Badge>
+                    <Badge variant="secondary">{scene.targetWordCount}  {translateUi("字")}</Badge>
                   </div>
                   <div className="mt-3 text-sm font-semibold text-foreground">{scene.title}</div>
                   <div className="mt-2 text-sm leading-6 text-muted-foreground">{scene.purpose}</div>
                   <div className="mt-3 space-y-2">
-                    <PanelHintCard title="必须推进" content={scene.mustAdvance.join("；") || "无"} />
-                    <PanelHintCard title="必须保留" content={scene.mustPreserve.join("；") || "无"} />
-                    <PanelHintCard title="起始状态" content={scene.entryState} />
-                    <PanelHintCard title="结束状态" content={scene.exitState} />
+                    <PanelHintCard title={translateUi("必须推进")} content={scene.mustAdvance.join(translateUi("；")) || translateUi("无")} />
+                    <PanelHintCard title={translateUi("必须保留")} content={scene.mustPreserve.join(translateUi("；")) || translateUi("无")} />
+                    <PanelHintCard title={translateUi("起始状态")} content={scene.entryState} />
+                    <PanelHintCard title={translateUi("结束状态")} content={scene.exitState} />
                   </div>
                   {scene.forbiddenExpansion.length > 0 ? (
                     <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-sm leading-6 text-amber-900">
-                      禁止展开：{scene.forbiddenExpansion.join("；")}
+
+                      {translateUi("禁止展开：")}{scene.forbiddenExpansion.join(translateUi("；"))}
                     </div>
                   ) : null}
                 </div>
@@ -245,11 +250,11 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
             </div>
           ) : (
             <div className="rounded-2xl border bg-muted/20 p-4">
-              <div className="text-xs text-muted-foreground">场景拆解</div>
+              <div className="text-xs text-muted-foreground">{translateUi("场景拆解")}</div>
               <div className="mt-3 whitespace-pre-wrap text-sm leading-7">
                 {selectedChapter.sceneCards?.trim()
-                  ? "当前是旧版场景拆解文本，建议重新生成章节执行合同。"
-                  : "暂无场景拆解。"}
+                  ? translateUi("当前是旧版场景拆解文本，建议重新生成章节执行合同。")
+                  : translateUi("暂无场景拆解。")}
               </div>
             </div>
           )}
@@ -257,16 +262,16 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
 
         <TabsContent value="quality" className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
-            <MetricBadge label="总体" value={String(chapterQualityReport?.overall ?? selectedChapter.qualityScore ?? "-")} />
-            <MetricBadge label="连贯性" value={String(chapterQualityReport?.coherence ?? "-")} />
-            <MetricBadge label="重复度" value={String(chapterQualityReport?.repetition ?? "-")} />
-            <MetricBadge label="节奏" value={String(chapterQualityReport?.pacing ?? selectedChapter.pacingScore ?? "-")} />
-            <MetricBadge label="文风" value={String(chapterQualityReport?.voice ?? "-")} />
-            <MetricBadge label="吸引力" value={String(chapterQualityReport?.engagement ?? "-")} />
+            <MetricBadge label={translateUi("总体")} value={String(chapterQualityReport?.overall ?? selectedChapter.qualityScore ?? "-")} />
+            <MetricBadge label={translateUi("连贯性")} value={String(chapterQualityReport?.coherence ?? "-")} />
+            <MetricBadge label={translateUi("重复度")} value={String(chapterQualityReport?.repetition ?? "-")} />
+            <MetricBadge label={translateUi("节奏")} value={String(chapterQualityReport?.pacing ?? selectedChapter.pacingScore ?? "-")} />
+            <MetricBadge label={translateUi("文风")} value={String(chapterQualityReport?.voice ?? "-")} />
+            <MetricBadge label={translateUi("吸引力")} value={String(chapterQualityReport?.engagement ?? "-")} />
           </div>
 
           <div className="rounded-2xl border p-4 text-sm">
-            <div className="font-semibold text-foreground">最近审校问题</div>
+            <div className="font-semibold text-foreground">{translateUi("最近审校问题")}</div>
             {reviewResult?.issues?.length ? (
               <div className="mt-3 space-y-2 text-xs text-muted-foreground">
                 {reviewResult.issues.slice(0, 5).map((item, index) => (
@@ -277,12 +282,12 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
                 ))}
               </div>
             ) : (
-              <div className="mt-3 text-xs leading-6 text-muted-foreground">当前没有最近审校问题。</div>
+              <div className="mt-3 text-xs leading-6 text-muted-foreground">{translateUi("当前没有最近审校问题。")}</div>
             )}
           </div>
 
           <div className="rounded-2xl border p-4 text-sm">
-            <div className="font-semibold text-foreground">结构化审计问题</div>
+            <div className="font-semibold text-foreground">{translateUi("结构化审计问题")}</div>
             {openAuditIssues.length > 0 ? (
               <div className="mt-3 space-y-2 text-xs text-muted-foreground">
                 {openAuditIssues.slice(0, 6).map((item) => (
@@ -293,7 +298,7 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
                 ))}
               </div>
             ) : (
-              <div className="mt-3 text-xs leading-6 text-muted-foreground">当前没有结构化审计问题。</div>
+              <div className="mt-3 text-xs leading-6 text-muted-foreground">{translateUi("当前没有结构化审计问题。")}</div>
             )}
           </div>
 
@@ -310,17 +315,17 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
         <TabsContent value="repair" className="space-y-3">
           {repairingOtherChapter ? (
             <ReferenceNotice
-              title="还有其他章节正在后台修复"
-              description={`${repairStreamingChapterLabel ?? "另一章"} 仍在修复中。当前章节不会显示那一章的修复流，返回对应章节即可继续查看。`}
+              title={translateUi("还有其他章节正在后台修复")}
+              description={translateUi("{{value0}} 仍在修复中。当前章节不会显示那一章的修复流，返回对应章节即可继续查看。", { value0: repairStreamingChapterLabel ?? translateUi("另一章") })}
             />
           ) : null}
 
           {(isSelectedChapterRepairStreaming || hasVisibleRepairOutput) ? (
             <StreamOutput
-              title="问题修复输出"
+              title={translateUi("问题修复输出")}
               emptyText={isSelectedChapterRepairFinalizing
-                ? (repairRunStatus?.message ?? "修复文本已经输出完成，系统正在保存并复审。")
-                : "等待修复输出..."}
+                ? (repairRunStatus?.message ?? translateUi("修复文本已经输出完成，系统正在保存并复审。"))
+                : translateUi("等待修复输出...")}
               content={visibleRepairStreamContent}
               isStreaming={isSelectedChapterRepairStreaming}
               onAbort={isSelectedChapterRepairFinalizing ? undefined : onAbortRepair}
@@ -328,9 +333,9 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
           ) : null}
 
           <div className="rounded-2xl border bg-muted/20 p-4">
-            <div className="text-xs text-muted-foreground">修复记录</div>
+            <div className="text-xs text-muted-foreground">{translateUi("修复记录")}</div>
             <div className="mt-3 max-h-[420px] overflow-y-auto whitespace-pre-wrap text-sm leading-7">
-              {selectedChapter.repairHistory?.trim() || "暂无修复记录。"}
+              {selectedChapter.repairHistory?.trim() || translateUi("暂无修复记录。")}
             </div>
           </div>
         </TabsContent>

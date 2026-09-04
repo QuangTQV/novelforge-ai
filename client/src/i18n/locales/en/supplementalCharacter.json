@@ -1,0 +1,37 @@
+{
+  "title": "Add supporting characters",
+  "description": "Good for adding rivals, allies, pressure sources or key relationship characters. AI suggests candidates from the existing cast.",
+  "fields": {
+    "mode": "How to add",
+    "modeHint": "AI decides by default; only pin it manually when you know exactly which kind of character to add.",
+    "referenceCharacter": "Reference character",
+    "referenceHint": "Can be left blank; if blank, AI decides who to build around.",
+    "storyFunction": "Desired role",
+    "count": "Number to generate",
+    "extraInstructions": "Extra notes",
+    "extraPlaceholder": "e.g. add an ordinary person who pressures the protagonist but isn't fully a villain; or an old acquaintance tied to the mother's storyline."
+  },
+  "options": {
+    "modeAuto": "AI decides what type is needed",
+    "modeLinked": "Derive a relationship character from an existing one",
+    "modeIndependent": "Create a relatively standalone character",
+    "aiDecide": "AI decides",
+    "protagonist": "Protagonist",
+    "antagonist": "Main rival",
+    "ally": "Ally",
+    "foil": "Foil",
+    "mentor": "Mentor",
+    "loveInterest": "Love interest",
+    "pressureSource": "Pressure source",
+    "catalyst": "Catalyst",
+    "count": "{{count}} characters"
+  },
+  "status": {
+    "noCharacters": "There are no characters yet, so relationship-based additions aren't possible. Create core characters first or choose a standalone addition.",
+    "generated": "Supporting character candidates generated.",
+    "generateFailed": "Failed to generate supporting characters.",
+    "relationSuffix": ", and synced {{count}} relationships",
+    "applied": "Added {{name}} to the current novel{{relationSuffix}}.",
+    "applyFailed": "Failed to apply the supporting character."
+  }
+}

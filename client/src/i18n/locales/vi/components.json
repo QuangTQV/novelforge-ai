@@ -1,0 +1,51 @@
+{
+  "assetLibrary": {
+    "recommendation": { "ariaLabel": "Gợi ý tài nguyên" },
+    "statusGrid": { "ariaLabel": "Trạng thái tài nguyên" },
+    "tree": {
+      "collapseNode": "Thu gọn {{name}}",
+      "expandNode": "Mở rộng {{name}}",
+      "selectNode": "Chọn {{name}}"
+    }
+  },
+  "streamOutput": {
+    "title": "Kết quả AI",
+    "waiting": "Đang chờ kết quả…",
+    "generating": "Đang tạo…",
+    "wordCount": "{{count}} từ",
+    "stop": "Dừng"
+  },
+  "select": {
+    "placeholder": "Chọn một mục",
+    "empty": "Chưa có lựa chọn",
+    "search": "Tìm kiếm",
+    "noOptions": "Không tìm thấy kết quả"
+  },
+  "fullscreenView": { "enter": "Mở toàn màn hình", "exit": "Thoát toàn màn hình" },
+  "aiRevisionWorkspace": {
+    "instructionLabel": "Yêu cầu chỉnh sửa",
+    "instructionPlaceholder": "Mô tả cách bạn muốn AI chỉnh sửa…",
+    "selectionTitle": "Phạm vi đã chọn",
+    "noSelectionHint": "Chọn một đoạn văn để chỉnh sửa riêng.",
+    "optimizing": "AI đang tối ưu…",
+    "optimizeFullPreview": "Tối ưu toàn bộ bản xem trước",
+    "optimizeSelectionOnly": "Chỉ tối ưu phần đã chọn",
+    "previewLabel": "Bản xem trước",
+    "applyPreview": "Áp dụng bản xem trước",
+    "cancelPreview": "Hủy bản xem trước"
+  },
+  "llmSelector": {
+    "model": "Mô hình",
+    "selectProvider": "Chọn nhà cung cấp",
+    "configureProvider": "Hãy cấu hình nhà cung cấp khả dụng",
+    "selectModel": "Chọn mô hình",
+    "noModels": "Chưa có mô hình khả dụng",
+    "searchModel": "Tìm mô hình",
+    "temperatureHint": "Nhiệt độ càng cao thì kết quả càng đa dạng; lập kế hoạch nên dùng 0,3–0,7",
+    "temperature": "Nhiệt độ",
+    "modelTemperature": "Nhiệt độ mô hình",
+    "noConfiguredProvider": "Chưa có nhà cung cấp mô hình khả dụng. Hãy hoàn tất API Key và cấu hình mô hình trong Cài đặt hệ thống.",
+    "temperatureRange": "Nhiệt độ (0–2)",
+    "maxTokens": "Tokens tối đa (để trống = không giới hạn)"
+  }
+}

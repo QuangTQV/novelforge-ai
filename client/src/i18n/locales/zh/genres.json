@@ -1,0 +1,136 @@
+{
+  "page": {
+    "header": {
+      "context": "创作资产 / 小说定位",
+      "title": "题材基底库",
+      "description": "维护小说可复用的题材定位与分类层级。开书时选择合适的题材基底，AI 会据此理解作品类型、读者期待和主要创作方向。",
+      "createRootTree": "新建题材基底树"
+    },
+    "status": {
+      "genres": {
+        "label": "题材基底",
+        "detail": "可供小说选择的分类节点"
+      },
+      "roots": {
+        "label": "根分类",
+        "detail": "用于划分主要创作方向"
+      },
+      "novels": {
+        "label": "关联小说",
+        "detail": "正在使用这些题材的作品"
+      },
+      "descriptions": {
+        "label": "说明完整",
+        "detail": "有明确定位说明的题材"
+      }
+    },
+    "delete": {
+      "confirmWithChildren_one": "确认删除题材基底「{{name}}」？这会同时删除其下 {{count}} 个子分类，此操作不可恢复。",
+      "confirmWithChildren_other": "确认删除题材基底「{{name}}」？这会同时删除其下 {{count}} 个子分类，此操作不可恢复。",
+      "confirm": "确认删除题材基底「{{name}}」？此操作不可恢复。",
+      "success": "题材基底已删除。"
+    },
+    "recommendation": {
+      "errorTitle": "重新加载题材基底",
+      "errorDescription": "暂时无法读取题材结构。重新加载后，可以继续查看、编辑和维护题材。",
+      "reload": "重新加载",
+      "loadingTitle": "正在确认题材基底状态",
+      "loadingDescription": "加载完成后，会根据题材覆盖和说明完整度给出下一步建议。",
+      "emptyTitle": "先建立第一棵题材基底树",
+      "emptyDescription": "描述你想覆盖的创作方向，可以手动搭建层级，也可以让 AI 生成草稿后再调整。",
+      "emptyAction": "创建题材基底",
+      "describeTitle": "补充「{{name}}」的题材说明",
+      "describeDescription": "明确作品定位、读者期待和核心冲突，能帮助 AI 在开书和规划时更准确地理解这个题材。",
+      "describeAction": "补充说明",
+      "readyTitle": "题材基底可以支持开书选择",
+      "readyDescription": "现有题材都有明确说明。需要覆盖新的创作方向时，再新增根题材或细分子类。",
+      "readyAction": "扩充题材"
+    },
+    "section": {
+      "title": "题材结构",
+      "description": "从左侧目录展开细分方向，在右侧查看定位和维护节点。正在被小说使用的分类，需要先调整关联作品后才能删除。",
+      "loadingTitle": "正在加载题材结构",
+      "loadingDescription": "请稍候，题材与小说关联正在同步。",
+      "errorTitle": "题材基底暂时无法加载",
+      "errorDescription": "请检查服务连接后重新加载。已有题材不会受到影响。",
+      "emptyTitle": "还没有可供开书选择的题材基底",
+      "emptyDescription": "先创建一个主要题材。你可以手动填写，也可以描述创作方向，让 AI 生成包含子类的题材树草稿。",
+      "emptyAction": "创建第一棵题材树"
+    }
+  },
+  "createDialog": {
+    "title": "新建题材基底树",
+    "description": "先确定父级位置，再手动填写结构或让 AI 先生成一个草稿。这里维护的是作品的题材基底，也就是“这是什么书”。",
+    "aiSectionTitle": "AI 生成",
+    "aiSectionHint": "适合先把大类、子类和下级题材基底一起打出来，再手动微调。",
+    "promptPlaceholder": "例如：我想做偏女性向的都市超凡成长线，核心卖点是身份反转、势力经营和高情绪关系拉扯。",
+    "generating": "生成中...",
+    "generate": "生成题材基底树",
+    "resetDraft": "重置草稿",
+    "parentLabel": "父级题材基底",
+    "parentNone": "无父级，作为根题材基底创建",
+    "cancel": "取消",
+    "saving": "保存中...",
+    "save": "保存题材基底树",
+    "createSuccess": "题材基底树已创建。",
+    "generateSuccess": "AI 题材基底树已生成。"
+  },
+  "editDialog": {
+    "title": "编辑题材基底",
+    "description": "可以修改名称、说明和挂载位置。子节点与已绑定小说会继续保留。",
+    "cancel": "取消",
+    "saving": "保存中...",
+    "save": "保存修改",
+    "nameLabel": "名称",
+    "descriptionLabel": "描述",
+    "parentLabel": "父级题材基底",
+    "parentNone": "无父级，作为根题材基底",
+    "updateSuccess": "题材基底已更新。"
+  },
+  "browser": {
+    "navigatorTitle": "题材目录",
+    "navigatorHint": "点击节点查看详情",
+    "navigatorAriaLabel": "题材基底树",
+    "addChild": "新增下级",
+    "edit": "编辑",
+    "deleteBlockedTitle": "当前题材或下级题材仍被小说使用，请先调整关联作品。",
+    "deleting": "删除中...",
+    "delete": "删除",
+    "sectionLabel": "题材基底",
+    "descriptionFallback": "尚未说明这个题材面向什么读者、承诺什么体验。补充说明后，AI 能更准确地用于开书和规划。",
+    "directLinks": "直接关联",
+    "childGenres": "下级题材",
+    "branchNovels": "分支作品",
+    "aiUsageTendency": "AI 使用倾向"
+  },
+  "treeEditor": {
+    "levelMain": "主类型",
+    "levelSub": "子类型",
+    "levelLower": "下级类型",
+    "rootHint": "这是最终会创建进系统里的根节点。",
+    "childHint": "这里会作为上一级类型的子节点保存。",
+    "addSub": "新增子类型",
+    "addLower": "新增下级类型",
+    "nameLabel": "名称",
+    "namePlaceholderRoot": "例如：都市异能",
+    "namePlaceholderChild": "例如：超凡职场",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "描述这个类型的题材核心、爽点、常见主线或读者期待。",
+    "removeNode": "删除当前节点"
+  },
+  "treeItem": {
+    "collapse": "折叠「{{name}}」",
+    "expand": "展开「{{name}}」",
+    "usedInNovels_one": "用于 {{count}} 本小说",
+    "usedInNovels_other": "用于 {{count}} 本小说",
+    "notLinked": "未关联小说",
+    "directChildren_one": "{{count}} 个直接子类",
+    "directChildren_other": "{{count}} 个直接子类",
+    "descriptionFallback": "尚未说明题材定位，建议补充读者期待和核心创作方向。",
+    "addChild": "新增子类",
+    "edit": "编辑",
+    "deleteBlockedTitle": "当前分类或下级分类仍被小说使用，请先调整关联小说的题材。",
+    "deleting": "删除中...",
+    "delete": "删除"
+  }
+}

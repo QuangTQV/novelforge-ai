@@ -1,0 +1,91 @@
+{
+  "status": {
+    "queued": "排队中",
+    "running": "运行中",
+    "waitingApproval": "等待审批",
+    "succeeded": "已完成",
+    "failed": "失败",
+    "cancelled": "已取消",
+    "recovery": "等待恢复"
+  },
+  "defaultScope": "前 10 章",
+  "empty": "暂无",
+  "checkpoint": {
+    "rewriteSnapshot": "已创建重写前快照",
+    "candidateSelection": "等待确认书级方向",
+    "bookContract": "Book Contract 已就绪",
+    "characterSetup": "角色准备待审批",
+    "volumeStrategy": "分卷策略和骨架待审批",
+    "productionExperience": "可以开始写，等待选择生产方式",
+    "chapterBatch": "{{scope}} 已暂停自动执行",
+    "stepReview": "当前步骤待检查",
+    "completed": "主流程已完成"
+  },
+  "step": {
+    "running": "运行中",
+    "succeeded": "已完成",
+    "failed": "失败",
+    "cancelled": "已取消",
+    "pending": "待处理"
+  },
+  "risk": {
+    "high": "高风险",
+    "medium": "需判断",
+    "low": "低风险"
+  },
+  "source": {
+    "auto": "通过自动同步发现",
+    "manual": "通过手动检查发现"
+  },
+  "priority": {
+    "p0": "P0 立即处理",
+    "p1": "P1 尽快处理",
+    "p2": "P2 稍后处理"
+  },
+  "ui": {
+    "impact": "确认后影响：{{value}}",
+    "evidence": "证据：{{value}}",
+    "reason": "评估理由：{{value}}",
+    "sourceChapter": "来源章节",
+    "viewSource": "查看来源",
+    "detailsTitle": "执行详情",
+    "detailsDescription": "查看本书的 AI 推进历史、快捷操作和诊断信息。",
+    "resourcePending": "资源变更待确认",
+    "resourceDescription": "这些评估会影响后续章节可能使用的关键资源。",
+    "count": "{{count}} 项",
+    "moreResources": "还有 {{count}} 项资源变更，可在对应章节继续处理。",
+    "progress": "进度",
+    "currentStage": "当前阶段",
+    "currentAction": "当前动作",
+    "checkpoint": "最近检查点",
+    "heartbeat": "最近 Heartbeat",
+    "latestError": "最近错误",
+    "recovery": "恢复建议：{{value}}",
+    "actions": "当前需要处理的动作",
+    "blockedReason": "动作被阻塞的原因：",
+    "taskModel": "当前任务的模型",
+    "advanceMode": "推进方式",
+    "riskImpact": "变更风险和影响",
+    "retryOtherModel": "用其他模型重试",
+    "quickActions": "快捷操作",
+    "noQuickActions": "当前没有可直接执行的快捷操作。",
+    "modelInfo": "模型信息",
+    "boundModel": "任务绑定的模型",
+    "uiModel": "当前界面的模型",
+    "temperature": "当前 Temperature：{{value}}",
+    "tokenStats": "Token 统计",
+    "callCount": "调用总次数",
+    "totalTokens": "总 Tokens",
+    "inputTokens": "输入 Tokens",
+    "outputTokens": "输出 Tokens",
+    "recentRecord": "最近记录：",
+    "noTokenUsage": "这个任务还没有可显示的 token usage；当模型开始返回 usage 时，这部分会自动刷新。",
+    "stepStatus": "步骤状态",
+    "milestones": "里程碑历史",
+    "recordedAt": "记录时间：{{value}}",
+    "noMilestones": "还没有可显示的里程碑。",
+    "noTasks": "当前小说还没有可显示的自动导演任务。你可以继续手动创作，或在任务中心查看其他任务。",
+    "openSource": "打开来源页",
+    "openTaskCenter": "打开任务中心"
+  }
+}

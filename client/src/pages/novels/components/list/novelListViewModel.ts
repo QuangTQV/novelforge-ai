@@ -1,3 +1,4 @@
+import { translateUi } from "../../../../i18n/legacy.ts";
 import type {
   NovelAutoDirectorTaskSummary,
   ProjectProgressStatus,
@@ -121,10 +122,10 @@ export function buildNovelListSummary(novels: NovelListItem[]): NovelListSummary
   }).length;
 
   return [
-    { id: "running", label: "推进中", value: running, tone: running > 0 ? "info" : "neutral" },
-    { id: "waiting", label: "待确认", value: waiting, tone: waiting > 0 ? "warning" : "neutral" },
-    { id: "ready", label: "可继续", value: ready, tone: ready > 0 ? "success" : "neutral" },
-    { id: "issue", label: "暂停/失败", value: issue, tone: issue > 0 ? "danger" : "neutral" },
+    { id: "running", label: translateUi("推进中"), value: running, tone: running > 0 ? "info" : "neutral" },
+    { id: "waiting", label: translateUi("待确认"), value: waiting, tone: waiting > 0 ? "warning" : "neutral" },
+    { id: "ready", label: translateUi("可继续"), value: ready, tone: ready > 0 ? "success" : "neutral" },
+    { id: "issue", label: translateUi("暂停/失败"), value: issue, tone: issue > 0 ? "danger" : "neutral" },
   ];
 }
 
@@ -152,11 +153,11 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
   if (novel.narrativeForm === "short_story") {
     return {
       tone: task?.status === "failed" ? "danger" : task?.status === "succeeded" ? "success" : "info",
-      label: task?.status === "succeeded" ? "完整短篇" : "短篇创作中",
+      label: task?.status === "succeeded" ? translateUi("完整短篇") : translateUi("短篇创作中"),
       description: task?.checkpointSummary?.trim()
         || task?.currentItemLabel?.trim()
         || novel.description?.trim()
-        || "AI 正在把已确认的方向写成一篇连续作品。",
+        || translateUi("AI 正在把已确认的方向写成一篇连续作品。"),
       progress: Math.round((task?.progress ?? 0) * 100),
       currentStage: "连续作品",
       currentAction: task?.currentItemLabel?.trim() || "",
@@ -168,8 +169,8 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
   if (!task) {
     return {
       tone: "neutral",
-      label: "资料项目",
-      description: novel.description?.trim() || "没有自动导演任务，可以进入项目继续完善资料或章节。",
+      label: translateUi("资料项目"),
+      description: novel.description?.trim() || translateUi("没有自动导演任务，可以进入项目继续完善资料或章节。"),
       progress: 0,
       currentStage: "未进入自动导演",
       currentAction: "",
@@ -180,8 +181,8 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
   const currentAction = task.currentItemLabel?.trim() || "";
   return {
     tone: getWorkflowTone(task),
-    label: task.displayStatus?.trim() || task.resumeAction?.trim() || task.nextActionLabel?.trim() || "自动导演",
-    description: description || "系统保留推进状态，可以继续查看或恢复。",
+    label: task.displayStatus?.trim() || task.resumeAction?.trim() || task.nextActionLabel?.trim() || translateUi("自动导演"),
+    description: description || translateUi("系统保留推进状态，可以继续查看或恢复。"),
     progress: Math.round(task.progress * 100),
     currentStage: task.currentStage ?? "自动导演",
     currentAction,
@@ -220,22 +221,22 @@ export function getProjectAssetRows(novel: NovelListItem): Array<{
 }> {
   if (novel.narrativeForm === "short_story") {
     return [
-      { label: "形式", value: "短篇" },
-      { label: "目标", value: `${(novel.targetWordCount ?? 0).toLocaleString()} 字` },
-      { label: "正文", value: getNovelWorkflowTask(novel)?.status === "succeeded" ? "已完成" : "生成中", tone: "info" },
-      { label: "来源", value: novel.derivedFromNovelId ? "派生作品" : "原创" },
+      { label: translateUi("形式"), value: "短篇" },
+      { label: translateUi("目标"), value: `${(novel.targetWordCount ?? 0).toLocaleString()} 字` },
+      { label: translateUi("正文"), value: getNovelWorkflowTask(novel)?.status === "succeeded" ? "已完成" : "生成中", tone: "info" },
+      { label: translateUi("来源"), value: novel.derivedFromNovelId ? "派生作品" : "原创" },
     ];
   }
   return [
-    { label: "章节", value: String(novel._count.chapters) },
-    { label: "角色", value: String(novel._count.characters) },
+    { label: translateUi("章节"), value: String(novel._count.chapters) },
+    { label: translateUi("角色"), value: String(novel._count.characters) },
     {
-      label: "世界观",
+      label: translateUi("世界观"),
       value: novel.world?.name ?? "未绑定",
       tone: novel.world?.name ? "neutral" : "warning",
     },
     {
-      label: "资源",
+      label: translateUi("资源"),
       value: `${novel.resourceReadyScore ?? 0}/100`,
       tone: (novel.resourceReadyScore ?? 0) >= 60 ? "success" : "warning",
     },

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   AuditReport,
   QualityScore,
@@ -27,8 +28,8 @@ export function buildReplanRecommendationFromAuditReports(
   return {
     recommended: blockingIssueIds.length > 0,
     reason: blockingIssueIds.length > 0
-      ? "存在未解决的高优先级审计问题，建议重规划后续章节。"
-      : "当前没有阻塞性审计问题，无需重规划后续章节。",
+      ? translateUi("存在未解决的高优先级审计问题，建议重规划后续章节。")
+      : translateUi("当前没有阻塞性审计问题，无需重规划后续章节。"),
     blockingIssueIds,
   };
 }

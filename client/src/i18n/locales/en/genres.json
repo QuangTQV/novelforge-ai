@@ -1,0 +1,136 @@
+{
+  "page": {
+    "header": {
+      "context": "Creative assets / Novel positioning",
+      "title": "Genre Foundation Library",
+      "description": "Maintain reusable genre positioning and category hierarchies for novels. When starting a book, pick a suitable genre foundation so the AI understands the work's type, reader expectations and main creative direction.",
+      "createRootTree": "New genre foundation tree"
+    },
+    "status": {
+      "genres": {
+        "label": "Genre foundations",
+        "detail": "Category nodes a novel can choose from"
+      },
+      "roots": {
+        "label": "Root categories",
+        "detail": "Used to divide the main creative directions"
+      },
+      "novels": {
+        "label": "Linked novels",
+        "detail": "Works currently using these genres"
+      },
+      "descriptions": {
+        "label": "Descriptions complete",
+        "detail": "Genres with a clear positioning description"
+      }
+    },
+    "delete": {
+      "confirmWithChildren_one": "Delete genre foundation “{{name}}”? This also deletes its {{count}} sub-category and cannot be undone.",
+      "confirmWithChildren_other": "Delete genre foundation “{{name}}”? This also deletes its {{count}} sub-categories and cannot be undone.",
+      "confirm": "Delete genre foundation “{{name}}”? This cannot be undone.",
+      "success": "Genre foundation deleted."
+    },
+    "recommendation": {
+      "errorTitle": "Reload genre foundations",
+      "errorDescription": "The genre structure cannot be read right now. After reloading you can continue to view, edit and maintain genres.",
+      "reload": "Reload",
+      "loadingTitle": "Confirming genre foundation status",
+      "loadingDescription": "Once loaded, next-step suggestions will be based on genre coverage and description completeness.",
+      "emptyTitle": "Build your first genre foundation tree",
+      "emptyDescription": "Describe the creative directions you want to cover; you can build the hierarchy manually, or let the AI generate a draft to adjust.",
+      "emptyAction": "Create genre foundation",
+      "describeTitle": "Add a genre description for “{{name}}”",
+      "describeDescription": "Clarifying the work's positioning, reader expectations and core conflict helps the AI understand this genre more accurately when starting and planning a book.",
+      "describeAction": "Add description",
+      "readyTitle": "Genre foundations are ready to support book setup",
+      "readyDescription": "Every existing genre has a clear description. When you need to cover a new creative direction, add a root genre or a sub-category.",
+      "readyAction": "Expand genres"
+    },
+    "section": {
+      "title": "Genre structure",
+      "description": "Expand detailed directions from the left catalog, then review positioning and maintain nodes on the right. A category in use by a novel can only be deleted after adjusting the linked works.",
+      "loadingTitle": "Loading genre structure",
+      "loadingDescription": "Please wait, genre-to-novel links are syncing.",
+      "errorTitle": "Genre foundations cannot be loaded right now",
+      "errorDescription": "Please check the service connection and reload. Existing genres are not affected.",
+      "emptyTitle": "No genre foundation available to choose when starting a book",
+      "emptyDescription": "Create a main genre first. You can fill it in manually, or describe a creative direction and let the AI generate a draft genre tree with sub-categories.",
+      "emptyAction": "Create the first genre tree"
+    }
+  },
+  "createDialog": {
+    "title": "New genre foundation tree",
+    "description": "First set the parent position, then fill in the structure manually or let the AI generate a draft. This maintains the work's genre foundation, i.e. “what kind of book is this”.",
+    "aiSectionTitle": "AI generation",
+    "aiSectionHint": "Good for laying out the major groups, sub-groups and lower-level genre foundations together, then fine-tuning manually.",
+    "promptPlaceholder": "Example: I want a female-oriented urban supernatural growth arc; the core selling points are identity reversals, faction management and high-emotion relationship tension.",
+    "generating": "Generating...",
+    "generate": "Generate genre foundation tree",
+    "resetDraft": "Reset draft",
+    "parentLabel": "Parent genre foundation",
+    "parentNone": "No parent, create as a root genre foundation",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "save": "Save genre foundation tree",
+    "createSuccess": "Genre foundation tree created.",
+    "generateSuccess": "AI genre foundation tree generated."
+  },
+  "editDialog": {
+    "title": "Edit genre foundation",
+    "description": "You can change the name, description and mount position. Child nodes and bound novels are kept.",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "save": "Save changes",
+    "nameLabel": "Name",
+    "descriptionLabel": "Description",
+    "parentLabel": "Parent genre foundation",
+    "parentNone": "No parent, as a root genre foundation",
+    "updateSuccess": "Genre foundation updated."
+  },
+  "browser": {
+    "navigatorTitle": "Genre catalog",
+    "navigatorHint": "Click a node to see details",
+    "navigatorAriaLabel": "Genre foundation tree",
+    "addChild": "Add sub-level",
+    "edit": "Edit",
+    "deleteBlockedTitle": "This genre or a sub-genre is still used by novels; adjust the linked works first.",
+    "deleting": "Deleting...",
+    "delete": "Delete",
+    "sectionLabel": "Genre foundation",
+    "descriptionFallback": "It has not been explained which readers this genre targets or what experience it promises. Once described, the AI can use it more accurately when starting and planning a book.",
+    "directLinks": "Direct links",
+    "childGenres": "Sub-genres",
+    "branchNovels": "Branch works",
+    "aiUsageTendency": "AI usage tendency"
+  },
+  "treeEditor": {
+    "levelMain": "Main type",
+    "levelSub": "Sub type",
+    "levelLower": "Lower-level type",
+    "rootHint": "This is the root node that will ultimately be created in the system.",
+    "childHint": "This will be saved as a child node of the parent type.",
+    "addSub": "Add sub type",
+    "addLower": "Add lower-level type",
+    "nameLabel": "Name",
+    "namePlaceholderRoot": "Example: Urban superpowers",
+    "namePlaceholderChild": "Example: Supernatural workplace",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe this type's genre core, payoff moments, common main lines or reader expectations.",
+    "removeNode": "Remove current node"
+  },
+  "treeItem": {
+    "collapse": "Collapse “{{name}}”",
+    "expand": "Expand “{{name}}”",
+    "usedInNovels_one": "Used in {{count}} novel",
+    "usedInNovels_other": "Used in {{count}} novels",
+    "notLinked": "No linked novels",
+    "directChildren_one": "{{count}} direct sub-category",
+    "directChildren_other": "{{count}} direct sub-categories",
+    "descriptionFallback": "The genre positioning has not been described; consider adding reader expectations and the core creative direction.",
+    "addChild": "Add sub-category",
+    "edit": "Edit",
+    "deleteBlockedTitle": "This category or a sub-category is still used by novels; adjust the linked novels' genres first.",
+    "deleting": "Deleting...",
+    "delete": "Delete"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "page": {
+    "title": "Trending Genre Radar"
+  },
+  "platforms": {
+    "fanqie": "Fanqie Novel",
+    "qidian": "Qidian",
+    "jinjiang": "Jinjiang Literature"
+  },
+  "signalKind": {
+    "genre": "Trending genre",
+    "protagonist": "Protagonist identity",
+    "advantage": "Special advantage",
+    "opening": "Opening hook",
+    "relationship": "Relationship hook",
+    "title_pattern": "Title pattern",
+    "opportunity": "Differentiation opportunity",
+    "crowding": "Crowded trope"
+  },
+  "influenceMode": {
+    "follow_hot": "Follow trends",
+    "differentiate": "Differentiate within trends",
+    "light": "Downplay the market"
+  },
+  "signalDirection": {
+    "current": "Currently frequent",
+    "rising": "Heating up",
+    "falling": "Cooling down",
+    "stable": "Relatively stable"
+  },
+  "toast": {
+    "scanFailed": "Ranking scan failed, please try again later.",
+    "analysisFailed": "AI analysis failed, please try again later.",
+    "briefFailed": "Failed to generate the market creative brief.",
+    "genreSynced": "Genre foundation added to the resource library.",
+    "storyModeSynced": "Story mode added to the resource library.",
+    "syncFailed": "Failed to add to the resource library, please try again later.",
+    "maxSignals": "Select at most 5 market signals."
+  },
+  "scan": {
+    "inProgress": "Fetching rankings {{percent}}%",
+    "rescan": "Rescan rankings",
+    "partialFailure": "Some rankings are temporarily unreadable; you can still view and analyze the data fetched successfully: {{details}}",
+    "platformError": "{{platform}}: {{error}}",
+    "readFailed": "Read failed",
+    "runFailed": "This scan did not complete: {{error}}",
+    "noPublicData": "No analyzable public ranking data was obtained.",
+    "emptyLoadingTitle": "Fetching public rankings",
+    "emptyTitle": "No ranking data to show yet",
+    "emptyHint": "Opening the page starts a scan automatically. Once rankings are fetched, you can review the raw ranking first, then decide whether to let the AI analyze them."
+  },
+  "analysis": {
+    "lockedScope": "This report uses the currently checked works; to change the scope, rescan the rankings.",
+    "selectedCount": "{{count}} works selected; use select-all in each ranking's top-right corner or adjust them one by one.",
+    "waitingForScan": "Waiting for rankings to finish",
+    "inProgress": "AI analyzing {{percent}}%",
+    "viewAnalysis": "View AI analysis",
+    "start": "Start AI analysis ({{count}} works)",
+    "selectAll": "Select all",
+    "clearAll": "Clear all",
+    "listRecordCount": "{{count}} public ranking records identified this time (up to 30)",
+    "selectItem": "Select {{title}}",
+    "deselectItem": "Deselect {{title}}",
+    "authorHidden": "Author not disclosed",
+    "viewSource": "View the public source of {{title}}"
+  },
+  "report": {
+    "verdictTitle": "This period's verdict",
+    "verdictMeta": "Collected on {{date}}; every conclusion can be traced back to public ranking evidence.",
+    "genreFoundation": "Genre foundation: ",
+    "primaryStoryMode": "Primary story mode: ",
+    "secondaryStoryMode": "Secondary story mode: ",
+    "inLibrary": "Already in library · View",
+    "addGenreFoundation": "Add to genre foundation library",
+    "addStoryModeLibrary": "Add to story mode library",
+    "foundationHint": "Directions already in the library are reused directly; only missing directions need to be added manually. The market signals below are for choosing this book's launch preferences.",
+    "platformItemCount": "{{platform}} · {{count}} items",
+    "suggestRefresh": " · refresh suggested",
+    "signalSelected": "Selected",
+    "signalHeat": "Heat {{value}}",
+    "signalCrowding": "Crowding {{value}}",
+    "selectionCount": "{{count}}/5 market signals selected",
+    "selectionHint": "The AI recommendations are pre-checked; you can swap them before launching the book.",
+    "createWithSignals": "Create with these signals"
+  }
+}

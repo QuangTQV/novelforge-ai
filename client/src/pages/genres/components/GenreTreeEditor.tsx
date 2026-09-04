@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { GenreTreeDraft } from "@/api/genre";
@@ -55,33 +56,34 @@ export default function GenreTreeEditor({
         <div>
           <div className="text-sm font-semibold text-foreground">{getLevelLabel(depth)}</div>
           <div className="text-xs text-muted-foreground">
-            {depth === 0 ? "这是最终会创建进系统里的根节点。" : "这里会作为上一级类型的子节点保存。"}
+            {depth === 0 ? translateUi("这是最终会创建进系统里的根节点。") : translateUi("这里会作为上一级类型的子节点保存。")}
           </div>
         </div>
         {canAddChild ? (
           <Button type="button" variant="outline" size="sm" onClick={addChild}>
-            新增{depth === 0 ? "子类型" : "下级类型"}
+
+            {translateUi("新增")}{depth === 0 ? translateUi("子类型") : translateUi("下级类型")}
           </Button>
         ) : null}
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">
         <label className="space-y-2 text-sm">
-          <span className="font-medium text-foreground">名称</span>
+          <span className="font-medium text-foreground">{translateUi("名称")}</span>
           <Input
             value={value.name}
-            placeholder={depth === 0 ? "例如：都市异能" : "例如：超凡职场"}
+            placeholder={depth === 0 ? translateUi("例如：都市异能") : translateUi("例如：超凡职场")}
             onChange={(event) => onChange({ ...value, name: event.target.value })}
           />
         </label>
 
         <label className="space-y-2 text-sm md:col-span-2">
-          <span className="font-medium text-foreground">描述</span>
+          <span className="font-medium text-foreground">{translateUi("描述")}</span>
           <textarea
             rows={3}
             className="min-h-[96px] w-full rounded-md border bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             value={value.description ?? ""}
-            placeholder="描述这个类型的题材核心、爽点、常见主线或读者期待。"
+            placeholder={translateUi("描述这个类型的题材核心、爽点、常见主线或读者期待。")}
             onChange={(event) => onChange({ ...value, description: event.target.value })}
           />
         </label>
@@ -99,7 +101,8 @@ export default function GenreTreeEditor({
                   className="text-destructive hover:text-destructive"
                   onClick={() => removeChild(index)}
                 >
-                  删除当前节点
+
+                  {translateUi("删除当前节点")}
                 </Button>
               </div>
               <GenreTreeEditor

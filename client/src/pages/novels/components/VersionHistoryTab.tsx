@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createNovelSnapshot, listNovelSnapshots, restoreNovelSnapshot } from "@/api/novel";
 import { queryKeys } from "@/api/queryKeys";
@@ -53,13 +54,14 @@ export default function VersionHistoryTab({ novelId }: VersionHistoryTabProps) {
     <div className="space-y-4">
       <div className="flex flex-col gap-3 rounded-2xl border border-border/70 bg-muted/15 p-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <div className="font-medium">版本历史</div>
+          <div className="font-medium">{translateUi("版本历史")}</div>
           <div className="text-sm text-muted-foreground">
-            这里优先帮你找回最近的稳定版本。恢复前系统会自动再备份一次当前状态。
+
+            {translateUi("这里优先帮你找回最近的稳定版本。恢复前系统会自动再备份一次当前状态。")}
           </div>
         </div>
         <Button onClick={() => createMutation.mutate()} disabled={createMutation.isPending}>
-          {createMutation.isPending ? "保存中..." : "保存当前版本"}
+          {createMutation.isPending ? translateUi("保存中...") : translateUi("保存当前版本")}
         </Button>
       </div>
 
@@ -72,7 +74,7 @@ export default function VersionHistoryTab({ novelId }: VersionHistoryTabProps) {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="space-y-3">
                   <div className="space-y-1">
-                    <div className="font-medium">{snapshot.label || "未命名版本"}</div>
+                    <div className="font-medium">{snapshot.label || translateUi("未命名版本")}</div>
                     <div className="text-xs text-muted-foreground">
                       {formatSnapshotTrigger(snapshot.triggerType)} · {new Date(snapshot.createdAt).toLocaleString()}
                     </div>
@@ -86,7 +88,8 @@ export default function VersionHistoryTab({ novelId }: VersionHistoryTabProps) {
                   </div>
 
                   <div className="text-sm leading-6 text-muted-foreground">
-                    这个版本适合在你想退回到更稳定的章节推进状态时使用。
+
+                    {translateUi("这个版本适合在你想退回到更稳定的章节推进状态时使用。")}
                   </div>
                 </div>
 
@@ -94,14 +97,14 @@ export default function VersionHistoryTab({ novelId }: VersionHistoryTabProps) {
                   variant="secondary"
                   size="sm"
                   onClick={() => {
-                    const confirmed = window.confirm("恢复前会自动备份当前状态。确认恢复这个版本吗？");
+                    const confirmed = window.confirm(translateUi("恢复前会自动备份当前状态。确认恢复这个版本吗？"));
                     if (confirmed) {
                       restoreMutation.mutate(snapshot.id);
                     }
                   }}
                   disabled={restoreMutation.isPending}
                 >
-                  {isRestoringCurrent ? "恢复中..." : "恢复到这个版本"}
+                  {isRestoringCurrent ? translateUi("恢复中...") : translateUi("恢复到这个版本")}
                 </Button>
               </div>
             </div>
@@ -109,7 +112,8 @@ export default function VersionHistoryTab({ novelId }: VersionHistoryTabProps) {
         })}
         {snapshots.length === 0 ? (
           <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
-            当前还没有版本记录。建议在大改方向、批量生成或大段重写前，先手动保存一个版本。
+
+            {translateUi("当前还没有版本记录。建议在大改方向、批量生成或大段重写前，先手动保存一个版本。")}
           </div>
         ) : null}
       </div>

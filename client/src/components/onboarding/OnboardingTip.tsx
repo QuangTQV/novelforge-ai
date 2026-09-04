@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { Lightbulb, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -43,9 +44,9 @@ export default function OnboardingTip({
       <div className="min-w-0 flex-1">
         <div className="text-sm font-semibold">{title}</div>
         <p className="mt-1 text-xs leading-5 text-sky-900/75">{description}</p>
-        {next ? <p className="mt-1 text-xs font-medium text-sky-800">接下来：{next}</p> : null}
+        {next ? <p className="mt-1 text-xs font-medium text-sky-800">{translateUi("接下来：")}{next}</p> : null}
       </div>
-      <Button type="button" variant="ghost" size="icon" className="h-7 w-7 shrink-0 text-sky-800 hover:bg-sky-100" onClick={dismiss} aria-label="关闭此条引导">
+      <Button type="button" variant="ghost" size="icon" className="h-7 w-7 shrink-0 text-sky-800 hover:bg-sky-100" onClick={dismiss} aria-label={translateUi("关闭此条引导")}>
         <X className="h-3.5 w-3.5" />
       </Button>
     </aside>

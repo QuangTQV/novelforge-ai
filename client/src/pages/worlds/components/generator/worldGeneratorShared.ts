@@ -36,23 +36,25 @@ export interface WorldGeneratorTemplateOption {
 
 export const REFERENCE_MODE_OPTIONS: Array<{
   value: WorldReferenceMode;
-  label: string;
-  description: string;
+  /** worlds:generator.referenceMode.<mode>.label */
+  labelKey: string;
+  /** worlds:generator.referenceMode.<mode>.description */
+  descriptionKey: string;
 }> = [
   {
     value: "adapt_world",
-    label: "基于原作做架空改造",
-    description: "保留原作世界基底，再决定哪些规则、势力和地点结构可以改造。",
+    labelKey: "generator.referenceMode.adaptWorld.label",
+    descriptionKey: "generator.referenceMode.adaptWorld.description",
   },
   {
     value: "extract_base",
-    label: "提取原作世界基底",
-    description: "先稳定抽出原作世界骨架，后续扩写尽量围绕原作事实展开。",
+    labelKey: "generator.referenceMode.extractBase.label",
+    descriptionKey: "generator.referenceMode.extractBase.description",
   },
   {
     value: "tone_rebuild",
-    label: "只借原作气质与结构重建",
-    description: "保留氛围、关系结构与生活手感，但允许较大幅度重建世界事实。",
+    labelKey: "generator.referenceMode.toneRebuild.label",
+    descriptionKey: "generator.referenceMode.toneRebuild.description",
   },
 ];
 
@@ -65,13 +67,14 @@ export const DEFAULT_DIMENSIONS: Record<string, boolean> = {
   conflict: true,
 };
 
-const DIMENSION_LABELS: Record<string, string> = {
-  foundation: "基础层",
-  power: "力量层",
-  society: "社会层",
-  culture: "文化层",
-  history: "历史层",
-  conflict: "冲突层",
+/** value = worlds:generator.dimensions.<key> i18n key */
+const DIMENSION_LABEL_KEYS: Record<string, string> = {
+  foundation: "generator.dimensions.foundation",
+  power: "generator.dimensions.power",
+  society: "generator.dimensions.society",
+  culture: "generator.dimensions.culture",
+  history: "generator.dimensions.history",
+  conflict: "generator.dimensions.conflict",
 };
 
 export const REFERENCE_SEED_SELECTION_KEYS: Record<
@@ -84,8 +87,9 @@ export const REFERENCE_SEED_SELECTION_KEYS: Record<
   locations: "locationIds",
 };
 
-export function getDimensionLabel(key: string): string {
-  return DIMENSION_LABELS[key] ?? key;
+/** returns a worlds namespace i18n key (or the raw key if unknown) — translate at render site */
+export function getDimensionLabelKey(key: string): string {
+  return DIMENSION_LABEL_KEYS[key] ?? key;
 }
 
 export function normalizeAxiomTexts(items: unknown): string[] {
@@ -112,8 +116,12 @@ export function parseReferenceControlText(value: string): string[] {
   );
 }
 
-export function getReferenceModeLabel(mode: WorldReferenceMode): string {
-  return REFERENCE_MODE_OPTIONS.find((item) => item.value === mode)?.label ?? "基于原作做架空改造";
+/** returns a worlds namespace i18n key — translate at render site */
+export function getReferenceModeLabelKey(mode: WorldReferenceMode): string {
+  return (
+    REFERENCE_MODE_OPTIONS.find((item) => item.value === mode)?.labelKey
+    ?? "generator.referenceMode.adaptWorld.label"
+  );
 }
 
 export function buildDefaultPropertySelectionState(options: WorldPropertyOption[]) {

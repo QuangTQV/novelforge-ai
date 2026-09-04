@@ -1,0 +1,14 @@
+{
+  "boolean": {
+    "yes": "Có", "no": "Không",
+    "multiPov": { "yes": "Cho phép chuyển nhiều góc nhìn", "no": "Cố gắng giữ một góc nhìn" },
+    "looping": { "yes": "Cho phép móc nối lặp", "no": "Cố gắng tiến triển tuyến tính" },
+    "selfReflection": { "yes": "Cho phép tự vấn rõ ràng", "no": "Hạn chế tự vấn trực tiếp" },
+    "facePriority": { "yes": "Ưu tiên giữ thể diện", "no": "Không bắt buộc giữ thể diện" },
+    "incompleteSentences": { "yes": "Cho phép câu chưa hoàn chỉnh", "no": "Câu nên hoàn chỉnh" },
+    "swearing": { "yes": "Cho phép một ít từ thô tục", "no": "Hạn chế từ thô tục" },
+    "uselessDetails": { "yes": "Cho phép giữ tạp âm đời sống", "no": "Giảm tạp âm không liên quan" },
+    "fragmentedFlow": { "yes": "Cho phép tiến triển phân mảnh", "no": "Cố gắng giữ tiến triển trọn vẹn" },
+    "actionOverExplanation": { "yes": "Hành động trước giải thích", "no": "Giải thích quan trọng hơn hành động" }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "setupNotice": {
+    "title": "完成快捷配置后就可以启动 AI 创作",
+    "defaultReason": "选择一个文本模型，系统会自动准备规划、正文、审校和修复所需的任务路由。",
+    "action": "快捷配置"
+  },
+  "journeyStrip": {
+    "title": "第一本书向导",
+    "stepProgress": "{{completed}}/{{total}} 步完成",
+    "completedAria": "已完成 {{count}} 个步骤"
+  },
+  "tip": {
+    "next": "接下来：{{next}}",
+    "dismiss": "关闭此条引导"
+  },
+  "quickSetup": {
+    "title": "让 AI 创作环境先跑起来",
+    "description": "只配置一个文本模型，系统会自动准备规划、正文、审校和修复所需的任务路由。",
+    "reload": "重新加载",
+    "steps": {
+      "chooseProvider": "选择厂商",
+      "connectModel": "连接模型",
+      "detect": "检测完成"
+    },
+    "checkingEnv": "正在检查创作环境",
+    "readError": {
+      "title": "暂时无法读取模型配置",
+      "description": "重新加载后，系统会继续判断是否可以开始创作。"
+    },
+    "ready": {
+      "title": "创作环境可以使用",
+      "summary": "{{provider}} · {{model}}，{{count}} 类核心任务均已就绪。",
+      "continue": "继续创作"
+    },
+    "providerDesc": {
+      "deepseek": "推荐 DeepSeek V4 Flash，兼顾中文长篇质量与响应速度",
+      "ollama": "使用本机模型，不要求 API Key",
+      "openai": "适合通用规划、正文与结构化任务",
+      "configured": "已有配置，可以直接检测并设为全局默认",
+      "default": "配置后可用于整条小说生产链"
+    },
+    "footer": {
+      "fillConnection": "填写连接信息",
+      "backToSelect": "返回选择",
+      "detectAndComplete": "检测并完成配置",
+      "viewGuide": "查看创作向导",
+      "startFirstNovel": "用一句话开始第一本小说",
+      "viewAdvanced": "查看高级设置",
+      "startCreating": "开始创作",
+      "editConfig": "修改配置"
+    },
+    "step1": {
+      "titleAll": "选择一个内置模型厂商",
+      "titleRecommended": "从推荐方案开始",
+      "hintAll": "选择一个厂商后，再填写连接信息。",
+      "hintRecommended": "先配置一个文本模型即可开始创作；需要时再选择其他厂商。",
+      "viewAllProviders": "查看全部内置厂商",
+      "viewAllProvidersHint": "选择你已有账号的厂商，再继续填写连接信息。",
+      "addCustom": "添加第三方厂商",
+      "addCustomHint": "新增一份独立的厂商配置，适合中转服务、本地网关或 OpenAI 兼容接口。",
+      "backToRecommended": "返回推荐方案",
+      "recommendedModel": "推荐模型：{{model}}"
+    },
+    "badge": {
+      "selected": "已选择",
+      "configured": "已有配置"
+    },
+    "step2": {
+      "connectTitle": "连接 {{name}}",
+      "providerFallback": "模型厂商",
+      "apiKeyNote": "API Key 只会保存到本机或服务端密钥存储，不会显示在完成结果中。",
+      "customNote": "厂商名称、API 地址和模型将保存为独立配置，不会覆盖已有内置厂商。",
+      "providerName": "厂商名称",
+      "providerNamePlaceholder": "例如：我的模型网关",
+      "optional": "（可选）",
+      "apiKeyPlaceholderSaved": "留空则继续使用已保存的 Key",
+      "apiKeyPlaceholderRequired": "输入 API Key",
+      "apiKeyPlaceholderLocal": "本地接口可以留空",
+      "baseUrl": "API 地址",
+      "fetchModels": "获取模型列表",
+      "textModel": "文本模型",
+      "modelPlaceholder": "选择上方模型，或直接填写模型名称",
+      "footnote": "完成后，这个模型会作为规划、正文、审核、修复、重规划和摘要等核心任务的初始默认值。"
+    },
+    "customModels": {
+      "found": "找到 {{count}} 个可用模型。",
+      "none": "接口没有返回模型列表，可以手动填写。",
+      "failed": "获取模型列表失败，可以手动填写模型名称。"
+    },
+    "step3": {
+      "detecting": "正在检测普通文本与结构化输出",
+      "detectingHint": "检测通过后，系统会自动准备全部核心创作任务，不需要逐项配置路由。",
+      "successTitle": "创作环境配置完成",
+      "successDesc": "{{model}} 已可用于整条小说生产链。",
+      "failTitle": "模型检测没有通过",
+      "failDesc": "请检查 API Key、地址和模型名称后重试。"
+    },
+    "handoff": {
+      "title": "开始第一本小说",
+      "configureMore": "配置更多模型",
+      "heading": "从一句想写的故事开始",
+      "body": "告诉 AI 你想写什么，它会先给出可选方向；选定后继续准备故事、世界、角色和首章。",
+      "steps": {
+        "idea": "说想法",
+        "direction": "选择方向",
+        "firstChapter": "阅读首章"
+      }
+    }
+  }
+}

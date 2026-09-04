@@ -1,0 +1,22 @@
+{
+  "title": "De-AI this draft passage",
+  "description": "The system first flags which passages read like boilerplate, then produces one revision to compare. Recurring issues are collected into rule suggestions you decide whether to bring back to the formula editor.",
+  "input": "Input draft",
+  "placeholder": "Paste a passage you want to de-AI first.",
+  "detect": "Run a check first",
+  "detecting": "Checking...",
+  "rewrite": "Generate one revision",
+  "rewriting": "Generating revision...",
+  "issues": "Issue cards & risk points",
+  "riskScore": "Risk score",
+  "runFirst": "Run a check first; the result tells you which passages sound most like AI and why they break immersion.",
+  "diffTitle": "Before / after comparison",
+  "diffDescription": "Lightweight line-by-line comparison per paragraph to judge whether the revision is reducing boilerplate feel or accidentally losing the original voice.",
+  "before": "Original {{index}}",
+  "after": "Revision {{index}}",
+  "emptyDiff": "After one revision, the before/after comparison appears here.",
+  "suggestions": "Recurring issues worth fixing into rules",
+  "suggestionsDescription": "This version doesn't auto-write to the system; issues are first collected into suggestions you decide whether to lock into the current formula.",
+  "openEditor": "Open the current formula editor",
+  "emptySuggestions": "Once issues are detected, savable rule suggestions appear here."
+}

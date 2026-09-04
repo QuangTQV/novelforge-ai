@@ -1,0 +1,234 @@
+{
+  "page": {
+    "loading": "Loading chapter…",
+    "loadError": "Failed to load the chapter",
+    "notFound": "Chapter not found",
+    "textEffectLab": "Text effect lab"
+  },
+  "queueCard": {
+    "title": "Chapter queue",
+    "subtitle": "Track chapter production progress",
+    "visibleCount": "Showing {{count}} chapters",
+    "filterLabel": "Filter by status",
+    "emptyFiltered": "No matching chapters",
+    "finalizing": "Finalizing",
+    "writing": "Writing",
+    "repairing": "Repairing",
+    "nextStep": "Next step",
+    "currentWordCount": "{{count}} words",
+    "removing": "Removing…",
+    "removeEmptyChapter": "Delete the empty chapter"
+  },
+  "chapter": {
+    "labelWithTitle": "Chapter {{number}}: {{title}}",
+    "untitled": "Untitled"
+  },
+  "statusFlow": {
+    "currentStage": "Current stage: {{stage}}",
+    "notStarted": "Not started",
+    "order": {
+      "executionPlan": "Execution plan",
+      "writing": "Writing",
+      "review": "Review",
+      "repair": "Repair",
+      "stateSync": "State sync",
+      "payoffSync": "Payoff sync",
+      "ready": "Ready"
+    },
+    "notes": {
+      "executionPlanDone": "The chapter's execution plan is complete.",
+      "executionPlanPending": "The chapter lacks an execution plan; the system will prepare a task sheet or scene breakdown.",
+      "writingInProgress": "AI is writing this chapter's content.",
+      "writingPending": "There's an execution plan; you can start writing.",
+      "reviewInProgress": "Content is generated and the system is reviewing it.",
+      "reviewPending": "The chapter has content; the next step is review.",
+      "repairInProgress": "The system is fixing the content per the issues found.",
+      "repairPending": "If review finds issues, the chapter enters the repair stage.",
+      "stateSyncInProgress": "The content is readable; the system is syncing state, character changes and key resources.",
+      "stateSyncPending": "Once the content is ready, the system syncs state and key resources.",
+      "payoffSyncInProgress": "The system is calibrating the chapter's payoff ledger.",
+      "payoffSyncPending": "After resource sync, the system calibrates the payoff ledger by risk and rhythm.",
+      "readyDone": "The chapter has reached a continuable state.",
+      "readyInProgress": "The chapter has finished the current review round; you can keep editing or address suggestions.",
+      "readyPending": "Finish the earlier steps to continue this chapter."
+    }
+  },
+  "primary": {
+    "selectChapter": "Select a chapter",
+    "selectChapterReason": "Select the chapter to work on at left; the system determines the next step.",
+    "openEditor": "Open the chapter editor",
+    "openEditorReason": "The chapter has content. Open the editor, or make a quick edit below.",
+    "openEditorExistingReason": "The chapter has content; opening the editor is more efficient for fine-tuning.",
+    "fullAudit": "Full audit",
+    "fullAuditRunning": "Running full audit…",
+    "fullAuditReason": "Content exists; run a full audit before repairing or rewriting.",
+    "createPlan": "Generate an execution plan",
+    "planRunning": "Generating the execution plan…",
+    "createPlanReason": "The chapter lacks goals or a task sheet; fill in the plan first.",
+    "writeChapter": "Write this chapter",
+    "writeRunning": "Writing this chapter…",
+    "writeChapterReason": "Preparation info is sufficient; the best next step is to generate the chapter content."
+  },
+  "sections": {
+    "assetsAndReview": "Add resources & deep review",
+    "polish": "Polish & improve",
+    "advancedStrategy": "Advanced writing strategy"
+  },
+  "actions": {
+    "autoRepair": "Quick-fix issues",
+    "autoRepairRunning": "Fixing issues…",
+    "continuity": "Check continuity",
+    "continuityRunning": "Checking continuity…",
+    "characterConsistency": "Check character consistency",
+    "characterConsistencyRunning": "Checking character consistency…",
+    "pacing": "Check pacing",
+    "pacingRunning": "Checking pacing…",
+    "rewrite": "Rewrite the chapter",
+    "rewriteRunning": "Rewriting the chapter…",
+    "expand": "Expand the chapter",
+    "expandRunning": "Expanding the chapter…",
+    "compress": "Condense the chapter",
+    "compressRunning": "Condensing the chapter…",
+    "strengthenConflict": "Strengthen the conflict",
+    "strengthenConflictRunning": "Strengthening the conflict…",
+    "enhanceEmotion": "Enhance the emotion",
+    "enhanceEmotionRunning": "Enhancing the emotion…",
+    "unifyStyle": "Unify the style",
+    "unifyStyleRunning": "Unifying the style…",
+    "addDialogue": "Add dialogue",
+    "addDialogueRunning": "Adding dialogue…",
+    "addDescription": "Add description",
+    "addDescriptionRunning": "Adding description…"
+  },
+  "strategy": {
+    "hint": "Keep defaults when unsure. Adjust only when the chapter needs a faster pace, stronger conflict or more AI freedom.",
+    "runMode": "Run mode",
+    "fast": "Fast",
+    "polish": "Polish",
+    "wordSize": "Length",
+    "short": "Short",
+    "medium": "Medium",
+    "long": "Long",
+    "conflict": "Conflict intensity",
+    "pace": "Pace",
+    "slow": "Slow",
+    "balanced": "Balanced",
+    "fastPace": "Fast",
+    "aiFreedom": "AI freedom",
+    "low": "Low",
+    "high": "High",
+    "apply": "Apply the strategy to the current chapter",
+    "applyRunning": "Applying the strategy…"
+  },
+  "status": {
+    "unplanned": {
+      "label": "Pending prep",
+      "description": "Pending prep: the chapter lacks execution resources."
+    },
+    "pendingGeneration": {
+      "label": "Pending write",
+      "description": "Pending write: the chapter plan is largely complete."
+    },
+    "generating": {
+      "label": "Writing",
+      "description": "Writing: AI is generating the chapter content."
+    },
+    "pendingReview": {
+      "label": "Reviewed",
+      "description": "Reviewed: you can view suggestions or keep editing."
+    },
+    "needsRepair": {
+      "label": "Repair suggested",
+      "description": "Repair suggested: review found issues, but editing isn't blocked."
+    },
+    "completed": {
+      "label": "Completed",
+      "description": "Completed: the chapter passed the current flow."
+    },
+    "unset": {
+      "label": "Not set",
+      "description": "Not set: the chapter has no clear flow status yet."
+    }
+  },
+  "generationState": {
+    "planned": {
+      "label": "In the table of contents",
+      "description": "The chapter is in the ToC but has no draft yet."
+    },
+    "drafted": {
+      "label": "Drafted",
+      "description": "There's a draft but review isn't confirmed."
+    },
+    "reviewed": {
+      "label": "Reviewed",
+      "description": "One review round is done."
+    },
+    "repaired": {
+      "label": "Repaired",
+      "description": "Fixed per the issues found."
+    },
+    "approved": {
+      "label": "Approved",
+      "description": "The chapter passed the quality threshold."
+    },
+    "published": {
+      "label": "Published",
+      "description": "The chapter is in a published state."
+    }
+  },
+  "risk": {
+    "qualityLoop": {
+      "continue": "Quality can continue",
+      "patchRepair": "Patch repair suggested",
+      "replan": "Replanning suggested",
+      "manualGate": "Confirm the repair scope",
+      "recordedDebt": "Quality debt recorded"
+    },
+    "status": {
+      "risk": "Quality at risk",
+      "invalid": "Quality needs repair",
+      "missing": "Missing quality info"
+    },
+    "artifact": {
+      "chapterRetention": "Retention risk",
+      "continuity": "Continuity risk",
+      "rollingWindow": "Chapter-linking risk",
+      "proseQuality": "Prose naturalness check"
+    }
+  },
+  "queuePreview": {
+    "sceneBudgetContract": "The chapter has a scene budget contract.",
+    "legacySceneCards": "The chapter has a legacy scene breakdown; regenerate it.",
+    "noObjective": "The chapter has no clear goal; add a plan."
+  },
+  "suggestedAction": {
+    "nextChapter": "Continue to the next chapter",
+    "writeChapter": "Write this chapter",
+    "waitForGeneration": "Wait for generation",
+    "autoRepair": "Quick fix",
+    "viewSuggestions": "View suggestions",
+    "runReview": "Run review",
+    "continuePolishing": "Keep polishing",
+    "createPlan": "Add a chapter plan",
+    "openEditor": "Open the editor"
+  },
+  "textEditor": {
+    "pendingOriginal": "Original pending",
+    "aiGeneratingCandidate": "AI is generating a candidate",
+    "original": "Original",
+    "rewrite": "Rewrite",
+    "body": "Chapter text",
+    "helper": {
+      "inlineDiff": "Inline diff",
+      "loading": "Loading…",
+      "blockPatch": "Block patch",
+      "readOnly": "Read-only",
+      "editable": "Editable"
+    }
+  },
+  "takeoverTarget": {
+    "advanceTo": "Advance to chapter {{number}}",
+    "advanceToAria": "Select target chapter {{number}}",
+    "range": "Chapters {{start}}–{{end}}"
+  }
+}

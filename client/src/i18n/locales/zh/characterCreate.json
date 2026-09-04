@@ -1,0 +1,51 @@
+{
+  "title": "创建角色",
+  "actions": {
+    "open": "创建角色",
+    "creating": "创建中...",
+    "create": "创建角色",
+    "generating": "生成中...",
+    "generate": "生成并存入角色库"
+  },
+  "manual": {
+    "title": "手动创建角色"
+  },
+  "ai": {
+    "title": "AI 生成角色",
+    "descriptionPlaceholder": "输入角色描述，例如：冷静但背负家族仇恨的年轻剑客"
+  },
+  "advanced": {
+    "title": "高级设置（可选）",
+    "clear": "清空全部高级设置",
+    "storyFunction": "角色定位",
+    "growthStage": "成长阶段"
+  },
+  "fields": {
+    "name": "角色名称",
+    "role": "角色定位（主角/反派/配角）",
+    "personality": "性格特征",
+    "background": "背景故事",
+    "development": "成长轨迹",
+    "externalGoal": "外部目标（想得到什么）",
+    "internalNeed": "内在需求（真正渴望什么）",
+    "coreFear": "核心恐惧",
+    "moralBottomLine": "道德底线",
+    "secret": "不能说的秘密",
+    "coreFlaw": "核心缺陷",
+    "relationshipHooks": "关系钩子（与他人的冲突/羁绊）",
+    "toneStyle": "语气风格（例如：冷静克制、幽默犀利）"
+  },
+  "options": {
+    "unspecified": "不指定",
+    "protagonist": "主角",
+    "antagonist": "反派",
+    "mentor": "引路人",
+    "foil": "对照角色",
+    "supporting": "配角",
+    "start": "起点",
+    "setback": "遭遇挫折",
+    "turningPoint": "转折",
+    "awakening": "觉醒",
+    "resolution": "结局"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "title": "Let material feed creation",
+  "description": "Choose an embedding model and connect the material library so indexed data can feed analysis, planning and writing.",
+  "retrieval": {
+    "enabled": "Material retrieval on",
+    "paused": "Material retrieval paused"
+  },
+  "understanding": {
+    "title": "Choose how material is understood",
+    "description": "Use a configured, available provider; the model only understands the material's meaning and doesn't edit the source."
+  },
+  "fields": {
+    "embeddingProvider": "Embedding provider",
+    "embeddingModel": "Embedding model",
+    "embeddingApiKey": "Embedding service API key",
+    "embeddingBaseUrl": "Embedding service API URL",
+    "qdrantUrl": "Vector store URL",
+    "qdrantApiKey": "Vector store API key",
+    "clearQdrantKey": "Clear the saved vector store API key on save",
+    "ragStatus": "RAG status"
+  },
+  "provider": {
+    "configured": "Connection configured",
+    "pending": "Connection pending",
+    "available": "Available",
+    "disabled": "Disabled",
+    "keyAvailable": "Key available",
+    "unset": "Not set"
+  },
+  "model": {
+    "loading": "Loading available embedding models...",
+    "select": "Select an embedding model",
+    "search": "Search embedding models",
+    "empty": "No matching embedding models",
+    "availableCount": "The provider has {{count}} available models.",
+    "remoteHint": "Use a suggested model first; once the connection works, the provider's model list appears here.",
+    "example": "e.g. text-embedding-3-small"
+  },
+  "placeholders": {
+    "keepKey": "Leave blank to keep the saved key",
+    "embeddingKey": "Enter the embedding service API key",
+    "defaultUrl": "Leave blank to use the provider's default URL",
+    "qdrantKey": "Enter the vector store API key"
+  },
+  "actions": {
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "enable": "Enable",
+    "disable": "Disable",
+    "saving": "Saving...",
+    "save": "Save retrieval settings"
+  },
+  "advanced": {
+    "title": "Advanced configuration",
+    "description": "Collection version v{{version}} · collection name, indexing, retrieval quality and background task parameters"
+  },
+  "collection": {
+    "title": "Collection & index",
+    "description": "The name auto-distinguishes collections by provider, model, tag and version to reduce vector-dimension conflict risk.",
+    "naming": "Collection naming",
+    "auto": "Auto-generate",
+    "manual": "Set manually",
+    "tag": "Collection tag",
+    "tagPlaceholder": "e.g. kb / prod / novel",
+    "tagHint": "Use a short tag to distinguish environments or data groups.",
+    "autoName": "Auto collection name",
+    "name": "Vector collection name",
+    "namePlaceholder": "e.g. ai_novel_rag_openai_text_embedding_3_small_kb_v1",
+    "autoReindex": "Auto re-index when the embedding changes",
+    "target": "Target collection"
+  },
+  "hints": {
+    "qdrantUrl": "The local address is usually http://127.0.0.1:6333; for cloud, enter the full URL."
+  },
+  "sections": {
+    "connection": "Connection & write parameters",
+    "retrieval": "Retrieval tuning",
+    "embedding": "Embedding request behavior"
+  },
+  "options": {
+    "enabled": "Enabled",
+    "paused": "Paused"
+  },
+  "parameters": {
+    "qdrantTimeout": "Vector store timeout (ms)",
+    "upsertBytes": "Max bytes per write",
+    "upsertConcurrency": "Vector store write concurrency",
+    "chunkSize": "Chunk size",
+    "chunkOverlap": "Chunk overlap",
+    "finalTopK": "Final top K",
+    "vectorCandidates": "Vector candidates",
+    "keywordCandidates": "Keyword candidates",
+    "batchSize": "Embedding batch size",
+    "concurrency": "Embedding concurrency",
+    "timeout": "Embedding timeout (ms)",
+    "maxRetries": "Embedding max retries",
+    "retryBase": "Embedding base retry interval (ms)",
+    "workerPoll": "Worker poll interval (ms)",
+    "workerAttempts": "Worker max attempts",
+    "workerRetry": "Worker base retry interval (ms)",
+    "httpTimeout": "RAG HTTP timeout (ms)"
+  },
+  "parameterHints": {
+    "general": "Defaults suit most libraries; adjust only when the connection is slow, batch writes fail, or you need to pause retrieval.",
+    "upsertConcurrency": "Max concurrent chunk batches sent to Qdrant. Default 3; raise to 4-6 for large documents to speed up.",
+    "retrieval": "When retrieval isn't precise enough or you need to control latency, adjust chunking and candidate counts.",
+    "embedding": "For bulk import or slow service responses, adjust batch size, timeout, retry count and polling parameters.",
+    "embeddingConcurrency": "Concurrent embedding API requests. Default 4; raising it can noticeably cut large-document indexing time but must respect provider quotas.",
+    "save": "After saving, newly created or re-indexed material uses this retrieval configuration."
+  },
+  "embeddingConnectionHint": "This connection is only for understanding material; it doesn't change the creation model, default model or task routing.",
+  "database": {
+    "title": "Connect the material library",
+    "description": "Supports Qdrant Cloud, self-hosted Qdrant or a local material library."
+  }
+}

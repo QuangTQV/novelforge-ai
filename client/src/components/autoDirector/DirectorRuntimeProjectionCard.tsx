@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   DirectorPolicyMode,
   DirectorRuntimeProjection,
@@ -15,7 +16,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import i18n from "@/i18n";
 import type { DirectorIssueAction, DirectorIssueDecision } from "@ai-novel/shared/types/directorIssue";
+
+const t = (key: string, options?: Record<string, unknown>) => i18n.t(`directorRuntime:${key}`, options);
 
 interface DirectorRuntimeProjectionCardProps {
   projection: DirectorRuntimeProjection | null | undefined;
@@ -24,26 +28,26 @@ interface DirectorRuntimeProjectionCardProps {
 }
 
 const ISSUE_ACTION_LABELS: Record<DirectorIssueAction, string> = {
-  auto_retry: "自动重试",
-  continue_with_warning: "提醒后继续",
-  pause_for_manual: "暂停处理",
-  fail_task: "结束任务",
+  auto_retry: t("issueAction.autoRetry"),
+  continue_with_warning: t("issueAction.continueWithWarning"),
+  pause_for_manual: t("issueAction.pauseForManual"),
+  fail_task: t("issueAction.failTask"),
 };
 
 const POLICY_SOURCE_LABELS: Record<DirectorIssueDecision["policySource"], string> = {
-  global: "全局规则",
-  novel: "本书规则",
-  task_snapshot: "任务启动规则",
-  safety: "安全底线",
+  global: t("policySource.global"),
+  novel: t("policySource.novel"),
+  task_snapshot: t("policySource.taskSnapshot"),
+  safety: t("policySource.safety"),
 };
 
 function formatDate(value: string | null | undefined): string {
   if (!value) {
-    return "暂无";
+    return t("empty");
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "暂无";
+    return t("empty");
   }
   return date.toLocaleString();
 }
@@ -59,14 +63,14 @@ function formatDuration(value: number | null | undefined): string | null {
   }
   const seconds = Math.round(value / 1000);
   if (seconds <= 0) {
-    return "<1 秒";
+    return t("duration.lessThanSecond");
   }
   if (seconds < 60) {
-    return `${seconds} 秒`;
+    return t("duration.seconds", { count: seconds });
   }
   const minutes = Math.floor(seconds / 60);
   const restSeconds = seconds % 60;
-  return restSeconds > 0 ? `${minutes} 分 ${restSeconds} 秒` : `${minutes} 分`;
+  return restSeconds > 0 ? t("duration.minutesSeconds", { minutes, seconds: restSeconds }) : t("duration.minutes", { minutes });
 }
 
 function formatUsageLine(usage: {
@@ -78,25 +82,25 @@ function formatUsageLine(usage: {
 }): string {
   const duration = formatDuration(usage.durationMs);
   return [
-    `${formatTokenCount(usage.llmCallCount)} 次调用`,
-    `输入 ${formatTokenCount(usage.promptTokens)}`,
-    `输出 ${formatTokenCount(usage.completionTokens)}`,
-    `总计 ${formatTokenCount(usage.totalTokens)} Tokens`,
-    duration ? `累计调用耗时 ${duration}` : null,
+    t("usage.calls", { count: formatTokenCount(usage.llmCallCount) }),
+    t("usage.input", { count: formatTokenCount(usage.promptTokens) }),
+    t("usage.output", { count: formatTokenCount(usage.completionTokens) }),
+    t("usage.total", { count: formatTokenCount(usage.totalTokens) }),
+    duration ? t("usage.duration", { value: duration }) : null,
   ].filter(Boolean).join(" · ");
 }
 
 function formatPolicyMode(mode: DirectorPolicyMode): string {
   if (mode === "suggest_only") {
-    return "只给建议";
+    return t("policy.suggestOnly");
   }
   if (mode === "run_next_step") {
-    return "推进下一步";
+    return t("policy.runNextStep");
   }
   if (mode === "auto_safe_scope") {
-    return "安全范围自动推进";
+    return t("policy.autoSafeScope");
   }
-  return "推进到检查点";
+  return t("policy.toCheckpoint");
 }
 
 function formatStatus(status: DirectorRuntimeProjectionStatus): string {
@@ -277,7 +281,7 @@ export default function DirectorRuntimeProjectionCard({
   const activeExecutionLine = projection.activeExecution
     ? `后台执行：${getDirectorNodeDisplayLabel({
       nodeKey: projection.activeExecution.stepType,
-      fallback: projection.currentAction || "自动导演任务",
+      fallback: projection.currentAction || translateUi("自动导演任务"),
     })}${projection.activeExecution.resourceClass ? ` · ${projection.activeExecution.resourceClass}` : ""}`
     : null;
   const waitingLine = projection.waitingReason ? `等待原因：${projection.waitingReason}` : null;
@@ -321,7 +325,7 @@ export default function DirectorRuntimeProjectionCard({
         <div className="flex min-w-0 items-start gap-2">
           <span className="mt-0.5 shrink-0">{statusIcon(projection.status)}</span>
           <div className="min-w-0">
-            <div className="text-sm font-semibold text-foreground">导演进度</div>
+            <div className="text-sm font-semibold text-foreground">{translateUi("导演进度")}</div>
             <div className="mt-1 text-sm leading-5">{primaryText}</div>
           </div>
         </div>
@@ -343,17 +347,17 @@ export default function DirectorRuntimeProjectionCard({
       {latestRisk ? (
         <div className={cn("mt-3 rounded-md border px-3 py-2 text-sm leading-5", riskScoreClassName(latestRisk.score))}>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-medium">当前最高风险：{latestRisk.score}/8</span>
-            <span className="text-xs">影响：{affectedRiskChapters}</span>
+            <span className="font-medium">{translateUi("当前最高风险：")}{latestRisk.score}/8</span>
+            <span className="text-xs">{translateUi("影响：")}{affectedRiskChapters}</span>
           </div>
           <div className="mt-1">{latestRisk.evidenceSummary}</div>
-          <div className="mt-1 text-xs opacity-85">{formatRiskAction(latestRisk.action)}。下一步：{latestRisk.recommendationReason}</div>
+          <div className="mt-1 text-xs opacity-85">{formatRiskAction(latestRisk.action)}{translateUi("。下一步：")}{latestRisk.recommendationReason}</div>
         </div>
       ) : null}
 
       <details className="mt-3 rounded-md border bg-background/70">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-sm font-medium text-foreground">
-          <span>风险事件记录</span>
+          <span>{translateUi("风险事件记录")}</span>
           <Badge variant="outline">{projection.riskHistoryTotal ?? riskHistory.length}</Badge>
         </summary>
         <div className="space-y-2 border-t px-3 py-3">
@@ -365,13 +369,15 @@ export default function DirectorRuntimeProjectionCard({
               </div>
               <div className="mt-1">{risk.evidenceSummary}</div>
               <div className="mt-1 opacity-85">
-                影响：{risk.affectedChapterOrders.length > 0 ? `第 ${risk.affectedChapterOrders.join("、")} 章` : "当前任务"} · {formatRiskAction(risk.action)}
+
+                {translateUi("影响：")}{risk.affectedChapterOrders.length > 0 ? translateUi("第 {{value0}} 章", { value0: risk.affectedChapterOrders.join(translateUi("、")) }) : translateUi("当前任务")} · {formatRiskAction(risk.action)}
               </div>
-              <div className="mt-1 opacity-85">下一步：{risk.recommendationReason}</div>
+              <div className="mt-1 opacity-85">{translateUi("下一步：")}{risk.recommendationReason}</div>
             </div>
           )) : (
             <div className="text-xs leading-5 text-muted-foreground">
-              当前还没有需要评分的异常。自动导演运行后，每个需要决策的问题都会在这里留下分数、原因和处理动作。
+
+              {translateUi("当前还没有需要评分的异常。自动导演运行后，每个需要决策的问题都会在这里留下分数、原因和处理动作。")}
             </div>
           )}
         </div>
@@ -380,19 +386,19 @@ export default function DirectorRuntimeProjectionCard({
       {progressBreakdown && !compact ? (
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <div className="rounded-md border bg-background/70 px-3 py-2">
-            <div className="text-[11px] text-muted-foreground">规划</div>
+            <div className="text-[11px] text-muted-foreground">{translateUi("规划")}</div>
             <div className="mt-1 text-sm font-semibold text-foreground">{formatPercent(progressBreakdown.planningProgress ?? progressBreakdown.planningPercent)}</div>
           </div>
           <div className="rounded-md border bg-background/70 px-3 py-2">
-            <div className="text-[11px] text-muted-foreground">章节</div>
+            <div className="text-[11px] text-muted-foreground">{translateUi("章节")}</div>
             <div className="mt-1 text-sm font-semibold text-foreground">{progressBreakdown.continuableChapters}/{progressBreakdown.totalChapters}</div>
           </div>
           <div className="rounded-md border bg-background/70 px-3 py-2">
-            <div className="text-[11px] text-muted-foreground">质量</div>
+            <div className="text-[11px] text-muted-foreground">{translateUi("质量")}</div>
             <div className="mt-1 text-sm font-semibold text-foreground">{formatPercent(progressBreakdown.qualityProgress ?? progressBreakdown.qualityRepairPercent)}</div>
           </div>
           <div className="rounded-md border bg-background/70 px-3 py-2">
-            <div className="text-[11px] text-muted-foreground">当前动作</div>
+            <div className="text-[11px] text-muted-foreground">{translateUi("当前动作")}</div>
             <div className="mt-1 text-sm font-semibold text-foreground">{formatPercent(progressBreakdown.activeJobProgress)}</div>
           </div>
         </div>
@@ -400,7 +406,7 @@ export default function DirectorRuntimeProjectionCard({
 
       {attentionText ? (
         <div className="mt-3 rounded-md border bg-background/70 px-3 py-2 text-sm leading-5">
-          {projection.requiresUserAction ? "需要你处理：" : "暂停原因："}{attentionText}
+          {projection.requiresUserAction ? translateUi("需要你处理：") : translateUi("暂停原因：")}{attentionText}
         </div>
       ) : null}
 
@@ -422,11 +428,11 @@ export default function DirectorRuntimeProjectionCard({
 
       {usageSummary ? (
         <div className="mt-3 rounded-md border bg-background/70 px-3 py-2 text-xs leading-5 text-muted-foreground">
-          <div className="font-medium text-foreground">AI 用量</div>
+          <div className="font-medium text-foreground">{translateUi("AI 用量")}</div>
           <div className="mt-1">{formatUsageLine(usageSummary)}</div>
           {promptUsage.length > 0 && !compact ? (
             <div className="mt-2 space-y-1">
-              <div className="text-[11px] font-medium text-muted-foreground">阶段用量</div>
+              <div className="text-[11px] font-medium text-muted-foreground">{translateUi("阶段用量")}</div>
               {promptUsage.map((item) => (
                 <div key={`${item.promptAssetKey}:${item.promptVersion ?? ""}:${item.nodeKey ?? ""}`} className="flex flex-wrap items-center justify-between gap-2 border-t pt-1">
                   <span className="min-w-0 truncate text-foreground">
@@ -439,7 +445,7 @@ export default function DirectorRuntimeProjectionCard({
           ) : null}
           {stepUsage.length > 0 && !compact ? (
             <div className="mt-2 space-y-1">
-              <div className="text-[11px] font-medium text-muted-foreground">推进步骤</div>
+              <div className="text-[11px] font-medium text-muted-foreground">{translateUi("推进步骤")}</div>
               {stepUsage.map((item) => (
                 <div key={item.stepIdempotencyKey} className="flex flex-wrap items-center justify-between gap-2 border-t pt-1">
                   <span className="min-w-0 truncate text-foreground">
@@ -454,13 +460,13 @@ export default function DirectorRuntimeProjectionCard({
       ) : null}
 
       <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-        <span className="rounded-full bg-background/70 px-2 py-1">推进方式：{formatPolicyMode(projection.policyMode)}</span>
-        <span className="rounded-full bg-background/70 px-2 py-1">更新时间：{formatDate(projection.updatedAt)}</span>
+        <span className="rounded-full bg-background/70 px-2 py-1">{translateUi("推进方式：")}{formatPolicyMode(projection.policyMode)}</span>
+        <span className="rounded-full bg-background/70 px-2 py-1">{translateUi("更新时间：")}{formatDate(projection.updatedAt)}</span>
       </div>
 
       {recentIssues.length > 0 ? (
         <div className="mt-3 space-y-2">
-          <div className="text-xs font-medium text-muted-foreground">问题记录</div>
+          <div className="text-xs font-medium text-muted-foreground">{translateUi("问题记录")}</div>
           {recentIssues.map(({ occurrence, decision }) => {
             const target = occurrence.chapterId && projection.novelId
               ? `/novels/${projection.novelId}/chapters/${occurrence.chapterId}`
@@ -469,11 +475,12 @@ export default function DirectorRuntimeProjectionCard({
               <div key={occurrence.fingerprint} className="rounded-md border bg-background/70 px-3 py-2 text-xs leading-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-medium text-foreground">{occurrence.summary}</span>
-                  {target ? <Link className="text-primary hover:underline" to={target}>前往处理</Link> : null}
+                  {target ? <Link className="text-primary hover:underline" to={target}>{translateUi("前往处理")}</Link> : null}
                 </div>
                 <div className="mt-1 text-muted-foreground">
-                  {occurrence.issueCode} · {occurrence.chapterOrder ? `第 ${occurrence.chapterOrder} 章 · ` : ""}
-                  风险分 {occurrence.riskScore ?? "待评估"}
+                  {occurrence.issueCode} · {occurrence.chapterOrder ? translateUi("第 {{value0}} 章 · ", { value0: occurrence.chapterOrder }) : ""}
+
+                  {translateUi("风险分")} {occurrence.riskScore ?? translateUi("待评估")}
                   {decision ? ` · ${ISSUE_ACTION_LABELS[decision.action]} · ${POLICY_SOURCE_LABELS[decision.policySource]}` : ""}
                 </div>
               </div>
@@ -484,7 +491,7 @@ export default function DirectorRuntimeProjectionCard({
 
       {recentEvents.length > 0 && !compact ? (
         <div className="mt-3 space-y-2">
-          <div className="text-xs font-medium text-muted-foreground">最近进展</div>
+          <div className="text-xs font-medium text-muted-foreground">{translateUi("最近进展")}</div>
           {recentEvents.map((event) => (
             <div key={event.eventId} className="rounded-md border bg-background/70 px-3 py-2 text-xs leading-5">
               <div className="text-foreground">{event.summary}</div>

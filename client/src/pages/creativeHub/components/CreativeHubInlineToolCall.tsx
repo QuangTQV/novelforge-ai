@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useId, useState } from "react";
 import type { ToolCallMessagePartProps } from "@assistant-ui/react";
 import CreativeHubToolResultCard from "./CreativeHubToolResultCard";
@@ -116,16 +117,17 @@ export default function CreativeHubInlineToolCall(props: ToolCallMessagePartProp
       >
         <div className="flex items-center justify-between gap-2">
           <div className="text-sm font-medium text-foreground">{title}</div>
-          <Badge variant="secondary">等待确认</Badge>
+          <Badge variant="secondary">{translateUi("等待确认")}</Badge>
         </div>
         <div className="mt-3 text-sm leading-6 text-foreground">{summary}</div>
         <details className="mt-3 rounded-md border border-border/70 bg-background/70 px-3 py-2 text-xs text-muted-foreground">
-          <summary className="cursor-pointer">审批目标信息</summary>
-          <div className="mt-2 break-all">类型：{targetType}</div>
-          <div className="mt-1 break-all">资源 ID：{targetId}</div>
+          <summary className="cursor-pointer">{translateUi("审批目标信息")}</summary>
+          <div className="mt-2 break-all">{translateUi("类型：")}{targetType}</div>
+          <div className="mt-1 break-all">{translateUi("资源 ID：")}{targetId}</div>
         </details>
         <label htmlFor={approvalNoteId} className="mt-3 block text-xs font-medium text-muted-foreground">
-          审批备注（可选）
+
+          {translateUi("审批备注（可选）")}
         </label>
         <textarea
           id={approvalNoteId}
@@ -133,7 +135,7 @@ export default function CreativeHubInlineToolCall(props: ToolCallMessagePartProp
           value={inlineControls.approvalNote}
           disabled={approvalDisabled}
           onChange={(event) => inlineControls.onApprovalNoteChange?.(event.target.value)}
-          placeholder="审批备注（可选）"
+          placeholder={translateUi("审批备注（可选）")}
         />
         <div className="mt-3 flex gap-2">
           <Button
@@ -142,7 +144,7 @@ export default function CreativeHubInlineToolCall(props: ToolCallMessagePartProp
             disabled={approvalDisabled}
             onClick={() => inlineControls.onResolveInterrupt?.("approve")}
           >
-            {inlineControls.approvalPending ? "正在处理..." : "同意并继续"}
+            {inlineControls.approvalPending ? translateUi("正在处理...") : translateUi("同意并继续")}
           </Button>
           <Button
             type="button"
@@ -151,7 +153,8 @@ export default function CreativeHubInlineToolCall(props: ToolCallMessagePartProp
             disabled={approvalDisabled}
             onClick={() => inlineControls.onResolveInterrupt?.("reject")}
           >
-            拒绝
+
+            {translateUi("拒绝")}
           </Button>
         </div>
       </div>
@@ -197,10 +200,10 @@ export default function CreativeHubInlineToolCall(props: ToolCallMessagePartProp
               aria-expanded={showArgs}
               aria-controls={argsPanelId}
             >
-              {showArgs ? "收起参数" : "查看参数"}
+              {showArgs ? translateUi("收起参数") : translateUi("查看参数")}
             </Button>
           ) : null}
-          <Badge variant="outline">工具执行</Badge>
+          <Badge variant="outline">{translateUi("工具执行")}</Badge>
         </div>
       </div>
       {argsText && showArgs ? (
@@ -208,13 +211,13 @@ export default function CreativeHubInlineToolCall(props: ToolCallMessagePartProp
           {argsText}
         </pre>
       ) : argsText ? (
-        <div className="mt-2 text-xs text-muted-foreground">请求参数默认收起，可按需查看。</div>
+        <div className="mt-2 text-xs text-muted-foreground">{translateUi("请求参数默认收起，可按需查看。")}</div>
       ) : null}
       {(resultText || artifact.summary) ? (
         <div className="mt-3">
           <CreativeHubToolResultCard
             toolName={props.toolName}
-            summary={artifact.summary ?? resultText ?? "工具已返回结果。"}
+            summary={artifact.summary ?? resultText ?? translateUi("工具已返回结果。")}
             success={success}
             output={artifact.output}
             errorCode={artifact.errorCode}

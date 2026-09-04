@@ -1,0 +1,64 @@
+{
+  "appearance": {
+    "title": "Giao diện & Chủ đề",
+    "description": "Chọn màu giao diện và mật độ hiển thị phù hợp để sáng tác lâu dài.",
+    "cardTitle": "Giao diện ứng dụng",
+    "cardDescription": "Chủ đề chỉ lưu trên thiết bị hiện tại, không ảnh hưởng nội dung tiểu thuyết và trạng thái tác vụ.",
+    "mode": {
+      "label": "Chế độ hiển thị",
+      "system": "Theo hệ thống",
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "palette": {
+      "label": "Phong cách chủ đề",
+      "ink": { "label": "Nghiên mực", "description": "Xanh xám tiết chế, hợp sáng tác hằng ngày." },
+      "paper": { "label": "Giấy ấm", "description": "Trắng ngà dịu, hợp đọc và biên tập chương." },
+      "night": { "label": "Hành trình đêm", "description": "Chàm đậm và lục lam, hợp chạy AI và xem nhật ký." }
+    },
+    "density": {
+      "label": "Mật độ giao diện",
+      "comfortable": "Thoải mái",
+      "compact": "Gọn"
+    },
+    "reset": "Khôi phục chủ đề mặc định"
+  },
+  "language": {
+    "cardTitle": "Ngôn ngữ giao diện",
+    "cardDescription": "Chọn ngôn ngữ hiển thị của giao diện ứng dụng. Lựa chọn chỉ lưu trên thiết bị hiện tại.",
+    "label": "Ngôn ngữ",
+    "selectPlaceholder": "Chọn ngôn ngữ"
+  },
+  "overview": {
+    "title": "Cài đặt hệ thống",
+    "description": "Xem trạng thái môi trường sáng tác và mở phần cài đặt cần điều chỉnh.",
+    "open": "Mở",
+    "entries": {
+      "models": {
+        "title": "Mô hình & nhà cung cấp",
+        "description": "Chọn mô hình sáng tác, kiểm tra định tuyến tác vụ và quản lý kết nối.",
+        "summaryConfigured": "{{provider}} · {{model}} · {{routeCount}} tuyến tác vụ",
+        "summaryEmpty": "Chưa cấu hình mô hình văn bản khả dụng",
+        "noModel": "Chưa chọn mô hình"
+      },
+      "director": {
+        "title": "Đạo diễn tự động",
+        "description": "Sắp xếp cách xử lý vấn đề, tùy chọn xác nhận và cách nhắc.",
+        "summary": "Thiết lập tùy chọn xác nhận, xử lý vấn đề và cách thông báo"
+      },
+      "knowledge": {
+        "title": "Tri thức & lối viết",
+        "description": "Cho tài liệu và tùy chọn lối viết tham gia vào các bước sáng tác sau.",
+        "summaryEnabled": "Đã bật truy xuất tài liệu · {{model}}",
+        "summaryDisabled": "Tăng cường tùy chọn, chưa ảnh hưởng tới việc bắt đầu",
+        "noModel": "Chưa chọn mô hình vector"
+      },
+      "maintenance": {
+        "title": "Máy tính & bảo trì",
+        "description": "Xem cập nhật và bảo trì dữ liệu áp dụng cho thiết bị hiện tại.",
+        "summaryDesktop": "Có thể kiểm tra cập nhật ứng dụng và dữ liệu cũ trên máy",
+        "summaryWeb": "Bản web không cần bảo trì ứng dụng máy tính"
+      }
+    }
+  }
+}

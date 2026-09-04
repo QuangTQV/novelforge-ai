@@ -1,0 +1,604 @@
+{
+  "tabs": {
+    "source": "素材来源",
+    "strategy": "短剧策略",
+    "episodes": "分集台本",
+    "quality": "质量问题",
+    "characters": "角色",
+    "visual": "分镜和视频",
+    "export": "导出数据"
+  },
+  "status": {
+    "draft": "准备素材",
+    "strategized": "已生成策略",
+    "outlined": "已生成分集",
+    "scripting": "正在生成台本",
+    "completed": "已完成",
+    "planned": "待生成台本",
+    "scripted": "已生成台本",
+    "reviewed": "已检查",
+    "needsRepair": "需修复",
+    "approved": "已通过"
+  },
+  "progress": {
+    "bundle": "素材包",
+    "strategy": "策略",
+    "episodes": "分集",
+    "script": "台本",
+    "quality": "质量"
+  },
+  "strategy": {
+    "positioning": "受众定位",
+    "mainPleasureLine": "主爽点线",
+    "paywallNote": "付费卡点规划",
+    "paywallPlan": "付费卡点计划",
+    "emotionCurveNote": "情绪曲线",
+    "deviationDeclaration": "改编边界"
+  },
+  "score": {
+    "hook": "开场钩子",
+    "density": "信息密度",
+    "paywall": "付费卡点",
+    "emotion": "情绪曲线",
+    "duration": "时长",
+    "consistency": "一致性",
+    "overall": "综合"
+  },
+  "sep": {
+    "pause": "、",
+    "semicolon": "；",
+    "comma": "，"
+  },
+  "common": {
+    "refresh": "刷新",
+    "repair": "修复",
+    "prevStep": "上一步",
+    "nextStep": "下一步",
+    "title": "标题",
+    "processing": "处理中..."
+  },
+  "tracks": {
+    "counterattack": "逆袭打脸",
+    "rebirth_revenge": "重生复仇",
+    "war_god": "战神归来",
+    "live_in_son": "上门女婿",
+    "miracle_doctor": "神医",
+    "rich_family": "豪门恩怨",
+    "sweet_love": "甜宠",
+    "hidden_identity": "隐藏身份",
+    "none": "未选题材方向"
+  },
+  "source": {
+    "novel_import": "从小说导入",
+    "original": "原创短剧",
+    "text_import": "从文本导入"
+  },
+  "toast": {
+    "projectCreated": "已创建短剧项目。",
+    "trackRecommended": "已推荐合适的短剧题材方向。",
+    "sourceAssembled": "已组装短剧素材。",
+    "strategyGenerated": "已生成短剧策略。",
+    "first12Outlined": "已为前 12 集生成分集。",
+    "episodeScriptGenerated": "已生成第 {{order}} 集台本。",
+    "episodeReviewed": "已检查第 {{order}} 集质量。",
+    "episodeRepaired": "已按质量建议修复第 {{order}} 集。",
+    "storyboardGenerated": "已生成第 {{order}} 集分镜。",
+    "videoPromptGenerated": "已为镜头 {{order}} 生成视频提示词。",
+    "videoTaskCreated": "已创建视频任务。",
+    "videoTaskRefreshed": "已刷新视频任务状态。",
+    "ttsJobCreated": "已创建配音任务。",
+    "batchJobCreated": "已创建批量任务。",
+    "complianceDone": "已完成合规预检。",
+    "keyframeGenerated": "已为镜头 {{order}} 生成首帧图。",
+    "characterImported": "已把角色导入当前项目。",
+    "characterSaved": "已保存 {{name}}。",
+    "characterSavedToLibrary": "已把 {{name}} 保存到角色库。"
+  },
+  "workspace": {
+    "title": "短剧工作台",
+    "subtitle": "从小说、原创灵感或粘贴的文本组装短剧素材，再生成竖屏付费短剧策略和分集台本。",
+    "defaults": {
+      "originalProjectTitle": "原创短剧项目"
+    },
+    "create": {
+      "title": "创建短剧项目",
+      "description": "按步骤选择来源、补充内容，再创建可进入短剧产线的项目。",
+      "submitting": "创建中...",
+      "submit": "创建短剧项目"
+    },
+    "wizard": {
+      "steps": {
+        "source": "来源",
+        "content": "内容",
+        "settings": "参数"
+      }
+    },
+    "status": {
+      "draft": "准备素材",
+      "strategized": "已生成策略",
+      "outlined": "已生成分集",
+      "scripting": "正在生成台本",
+      "completed": "已完成"
+    },
+    "sourceOptions": {
+      "novelImport": {
+        "title": "导入小说",
+        "description": "从已有小说改编，适合把长篇变成竖屏短剧。"
+      },
+      "original": {
+        "title": "原创短剧",
+        "description": "从一句灵感开始，系统整理角色、冲突和节奏。"
+      },
+      "textImport": {
+        "title": "粘贴文本",
+        "description": "把故事梗概、短篇或外部资料整理成短剧项目。"
+      }
+    },
+    "form": {
+      "selectNovel": "选择小说",
+      "loadingNovels": "正在加载小说...",
+      "selectNovelToAdapt": "选择要改编的小说",
+      "noNovels": "还没有可导入的小说",
+      "untitledNovel": "未命名小说",
+      "novelOption": "{{title}}（{{count}} 章）",
+      "selectedNovelHint": "已选择 {{title}}，共 {{count}} 章。创建后会先组装成短剧素材包。",
+      "inspirationLabel": "原创灵感",
+      "inspirationPlaceholder": "例如：女主被退婚后发现自己是财阀继承人，公开打脸所有曾羞辱她的人。",
+      "rawTextLabel": "输入文本",
+      "rawTextPlaceholder": "粘贴故事梗概、角色设定、短篇正文或改编资料。",
+      "projectName": "项目名称",
+      "track": "题材方向",
+      "targetEpisodes": "目标集数",
+      "themeSupplement": "题材补充",
+      "trackRecommendation": "题材方向建议",
+      "trackRecommendationHint": "基于当前素材推荐更适合的竖屏短剧题材方向。",
+      "recommending": "推荐中...",
+      "recommendTrack": "推荐题材方向"
+    },
+    "projects": {
+      "title": "项目",
+      "subtitle": "先组装素材，再生成策略和分集。",
+      "loading": "正在加载短剧项目...",
+      "empty": "还没有短剧项目。在左侧创建一个项目。"
+    },
+    "card": {
+      "open": "打开工作台",
+      "assemble": "组装素材",
+      "strategy": "生成策略",
+      "outline12": "生成前 12 集",
+      "episodesCount": "{{count}} 集"
+    },
+    "validation": {
+      "selectNovel": "请选择要改编的小说。",
+      "fillInspiration": "请填写原创灵感。",
+      "pasteText": "请粘贴要整理的文本。",
+      "fillTitle": "请先填写短剧项目名。"
+    }
+  },
+  "project": {
+    "loading": "正在加载短剧项目...",
+    "notFound": "找不到这个短剧项目。",
+    "backToWorkspace": "返回短剧工作台",
+    "workspaceLink": "短剧工作台",
+    "episodesBadge": "{{count}} 集",
+    "costBadge": "生产成本：已用 {{actual}} / 预计 {{estimated}}",
+    "flowHint": "按“素材 → 策略 → 分集 → 台本 → 质量 → 分镜视频”的顺序推进这个短剧。",
+    "tabs": {
+      "source": "素材来源",
+      "strategy": "短剧策略",
+      "episodes": "分集台本",
+      "quality": "质量问题",
+      "characters": "角色",
+      "visual": "分镜视频",
+      "export": "导出"
+    },
+    "status": {
+      "draft": "准备素材",
+      "strategized": "已生成策略",
+      "outlined": "已生成分集",
+      "scripting": "正在生成台本",
+      "completed": "已完成",
+      "planned": "待生成台本",
+      "scripted": "已生成台本",
+      "reviewed": "已检查",
+      "needs_repair": "需修复",
+      "approved": "已通过"
+    },
+    "strategyLabels": {
+      "positioning": "受众定位",
+      "mainPleasureLine": "主爽点线",
+      "paywallNote": "付费卡点规划",
+      "paywallPlan": "付费卡点计划",
+      "emotionCurveNote": "情绪曲线",
+      "deviationDeclaration": "改编边界"
+    },
+    "scoreLabels": {
+      "hook": "开场钩子",
+      "density": "信息密度",
+      "paywall": "付费卡点",
+      "emotion": "情绪曲线",
+      "duration": "时长",
+      "consistency": "一致性",
+      "overall": "综合"
+    },
+    "progress": {
+      "bundle": "素材包",
+      "strategy": "策略",
+      "episodes": "分集",
+      "script": "台本",
+      "quality": "质量"
+    },
+    "strategy": {
+      "empty": "还没有生成短剧策略。"
+    },
+    "episodes": {
+      "empty": "还没有分集大纲。为前 12 集生成分集。"
+    },
+    "episode": {
+      "episodeNo": "第 {{order}} 集",
+      "episodeTitle": "第 {{order}} 集：{{title}}",
+      "paywall": "付费卡点",
+      "normal": "普通集",
+      "noHook": "还没有钩子信息",
+      "noHookOpening": "这一集还没写开场钩子。",
+      "generateScript": "生成台本",
+      "qualityCheck": "质量检查",
+      "saveEdit": "保存编辑",
+      "pending": "待生成",
+      "durationField": "时长：{{value}} 秒",
+      "emotionNet": "情绪净值：{{value}}",
+      "statusField": "状态：{{value}}",
+      "infoSection": "分集信息",
+      "durationInput": "预计时长（秒）",
+      "hookOpening": "开场钩子",
+      "cliffhanger": "结尾卡点",
+      "script": "台本",
+      "scriptPlaceholder": "还没有台本。可以先生成，或手写。",
+      "qualityResult": "质量结果"
+    },
+    "quality": {
+      "empty": "还没有质量检查结果。",
+      "checkedFallback": "已检查",
+      "overall": "综合 {{score}}",
+      "flagFallback": "质量建议",
+      "suggestRepair": "建议修复"
+    },
+    "toast": {
+      "fillEpisodeTitle": "请填写分集标题。",
+      "episodeSaved": "已保存第 {{order}} 集。",
+      "fillCharacterName": "请填写角色名称。"
+    },
+    "export": {
+      "title": "导出短剧资料",
+      "description": "导出当前项目已生成的角色、分集和台本。",
+      "markdown": "导出 Markdown",
+      "json": "导出 JSON",
+      "episodeSrt": "导出本集 SRT",
+      "timelineDraft": "导出剪辑草稿"
+    }
+  },
+  "nextStep": {
+    "projectBadge": "{{count}} 集项目",
+    "processing": "处理中...",
+    "yes": "是",
+    "no": "否",
+    "generated": "已生成",
+    "notGenerated": "未生成",
+    "stats": {
+      "sourceAssembled": "已组装素材：{{value}}",
+      "strategy": "策略：{{value}}",
+      "episodes": "分集：{{count}} 集",
+      "videoPrompts": "当前视频提示词：{{count}}"
+    },
+    "source": {
+      "title": "下一步：组装素材来源",
+      "description": "把小说、灵感或输入文本整理成短剧可用的梗概、节奏、角色和硬事实。",
+      "button": "组装素材"
+    },
+    "strategy": {
+      "title": "下一步：生成短剧策略",
+      "description": "基于素材和题材方向生成受众定位、主爽点线、付费卡点和改编边界。",
+      "button": "生成策略"
+    },
+    "outline": {
+      "title": "下一步：生成前 12 集分集",
+      "description": "先生成一段可检查的分集大纲，确认钩子、冲突和付费卡点的方向。",
+      "button": "生成前 12 集"
+    },
+    "script": {
+      "title": "下一步：生成第 {{order}} 集台本",
+      "description": "把这一集的大纲写成可拍摄的短剧台本，对白密、开场有钩子、结尾有卡点。",
+      "button": "生成台本"
+    },
+    "repair": {
+      "title": "下一步：修复第 {{order}} 集质量问题",
+      "description": "这一集已有质量建议，先按建议修复，避免问题进入分镜和视频提示词。",
+      "button": "修复台本"
+    },
+    "review": {
+      "title": "下一步：检查第 {{order}} 集质量",
+      "description": "检查黄金三秒、信息密度、付费卡点、时长、事实一致性和角色一致性。",
+      "button": "质量检查"
+    },
+    "storyboard": {
+      "title": "下一步：生成第 {{order}} 集分镜",
+      "description": "把已检查的台本拆成可拍摄的镜头，保留角色视觉锚点和动作重点。",
+      "button": "生成分镜"
+    },
+    "videoPrompt": {
+      "title": "下一步：生成第 {{order}} 集视频提示词",
+      "description": "把一个分镜镜头转成竖屏视频生成提示词，保留角色、动作和运镜语言。",
+      "button": "生成视频提示词"
+    },
+    "providerTask": {
+      "title": "下一步：创建视频生成任务",
+      "description": "把已生成的视频提示词发给当前 provider，之后可在分镜视频页刷新状态。",
+      "button": "创建视频任务"
+    },
+    "export": {
+      "title": "下一步：导出短剧资料",
+      "description": "导出当前的角色、分集、台本、质量结果和后续生产资料，便于编辑或交接。",
+      "button": "导出 Markdown"
+    }
+  },
+  "quality": {
+    "emptyOutline": "还没有分集大纲。生成分集和台本后，这里会汇总每集的质量检查结果。",
+    "header": "质量与合规",
+    "headerHint": "先检查台本质量，再确认平台合规风险。",
+    "checkAllCompliance": "检查全部台本合规",
+    "check": "检查",
+    "recheck": "重新检查",
+    "viewScript": "查看台本",
+    "noProblems": "当前没有需要处理的质量问题。",
+    "noStructuredDetail": "这一集需要处理，但没有结构化的问题详情。",
+    "reviewThenDecide": "查看问题后决定是否修复。",
+    "flagFallback": "质量建议",
+    "uncheckedTitle": "台本待检查",
+    "uncheckedHint": "这些集已有台本，还没有质量检查结果。",
+    "episodeTitle": "第 {{order}} 集：{{title}}",
+    "status": {
+      "approved": "已通过",
+      "repairable": "建议修复",
+      "continue_with_warning": "可以继续",
+      "blocked": "需要处理",
+      "unchecked": "未检查"
+    },
+    "severity": {
+      "low": "轻微",
+      "medium": "中等",
+      "high": "重要",
+      "critical": "严重",
+      "fallback": "建议"
+    },
+    "compliance": {
+      "pass": "合规通过",
+      "warn": "合规提醒",
+      "block": "合规需修改",
+      "fallback": "未预检"
+    },
+    "summary": {
+      "checked": "已检查",
+      "needsRepair": "建议修复",
+      "warning": "可以继续",
+      "approved": "已通过",
+      "complianceRisk": "合规风险",
+      "average": "平均分",
+      "pending": "待检查"
+    }
+  },
+  "sourcePanel": {
+    "qualityTitle": "素材质量建议",
+    "qualityHint": "这些建议决定后续策略、分集和台本是否有足够输入。",
+    "available": "可用",
+    "needSupplement": "需要补充",
+    "empty": "还没有组装素材来源。点击“组装素材”，系统会把小说、灵感或输入文本整理成短剧可用的梗概、节奏、角色和硬事实。",
+    "storyMaterial": "故事素材",
+    "storyMaterialHint": "用于后续生成策略、分集和台本的标准内容包。",
+    "synopsis": "梗概",
+    "noSynopsis": "还没有梗概",
+    "worldNotes": "设定要点",
+    "noWorldNotes": "还没有设定要点",
+    "sourceBeats": "来源节奏",
+    "beatN": "节奏 {{n}}",
+    "noBeats": "还没有来源节奏。",
+    "hardFacts": "硬事实",
+    "noHardFacts": "还没有硬事实。",
+    "checks": {
+      "synopsis": {
+        "label": "故事梗概",
+        "ready": "已整理成短剧素材",
+        "missing": "缺少故事梗概"
+      },
+      "beats": {
+        "label": "来源节奏",
+        "ready": "{{count}} 个节奏",
+        "short": "{{count}} 个节奏，对于长集数可能不够"
+      },
+      "characters": {
+        "label": "角色来源",
+        "ready": "{{count}} 个角色",
+        "short": "缺少主要角色"
+      },
+      "facts": {
+        "label": "硬事实",
+        "ready": "{{count}} 条硬事实",
+        "missing": "缺少事实来约束后续台本"
+      }
+    },
+    "readiness": {
+      "ready": "可以继续",
+      "needs_supplement": "建议补充",
+      "needs_rebuild": "建议重新组装素材"
+    },
+    "nextAction": {
+      "continue": "继续生成策略",
+      "supplement_notes": "先补充笔记",
+      "rebuild_source_bundle": "补充后重新组装素材"
+    },
+    "supplement": {
+      "title": "素材补充建议",
+      "hint": "让系统指出影响策略、分集和台本生成的素材空缺。",
+      "analyzing": "正在分析...",
+      "generate": "生成补充建议",
+      "notesLabel": "补充笔记（可选）",
+      "notesPlaceholder": "例如：主角必须保持复仇线，男女主感情线更甜，反派不要太单一。"
+    },
+    "toast": {
+      "guidanceGenerated": "已生成素材补充建议。"
+    }
+  },
+  "characters": {
+    "panelTitle": "短剧角色资产",
+    "panelHint": "角色资产会进入台本、分镜和视频提示词，优先保证观众辨识、造型一致和可拍对白。",
+    "selectLibraryAsset": "选择短剧角色资产",
+    "noLibraryAsset": "还没有可导入的角色资产",
+    "importAsset": "导入角色资产",
+    "emptyHint": "组装素材后，系统会自动导入主要角色，再补充造型锚点、表演和对白。",
+    "completeness": {
+      "screenRole": "上镜功能",
+      "audienceRead": "观众辨识",
+      "visualAnchor": "造型锚点",
+      "voiceAnchor": "表演锚点",
+      "lineRule": "对白规则"
+    },
+    "designSheet": "角色设计稿",
+    "designSheetHint": "面部特写 + 正/侧/背三视图全身 —— 生成后锁定跨集图像一致性",
+    "designSheetAlt": "{{name}} - 角色设计稿",
+    "configureProvider": "请先在设置里配置生图 Provider",
+    "generatingSheet": "正在生成角色设计稿...",
+    "generateFailed": "生成失败",
+    "noResult": "没有结果",
+    "notGenerated": "未生成",
+    "regenerateSheet": "重新生成设计稿",
+    "generateSheet": "生成角色设计稿",
+    "sheetRefHint": "视频生成会自动用这张图作为角色参考",
+    "historyCount": "{{count}} 个历史版本",
+    "sheetHistory": "设计稿历史版本",
+    "screenRolePlaceholder2": "先确定这个角色在短剧里的上镜功能。",
+    "assetProgress": "资产 {{done}}/{{total}}",
+    "screenName": "上镜名字",
+    "dramaFunction": "在短剧中的功能",
+    "dramaFunctionPlaceholder": "正派 / 反派 / 阻碍角色 / 助攻 / 情感对象",
+    "audienceRead": "观众必须马上看懂什么",
+    "audienceReadPlaceholder": "例如：她表面上处于弱势被羞辱，但眼神始终平静，观众要立刻相信她有反击的底牌。",
+    "visualAnchor": "固定造型锚点",
+    "visualAnchorPlaceholder": "外貌、发型、服装、随身物、常用配色；后续分镜和视频提示词会照此保持。",
+    "voiceAnchor": "表演和声音锚点",
+    "voiceAnchorPlaceholder": "语速、音色、表情习惯、情绪爆发方式；用于对白和视频表演一致。",
+    "lineRule": "对白规则",
+    "lineRulePlaceholder": "例如：短句压迫、少解释、多反问；被羞辱时不急着解释，反击时一句定音。",
+    "relationMap": "冲突关系和运镜配置",
+    "relationMapPlaceholder": "这个角色主要和谁对立、压制谁、保护谁，同框构图怎么处理。",
+    "saveAsset": "保存角色资产",
+    "saveToLibrary": "保存到短剧角色库"
+  },
+  "audio": {
+    "title": "配音",
+    "channelAria": "配音渠道",
+    "mockChannel": "模拟配音渠道",
+    "synthesize": "合成本集配音",
+    "jobTitle": "本集配音任务",
+    "skipped": "已跳过 {{count}}",
+    "failed": "失败 {{count}}",
+    "channel": "渠道：{{provider}}",
+    "estimated": "预计：{{cost}}",
+    "actual": "实际：{{cost}}",
+    "failedShots": "失败镜头：{{ids}}",
+    "retryFailed": "重试失败镜头",
+    "shotN": "镜头 {{order}}",
+    "voiceLine": "音色：{{voiceId}}",
+    "needStoryboard": "生成分镜后可以合成本集配音。",
+    "costTitle": "配音预计成本",
+    "calculating": "正在计算",
+    "costNeedStoryboard": "生成分镜后可计算",
+    "perSecond": "时长 {{cost}}/秒",
+    "noUnitPrice": "未配置单价",
+    "shotsCount": " · {{count}} 个镜头",
+    "batchStatus": {
+      "pending": "等待中",
+      "running": "运行中",
+      "paused": "已暂停",
+      "done": "已完成",
+      "failed": "有失败项"
+    }
+  },
+  "visual": {
+    "needEpisodes": "先生成分集和台本，再进入分镜和视频提示词。",
+    "noStoryboardShort": "当前集还没有分镜。",
+    "episodeOption": "第 {{order}} 集 {{title}}",
+    "videoChannelAria": "视频渠道",
+    "keyframeProviderAria": "首帧图 Provider",
+    "noImageProvider": "未配置图片 Provider",
+    "characterRefImages": "角色参考图",
+    "generateStoryboard": "生成分镜",
+    "generateKeyframes": "生成本集首帧图",
+    "createVideoJobs": "生成本集视频任务",
+    "keyframeCostTitle": "首帧图预计成本",
+    "videoCostTitle": "视频预计成本",
+    "keyframeBatchTitle": "批量首帧图任务",
+    "videoBatchTitle": "批量视频任务",
+    "currentVideoChannel": "当前视频渠道：{{value}}",
+    "storyboard": "分镜",
+    "shotSequenceGenerated": "已生成镜头序列。",
+    "shotN": "镜头 {{order}}",
+    "shotSizePending": "待确定景别",
+    "keyframeV": "首帧图 v{{version}}",
+    "keyframeHistoryCount": "{{count}} 条首帧图历史",
+    "promptV": "提示词 v{{version}}",
+    "regenerateKeyframe": "重新生成首帧图",
+    "generateKeyframe": "生成首帧图",
+    "videoPrompt": "视频提示词",
+    "taskCreated": "已创建任务",
+    "createVideoTask": "创建视频任务",
+    "createTask": "创建任务",
+    "refreshStatus": "刷新状态",
+    "videoTasks": "视频任务",
+    "videoTasksHint": "集中查看当前项目已生成的视频提示词和 provider 任务状态。",
+    "taskId": "任务：{{id}}",
+    "historyVersion": "历史版本",
+    "stats": {
+      "prompted": "当前提示词",
+      "withTask": "已创建任务",
+      "queued": "正在生成",
+      "succeeded": "已完成",
+      "failed": "失败",
+      "history": "历史版本"
+    },
+    "skipped": "已跳过 {{count}}",
+    "failed": "失败 {{count}}",
+    "channel": "渠道：{{provider}}",
+    "estimated": "预计：{{cost}}",
+    "actual": "实际：{{cost}}",
+    "failedShots": "失败镜头：{{ids}}",
+    "retryFailed": "重试失败镜头",
+    "keyframeAlt": "镜头 {{order}} 首帧图",
+    "keyframeGenerating": "正在生成首帧图",
+    "keyframeFailed": "生成首帧图失败",
+    "keyframeNotYet": "尚未生成首帧图",
+    "shotFrame": "镜头画面",
+    "location": "地点：{{location}}",
+    "keyframeChannel": "首帧图渠道：{{provider}}",
+    "keyframeHistory": "首帧图历史版本",
+    "perImage": "图片 {{cost}}/张",
+    "perSecond": "时长 {{cost}}/秒",
+    "noUnitPrice": "未配置单价",
+    "calculating": "正在计算",
+    "costPending": "待计算",
+    "shotsCount": " · {{count}} 个镜头",
+    "negativePrompt": "负面提示词",
+    "version": "版本：v{{version}}",
+    "aspectRatio": "画面比例：{{ratio}}",
+    "durationSec": "时长：{{sec}} 秒",
+    "channelStatus": "视频渠道状态：{{status}}",
+    "viewResult": "查看生成结果",
+    "videoTaskFailedReason": "视频任务失败：{{reason}}",
+    "videoTaskFailed": "视频任务失败。请刷新状态或重新生成提示词后再创建任务。",
+    "batchStatus": {
+      "pending": "等待中",
+      "running": "运行中",
+      "paused": "已暂停",
+      "done": "已完成",
+      "failed": "有失败项"
+    }
+  }
+}

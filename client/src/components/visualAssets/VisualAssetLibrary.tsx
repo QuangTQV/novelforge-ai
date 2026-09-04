@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { VisualAssetCatalogItem, VisualAssetSelection, VisualAssetSourceDomain } from "@ai-novel/shared/types/visualAsset";
@@ -149,7 +150,7 @@ export function VisualAssetLibrary({
   };
 
   return (
-    <section className={cn("flex h-full min-h-0 flex-col bg-background", className)} aria-label="视觉资源库">
+    <section className={cn("flex h-full min-h-0 flex-col bg-background", className)} aria-label={translateUi("视觉资源库")}>
       <div className="shrink-0 border-b px-5 py-3.5">
         <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
           <label className="relative block min-w-0 flex-1">
@@ -157,22 +158,22 @@ export function VisualAssetLibrary({
             <Input
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
-              placeholder="搜索素材名称、描述或提示词"
+              placeholder={translateUi("搜索素材名称、描述或提示词")}
               className="h-10 bg-background pl-9"
-              aria-label="搜索视觉素材"
+              aria-label={translateUi("搜索视觉素材")}
             />
           </label>
           <div className="flex flex-wrap items-center gap-2">
-            <FilterGroup label="类型" icon={<SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />}>
-              <FilterButton active={!selectedKind} onClick={() => setSelectedKind(undefined)}>全部</FilterButton>
+            <FilterGroup label={translateUi("类型")} icon={<SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />}>
+              <FilterButton active={!selectedKind} onClick={() => setSelectedKind(undefined)}>{translateUi("全部")}</FilterButton>
               {kindFacets.map((facet) => (
                 <FilterButton key={facet.value} active={selectedKind === facet.value} onClick={() => setSelectedKind(facet.value)}>
                   {getVisualAssetKindLabel(facet.value)} <span className="text-muted-foreground">{facet.count}</span>
                 </FilterButton>
               ))}
             </FilterGroup>
-            <FilterGroup label="来源">
-              <FilterButton active={!selectedSource} onClick={() => setSelectedSource(undefined)}>全部</FilterButton>
+            <FilterGroup label={translateUi("来源")}>
+              <FilterButton active={!selectedSource} onClick={() => setSelectedSource(undefined)}>{translateUi("全部")}</FilterButton>
               {sourceFacets.map((facet) => (
                 <FilterButton key={facet.value} active={selectedSource === facet.value} onClick={() => setSelectedSource(facet.value)}>
                   {getVisualAssetSourceLabel(facet.value)} <span className="text-muted-foreground">{facet.count}</span>
@@ -186,11 +187,12 @@ export function VisualAssetLibrary({
       <div className="flex min-h-0 flex-1">
         <div className="min-w-0 flex-1 overflow-y-auto">
           <div className="flex items-center justify-between gap-3 px-5 py-3 text-sm text-muted-foreground">
-            <span>{typeof total === "number" ? `找到 ${total} 项素材` : "正在准备素材"}</span>
+            <span>{typeof total === "number" ? translateUi("找到 {{value0}} 项素材", { value0: total }) : translateUi("正在准备素材")}</span>
             {hasActiveFilters ? (
               <Button type="button" variant="ghost" size="sm" className="h-8 px-2" onClick={clearFilters}>
                 <X className="h-3.5 w-3.5" aria-hidden="true" />
-                清除筛选
+
+                {translateUi("清除筛选")}
               </Button>
             ) : null}
           </div>
@@ -198,17 +200,17 @@ export function VisualAssetLibrary({
             {catalogQuery.isLoading ? <VisualAssetGridLoading /> : null}
             {catalogQuery.isError ? (
               <InlineState
-                title="暂时无法加载视觉素材"
-                description="请检查连接后重新加载。"
-                actionLabel="重新加载"
+                title={translateUi("暂时无法加载视觉素材")}
+                description={translateUi("请检查连接后重新加载。")}
+                actionLabel={translateUi("重新加载")}
                 onAction={() => void catalogQuery.refetch()}
               />
             ) : null}
             {!catalogQuery.isLoading && !catalogQuery.isError && items.length === 0 ? (
               <InlineState
-                title="没有找到匹配的视觉素材"
-                description={hasActiveFilters ? "调整搜索或筛选条件后继续查看。" : "完成图片创作后，素材会显示在这里。"}
-                actionLabel={hasActiveFilters ? "清除筛选" : undefined}
+                title={translateUi("没有找到匹配的视觉素材")}
+                description={hasActiveFilters ? translateUi("调整搜索或筛选条件后继续查看。") : translateUi("完成图片创作后，素材会显示在这里。")}
+                actionLabel={hasActiveFilters ? translateUi("清除筛选") : undefined}
                 onAction={hasActiveFilters ? clearFilters : undefined}
               />
             ) : null}
@@ -225,7 +227,7 @@ export function VisualAssetLibrary({
                   <div className="flex justify-center pt-5">
                     <Button type="button" variant="outline" disabled={catalogQuery.isFetchingNextPage} onClick={() => void catalogQuery.fetchNextPage()}>
                       {catalogQuery.isFetchingNextPage ? <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
-                      {catalogQuery.isFetchingNextPage ? "正在加载" : "加载更多"}
+                      {catalogQuery.isFetchingNextPage ? translateUi("正在加载") : translateUi("加载更多")}
                     </Button>
                   </div>
                 ) : null}
@@ -247,15 +249,17 @@ export function VisualAssetLibrary({
       {selectionMode !== "browse" ? (
         <div className="flex shrink-0 flex-col gap-3 border-t bg-background px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-muted-foreground">
-            已选择 <span className="font-medium text-foreground">{selectedItems.length}</span> 项素材
+
+            {translateUi("已选择")} <span className="font-medium text-foreground">{selectedItems.length}</span>  {translateUi("项素材")}
           </div>
           <div className="flex items-center justify-end gap-2">
             {selectedItems.length ? (
-              <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedById(new Map())}>清空选择</Button>
+              <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedById(new Map())}>{translateUi("清空选择")}</Button>
             ) : null}
             <Button type="button" disabled={!selectedItems.length || !onSelect} onClick={() => onSelect?.(selectedItems)}>
               <Check className="h-4 w-4" aria-hidden="true" />
-              使用已选素材
+
+              {translateUi("使用已选素材")}
             </Button>
           </div>
         </div>
@@ -266,7 +270,7 @@ export function VisualAssetLibrary({
 
 function FilterGroup({ label, icon, children }: { label: string; icon?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-md border bg-muted/[0.18] p-1" aria-label={`${label}筛选`}>
+    <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-md border bg-muted/[0.18] p-1" aria-label={translateUi("{{value0}}筛选", { value0: label })}>
       <span className="inline-flex shrink-0 items-center gap-1 px-2 text-xs text-muted-foreground">{icon}{label}</span>
       {children}
     </div>
@@ -288,7 +292,7 @@ function FilterButton({ active, children, onClick }: { active: boolean; children
 
 function VisualAssetGridLoading() {
   return (
-    <div className="columns-2 gap-3 sm:columns-3 xl:columns-4 2xl:columns-5" aria-label="正在加载视觉素材">
+    <div className="columns-2 gap-3 sm:columns-3 xl:columns-4 2xl:columns-5" aria-label={translateUi("正在加载视觉素材")}>
       {Array.from({ length: 10 }, (_, index) => (
         <div key={index} className="mb-3 break-inside-avoid overflow-hidden rounded-md border">
           <div className="h-40 animate-pulse bg-muted" />

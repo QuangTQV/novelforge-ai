@@ -1,0 +1,15 @@
+{
+  "reference": {
+    "characterSheet": "角色设计稿",
+    "expressionSheet": "表情稿",
+    "faceCrop": "面部特写",
+    "asset": "资产",
+    "scene": "场景"
+  },
+  "density": {
+    "low": "低密度",
+    "medium": "中密度",
+    "high": "高密度",
+    "unlabeled": "未标注"
+  }
+}

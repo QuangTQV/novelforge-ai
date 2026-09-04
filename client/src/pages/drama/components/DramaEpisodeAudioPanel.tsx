@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Headphones, RefreshCw } from "lucide-react";
@@ -105,18 +106,18 @@ export function DramaEpisodeAudioPanel(props: {
   return (
     <section className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-sm font-medium">配音</h3>
+        <h3 className="text-sm font-medium">{translateUi("配音")}</h3>
         <div className="flex flex-wrap gap-2">
           <SelectControl
             className="h-9 rounded-md border bg-background px-2 text-xs"
             value={activeProvider}
             onChange={(event) => setSelectedProvider(event.target.value)}
-            aria-label="配音通道"
+            aria-label={translateUi("配音通道")}
           >
             {props.ttsProviders.length > 0 ? props.ttsProviders.map((provider) => (
               <option key={provider.provider} value={provider.provider}>{provider.label}</option>
             )) : (
-              <option value="mock">模拟配音通道</option>
+              <option value="mock">{translateUi("模拟配音通道")}</option>
             )}
           </SelectControl>
           <Button
@@ -127,7 +128,8 @@ export function DramaEpisodeAudioPanel(props: {
             onClick={() => props.onBatchJob(props.episode.order, { type: "tts", provider: activeProvider })}
           >
             <Headphones className="h-4 w-4" />
-            合成本集配音
+
+            {translateUi("合成本集配音")}
           </Button>
         </div>
       </div>
@@ -139,7 +141,7 @@ export function DramaEpisodeAudioPanel(props: {
       {latestTtsBatch ? (
         <div className="rounded-md border p-3 text-sm">
           <div className="flex items-center justify-between gap-3">
-            <div className="font-medium">本集配音任务</div>
+            <div className="font-medium">{translateUi("本集配音任务")}</div>
             <Badge variant={latestTtsBatch.status === "failed" ? "destructive" : "outline"}>{batchStatusLabel(latestTtsBatch.status)}</Badge>
           </div>
           <div className="mt-3 h-2 overflow-hidden rounded bg-muted">
@@ -147,15 +149,15 @@ export function DramaEpisodeAudioPanel(props: {
           </div>
           <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
             <span>{done}/{total}</span>
-            {latestProgress.skipped ? <span>已跳过 {latestProgress.skipped}</span> : null}
-            {latestProgress.failed ? <span>失败 {latestProgress.failed}</span> : null}
-            {latestProgress.provider ? <span>通道：{latestProgress.provider}</span> : null}
-            {latestProgress.cost ? <span>预计：{formatCost(latestProgress.cost, latestProgress.cost.estimated)}</span> : null}
-            {latestProgress.cost ? <span>实际：{formatCost(latestProgress.cost, latestProgress.cost.actual)}</span> : null}
+            {latestProgress.skipped ? <span>{translateUi("已跳过")} {latestProgress.skipped}</span> : null}
+            {latestProgress.failed ? <span>{translateUi("失败")} {latestProgress.failed}</span> : null}
+            {latestProgress.provider ? <span>{translateUi("通道：")}{latestProgress.provider}</span> : null}
+            {latestProgress.cost ? <span>{translateUi("预计：")}{formatCost(latestProgress.cost, latestProgress.cost.estimated)}</span> : null}
+            {latestProgress.cost ? <span>{translateUi("实际：")}{formatCost(latestProgress.cost, latestProgress.cost.actual)}</span> : null}
           </div>
           {failedShotIds.length > 0 ? (
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-destructive">失败镜头：{failedShotIds.join("、")}</span>
+              <span className="text-xs text-destructive">{translateUi("失败镜头：")}{failedShotIds.join(translateUi("、"))}</span>
               <Button
                 size="sm"
                 type="button"
@@ -168,7 +170,8 @@ export function DramaEpisodeAudioPanel(props: {
                 })}
               >
                 <RefreshCw className="h-4 w-4" />
-                重试失败镜头
+
+                {translateUi("重试失败镜头")}
               </Button>
             </div>
           ) : null}
@@ -180,9 +183,9 @@ export function DramaEpisodeAudioPanel(props: {
           {audioItems.map((item) => (
             <div key={`${item.shotOrder}-${item.lineIndex}`} className="rounded-md border p-3 text-sm">
               <div className="mb-2 flex flex-wrap items-center gap-2">
-                <Badge variant="secondary">镜头 {item.shotOrder}</Badge>
+                <Badge variant="secondary">{translateUi("镜头")} {item.shotOrder}</Badge>
                 {item.speaker ? <span className="font-medium">{item.speaker}</span> : null}
-                {item.voiceId ? <span className="text-xs text-muted-foreground">声线：{item.voiceId}</span> : null}
+                {item.voiceId ? <span className="text-xs text-muted-foreground">{translateUi("声线：")}{item.voiceId}</span> : null}
               </div>
               <p className="mb-2 text-muted-foreground">{item.text}</p>
               <audio className="w-full" controls src={item.audioUrl} />
@@ -190,7 +193,7 @@ export function DramaEpisodeAudioPanel(props: {
           ))}
         </div>
       ) : (
-        <div className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">生成分镜后可合成本集配音。</div>
+        <div className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">{translateUi("生成分镜后可合成本集配音。")}</div>
       )}
     </section>
   );
@@ -203,14 +206,14 @@ function formatCost(cost: DramaBatchCostBreakdown, amount: number): string {
 function CostEstimate(props: { cost?: DramaBatchCostBreakdown; loading: boolean }) {
   return (
     <div className="rounded-md border border-dashed p-3 text-sm">
-      <div className="text-xs text-muted-foreground">配音预计费用</div>
+      <div className="text-xs text-muted-foreground">{translateUi("配音预计费用")}</div>
       <div className="mt-1 font-medium">
-        {props.loading ? "计算中" : props.cost ? formatCost(props.cost, props.cost.estimated) : "生成分镜后可计算"}
+        {props.loading ? translateUi("计算中") : props.cost ? formatCost(props.cost, props.cost.estimated) : translateUi("生成分镜后可计算")}
       </div>
       {props.cost ? (
         <div className="mt-1 text-xs text-muted-foreground">
-          {props.cost.unit.costPerSecond ? `时长 ${formatCost(props.cost, props.cost.unit.costPerSecond)}/秒` : "未配置单价"}
-          {props.cost.estimatedUnits.shots ? ` · ${props.cost.estimatedUnits.shots} 个镜头` : ""}
+          {props.cost.unit.costPerSecond ? translateUi("时长 {{value0}}/秒", { value0: formatCost(props.cost, props.cost.unit.costPerSecond) }) : translateUi("未配置单价")}
+          {props.cost.estimatedUnits.shots ? translateUi(" · {{value0}} 个镜头", { value0: props.cost.estimatedUnits.shots }) : ""}
         </div>
       ) : null}
     </div>

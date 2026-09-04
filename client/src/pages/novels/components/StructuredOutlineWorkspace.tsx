@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import AiButton from "@/components/common/AiButton";
 import TensionCurvePanel, { type TensionCurveSeries, type TensionCurveViewportOption } from "@/components/tensionCurve/TensionCurvePanel";
@@ -202,19 +203,19 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
     totalChapterCount: selectedVolumeChapters.length,
   });
   const tensionCurveViewportOptions: TensionCurveViewportOption[] = [
-    { key: "all", label: "整卷" },
+    { key: "all", label: translateUi("整卷") },
     ...(selectedBeatSheet?.beats.map((beat) => ({ key: beat.key, label: formatBeatDisplayLabel(beat) })) ?? []),
   ];
   const tensionCurveSeries: TensionCurveSeries[] = selectedVolume
     ? [{
       id: "conflictLevel",
-      label: "冲突强度",
+      label: translateUi("冲突强度"),
       color: "#2563eb",
       editable: true,
       points: selectedVolumeChapters.map((chapter) => ({
         id: chapter.id,
         chapterOrder: chapter.chapterOrder,
-        title: chapter.title || `第${chapter.chapterOrder}章`,
+        title: chapter.title || translateUi("第{{value0}}章", { value0: chapter.chapterOrder }),
         value: typeof chapter.conflictLevel === "number" ? chapter.conflictLevel : null,
         source: chapter.conflictLevelSource ?? "ai",
         beatKey: findChapterBeat(chapter, selectedBeatSheet, selectedVolumeChapters)?.key ?? null,
@@ -248,16 +249,16 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
   if (volumes.length === 0) {
     return (
       <Card className="border-0 bg-transparent shadow-none">
-        <CardHeader><CardTitle>节奏 / 拆章</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{translateUi("节奏 / 拆章")}</CardTitle></CardHeader>
         <CardContent className="space-y-4 px-0">
           <WorldInjectionHint worldInjectionSummary={worldInjectionSummary} />
           {!hasCharacters ? (
             <div className="flex items-center justify-between gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-xs text-amber-800">
-              <span>请先补角色，再拆节奏和章节。</span>
-              <Button size="sm" variant="outline" onClick={onGoToCharacterTab}>去角色管理</Button>
+              <span>{translateUi("请先补角色，再拆节奏和章节。")}</span>
+              <Button size="sm" variant="outline" onClick={onGoToCharacterTab}>{translateUi("去角色管理")}</Button>
             </div>
           ) : null}
-          <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">先在上一页生成卷战略和卷骨架。</div>
+          <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">{translateUi("先在上一页生成卷战略和卷骨架。")}</div>
         </CardContent>
       </Card>
     );
@@ -267,11 +268,11 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
     <Card className="border-0 bg-transparent shadow-none">
       <CardHeader className="flex flex-col gap-4 rounded-2xl bg-muted/20 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-1">
-          <CardTitle>节奏 / 拆章</CardTitle>
-          <div className="text-sm text-muted-foreground">先选卷，再看节奏，再从对应章节里挑当前要细化的一章。</div>
+          <CardTitle>{translateUi("节奏 / 拆章")}</CardTitle>
+          <div className="text-sm text-muted-foreground">{translateUi("先选卷，再看节奏，再从对应章节里挑当前要细化的一章。")}</div>
         </div>
         <Button variant="secondary" onClick={onSave} disabled={isSaving}>
-          {isSaving ? "保存中..." : "保存卷工作区"}
+          {isSaving ? translateUi("保存中...") : translateUi("保存卷工作区")}
         </Button>
       </CardHeader>
       <CardContent className="space-y-5 px-0 pt-5">
@@ -280,9 +281,10 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
         {directorTakeoverEntry ? (
           <div className="flex flex-col gap-3 rounded-2xl bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <div className="text-sm font-medium text-foreground">想让 AI 继续接管当前项目？</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("想让 AI 继续接管当前项目？")}</div>
               <div className="text-sm text-muted-foreground">
-                不用回到项目设定，直接在这里重新进入自动导演，让 AI 继续推进节奏拆章或后续自动执行。
+
+                {translateUi("不用回到项目设定，直接在这里重新进入自动导演，让 AI 继续推进节奏拆章或后续自动执行。")}
               </div>
             </div>
             <div className="shrink-0">
@@ -293,10 +295,10 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
 
         <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-muted/20 px-4 py-3 text-xs text-muted-foreground">
           <span>{generationNotice}</span>
-          {hasUnsavedVolumeDraft ? <Badge variant="secondary">含未保存草稿</Badge> : null}
-          <Badge variant="outline">当前：第{selectedVolume.sortOrder}卷</Badge>
-          <Badge variant="outline">{selectedVolumeChapters.length}章</Badge>
-          <Badge variant="outline">{refinedChapterCount}/{Math.max(selectedVolumeChapters.length, 1)} 已细化</Badge>
+          {hasUnsavedVolumeDraft ? <Badge variant="secondary">{translateUi("含未保存草稿")}</Badge> : null}
+          <Badge variant="outline">{translateUi("当前：第")}{selectedVolume.sortOrder}{translateUi("卷")}</Badge>
+          <Badge variant="outline">{selectedVolumeChapters.length}{translateUi("章")}</Badge>
+          <Badge variant="outline">{refinedChapterCount}/{Math.max(selectedVolumeChapters.length, 1)}  {translateUi("已细化")}</Badge>
         </div>
 
         <div className="rounded-2xl bg-primary/5 px-4 py-3 text-sm text-foreground">
@@ -304,8 +306,8 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
         </div>
 
         <TensionCurvePanel
-          title="紧张度曲线"
-          subtitle="查看当前卷冲突强度走向；手动固定点会作为后续拆章、细化和重规划的约束。"
+          title={translateUi("紧张度曲线")}
+          subtitle={translateUi("查看当前卷冲突强度走向；手动固定点会作为后续拆章、细化和重规划的约束。")}
           series={tensionCurveSeries}
           viewportOptions={tensionCurveViewportOptions}
           selectedViewportKey={selectedBeatKey}
@@ -316,8 +318,8 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
         <TensionCurveEditDialog
           open={tensionCurveDialogOpen}
           onOpenChange={setTensionCurveDialogOpen}
-          title="编辑紧张度曲线"
-          description="先对照卷级定位和当前节奏段交付，再拖动章节节点调整冲突强度。"
+          title={translateUi("编辑紧张度曲线")}
+          description={translateUi("先对照卷级定位和当前节奏段交付，再拖动章节节点调整冲突强度。")}
           series={tensionCurveSeries}
           viewportOptions={tensionCurveViewportOptions}
           selectedViewportKey={selectedBeatKey}
@@ -329,7 +331,7 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
             chapterId: chapter.chapterId,
             chapterOrder: chapter.chapterOrder,
             beatKey: findChapterBeat(chapter, selectedBeatSheet, selectedVolumeChapters)?.key ?? null,
-            title: chapter.title || `第${chapter.chapterOrder}章`,
+            title: chapter.title || translateUi("第{{value0}}章", { value0: chapter.chapterOrder }),
             summary: chapter.summary,
             purpose: chapter.purpose,
             exclusiveEvent: chapter.exclusiveEvent,
@@ -370,15 +372,15 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
           }}
         />
 
-        {!strategyPlan ? <div className="rounded-2xl bg-amber-50 px-4 py-3 text-xs text-amber-800">请先在上一阶段生成卷战略建议，再继续当前卷节奏板和拆章。</div> : null}
+        {!strategyPlan ? <div className="rounded-2xl bg-amber-50 px-4 py-3 text-xs text-amber-800">{translateUi("请先在上一阶段生成卷战略建议，再继续当前卷节奏板和拆章。")}</div> : null}
         {syncMessage ? <div className="text-xs text-muted-foreground">{syncMessage}</div> : null}
-        {locked ? <div className="rounded-2xl bg-amber-50 px-4 py-3 text-xs text-amber-800">当前卷还没有节奏板，章节列表生成已锁定。</div> : null}
+        {locked ? <div className="rounded-2xl bg-amber-50 px-4 py-3 text-xs text-amber-800">{translateUi("当前卷还没有节奏板，章节列表生成已锁定。")}</div> : null}
 
         <Card className="border-0 bg-muted/15 shadow-none">
           <CardHeader className="pb-3">
             <div className="flex flex-col gap-1">
-              <CardTitle className="text-base">当前处理卷</CardTitle>
-              <div className="text-sm text-muted-foreground">先切到要处理的卷，主工作区会跟着切换当前卷节奏和章节。</div>
+              <CardTitle className="text-base">{translateUi("当前处理卷")}</CardTitle>
+              <div className="text-sm text-muted-foreground">{translateUi("先切到要处理的卷，主工作区会跟着切换当前卷节奏和章节。")}</div>
             </div>
           </CardHeader>
           <CardContent>
@@ -404,14 +406,14 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
                     )}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <Badge variant={isSelected ? "default" : "outline"}>第{volume.sortOrder}卷</Badge>
-                      {volumeBeatSheet ? <Badge variant="secondary">有节奏板</Badge> : <Badge variant="outline">未做节奏板</Badge>}
+                      <Badge variant={isSelected ? "default" : "outline"}>{translateUi("第")}{volume.sortOrder}{translateUi("卷")}</Badge>
+                      {volumeBeatSheet ? <Badge variant="secondary">{translateUi("有节奏板")}</Badge> : <Badge variant="outline">{translateUi("未做节奏板")}</Badge>}
                     </div>
-                    <div className="mt-2 line-clamp-1 text-sm font-medium">{volume.title || `第${volume.sortOrder}卷`}</div>
+                    <div className="mt-2 line-clamp-1 text-sm font-medium">{volume.title || translateUi("第{{value0}}卷", { value0: volume.sortOrder })}</div>
                     <div className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                      {volume.mainPromise || volume.summary || "先补这卷的核心承诺。"}
+                      {volume.mainPromise || volume.summary || translateUi("先补这卷的核心承诺。")}
                     </div>
-                    <div className="mt-2 text-[11px] text-muted-foreground">{volume.chapters.length}章 · {doneCount}章已细化</div>
+                    <div className="mt-2 text-[11px] text-muted-foreground">{volume.chapters.length}{translateUi("章 ·")} {doneCount}{translateUi("章已细化")}</div>
                   </button>
                 );
               })}
@@ -423,14 +425,15 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
           <div className="space-y-3">
             <div className="flex flex-col gap-3 rounded-2xl bg-muted/20 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="text-sm">
-                检测到 {selectedRebalance.length} 条相邻卷再平衡建议。它们会影响跨卷衔接，但不属于当前主编辑动作。
+
+                {translateUi("检测到")} {selectedRebalance.length}  {translateUi("条相邻卷再平衡建议。它们会影响跨卷衔接，但不属于当前主编辑动作。")}
               </div>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => patchWorkspace(workspaceId, { showRebalancePanel: !showRebalancePanel })}
               >
-                {showRebalancePanel ? "收起建议" : "查看建议"}
+                {showRebalancePanel ? translateUi("收起建议") : translateUi("查看建议")}
               </Button>
             </div>
             {showRebalancePanel ? (
@@ -530,20 +533,20 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
               <CardHeader className="pb-3">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div className="space-y-1">
-                    <CardTitle className="text-base">章节执行连接</CardTitle>
-                    <div className="text-sm text-muted-foreground">系统会把拆好的章节连接到执行队列。只有需要检查连接状态时再展开。</div>
+                    <CardTitle className="text-base">{translateUi("章节执行连接")}</CardTitle>
+                    <div className="text-sm text-muted-foreground">{translateUi("系统会把拆好的章节连接到执行队列。只有需要检查连接状态时再展开。")}</div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant={hasMissingChapterLinks ? "outline" : "secondary"}>
-                      {linkedChapterCount}/{Math.max(allPlannedChapters.length, 1)} 已连接
+                      {linkedChapterCount}/{Math.max(allPlannedChapters.length, 1)}  {translateUi("已连接")}
                     </Badge>
-                    <Badge variant="outline">执行区 {executionChapterCount} 章</Badge>
+                    <Badge variant="outline">{translateUi("执行区")} {executionChapterCount}  {translateUi("章")}</Badge>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => patchWorkspace(workspaceId, { showSyncPanel: !showSyncPanel })}
                     >
-                      {showSyncPanel ? "收起诊断" : "查看连接"}
+                      {showSyncPanel ? translateUi("收起诊断") : translateUi("查看连接")}
                     </Button>
                   </div>
                 </div>
@@ -554,20 +557,22 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
                     <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                       <label className="flex items-center gap-2 rounded-full border border-border/70 px-3 py-1.5">
                         <input type="checkbox" checked={syncOptions.preserveContent} onChange={(event) => onSyncOptionsChange({ preserveContent: event.target.checked })} />
-                        保留已有正文
+
+                        {translateUi("保留已有正文")}
                       </label>
                       <label className="flex items-center gap-2 rounded-full border border-border/70 px-3 py-1.5">
                         <input type="checkbox" checked={syncOptions.applyDeletes} onChange={(event) => onSyncOptionsChange({ applyDeletes: event.target.checked })} />
-                        同步时删除卷纲外章节
+
+                        {translateUi("同步时删除卷纲外章节")}
                       </label>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
-                      <Button size="sm" variant="outline" onClick={() => onApplyBatch({ conflictLevel: 60 })}>统一冲突等级 60</Button>
-                      <Button size="sm" variant="outline" onClick={() => onApplyBatch({ targetWordCount: 2500 })}>统一字数 2500</Button>
-                      <AiButton size="sm" onClick={() => onApplyBatch({ generateTaskSheet: true })}>批量补任务单</AiButton>
+                      <Button size="sm" variant="outline" onClick={() => onApplyBatch({ conflictLevel: 60 })}>{translateUi("统一冲突等级 60")}</Button>
+                      <Button size="sm" variant="outline" onClick={() => onApplyBatch({ targetWordCount: 2500 })}>{translateUi("统一字数 2500")}</Button>
+                      <AiButton size="sm" onClick={() => onApplyBatch({ generateTaskSheet: true })}>{translateUi("批量补任务单")}</AiButton>
                       <Button onClick={() => onApplySync(syncOptions)} disabled={isApplyingSync}>
-                        {isApplyingSync ? "修复中..." : "修复章节连接"}
+                        {isApplyingSync ? translateUi("修复中...") : translateUi("修复章节连接")}
                       </Button>
                     </div>
 
@@ -576,13 +581,13 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
                         variant="outline"
                         onClick={() => patchWorkspace(workspaceId, { showSyncPreview: !showSyncPreview })}
                       >
-                        {showSyncPreview ? "隐藏连接差异" : "查看连接差异"}
+                        {showSyncPreview ? translateUi("隐藏连接差异") : translateUi("查看连接差异")}
                       </Button>
                       <Button
                         variant="outline"
                         onClick={() => patchWorkspace(workspaceId, { showJsonPreview: !showJsonPreview })}
                       >
-                        {showJsonPreview ? "隐藏 JSON" : "查看 JSON"}
+                        {showJsonPreview ? translateUi("隐藏 JSON") : translateUi("查看 JSON")}
                       </Button>
                     </div>
 
@@ -593,8 +598,8 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
                             key={`${item.action}-${item.chapterOrder}-${item.nextTitle}`}
                             className="rounded-lg border border-border/70 bg-background/80 p-2.5"
                           >
-                            <div className="font-medium">第{item.chapterOrder}章：{item.nextTitle}</div>
-                            <div className="text-muted-foreground">字段：{item.changedFields.join("、") || "无"}</div>
+                            <div className="font-medium">{translateUi("第")}{item.chapterOrder}{translateUi("章：")}{item.nextTitle}</div>
+                            <div className="text-muted-foreground">{translateUi("字段：")}{item.changedFields.join(translateUi("、")) || translateUi("无")}</div>
                             <Badge
                               className="mt-2"
                               variant={
@@ -618,7 +623,8 @@ export default function StructuredOutlineWorkspace(props: StructuredTabViewProps
                   </>
                 ) : (
                   <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
-                    当前章节规划先以“选章 + 细化”为主。批量补任务单、连接差异和 JSON 预览默认收起，避免打断主流程。
+
+                    {translateUi("当前章节规划先以“选章 + 细化”为主。批量补任务单、连接差异和 JSON 预览默认收起，避免打断主流程。")}
                   </div>
                 )}
               </CardContent>

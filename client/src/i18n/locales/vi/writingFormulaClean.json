@@ -1,0 +1,22 @@
+{
+  "title": "Khử chất AI cho đoạn bản thảo này",
+  "description": "Trước hết hệ thống chỉ ra đoạn nào có cảm giác như văn mẫu, sau đó tạo một bản sửa để bạn đối chiếu. Các vấn đề lặp lại sẽ được gom thành gợi ý quy tắc để bạn quyết định đưa về trình chỉnh sửa công thức.",
+  "input": "Nhập bản thảo",
+  "placeholder": "Dán một đoạn văn bản bạn muốn khử chất AI trước.",
+  "detect": "Chạy kiểm tra trước",
+  "detecting": "Đang kiểm tra...",
+  "rewrite": "Tạo bản sửa một lần",
+  "rewriting": "Đang tạo bản sửa...",
+  "issues": "Thẻ vấn đề và điểm rủi ro",
+  "riskScore": "Điểm rủi ro",
+  "runFirst": "Hãy chạy kiểm tra một lần trước; kết quả sẽ cho biết đoạn nào giống giọng AI nhất và vì sao khiến người đọc mất tập trung.",
+  "diffTitle": "So sánh trước và sau khi sửa",
+  "diffDescription": "So sánh nhẹ theo từng dòng đoạn văn để bạn đánh giá bản sửa đang giảm cảm giác văn mẫu hay vô tình làm mất giọng điệu ban đầu.",
+  "before": "Bản gốc {{index}}",
+  "after": "Bản sửa {{index}}",
+  "emptyDiff": "Sau khi sửa một lần, phần đối chiếu trước và sau sẽ xuất hiện tại đây.",
+  "suggestions": "Vấn đề lặp lại có thể đưa thành quy tắc",
+  "suggestionsDescription": "Phiên bản này không tự ý ghi vào hệ thống; trước hết chỉ gom vấn đề thành gợi ý để bạn quyết định có cố định trong công thức hiện tại hay không.",
+  "openEditor": "Mở trình chỉnh sửa công thức hiện tại",
+  "emptySuggestions": "Sau khi phát hiện vấn đề, các gợi ý quy tắc có thể lưu giữ mới xuất hiện tại đây."
+}

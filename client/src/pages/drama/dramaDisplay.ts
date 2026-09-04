@@ -1,14 +1,15 @@
+import { translateUi } from "../../i18n/legacy.ts";
 import type { DramaSourceType } from "@/api/drama";
 
 export const DRAMA_TRACK_OPTIONS = [
-  { value: "counterattack", label: "逆袭" },
-  { value: "rebirth_revenge", label: "重生复仇" },
-  { value: "war_god", label: "战神归来" },
-  { value: "live_in_son", label: "赘婿" },
-  { value: "miracle_doctor", label: "神医" },
-  { value: "rich_family", label: "豪门恩怨" },
-  { value: "sweet_love", label: "甜宠" },
-  { value: "hidden_identity", label: "马甲文" },
+  { value: "counterattack", label: translateUi("逆袭") },
+  { value: "rebirth_revenge", label: translateUi("重生复仇") },
+  { value: "war_god", label: translateUi("战神归来") },
+  { value: "live_in_son", label: translateUi("赘婿") },
+  { value: "miracle_doctor", label: translateUi("神医") },
+  { value: "rich_family", label: translateUi("豪门恩怨") },
+  { value: "sweet_love", label: translateUi("甜宠") },
+  { value: "hidden_identity", label: translateUi("马甲文") },
 ] as const;
 
 export const DRAMA_SOURCE_LABELS: Record<DramaSourceType, string> = {

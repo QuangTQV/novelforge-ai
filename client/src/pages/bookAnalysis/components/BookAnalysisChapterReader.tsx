@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { DocumentChapter } from "@ai-novel/shared/types/knowledge";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import type {
@@ -109,7 +110,8 @@ const BookAnalysisChapterReader = forwardRef<BookAnalysisChapterReaderHandle, Bo
     if (sortedChapters.length === 0) {
       return (
         <aside className="rounded-md border bg-background p-4 text-sm text-muted-foreground">
-          当前文档还没有可用于对照阅读的章节缓存。
+
+          {translateUi("当前文档还没有可用于对照阅读的章节缓存。")}
         </aside>
       );
     }
@@ -120,12 +122,13 @@ const BookAnalysisChapterReader = forwardRef<BookAnalysisChapterReaderHandle, Bo
           <div className="shrink-0 border-b bg-background px-4 py-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <div className="text-sm font-semibold">原文章节</div>
-                <div className="mt-1 text-xs text-muted-foreground">{sortedChapters.length} 章可对照</div>
+                <div className="text-sm font-semibold">{translateUi("原文章节")}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{sortedChapters.length}  {translateUi("章可对照")}</div>
               </div>
               {currentChapterIndex !== null ? (
                 <div className="rounded-md border bg-muted/20 px-2 py-1 text-xs text-muted-foreground">
-                  当前第 {currentChapterIndex + 1} 章
+
+                  {translateUi("当前第")} {currentChapterIndex + 1}  {translateUi("章")}
                 </div>
               ) : null}
             </div>
@@ -155,7 +158,7 @@ const BookAnalysisChapterReader = forwardRef<BookAnalysisChapterReaderHandle, Bo
                     >
                       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                         <h3 className="text-base font-semibold">{chapter.title}</h3>
-                        <span className="text-xs text-muted-foreground">{chapter.charCount} 字</span>
+                        <span className="text-xs text-muted-foreground">{chapter.charCount}  {translateUi("字")}</span>
                       </div>
                       <ChapterContent
                         chapterContent={content}

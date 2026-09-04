@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import {
   DIRECTOR_ISSUE_ACTIONS,
@@ -54,15 +55,15 @@ export function AutoDirectorIssuePolicyCard(props: {
 
   if (!current) {
     return (
-      <Card><CardHeader><CardTitle>问题处理规则</CardTitle><CardDescription>{isLoading ? "正在加载…" : "暂时无法加载规则。"}</CardDescription></CardHeader></Card>
+      <Card><CardHeader><CardTitle>{translateUi("问题处理规则")}</CardTitle><CardDescription>{isLoading ? translateUi("正在加载…") : translateUi("暂时无法加载规则。")}</CardDescription></CardHeader></Card>
     );
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>问题处理规则</CardTitle>
-        <CardDescription>选择一套处理方案，或按问题逐项调整。安全保护触发时，系统仍会优先保护作品。</CardDescription>
+        <CardTitle>{translateUi("问题处理规则")}</CardTitle>
+        <CardDescription>{translateUi("选择一套处理方案，或按问题逐项调整。安全保护触发时，系统仍会优先保护作品。")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-3 md:grid-cols-2">
@@ -84,28 +85,29 @@ export function AutoDirectorIssuePolicyCard(props: {
 
         <div className="max-w-sm">
           <label className="space-y-2 text-sm">
-            <span className="font-medium">自动重试</span>
+            <span className="font-medium">{translateUi("自动重试")}</span>
             <select className="h-10 w-full rounded-md border bg-background px-3 text-sm" value={current.maxAutomaticRetries} onChange={(event) => setDraft({ ...current, maxAutomaticRetries: Number(event.target.value) })}>
-              <option value={0}>不自动重试</option>
-              <option value={1}>最多 1 次</option>
+              <option value={0}>{translateUi("不自动重试")}</option>
+              <option value={1}>{translateUi("最多 1 次")}</option>
             </select>
           </label>
         </div>
 
         <div className="flex flex-wrap gap-2">
           <select className="h-9 rounded-md border bg-background px-3 text-sm" value={category} onChange={(event) => setCategory(event.target.value as DirectorIssueCategory | "all")}>
-            <option value="all">全部阶段</option>
+            <option value="all">{translateUi("全部阶段")}</option>
             {Object.entries(CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
           </select>
           <select className="h-9 rounded-md border bg-background px-3 text-sm" value={action} onChange={(event) => setAction(event.target.value as DirectorIssueAction | "all")}>
-            <option value="all">全部动作</option>
+            <option value="all">{translateUi("全部动作")}</option>
             {DIRECTOR_ISSUE_ACTIONS.map((value) => <option key={value} value={value}>{ACTION_LABELS[value]}</option>)}
           </select>
         </div>
 
         {hasChanges ? (
           <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-950" role="status">
-            你修改了问题处理规则。保存后会影响后续任务；触发安全保护时，系统会优先暂停或结束任务，并保留这次选择供复核。
+
+            {translateUi("你修改了问题处理规则。保存后会影响后续任务；触发安全保护时，系统会优先暂停或结束任务，并保留这次选择供复核。")}
           </div>
         ) : null}
 
@@ -116,8 +118,8 @@ export function AutoDirectorIssuePolicyCard(props: {
               <div key={entry.code} className="grid gap-2 rounded-md border p-3 md:grid-cols-[minmax(0,1fr)_220px]">
                 <div className="min-w-0">
                   <div className="text-sm font-medium">{entry.label}</div>
-                  <div className="mt-1 break-all text-xs text-muted-foreground">{entry.code} · 默认：{ACTION_LABELS[entry.defaultAction]}</div>
-                  {entry.lockedReason ? <div className="mt-1 text-xs text-amber-700">安全提示：{entry.lockedReason}{entry.enforcedAction ? ` 当前触发时仍会${ACTION_LABELS[entry.enforcedAction]}。` : ""}</div> : null}
+                  <div className="mt-1 break-all text-xs text-muted-foreground">{entry.code}  {translateUi("· 默认：")}{ACTION_LABELS[entry.defaultAction]}</div>
+                  {entry.lockedReason ? <div className="mt-1 text-xs text-amber-700">{translateUi("安全提示：")}{entry.lockedReason}{entry.enforcedAction ? translateUi(" 当前触发时仍会{{value0}}。", { value0: ACTION_LABELS[entry.enforcedAction] }) : ""}</div> : null}
                 </div>
                 <select
                   className="h-9 rounded-md border bg-background px-3 text-sm"
@@ -135,7 +137,7 @@ export function AutoDirectorIssuePolicyCard(props: {
         </div>
 
         <Button disabled={isSaving} onClick={() => onSave(current)}>
-          {isSaving ? "保存中…" : saveButtonLabel}
+          {isSaving ? translateUi("保存中…") : saveButtonLabel}
         </Button>
       </CardContent>
     </Card>

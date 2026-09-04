@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { StoryModeTreeNode } from "@/api/storyMode";
@@ -69,9 +70,9 @@ export default function StoryModeTreeBrowser({
         nodes={nodes}
         selectedId={selectedId}
         onSelect={setSelectedId}
-        title="推进模式目录"
-        hint="选择模式查看合同"
-        ariaLabel="推进模式树"
+        title={translateUi("推进模式目录")}
+        hint={translateUi("选择模式查看合同")}
+        ariaLabel={translateUi("推进模式树")}
       />
 
       <section className="flex min-w-0 flex-col" aria-labelledby="selected-story-mode-title">
@@ -81,12 +82,14 @@ export default function StoryModeTreeBrowser({
             {canCreateChild ? (
               <Button type="button" variant="ghost" size="sm" onClick={() => onCreateChild(selectedNode.id)}>
                 <Plus className="h-4 w-4" aria-hidden="true" />
-                新增下级
+
+                {translateUi("新增下级")}
               </Button>
             ) : null}
             <Button type="button" variant="ghost" size="sm" onClick={() => onEdit(selectedNode.id)}>
               <Pencil className="h-4 w-4" aria-hidden="true" />
-              编辑
+
+              {translateUi("编辑")}
             </Button>
             <Button
               type="button"
@@ -94,11 +97,11 @@ export default function StoryModeTreeBrowser({
               size="sm"
               className="text-destructive hover:text-destructive"
               disabled={deleteDisabled || deletingId === selectedNode.id}
-              title={deleteDisabled ? "当前模式或下级模式仍被小说使用，请先调整关联作品。" : undefined}
+              title={deleteDisabled ? translateUi("当前模式或下级模式仍被小说使用，请先调整关联作品。") : undefined}
               onClick={() => onDelete(selectedNode)}
             >
               <Trash2 className="h-4 w-4" aria-hidden="true" />
-              {deletingId === selectedNode.id ? "删除中..." : "删除"}
+              {deletingId === selectedNode.id ? translateUi("删除中...") : translateUi("删除")}
             </Button>
           </div>
         </div>

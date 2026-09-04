@@ -1,0 +1,123 @@
+{
+  "recommended": "推荐",
+  "submitNotice": "系统会以“{{preset}}”策略发送后台任务。完成后写法会自动保存，你不需要再点保存。",
+  "preset": {
+    "imitate": {
+      "label": "贴近原文",
+      "summary": "保留较多印记和表达习惯，适合短期风格练习。"
+    },
+    "balanced": {
+      "label": "保留主要读感",
+      "summary": "保留阅读节奏和推进，减弱过强印记，适合大多数项目。"
+    },
+    "transfer": {
+      "label": "只迁移可复用框架",
+      "summary": "优先保留可复用于长篇的节奏、结构和对白逻辑。"
+    }
+  },
+  "source": {
+    "directText": {
+      "label": "直接粘贴文本",
+      "summary": "把片段或样章发给服务器端提取任务。"
+    },
+    "knowledge": {
+      "label": "知识库中的文本",
+      "summary": "选择活跃版本；系统冻结全文快照后从代表性样本中学习。"
+    },
+    "analysis": {
+      "label": "拆书分析结果",
+      "summary": "直接用文风和技巧的分析结果生成写法。"
+    }
+  },
+  "processing": {
+    "sample": {
+      "label": "智能采样",
+      "summary": "在开头、中间、结尾和收束段采样代表片段；适合长文本，更稳定。"
+    },
+    "full": {
+      "label": "全文提取",
+      "summary": "把整个活跃版本送入模型，适合短文档；长文档可能变慢或超上下文限制。"
+    }
+  },
+  "task": {
+    "none": "还没有任务",
+    "queued": "排队中",
+    "running": "处理中",
+    "succeeded": "已完成",
+    "failed": "失败",
+    "cancelled": "已取消",
+    "waitingApproval": "等待审批"
+  },
+  "chars": "{{count}} 字符",
+  "knowledge": {
+    "enabled": "可用",
+    "disabled": "已关闭",
+    "archived": "已归档"
+  },
+  "ui": {
+    "title": "从一种读感开始",
+    "description": "选择你现有的起点。系统会帮你生成一套可以立即试写的写法；细节随时可以调整。",
+    "tabs": {
+      "template": "用模板开始",
+      "brief": "说一句想法",
+      "material": "从素材学习"
+    },
+    "templateHint": "不知道从哪开始，就选一个接近你想要的写法。创建后可以换题材、调节奏再试写检查读感。",
+    "templateBadge": "模板",
+    "suitable": "适合：{{genres}}",
+    "creating": "创建中...",
+    "createBased": "基于这个模板创建",
+    "briefHint": "只要说清楚你想让读者获得的感觉，AI 会搭出第一版供你试写；熟悉规则后，你也可以从空白开始。",
+    "blankTitle": "自己从空白开始",
+    "blankDescription": "适合你已经知道要维持哪种写法，只想先建一个空白框架。",
+    "manualPlaceholder": "例如：都市强冲突、快节奏",
+    "createBlank": "创建空白写法",
+    "aiTitle": "AI 帮我先搭一套",
+    "aiDescription": "适合你只知道想写的感觉，但还不想自己填规则字段。",
+    "nameOptional": "写法名称（可选）",
+    "categoryOptional": "分类（可选）",
+    "briefPlaceholder": "例如：快节奏推进、冲突密集、对白直接、情绪不拖沓，适合都市和热血升级。",
+    "generating": "AI 生成中...",
+    "generateFormula": "AI 生成一套写法",
+    "extractHint": "从素材生成写法。文本和知识库原文会进入服务器端提取任务；拆书分析结果会直接用文风和技巧分析来生成写法。",
+    "name": "写法名称",
+    "category": "分类（可选）",
+    "sourceTextPlaceholder": "粘贴你想提取读感的参考文本。建议至少提供一个完整场景。",
+    "searchKnowledge": "在知识库里搜索文档标题或文件名",
+    "loadingKnowledge": "正在查找知识库文档...",
+    "emptyKnowledge": "没有找到可用的知识库文档。请先把文本上传到知识库，再回来创建写法。",
+    "selected": "已选",
+    "activeVersion": "活跃版本 v{{version}} · {{versions}} 个版本 · {{analyses}} 个拆书结果",
+    "processingTitle": "原文处理方式",
+    "snapshot": "来源快照 {{chars}}",
+    "reading": "正在读取所选文档的活跃版本...",
+    "noActiveVersion": "所选文档没有活跃版本，无法提交。",
+    "emptyContent": "活跃版本内容为空，无法提交。",
+    "selectKnowledge": "在知识库里选一个文档，系统会读取活跃版本全文并在提交任务时冻结快照。",
+    "searchAnalysis": "搜索拆书标题或源文档",
+    "loadingAnalysis": "正在查找拆书结果...",
+    "emptyAnalysis": "没有找到可用的拆书结果。分析完成后，你可以直接在这里创建写法。",
+    "canGenerate": "可生成",
+    "analysisMeta": "源版本 v{{version}} · {{summary}}",
+    "analysisFallback": "拆书结果可用于生成写法",
+    "sampleNotice": "写法资产仍保留完整来源预览；模型只读取代表性样本，避免过长全文超出处理能力。",
+    "fullNotice": "全文提取会把整个活跃版本发给模型。对于长文本，建议用智能采样。",
+    "analysisTitle": "从拆书结果创建",
+    "analysisDescription": "这个流程直接读取拆书结果里的文风和技巧条目；创建后会立即打开写法编辑器。",
+    "analysisSelected": "选一个拆书结果，系统会用文风和技巧分析来生成写法，不创建后台任务。",
+    "keepTitle": "保留策略",
+    "keepDescription": "决定要保留多少原文印记；系统会按这个策略自动生成并保存写法。",
+    "current": "正在使用",
+    "backgroundTask": "后台任务",
+    "taskTitle": "任务标题：{{title}}",
+    "stage": "执行阶段：{{stage}}",
+    "progress": "任务进度：{{progress}}%",
+    "failure": "失败原因：{{reason}}",
+    "taskCenter": "打开任务中心",
+    "afterSubmit": "提交后，系统会提取、应用保留策略并自动保存写法。你可以关闭对话框；完成后结果会自动打开。",
+    "creatingFormula": "创建中...",
+    "submitting": "正在提交任务...",
+    "taskActive": "后台任务进行中",
+    "sourceVersion": "源版本 v{{version}} · {{chars}}"
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "page": {
+    "loading": "正在加载章节…",
+    "loadError": "章节加载失败",
+    "notFound": "找不到章节",
+    "textEffectLab": "文本效果实验室"
+  },
+  "queueCard": {
+    "title": "章节队列",
+    "subtitle": "跟踪章节生产进度",
+    "visibleCount": "显示 {{count}} 章",
+    "filterLabel": "筛选状态",
+    "emptyFiltered": "没有匹配的章节",
+    "finalizing": "正在收尾",
+    "writing": "正在写",
+    "repairing": "正在修复",
+    "nextStep": "下一步",
+    "currentWordCount": "{{count}} 字",
+    "removing": "删除中…",
+    "removeEmptyChapter": "删除空章节"
+  },
+  "chapter": {
+    "labelWithTitle": "第 {{number}} 章：{{title}}",
+    "untitled": "未命名"
+  },
+  "statusFlow": {
+    "currentStage": "当前阶段：{{stage}}",
+    "notStarted": "未开始",
+    "order": {
+      "executionPlan": "执行计划",
+      "writing": "写作",
+      "review": "检查",
+      "repair": "修复",
+      "stateSync": "状态同步",
+      "payoffSync": "兑现同步",
+      "ready": "就绪"
+    },
+    "notes": {
+      "executionPlanDone": "章节的执行计划已完整。",
+      "executionPlanPending": "章节缺少执行计划；系统会准备任务单或场景拆解。",
+      "writingInProgress": "AI 正在写这一章的内容。",
+      "writingPending": "已有执行计划，可以开始写内容。",
+      "reviewInProgress": "内容已生成，系统正在检查。",
+      "reviewPending": "章节已有内容；下一步是检查。",
+      "repairInProgress": "系统正在按发现的问题修复内容。",
+      "repairPending": "如果检查发现问题，章节会进入修复阶段。",
+      "stateSyncInProgress": "内容已可阅读；系统正在同步状态、角色变化和关键资源。",
+      "stateSyncPending": "内容就绪后，系统会同步状态和关键资源。",
+      "payoffSyncInProgress": "系统正在校准章节的兑现台账。",
+      "payoffSyncPending": "资源同步后，系统会按风险和节奏校准兑现台账。",
+      "readyDone": "章节已达到可继续的状态。",
+      "readyInProgress": "章节已完成当前检查轮次；你可以继续编辑或处理建议。",
+      "readyPending": "完成前面的步骤以继续该章节。"
+    }
+  },
+  "primary": {
+    "selectChapter": "请选择一个章节",
+    "selectChapterReason": "在左侧选择要处理的章节，系统会判断下一步。",
+    "openEditor": "打开章节编辑器",
+    "openEditorReason": "章节已有内容。你可以打开编辑器，或在下方快速修改。",
+    "openEditorExistingReason": "章节已有内容；打开编辑器进行细调会更高效。",
+    "fullAudit": "全量检查",
+    "fullAuditRunning": "正在全量检查…",
+    "fullAuditReason": "内容已有；修复或重写前先做一次全量检查。",
+    "createPlan": "生成执行计划",
+    "planRunning": "正在生成执行计划…",
+    "createPlanReason": "章节缺少目标或任务单；先补齐计划。",
+    "writeChapter": "写这一章",
+    "writeRunning": "正在写这一章…",
+    "writeChapterReason": "准备信息已足够；最合适的下一步是生成章节内容。"
+  },
+  "sections": {
+    "assetsAndReview": "补充资源和深度检查",
+    "polish": "细调和提升",
+    "advancedStrategy": "高级写作策略"
+  },
+  "actions": {
+    "autoRepair": "快速修复问题",
+    "autoRepairRunning": "正在修复问题…",
+    "continuity": "检查连续性",
+    "continuityRunning": "正在检查连续性…",
+    "characterConsistency": "检查角色一致性",
+    "characterConsistencyRunning": "正在检查角色一致性…",
+    "pacing": "检查节奏",
+    "pacingRunning": "正在检查节奏…",
+    "rewrite": "重写章节",
+    "rewriteRunning": "正在重写章节…",
+    "expand": "扩写章节",
+    "expandRunning": "正在扩写章节…",
+    "compress": "精简章节",
+    "compressRunning": "正在精简章节…",
+    "strengthenConflict": "加强冲突",
+    "strengthenConflictRunning": "正在加强冲突…",
+    "enhanceEmotion": "加强情绪",
+    "enhanceEmotionRunning": "正在加强情绪…",
+    "unifyStyle": "统一文风",
+    "unifyStyleRunning": "正在统一文风…",
+    "addDialogue": "增加对话",
+    "addDialogueRunning": "正在增加对话…",
+    "addDescription": "增加描写",
+    "addDescriptionRunning": "正在增加描写…"
+  },
+  "strategy": {
+    "hint": "不确定时保持默认值。只有当章节需要更快节奏、更强冲突或更高 AI 自由度时才调整。",
+    "runMode": "运行模式",
+    "fast": "快速",
+    "polish": "细调",
+    "wordSize": "长度",
+    "short": "短",
+    "medium": "中等",
+    "long": "长",
+    "conflict": "冲突强度",
+    "pace": "节奏",
+    "slow": "慢",
+    "balanced": "均衡",
+    "fastPace": "快",
+    "aiFreedom": "AI 自由度",
+    "low": "低",
+    "high": "高",
+    "apply": "对当前章节应用策略",
+    "applyRunning": "正在应用策略…"
+  },
+  "status": {
+    "unplanned": {
+      "label": "待准备",
+      "description": "待准备：章节缺少执行资源。"
+    },
+    "pendingGeneration": {
+      "label": "待写",
+      "description": "待写：章节计划已基本完整。"
+    },
+    "generating": {
+      "label": "正在写",
+      "description": "正在写：AI 正在生成章节内容。"
+    },
+    "pendingReview": {
+      "label": "已检查",
+      "description": "已检查：你可以查看建议或继续编辑。"
+    },
+    "needsRepair": {
+      "label": "建议修复",
+      "description": "建议修复：检查已发现问题，但不阻塞编辑。"
+    },
+    "completed": {
+      "label": "已完成",
+      "description": "已完成：章节已通过当前流程。"
+    },
+    "unset": {
+      "label": "未设置",
+      "description": "未设置：章节还没有明确的流程状态。"
+    }
+  },
+  "generationState": {
+    "planned": {
+      "label": "已进入目录",
+      "description": "章节已进入目录但还没有草稿。"
+    },
+    "drafted": {
+      "label": "已写草稿",
+      "description": "已有草稿但还没确认检查。"
+    },
+    "reviewed": {
+      "label": "已检查",
+      "description": "已完成一轮检查。"
+    },
+    "repaired": {
+      "label": "已修复",
+      "description": "已按发现的问题修复。"
+    },
+    "approved": {
+      "label": "已确认",
+      "description": "章节已通过质量阈值。"
+    },
+    "published": {
+      "label": "已发布",
+      "description": "章节处于发布状态。"
+    }
+  },
+  "risk": {
+    "qualityLoop": {
+      "continue": "质量可以继续",
+      "patchRepair": "建议补充修复",
+      "replan": "建议重新规划",
+      "manualGate": "需要确认修复范围",
+      "recordedDebt": "已记录质量欠账"
+    },
+    "status": {
+      "risk": "质量有风险",
+      "invalid": "质量需要修复",
+      "missing": "缺少质量信息"
+    },
+    "artifact": {
+      "chapterRetention": "留存风险",
+      "continuity": "连续性风险",
+      "rollingWindow": "章节衔接风险",
+      "proseQuality": "文本自然度检查"
+    }
+  },
+  "queuePreview": {
+    "sceneBudgetContract": "章节已有场景预算合同。",
+    "legacySceneCards": "章节有旧版场景拆解；建议重新生成。",
+    "noObjective": "章节还没有明确目标；建议补充计划。"
+  },
+  "suggestedAction": {
+    "nextChapter": "继续下一章",
+    "writeChapter": "写这一章",
+    "waitForGeneration": "等待生成内容",
+    "autoRepair": "快速修复",
+    "viewSuggestions": "查看建议",
+    "runReview": "运行检查",
+    "continuePolishing": "继续细调",
+    "createPlan": "补充章节计划",
+    "openEditor": "打开编辑器"
+  },
+  "textEditor": {
+    "pendingOriginal": "原文待处理",
+    "aiGeneratingCandidate": "AI 正在生成候选版本",
+    "original": "原文",
+    "rewrite": "重写版",
+    "body": "章节正文",
+    "helper": {
+      "inlineDiff": "行内差异对比",
+      "loading": "加载中…",
+      "blockPatch": "按块修订",
+      "readOnly": "只读",
+      "editable": "可编辑"
+    }
+  },
+  "takeoverTarget": {
+    "advanceTo": "推进到第 {{number}} 章",
+    "advanceToAria": "选择目标章节 {{number}}",
+    "range": "第 {{start}}–{{end}} 章"
+  }
+}

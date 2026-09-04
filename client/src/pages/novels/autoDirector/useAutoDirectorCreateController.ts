@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { buildStyleIntentSummary } from "@ai-novel/shared/types/styleEngine";
@@ -268,7 +269,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
       setIdeaInspirations(response.data?.ideas ?? []);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "生成起始想法失败，请稍后重试。");
+      toast.error(error instanceof Error ? error.message : translateUi("生成起始想法失败，请稍后重试。"));
     },
   });
 
@@ -278,7 +279,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
       setIdeaConstellationOptions(response.data?.options ?? []);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "生成开书素材失败，请稍后重试。");
+      toast.error(error instanceof Error ? error.message : translateUi("生成开书素材失败，请稍后重试。"));
     },
   });
 
@@ -288,7 +289,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
       selectedOptions,
     }),
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "整理故事想法失败，请稍后重试。");
+      toast.error(error instanceof Error ? error.message : translateUi("整理故事想法失败，请稍后重试。"));
     },
   });
 
@@ -486,7 +487,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
       if (!command) {
         setDialogMode("execution_failed");
         setExecutionError("确认方案失败，未返回导演命令。");
-        toast.error("确认方案失败，未返回导演命令。");
+        toast.error(translateUi("确认方案失败，未返回导演命令。"));
         return;
       }
       if (nextWorkflowTaskId) {
@@ -502,7 +503,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
           queryKey: queryKeys.tasks.detail("novel_workflow", nextWorkflowTaskId),
         });
       }
-      toast.success("系统收到书级方向，会创建小说项目并继续推进规划。");
+      toast.success(translateUi("系统收到书级方向，会创建小说项目并继续推进规划。"));
     },
     onError: async (error, payload) => {
       setDialogMode("execution_failed");
@@ -552,10 +553,10 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
       await Promise.allSettled(invalidations);
       setDialogMode("execution_progress");
       setExecutionError("");
-      toast.success("已确认，AI 会继续推进。");
+      toast.success(translateUi("已确认，AI 会继续推进。"));
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "继续自动导演失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("继续自动导演失败。"));
     },
   });
 
@@ -580,7 +581,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     const shouldInvalidateCandidates = batches.length > 0;
     if (
       shouldInvalidateCandidates
-      && !window.confirm("修改故事类型或推进方式后，旧方向需要重新适配并重新生成。确认修改吗？")
+      && !window.confirm(translateUi("修改故事类型或推进方式后，旧方向需要重新适配并重新生成。确认修改吗？"))
     ) {
       return false;
     }
@@ -624,11 +625,11 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
         setDialogMode("candidate_selection");
         setExecutionRequested(false);
         setExecutionError("");
-        toast.success("创作偏好已更新，请按新选择重新生成方向。");
+        toast.success(translateUi("创作偏好已更新，请按新选择重新生成方向。"));
       }
       return true;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "更新创作偏好失败，请稍后重试。");
+      toast.error(error instanceof Error ? error.message : translateUi("更新创作偏好失败，请稍后重试。"));
       return false;
     } finally {
       setIsUpdatingFoundation(false);

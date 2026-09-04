@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { CircleAlert, FileText, LoaderCircle, MoreHorizontal, RefreshCw, Upload, X } from "lucide-react";
@@ -108,15 +109,15 @@ export default function KnowledgeDocumentsTab({
     if (!open) setSelectedFile(null);
   };
   const statusOptions = [
-    { value: "", label: "全部未归档" },
-    { value: "enabled", label: "仅启用" },
-    { value: "disabled", label: "仅停用" },
-    { value: "archived", label: "仅归档" },
+    { value: "", label: translateUi("全部未归档") },
+    { value: "enabled", label: translateUi("仅启用") },
+    { value: "disabled", label: translateUi("仅停用") },
+    { value: "archived", label: translateUi("仅归档") },
   ] as const;
 
   const confirmArchiveDocument = (document: KnowledgeDocumentSummary) => {
     const confirmed = window.confirm(
-      `确认归档“${document.title}”吗？归档会移出默认检索和资料选择，原文与版本会保留，可在“仅归档”中恢复启用。`,
+      translateUi("确认归档“{{value0}}”吗？归档会移出默认检索和资料选择，原文与版本会保留，可在“仅归档”中恢复启用。", { value0: document.title }),
     );
     if (!confirmed) {
       return;
@@ -151,10 +152,11 @@ export default function KnowledgeDocumentsTab({
               <div className="truncate text-base font-semibold tracking-tight">{document.title}</div>
               <div className="truncate text-xs text-muted-foreground">{document.fileName}</div>
               <div className="text-xs text-muted-foreground">
-                当前 v{document.activeVersionNumber} · 共 {document.versionCount} 个版本 · {formatDocumentKind(document.kind)}
+
+                {translateUi("当前 v")}{document.activeVersionNumber}  {translateUi("· 共")} {document.versionCount}  {translateUi("个版本 ·")} {formatDocumentKind(document.kind)}
               </div>
               {document.bookAnalysisCount > 0 ? (
-                <div className="text-xs text-muted-foreground">关联 {document.bookAnalysisCount} 个拆书项目</div>
+                <div className="text-xs text-muted-foreground">{translateUi("关联")} {document.bookAnalysisCount}  {translateUi("个拆书项目")}</div>
               ) : null}
             </div>
           </div>
@@ -193,7 +195,8 @@ export default function KnowledgeDocumentsTab({
         </div>
         <div className="mt-5 flex flex-wrap gap-2 border-t border-border/30 pt-4">
           <Button size="sm" variant="secondary" className="rounded-full" onClick={() => onSelectDocument(document.id)}>
-            查看资料
+
+            {translateUi("查看资料")}
           </Button>
           {document.status === "archived" ? (
             <Button
@@ -202,13 +205,14 @@ export default function KnowledgeDocumentsTab({
               className="rounded-full"
               onClick={() => onUpdateStatus(document.id, "enabled")}
             >
-              恢复启用
+
+              {translateUi("恢复启用")}
             </Button>
           ) : (
             <>
               <OpenInCreativeHubButton
                 bindings={{ knowledgeDocumentIds: [document.id] }}
-                label="继续创作"
+                label={translateUi("继续创作")}
                 variant="outline"
                 className="rounded-full"
               />
@@ -219,32 +223,36 @@ export default function KnowledgeDocumentsTab({
           <details className="group mt-3">
             <summary className="flex cursor-pointer list-none items-center gap-1.5 text-xs text-muted-foreground marker:hidden">
               <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
-              更多操作
+
+              {translateUi("更多操作")}
             </summary>
             <div className="mt-3 flex flex-wrap gap-2">
               <Button asChild size="sm" variant="ghost" className="rounded-full">
-                <Link to={`/book-analysis?documentId=${document.id}`}>新建拆书</Link>
+                <Link to={`/book-analysis?documentId=${document.id}`}>{translateUi("新建拆书")}</Link>
               </Button>
               {document.kind === "analysis_published" && document.sourceAnalysisId ? (
                 <Button asChild size="sm" variant="ghost" className="rounded-full">
-                  <Link to={`/book-analysis?analysisId=${document.sourceAnalysisId}`}>查看来源拆书</Link>
+                  <Link to={`/book-analysis?analysisId=${document.sourceAnalysisId}`}>{translateUi("查看来源拆书")}</Link>
                 </Button>
               ) : null}
               {document.latestIndexStatus === "succeeded" ? (
                 <Button size="sm" variant="ghost" className="rounded-full" onClick={() => onOpenRecallTest(document.id)}>
-                  召回测试
+
+                  {translateUi("召回测试")}
                 </Button>
               ) : null}
               <Button size="sm" variant="ghost" className="rounded-full" onClick={() => onReindexDocument(document.id)}>
-                重建索引
+
+                {translateUi("重建索引")}
               </Button>
               {document.status === "enabled" ? (
-                <Button size="sm" variant="ghost" className="rounded-full" onClick={() => onUpdateStatus(document.id, "disabled")}>停用</Button>
+                <Button size="sm" variant="ghost" className="rounded-full" onClick={() => onUpdateStatus(document.id, "disabled")}>{translateUi("停用")}</Button>
               ) : document.status === "disabled" ? (
-                <Button size="sm" variant="ghost" className="rounded-full" onClick={() => onUpdateStatus(document.id, "enabled")}>启用</Button>
+                <Button size="sm" variant="ghost" className="rounded-full" onClick={() => onUpdateStatus(document.id, "enabled")}>{translateUi("启用")}</Button>
               ) : null}
               <Button size="sm" variant="ghost" className="rounded-full text-muted-foreground hover:text-destructive" onClick={() => confirmArchiveDocument(document)}>
-                归档
+
+                {translateUi("归档")}
               </Button>
             </div>
           </details>
@@ -261,8 +269,8 @@ export default function KnowledgeDocumentsTab({
         <div className="flex min-h-40 items-center justify-center rounded-md border border-dashed border-border px-5 py-8 text-center" role="status">
           <div>
             <LoaderCircle className="mx-auto h-5 w-5 animate-spin text-muted-foreground" aria-hidden="true" />
-            <p className="mt-3 text-sm font-medium text-foreground">正在加载创作资料</p>
-            <p className="mt-1 text-sm text-muted-foreground">正在确认资料版本和索引状态。</p>
+            <p className="mt-3 text-sm font-medium text-foreground">{translateUi("正在加载创作资料")}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{translateUi("正在确认资料版本和索引状态。")}</p>
           </div>
         </div>
       );
@@ -272,12 +280,13 @@ export default function KnowledgeDocumentsTab({
       return (
         <AssetLibraryEmptyState
           icon={CircleAlert}
-          title="创作资料暂时无法加载"
-          description={`${errorMessage} 重新加载不会修改已有资料。`}
+          title={translateUi("创作资料暂时无法加载")}
+          description={translateUi("{{value0}} 重新加载不会修改已有资料。", { value0: errorMessage })}
           action={(
             <Button type="button" size="sm" variant="outline" onClick={onRetry}>
               <RefreshCw className="h-4 w-4" />
-              重新加载
+
+              {translateUi("重新加载")}
             </Button>
           )}
         />
@@ -288,18 +297,20 @@ export default function KnowledgeDocumentsTab({
       return (
         <AssetLibraryEmptyState
           icon={FileText}
-          title={hasFilters ? "没有符合条件的资料" : "还没有创作资料"}
+          title={hasFilters ? translateUi("没有符合条件的资料") : translateUi("还没有创作资料")}
           description={hasFilters
-            ? "调整搜索词或状态筛选，返回其他资料。"
-            : "上传 TXT 资料后，系统会建立可供拆书、规划和正文创作使用的检索索引。"}
+            ? translateUi("调整搜索词或状态筛选，返回其他资料。")
+            : translateUi("上传 TXT 资料后，系统会建立可供拆书、规划和正文创作使用的检索索引。")}
           action={hasFilters ? (
             <Button type="button" size="sm" variant="outline" onClick={onClearFilters}>
-              清除筛选
+
+              {translateUi("清除筛选")}
             </Button>
           ) : (
             <Button type="button" size="sm" onClick={() => onUploadDialogOpenChange(true)}>
               <Upload className="h-4 w-4" />
-              上传第一份资料
+
+              {translateUi("上传第一份资料")}
             </Button>
           )}
         />
@@ -314,12 +325,13 @@ export default function KnowledgeDocumentsTab({
       <section className="scroll-mt-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight text-foreground">资料书架</h2>
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">选择可检索资料继续创作，版本与索引维护按需处理。</p>
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">{translateUi("资料书架")}</h2>
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">{translateUi("选择可检索资料继续创作，版本与索引维护按需处理。")}</p>
           </div>
           <Button type="button" size="sm" variant="outline" onClick={() => onUploadDialogOpenChange(true)}>
             <Upload className="mr-2 h-4 w-4" />
-            上传资料
+
+            {translateUi("上传资料")}
           </Button>
         </div>
         <div id="knowledge-documents" className="mt-5 space-y-4 scroll-mt-5">
@@ -327,13 +339,13 @@ export default function KnowledgeDocumentsTab({
             <Input
               value={keyword}
               onChange={(event) => onKeywordChange(event.target.value)}
-              placeholder="按标题或文件名搜索"
+              placeholder={translateUi("按标题或文件名搜索")}
             />
             <SelectField
               value={status}
               onValueChange={(value) => onStatusChange(value as KnowledgeDocumentStatus | "")}
               options={statusOptions.map((option) => ({ ...option }))}
-              placeholder="筛选状态"
+              placeholder={translateUi("筛选状态")}
               className="space-y-0"
               triggerClassName="h-10"
             />
@@ -345,14 +357,14 @@ export default function KnowledgeDocumentsTab({
       <Dialog open={uploadDialogOpen} onOpenChange={handleDialogOpenChange}>
         <AppDialogContent
           className="max-w-lg"
-          title="上传文档"
-          description="添加可用于检索、拆书和创作参考的文本资料。"
+          title={translateUi("上传文档")}
+          description={translateUi("添加可用于检索、拆书和创作参考的文本资料。")}
         >
           <div className="space-y-4">
             <Input
               value={uploadTitle}
               onChange={(event) => onUploadTitleChange(event.target.value)}
-              placeholder="可选标题，留空则使用文件名"
+              placeholder={translateUi("可选标题，留空则使用文件名")}
             />
 
             {/* 拖拽上传区域 */}
@@ -369,7 +381,7 @@ export default function KnowledgeDocumentsTab({
               }}
               role={selectedFile ? undefined : "button"}
               tabIndex={selectedFile ? undefined : 0}
-              aria-label={selectedFile ? undefined : "选择要上传的 TXT 文本资料"}
+              aria-label={selectedFile ? undefined : translateUi("选择要上传的 TXT 文本资料")}
               className={[
                 "relative flex flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed p-8 text-center transition-all",
                 dragOver
@@ -403,7 +415,7 @@ export default function KnowledgeDocumentsTab({
                     type="button"
                     onClick={(e) => { e.stopPropagation(); setSelectedFile(null); }}
                     className="absolute right-3 top-3 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                    aria-label="移除已选择的文件"
+                    aria-label={translateUi("移除已选择的文件")}
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -418,9 +430,9 @@ export default function KnowledgeDocumentsTab({
                   </div>
                   <div className="space-y-1">
                     <p className="text-sm font-medium">
-                      {dragOver ? "松开鼠标上传" : "拖拽文件到此处，或点击选择"}
+                      {dragOver ? translateUi("松开鼠标上传") : translateUi("拖拽文件到此处，或点击选择")}
                     </p>
-                    <p className="text-xs text-muted-foreground">仅支持 .txt 文本文件</p>
+                    <p className="text-xs text-muted-foreground">{translateUi("仅支持 .txt 文本文件")}</p>
                   </div>
                 </>
               )}
@@ -428,7 +440,8 @@ export default function KnowledgeDocumentsTab({
 
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground leading-5">
-                同名标题会追加为新版本并设为当前版本
+
+                {translateUi("同名标题会追加为新版本并设为当前版本")}
               </p>
               <Button
                 type="button"
@@ -436,7 +449,7 @@ export default function KnowledgeDocumentsTab({
                 disabled={!selectedFile || uploadBusy}
                 onClick={() => void handleConfirmUpload()}
               >
-                {uploadBusy ? "上传中…" : "确认上传"}
+                {uploadBusy ? translateUi("上传中…") : translateUi("确认上传")}
               </Button>
             </div>
           </div>

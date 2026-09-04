@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   BookOpen,
   CircleAlert,
@@ -34,6 +35,7 @@ import {
 } from "./genreManagement.shared";
 
 export default function GenreManagementPage() {
+  const { t } = useTranslation("genres");
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -72,32 +74,32 @@ export default function GenreManagementPage() {
   const statusItems = useMemo<AssetLibraryStatusItem[]>(() => [
     {
       key: "genres",
-      label: "题材基底",
+      label: t("page.status.genres.label"),
       value: statusUnavailable ? "—" : totalGenres,
-      detail: "可供小说选择的分类节点",
+      detail: t("page.status.genres.detail"),
       icon: Tags,
       tone: statusUnavailable ? "neutral" : "info",
     },
     {
       key: "roots",
-      label: "根分类",
+      label: t("page.status.roots.label"),
       value: statusUnavailable ? "—" : genreTree.length,
-      detail: "用于划分主要创作方向",
+      detail: t("page.status.roots.detail"),
       icon: Layers3,
     },
     {
       key: "novels",
-      label: "关联小说",
+      label: t("page.status.novels.label"),
       value: statusUnavailable ? "—" : linkedNovelCount,
-      detail: "正在使用这些题材的作品",
+      detail: t("page.status.novels.detail"),
       icon: BookOpen,
       tone: statusUnavailable ? "neutral" : linkedNovelCount > 0 ? "success" : "neutral",
     },
     {
       key: "descriptions",
-      label: "说明完整",
+      label: t("page.status.descriptions.label"),
       value: statusUnavailable ? "—" : `${describedGenreCount}/${totalGenres}`,
-      detail: "有明确定位说明的题材",
+      detail: t("page.status.descriptions.detail"),
       icon: FileText,
       tone: statusUnavailable
         ? "neutral"
@@ -115,7 +117,7 @@ export default function GenreManagementPage() {
     mutationFn: (genreId: string) => deleteGenre(genreId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.genres.all });
-      toast.success("题材基底已删除。");
+      toast.success(t("page.delete.success"));
     },
   });
 
@@ -132,8 +134,8 @@ export default function GenreManagementPage() {
   const handleDelete = (genre: GenreTreeNode) => {
     const descendantCount = collectDescendantIds(genre).length;
     const message = descendantCount > 0
-      ? `确认删除题材基底「${genre.name}」？这会同时删除其下 ${descendantCount} 个子分类，此操作不可恢复。`
-      : `确认删除题材基底「${genre.name}」？此操作不可恢复。`;
+      ? t("page.delete.confirmWithChildren", { name: genre.name, count: descendantCount })
+      : t("page.delete.confirm", { name: genre.name });
     const confirmed = window.confirm(message);
     if (!confirmed) {
       return;
@@ -144,39 +146,39 @@ export default function GenreManagementPage() {
   const recommendation = genreTreeQuery.isError ? (
     <AssetLibraryRecommendation
       icon={CircleAlert}
-      title="重新加载题材基底"
-      description="暂时无法读取题材结构。重新加载后，可以继续查看、编辑和维护题材。"
+      title={t("page.recommendation.errorTitle")}
+      description={t("page.recommendation.errorDescription")}
       tone="danger"
       action={(
         <Button type="button" variant="outline" onClick={() => void genreTreeQuery.refetch()}>
-          重新加载
+          {t("page.recommendation.reload")}
         </Button>
       )}
     />
   ) : genreTreeQuery.isLoading ? (
     <AssetLibraryRecommendation
       icon={LoaderCircle}
-      title="正在确认题材基底状态"
-      description="加载完成后，会根据题材覆盖和说明完整度给出下一步建议。"
+      title={t("page.recommendation.loadingTitle")}
+      description={t("page.recommendation.loadingDescription")}
       tone="neutral"
     />
   ) : totalGenres === 0 ? (
     <AssetLibraryRecommendation
       icon={Sparkles}
-      title="先建立第一棵题材基底树"
-      description="描述你想覆盖的创作方向，可以手动搭建层级，也可以让 AI 生成草稿后再调整。"
+      title={t("page.recommendation.emptyTitle")}
+      description={t("page.recommendation.emptyDescription")}
       action={(
         <Button type="button" onClick={handleCreateRoot}>
           <Plus className="h-4 w-4" aria-hidden="true" />
-          创建题材基底
+          {t("page.recommendation.emptyAction")}
         </Button>
       )}
     />
   ) : firstGenreWithoutDescription ? (
     <AssetLibraryRecommendation
       icon={FileText}
-      title={`补充「${firstGenreWithoutDescription.name}」的题材说明`}
-      description="明确作品定位、读者期待和核心冲突，能帮助 AI 在开书和规划时更准确地理解这个题材。"
+      title={t("page.recommendation.describeTitle", { name: firstGenreWithoutDescription.name })}
+      description={t("page.recommendation.describeDescription")}
       tone="warning"
       action={(
         <Button
@@ -184,20 +186,20 @@ export default function GenreManagementPage() {
           variant="outline"
           onClick={() => setEditingGenreId(firstGenreWithoutDescription.id)}
         >
-          补充说明
+          {t("page.recommendation.describeAction")}
         </Button>
       )}
     />
   ) : (
     <AssetLibraryRecommendation
       icon={Sparkles}
-      title="题材基底可以支持开书选择"
-      description="现有题材都有明确说明。需要覆盖新的创作方向时，再新增根题材或细分子类。"
+      title={t("page.recommendation.readyTitle")}
+      description={t("page.recommendation.readyDescription")}
       tone="success"
       action={(
         <Button type="button" variant="outline" onClick={handleCreateRoot}>
           <Plus className="h-4 w-4" aria-hidden="true" />
-          扩充题材
+          {t("page.recommendation.readyAction")}
         </Button>
       )}
     />
@@ -226,13 +228,13 @@ export default function GenreManagementPage() {
 
       <AssetLibraryHeader
         icon={Tags}
-        context="创作资产 / 小说定位"
-        title="题材基底库"
-        description="维护小说可复用的题材定位与分类层级。开书时选择合适的题材基底，AI 会据此理解作品类型、读者期待和主要创作方向。"
+        context={t("page.header.context")}
+        title={t("page.header.title")}
+        description={t("page.header.description")}
         actions={(
           <Button type="button" onClick={handleCreateRoot}>
             <Plus className="h-4 w-4" aria-hidden="true" />
-            新建题材基底树
+            {t("page.header.createRootTree")}
           </Button>
         )}
       />
@@ -242,8 +244,8 @@ export default function GenreManagementPage() {
       {recommendation}
 
       <AssetLibrarySection
-        title="题材结构"
-        description="从左侧目录展开细分方向，在右侧查看定位和维护节点。正在被小说使用的分类，需要先调整关联作品后才能删除。"
+        title={t("page.section.title")}
+        description={t("page.section.description")}
       >
         {genreTreeQuery.isLoading ? (
           <div
@@ -251,19 +253,19 @@ export default function GenreManagementPage() {
             role="status"
           >
             <LoaderCircle className="h-6 w-6 animate-spin text-muted-foreground" aria-hidden="true" />
-            <div className="mt-3 text-sm font-semibold text-foreground">正在加载题材结构</div>
-            <div className="mt-1 text-sm text-muted-foreground">请稍候，题材与小说关联正在同步。</div>
+            <div className="mt-3 text-sm font-semibold text-foreground">{t("page.section.loadingTitle")}</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t("page.section.loadingDescription")}</div>
           </div>
         ) : null}
 
         {genreTreeQuery.isError ? (
           <AssetLibraryEmptyState
             icon={CircleAlert}
-            title="题材基底暂时无法加载"
-            description="请检查服务连接后重新加载。已有题材不会受到影响。"
+            title={t("page.section.errorTitle")}
+            description={t("page.section.errorDescription")}
             action={(
               <Button type="button" variant="outline" onClick={() => void genreTreeQuery.refetch()}>
-                重新加载
+                {t("page.recommendation.reload")}
               </Button>
             )}
           />
@@ -272,12 +274,12 @@ export default function GenreManagementPage() {
         {!genreTreeQuery.isLoading && !genreTreeQuery.isError && genreTree.length === 0 ? (
           <AssetLibraryEmptyState
             icon={Tags}
-            title="还没有可供开书选择的题材基底"
-            description="先创建一个主要题材。你可以手动填写，也可以描述创作方向，让 AI 生成包含子类的题材树草稿。"
+            title={t("page.section.emptyTitle")}
+            description={t("page.section.emptyDescription")}
             action={(
               <Button type="button" onClick={handleCreateRoot}>
                 <Plus className="h-4 w-4" aria-hidden="true" />
-                创建第一棵题材树
+                {t("page.section.emptyAction")}
               </Button>
             )}
           />

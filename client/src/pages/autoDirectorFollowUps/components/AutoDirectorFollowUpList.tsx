@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   AutoDirectorFollowUpAvailableFilters,
   AutoDirectorFollowUpItem,
@@ -108,17 +109,17 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
   return (
     <TaskQueueSection
       title={formatActiveSection(props.activeSection)}
-      description="按结构化原因和状态筛选；质量提醒与阻塞任务使用不同等级。"
+      description={translateUi("按结构化原因和状态筛选；质量提醒与阻塞任务使用不同等级。")}
       className="min-w-0 overflow-hidden"
     >
       <div className="space-y-4">
         <div className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterGrid}>
           <Select value={props.activeReason || "__all__"} onValueChange={(value) => props.onFilterChange("reason", value === "__all__" ? "" : value)}>
-            <SelectTrigger aria-label="按跟进原因筛选" className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterTrigger}>
-              <SelectValue placeholder="全部原因" />
+            <SelectTrigger aria-label={translateUi("按跟进原因筛选")} className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterTrigger}>
+              <SelectValue placeholder={translateUi("全部原因")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="__all__">全部原因</SelectItem>
+              <SelectItem value="__all__">{translateUi("全部原因")}</SelectItem>
               {(props.filters?.reasons ?? []).map((reason) => (
                 <SelectItem key={reason} value={reason}>{formatReason(reason)}</SelectItem>
               ))}
@@ -126,11 +127,11 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
           </Select>
 
           <Select value={props.activeStatus || "__all__"} onValueChange={(value) => props.onFilterChange("status", value === "__all__" ? "" : value)}>
-            <SelectTrigger aria-label="按任务状态筛选" className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterTrigger}>
-              <SelectValue placeholder="全部状态" />
+            <SelectTrigger aria-label={translateUi("按任务状态筛选")} className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterTrigger}>
+              <SelectValue placeholder={translateUi("全部状态")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="__all__">全部状态</SelectItem>
+              <SelectItem value="__all__">{translateUi("全部状态")}</SelectItem>
               {(props.filters?.statuses ?? []).map((status) => (
                 <SelectItem key={status} value={status}>{formatStatus(status)}</SelectItem>
               ))}
@@ -138,13 +139,13 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
           </Select>
 
           <Select value={props.activeSupportsBatch || "__all__"} onValueChange={(value) => props.onFilterChange("supportsBatch", value === "__all__" ? "" : value)}>
-            <SelectTrigger aria-label="按批量操作能力筛选" className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterTrigger}>
-              <SelectValue placeholder="批量能力" />
+            <SelectTrigger aria-label={translateUi("按批量操作能力筛选")} className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpFilterTrigger}>
+              <SelectValue placeholder={translateUi("批量能力")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="__all__">全部</SelectItem>
-              <SelectItem value="true">仅可批量</SelectItem>
-              <SelectItem value="false">仅不可批量</SelectItem>
+              <SelectItem value="__all__">{translateUi("全部")}</SelectItem>
+              <SelectItem value="true">{translateUi("仅可批量")}</SelectItem>
+              <SelectItem value="false">{translateUi("仅不可批量")}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -152,27 +153,27 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
 
         <div className="space-y-3">
           {props.loading ? (
-            <WorkspaceStateNotice compact loading title="正在读取跟进项" description="正在同步导演任务和最近自动通过记录。" />
+            <WorkspaceStateNotice compact loading title={translateUi("正在读取跟进项")} description={translateUi("正在同步导演任务和最近自动通过记录。")} />
           ) : null}
 
           {props.errorMessage ? (
             <WorkspaceStateNotice
               compact
               tone="danger"
-              title="跟进列表读取失败"
+              title={translateUi("跟进列表读取失败")}
               description={props.errorMessage}
-              action={<Button size="sm" variant="outline" onClick={props.onRetry}>重新读取</Button>}
+              action={<Button size="sm" variant="outline" onClick={props.onRetry}>{translateUi("重新读取")}</Button>}
             />
           ) : null}
 
           {!props.loading && !props.errorMessage && props.items.length === 0 ? (
             <TaskQueueEmptyState
-              title="当前没有符合条件的跟进项"
+              title={translateUi("当前没有符合条件的跟进项")}
               description={props.activeSection === "auto_progress"
-                ? "当前没有正在推进的任务或最近自动通过记录。"
+                ? translateUi("当前没有正在推进的任务或最近自动通过记录。")
                 : props.activeSection === "replaced"
-                  ? "当前没有被新任务替代的旧任务。"
-                  : "可以切换分区或清除筛选条件查看其他导演任务。"}
+                  ? translateUi("当前没有被新任务替代的旧任务。")
+                  : translateUi("可以切换分区或清除筛选条件查看其他导演任务。")}
             />
           ) : null}
 
@@ -205,19 +206,20 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
                   <TaskQueueStatusBadge label={item.reasonLabel} tone="neutral" />
                   <TaskQueueStatusBadge label={getFollowUpPriorityLabel(item.priority, item.reason)} tone={tone} />
                   {item.executionScope ? <TaskQueueStatusBadge label={item.executionScope} tone="neutral" className={`max-w-full whitespace-normal text-left ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`} /> : null}
-                  {item.supportsBatch ? <TaskQueueStatusBadge label="可批量" tone="info" /> : null}
+                  {item.supportsBatch ? <TaskQueueStatusBadge label={translateUi("可批量")} tone="info" /> : null}
                   {buildChannelBadges(item).map((label) => (
                     <TaskQueueStatusBadge key={`${item.directorTaskId}:${label}`} label={label} tone="info" />
                   ))}
                 </div>
 
                 <div className={`mt-2 text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-                  当前阶段：{item.currentStage ?? "暂无"} · 当前模型：{item.currentModel ?? "暂无"} · 更新时间：{new Date(item.updatedAt).toLocaleString()}
+
+                  {translateUi("当前阶段：")}{item.currentStage ?? translateUi("暂无")}  {translateUi("· 当前模型：")}{item.currentModel ?? translateUi("暂无")}  {translateUi("· 更新时间：")}{new Date(item.updatedAt).toLocaleString()}
                 </div>
                 </TaskQueueItem>
                 {item.supportsBatch ? (
                   <label className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center">
-                    <span className="sr-only">选择 {item.novelTitle} 进行批量操作</span>
+                    <span className="sr-only">{translateUi("选择")} {item.novelTitle}  {translateUi("进行批量操作")}</span>
                     <input
                       type="checkbox"
                       checked={checked}
@@ -233,7 +235,8 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-xs text-muted-foreground">
-            第 {props.pagination?.page ?? 1} / {totalPages} 页，共 {props.pagination?.total ?? 0} 条
+
+            {translateUi("第")} {props.pagination?.page ?? 1} / {totalPages}  {translateUi("页，共")} {props.pagination?.total ?? 0}  {translateUi("条")}
           </div>
           <div className="grid grid-cols-2 gap-2 sm:flex">
             <Button
@@ -243,7 +246,8 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
               disabled={(props.pagination?.page ?? 1) <= 1}
               onClick={() => props.onPageChange((props.pagination?.page ?? 1) - 1)}
             >
-              上一页
+
+              {translateUi("上一页")}
             </Button>
             <Button
               variant="outline"
@@ -252,7 +256,8 @@ export function AutoDirectorFollowUpListPanel(props: AutoDirectorFollowUpListPan
               disabled={(props.pagination?.page ?? 1) >= totalPages}
               onClick={() => props.onPageChange((props.pagination?.page ?? 1) + 1)}
             >
-              下一页
+
+              {translateUi("下一页")}
             </Button>
           </div>
         </div>

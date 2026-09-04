@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -64,8 +65,8 @@ export default function NovelDirectorIssuePolicyCard({ novelId }: { novelId: str
   return (
     <Card>
       <CardHeader>
-        <CardTitle>本书问题处理偏好</CardTitle>
-        <CardDescription>选择适合本书的处理方案，或逐项调整。保存后会用于后续任务；安全保护仍会优先保护作品。</CardDescription>
+        <CardTitle>{translateUi("本书问题处理偏好")}</CardTitle>
+        <CardDescription>{translateUi("选择适合本书的处理方案，或逐项调整。保存后会用于后续任务；安全保护仍会优先保护作品。")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid gap-3 md:grid-cols-2">
@@ -85,33 +86,34 @@ export default function NovelDirectorIssuePolicyCard({ novelId }: { novelId: str
           ))}
         </div>
         <label className="flex items-center justify-between gap-3 rounded-xl border border-border/70 px-3 py-2 text-sm">
-          <span className="font-medium">自动重试</span>
+          <span className="font-medium">{translateUi("自动重试")}</span>
           <select className="h-9 rounded-md border bg-background px-3 text-sm" value={draft.maxAutomaticRetries ?? response.effectivePolicy.maxAutomaticRetries} onChange={(event) => setDraft({ ...draft, maxAutomaticRetries: Number(event.target.value) })}>
-            <option value={0}>不自动重试</option>
-            <option value={1}>最多 1 次</option>
+            <option value={0}>{translateUi("不自动重试")}</option>
+            <option value={1}>{translateUi("最多 1 次")}</option>
           </select>
         </label>
         {CONFIGURABLE_ISSUES.map((entry) => (
           <div key={entry.code} className="grid gap-2 rounded-md border p-3 md:grid-cols-[minmax(0,1fr)_220px]">
             <div>
               <div className="text-sm font-medium">{entry.label}</div>
-              <div className="mt-1 text-xs text-muted-foreground">全局：{ACTION_LABELS[response.effectivePolicy.issueActions[entry.code] ?? entry.defaultAction]}</div>
-              {entry.lockedReason ? <div className="mt-1 text-xs text-amber-700">安全提示：{entry.lockedReason}{entry.enforcedAction ? ` 当前触发时仍会${ACTION_LABELS[entry.enforcedAction]}。` : ""}</div> : null}
+              <div className="mt-1 text-xs text-muted-foreground">{translateUi("全局：")}{ACTION_LABELS[response.effectivePolicy.issueActions[entry.code] ?? entry.defaultAction]}</div>
+              {entry.lockedReason ? <div className="mt-1 text-xs text-amber-700">{translateUi("安全提示：")}{entry.lockedReason}{entry.enforcedAction ? translateUi(" 当前触发时仍会{{value0}}。", { value0: ACTION_LABELS[entry.enforcedAction] }) : ""}</div> : null}
             </div>
             <select className="h-9 rounded-md border bg-background px-3 text-sm" value={overrideActions[entry.code] ?? ""} onChange={(event) => setAction(entry.code, event.target.value)}>
-              {!hasCompleteActionMap ? <option value="">继承全局</option> : null}
+              {!hasCompleteActionMap ? <option value="">{translateUi("继承全局")}</option> : null}
               {DIRECTOR_ISSUE_ACTIONS.map((value) => <option key={value} value={value}>{ACTION_LABELS[value]}</option>)}
             </select>
           </div>
         ))}
         {hasChanges ? (
           <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-950" role="status">
-            你修改了本书的问题处理偏好。保存后会影响后续任务；安全保护触发时，系统可能仍会暂停或结束任务，并保留这次选择供复核。
+
+            {translateUi("你修改了本书的问题处理偏好。保存后会影响后续任务；安全保护触发时，系统可能仍会暂停或结束任务，并保留这次选择供复核。")}
           </div>
         ) : null}
         <div className="flex flex-wrap items-center gap-2">
-          <Button disabled={mutation.isPending} onClick={() => mutation.mutate(draft)}>{mutation.isPending ? "保存中…" : "保存本书偏好"}</Button>
-          <Button variant="outline" disabled={mutation.isPending} onClick={() => mutation.mutate(null)}>恢复继承全局</Button>
+          <Button disabled={mutation.isPending} onClick={() => mutation.mutate(draft)}>{mutation.isPending ? translateUi("保存中…") : translateUi("保存本书偏好")}</Button>
+          <Button variant="outline" disabled={mutation.isPending} onClick={() => mutation.mutate(null)}>{translateUi("恢复继承全局")}</Button>
           {message ? <span className="text-xs text-muted-foreground">{message}</span> : null}
         </div>
       </CardContent>

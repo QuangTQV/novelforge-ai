@@ -1,0 +1,123 @@
+{
+  "recommended": "Recommended",
+  "submitNotice": "The system sends a background task with the \"{{preset}}\" strategy. When done, the formula is saved automatically; you don't need to save again.",
+  "preset": {
+    "imitate": {
+      "label": "Stay close to the source",
+      "summary": "Keeps more signatures and expression habits; good for short-term style practice."
+    },
+    "balanced": {
+      "label": "Keep the main reading feel",
+      "summary": "Keeps reading rhythm and progression, softens overly strong signatures; suits most projects."
+    },
+    "transfer": {
+      "label": "Transfer only the reusable framework",
+      "summary": "Prioritizes rhythm, structure and dialogue logic reusable for long works."
+    }
+  },
+  "source": {
+    "directText": {
+      "label": "Paste text directly",
+      "summary": "Send a passage or sample chapter to the server-side extraction task."
+    },
+    "knowledge": {
+      "label": "Text in the knowledge library",
+      "summary": "Pick the active version; the system freezes a full-text snapshot then learns from representative samples."
+    },
+    "analysis": {
+      "label": "Book analysis result",
+      "summary": "Generate a formula directly from the style and technique analysis."
+    }
+  },
+  "processing": {
+    "sample": {
+      "label": "Smart sampling",
+      "summary": "Samples representative passages from the start, middle, end and closing; good for long text, more stable."
+    },
+    "full": {
+      "label": "Full-text extraction",
+      "summary": "Feeds the whole active version into the model; good for short docs; long docs may be slow or exceed the context limit."
+    }
+  },
+  "task": {
+    "none": "No task yet",
+    "queued": "Queued",
+    "running": "Processing",
+    "succeeded": "Completed",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
+    "waitingApproval": "Awaiting approval"
+  },
+  "chars": "{{count}} characters",
+  "knowledge": {
+    "enabled": "Available",
+    "disabled": "Disabled",
+    "archived": "Archived"
+  },
+  "ui": {
+    "title": "Start from a reading feel",
+    "description": "Choose the starting point you have. The system helps you generate a formula you can test right away; details are adjustable anytime.",
+    "tabs": {
+      "template": "Start from a template",
+      "brief": "Say an idea",
+      "material": "Learn from material"
+    },
+    "templateHint": "If you don't know where to start, pick a formula close to what you want. After creating, change genre, adjust rhythm and test-write to check the feel.",
+    "templateBadge": "Template",
+    "suitable": "Fits: {{genres}}",
+    "creating": "Creating...",
+    "createBased": "Create based on this template",
+    "briefHint": "Just describe the feeling you want readers to get; AI builds a first version for you to test-write. Once you know the rules, you can start from blank too.",
+    "blankTitle": "Start from blank yourself",
+    "blankDescription": "Good when you already know which kind of formula to keep and just want an empty framework first.",
+    "manualPlaceholder": "e.g. urban strong conflict, fast pace",
+    "createBlank": "Create a blank formula",
+    "aiTitle": "Let AI build one for me",
+    "aiDescription": "Good when you only know the feel you want but don't want to fill in rule fields yourself.",
+    "nameOptional": "Formula name (optional)",
+    "categoryOptional": "Category (optional)",
+    "briefPlaceholder": "e.g. fast progression, dense conflict, direct dialogue, no dragging emotions; fits urban and hot-blooded leveling.",
+    "generating": "AI generating...",
+    "generateFormula": "AI generate a formula",
+    "extractHint": "Generate a formula from material. Text and knowledge-library source text go into a server-side extraction task; book analysis results use style and technique analysis directly.",
+    "name": "Formula name",
+    "category": "Category (optional)",
+    "sourceTextPlaceholder": "Paste the reference text you want to extract a reading feel from. Provide at least one complete scene.",
+    "searchKnowledge": "Search the knowledge library by document title or file name",
+    "loadingKnowledge": "Finding knowledge-library documents...",
+    "emptyKnowledge": "No usable knowledge-library documents found. Upload text to the library first, then come back to create a formula.",
+    "selected": "Selected",
+    "activeVersion": "Active version v{{version}} · {{versions}} versions · {{analyses}} book analyses",
+    "processingTitle": "How the source is processed",
+    "snapshot": "Source snapshot {{chars}}",
+    "reading": "Reading the selected document's active version...",
+    "noActiveVersion": "The selected document has no active version and can't be submitted.",
+    "emptyContent": "The active version is empty and can't be submitted.",
+    "selectKnowledge": "Pick a document in the knowledge library; the system reads the active version's full text and freezes a snapshot when the task is submitted.",
+    "searchAnalysis": "Search book analysis titles or source documents",
+    "loadingAnalysis": "Finding book analysis results...",
+    "emptyAnalysis": "No usable book analysis results found. After analysis is done, you can create a formula right here.",
+    "canGenerate": "Can generate",
+    "analysisMeta": "Source version v{{version}} · {{summary}}",
+    "analysisFallback": "The book analysis can be used to generate a formula",
+    "sampleNotice": "The formula asset still keeps the full source preview; the model only reads representative samples to avoid overly long text exceeding capacity.",
+    "fullNotice": "Full-text extraction sends the whole active version to the model. For long text, use smart sampling.",
+    "analysisTitle": "Create from a book analysis",
+    "analysisDescription": "This flow reads the style and technique entries in the book analysis directly; after creating it opens the formula editor immediately.",
+    "analysisSelected": "Pick a book analysis; the system generates a formula from style and technique analysis without creating a background task.",
+    "keepTitle": "Keep strategy",
+    "keepDescription": "Decide how much of the source's signature to keep; the system auto-generates and saves the formula per this strategy.",
+    "current": "Currently using",
+    "backgroundTask": "Background task",
+    "taskTitle": "Task title: {{title}}",
+    "stage": "Execution stage: {{stage}}",
+    "progress": "Task progress: {{progress}}%",
+    "failure": "Failure reason: {{reason}}",
+    "taskCenter": "Open the task center",
+    "afterSubmit": "After submitting, the system extracts, applies the keep strategy and auto-saves the formula. You can close the dialog; the result opens automatically when done.",
+    "creatingFormula": "Creating...",
+    "submitting": "Submitting the task...",
+    "taskActive": "Background task running",
+    "sourceVersion": "Source version v{{version}} · {{chars}}"
+  }
+}

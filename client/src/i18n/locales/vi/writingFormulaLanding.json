@@ -1,0 +1,36 @@
+{
+  "emptySummary": "Chưa có tóm tắt lối viết.",
+  "recentBinding": "Liên kết gần nhất: {{title}}",
+  "actions": {
+    "edit": "Sửa thiết lập",
+    "apply": "Áp dụng và thử nghiệm",
+    "clean": "Khử chất AI"
+  },
+  "panels": {
+    "feel": {
+      "title": "Cảm giác đọc và định vị",
+      "description": "Giúp bạn nhanh chóng xác định công thức này muốn tạo cảm giác gì và phù hợp với dự án nào."
+    },
+    "sourceSample": "Đoạn mẫu nguyên văn",
+    "rules": {
+      "title": "Tóm tắt quy tắc",
+      "description": "Hiển thị bốn lớp quy tắc thật sự kiểm soát cảm giác đọc để bạn hiểu ngay từ danh sách.",
+      "narrative": "Tiến triển cốt truyện",
+      "character": "Biểu đạt nhân vật",
+      "language": "Chất ngôn ngữ",
+      "rhythm": "Kiểm soát nhịp"
+    },
+    "antiAi": {
+      "title": "Ràng buộc chống AI",
+      "description": "Xác định các rủi ro hệ thống sẽ ưu tiên phát hiện và sửa trong bản thảo."
+    },
+    "asset": {
+      "title": "Tổng quan tài sản",
+      "description": "Giúp bạn đánh giá lối viết hiện đã hoàn thiện đến mức nào."
+    },
+    "next": {
+      "title": "Bước tiếp theo",
+      "description": "Mỗi nút chỉ phụ trách một việc để bạn không bị đưa về cùng một khu vực."
+    }
+  }
+}

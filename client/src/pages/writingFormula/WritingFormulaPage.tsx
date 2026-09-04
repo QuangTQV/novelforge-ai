@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -504,9 +505,9 @@ export default function WritingFormulaPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1">
           <div className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Style Engine V2</div>
-          <div className="text-2xl font-semibold tracking-tight text-foreground">写法引擎</div>
+          <div className="text-2xl font-semibold tracking-tight text-foreground">{translateUi("写法引擎")}</div>
         </div>
-        <OpenInCreativeHubButton bindings={{ styleProfileId: selectedProfileId || null }} label="把这套写法带去创作中枢" />
+        <OpenInCreativeHubButton bindings={{ styleProfileId: selectedProfileId || null }} label={translateUi("把这套写法带去创作中枢")} />
       </div>
 
       {message ? <div className="rounded-2xl border bg-muted/30 px-4 py-3 text-sm">{message}</div> : null}
@@ -529,8 +530,8 @@ export default function WritingFormulaPage() {
         onUseProfileForClean={(profileId) => openWorkspaceDialog("clean", profileId)}
         onDeleteProfile={(profileId) => {
           const profile = profiles.find((item) => item.id === profileId);
-          const profileName = profile?.name ?? "这套写法";
-          const confirmed = window.confirm(`确认删除“${profileName}”吗？删除后无法恢复。`);
+          const profileName = profile?.name ?? translateUi("这套写法");
+          const confirmed = window.confirm(translateUi("确认删除“{{value0}}”吗？删除后无法恢复。", { value0: profileName }));
           if (!confirmed) {
             return;
           }
@@ -578,9 +579,10 @@ export default function WritingFormulaPage() {
       >
         <DialogContent ref={editorDialogRef} className="writing-formula-theme !flex h-[88vh] w-[min(1180px,96vw)] max-w-none flex-col gap-0 overflow-hidden p-0">
           <DialogHeader className="border-b px-6 py-5 pr-14">
-            <DialogTitle>编辑当前写法</DialogTitle>
+            <DialogTitle>{translateUi("编辑当前写法")}</DialogTitle>
             <DialogDescription>
-              这里专门整理写法本身的设定说明。应用测试和去 AI 味已经拆到独立入口，避免混在一个窗口里。
+
+              {translateUi("这里专门整理写法本身的设定说明。应用测试和去 AI 味已经拆到独立入口，避免混在一个窗口里。")}
             </DialogDescription>
           </DialogHeader>
 
@@ -627,9 +629,10 @@ export default function WritingFormulaPage() {
       >
         <DialogContent className="writing-formula-theme !flex h-[84vh] w-[min(1080px,94vw)] max-w-none flex-col gap-0 overflow-hidden p-0">
           <DialogHeader className="border-b px-6 py-5 pr-14">
-            <DialogTitle>当前写法的应用与测试</DialogTitle>
+            <DialogTitle>{translateUi("当前写法的应用与测试")}</DialogTitle>
             <DialogDescription>
-              这里专门处理绑定到小说、章节和试写验证，不修改写法字段本身。
+
+              {translateUi("这里专门处理绑定到小说、章节和试写验证，不修改写法字段本身。")}
             </DialogDescription>
           </DialogHeader>
 
@@ -660,9 +663,10 @@ export default function WritingFormulaPage() {
       >
         <DialogContent className="writing-formula-theme !flex h-[84vh] w-[min(980px,92vw)] max-w-none flex-col gap-0 overflow-hidden p-0">
           <DialogHeader className="border-b px-6 py-5 pr-14">
-            <DialogTitle>去 AI 味</DialogTitle>
+            <DialogTitle>{translateUi("去 AI 味")}</DialogTitle>
             <DialogDescription>
-              这里专门做正文检测和修正，不进入写法字段编辑，也不混入绑定和试写操作。
+
+              {translateUi("这里专门做正文检测和修正，不进入写法字段编辑，也不混入绑定和试写操作。")}
             </DialogDescription>
           </DialogHeader>
 

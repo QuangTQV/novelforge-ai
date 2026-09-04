@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import type {
   WorldBindingSupport,
@@ -18,11 +19,11 @@ import WorldFactionsSection from "./structure/WorldFactionsSection";
 import WorldRelationsSection from "./structure/WorldRelationsSection";
 
 const SECTION_OPTIONS: Array<{ value: WorldStructureSectionKey; label: string }> = [
-  { value: "profile", label: "世界概要" },
-  { value: "rules", label: "规则中心" },
-  { value: "factions", label: "阵营与势力" },
-  { value: "locations", label: "地点与地形" },
-  { value: "relations", label: "关系网络" },
+  { value: "profile", label: translateUi("世界概要") },
+  { value: "rules", label: translateUi("规则中心") },
+  { value: "factions", label: translateUi("阵营与势力") },
+  { value: "locations", label: translateUi("地点与地形") },
+  { value: "relations", label: translateUi("关系网络") },
 ];
 
 function updateArrayItem<T>(items: T[], index: number, nextItem: T): T[] {
@@ -82,9 +83,9 @@ export default function WorldStructureTab(props: {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>高级字段维护</CardTitle>
+          <CardTitle>{translateUi("高级字段维护")}</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">正在加载高级结构数据...</CardContent>
+        <CardContent className="text-sm text-muted-foreground">{translateUi("正在加载高级结构数据...")}</CardContent>
       </Card>
     );
   }
@@ -92,7 +93,7 @@ export default function WorldStructureTab(props: {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>高级字段维护</CardTitle>
+        <CardTitle>{translateUi("高级字段维护")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="rounded-md border p-3 space-y-3">
@@ -120,7 +121,7 @@ export default function WorldStructureTab(props: {
               }}
               disabled={backfillPending}
             >
-              {backfillPending ? "提取中..." : hasStructuredData ? "重新从现有设定提取" : "从现有设定提取结构"}
+              {backfillPending ? translateUi("提取中...") : hasStructuredData ? translateUi("重新从现有设定提取") : translateUi("从现有设定提取结构")}
             </Button>
             <Button
               variant="outline"
@@ -133,16 +134,16 @@ export default function WorldStructureTab(props: {
               }}
               disabled={generatePending}
             >
-              {generatePending ? "补全中..." : "AI 补全当前区块"}
+              {generatePending ? translateUi("补全中...") : translateUi("AI 补全当前区块")}
             </Button>
             <Button onClick={() => void onSave(draftStructure, draftBindingSupport)} disabled={savePending}>
-              {savePending ? "保存中..." : "保存结构"}
+              {savePending ? translateUi("保存中...") : translateUi("保存结构")}
             </Button>
           </div>
         </div>
 
         <div className={activeSection === "profile" ? "rounded-md border p-3 space-y-3" : "hidden"}>
-          <div className="font-medium">世界概要</div>
+          <div className="font-medium">{translateUi("世界概要")}</div>
           <Input
             value={draftStructure.profile.identity}
             onChange={(event) =>
@@ -152,7 +153,7 @@ export default function WorldStructureTab(props: {
                   : prev,
               )
             }
-            placeholder="世界身份 / 类型气质"
+            placeholder={translateUi("世界身份 / 类型气质")}
           />
           <Input
             value={draftStructure.profile.tone}
@@ -163,7 +164,7 @@ export default function WorldStructureTab(props: {
                   : prev,
               )
             }
-            placeholder="整体调性"
+            placeholder={translateUi("整体调性")}
           />
           <textarea
             className="min-h-[100px] w-full rounded-md border bg-background p-2 text-sm"
@@ -175,7 +176,7 @@ export default function WorldStructureTab(props: {
                   : prev,
               )
             }
-            placeholder="世界摘要"
+            placeholder={translateUi("世界摘要")}
           />
           <textarea
             className="min-h-[80px] w-full rounded-md border bg-background p-2 text-sm"
@@ -187,10 +188,10 @@ export default function WorldStructureTab(props: {
                   : prev,
               )
             }
-            placeholder="核心冲突"
+            placeholder={translateUi("核心冲突")}
           />
           <Input
-            value={draftStructure.profile.themes.join("、")}
+            value={draftStructure.profile.themes.join(translateUi("、"))}
             onChange={(event) =>
               setDraftStructure((prev) =>
                 prev
@@ -204,13 +205,13 @@ export default function WorldStructureTab(props: {
                   : prev,
               )
             }
-            placeholder="主题关键词，使用顿号或逗号分隔"
+            placeholder={translateUi("主题关键词，使用顿号或逗号分隔")}
           />
         </div>
 
         <div className={activeSection === "rules" ? "rounded-md border p-3 space-y-3" : "hidden"}>
           <div className="flex items-center justify-between">
-            <div className="font-medium">规则中心</div>
+            <div className="font-medium">{translateUi("规则中心")}</div>
             <Button
               size="sm"
               variant="outline"
@@ -238,7 +239,8 @@ export default function WorldStructureTab(props: {
                 )
               }
             >
-              新增规则
+
+              {translateUi("新增规则")}
             </Button>
           </div>
           <textarea
@@ -251,7 +253,7 @@ export default function WorldStructureTab(props: {
                   : prev,
               )
             }
-            placeholder="世界级规则总结"
+            placeholder={translateUi("世界级规则总结")}
           />
           {draftStructure.rules.axioms.map((rule, index) => (
             <div key={rule.id || index} className="rounded-md border p-3 space-y-2">
@@ -274,7 +276,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="规则名称"
+                  placeholder={translateUi("规则名称")}
                 />
                 <Input
                   value={rule.cost}
@@ -294,7 +296,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="代价"
+                  placeholder={translateUi("代价")}
                 />
               </div>
               <textarea
@@ -316,7 +318,7 @@ export default function WorldStructureTab(props: {
                       : prev,
                   )
                 }
-                placeholder="规则说明"
+                placeholder={translateUi("规则说明")}
               />
               <div className="grid gap-2 md:grid-cols-2">
                 <Input
@@ -337,7 +339,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="边界条件"
+                  placeholder={translateUi("边界条件")}
                 />
                 <Input
                   value={rule.enforcement}
@@ -357,7 +359,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="约束/执行后果"
+                  placeholder={translateUi("约束/执行后果")}
                 />
               </div>
             </div>
@@ -375,7 +377,7 @@ export default function WorldStructureTab(props: {
 
         <div className={activeSection === "locations" ? "rounded-md border p-3 space-y-3" : "hidden"}>
           <div className="flex items-center justify-between">
-            <div className="font-medium">地点与地形</div>
+            <div className="font-medium">{translateUi("地点与地形")}</div>
             <Button
               size="sm"
               variant="outline"
@@ -403,7 +405,8 @@ export default function WorldStructureTab(props: {
                 )
               }
             >
-              新增地点
+
+              {translateUi("新增地点")}
             </Button>
           </div>
           {draftStructure.locations.map((location, index) => (
@@ -424,7 +427,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="地点名称"
+                  placeholder={translateUi("地点名称")}
                 />
                 <Input
                   value={location.terrain}
@@ -441,7 +444,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="地形 / 地貌"
+                  placeholder={translateUi("地形 / 地貌")}
                 />
               </div>
               <textarea
@@ -460,7 +463,7 @@ export default function WorldStructureTab(props: {
                       : prev,
                   )
                 }
-                placeholder="地点概述"
+                placeholder={translateUi("地点概述")}
               />
               <div className="grid gap-2 md:grid-cols-2">
                 <Input
@@ -478,7 +481,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="叙事功能"
+                  placeholder={translateUi("叙事功能")}
                 />
                 <Input
                   value={location.risk}
@@ -495,7 +498,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="风险"
+                  placeholder={translateUi("风险")}
                 />
               </div>
               <div className="grid gap-2 md:grid-cols-2">
@@ -514,7 +517,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="进入限制"
+                  placeholder={translateUi("进入限制")}
                 />
                 <Input
                   value={location.exitCost}
@@ -531,7 +534,7 @@ export default function WorldStructureTab(props: {
                         : prev,
                     )
                   }
-                  placeholder="离开代价"
+                  placeholder={translateUi("离开代价")}
                 />
               </div>
             </div>

@@ -1,0 +1,234 @@
+{
+  "page": {
+    "loading": "Đang tải chương…",
+    "loadError": "Không tải được chương",
+    "notFound": "Không tìm thấy chương",
+    "textEffectLab": "Phòng thí nghiệm hiệu ứng văn bản"
+  },
+  "queueCard": {
+    "title": "Hàng đợi chương",
+    "subtitle": "Theo dõi tiến độ sản xuất chương",
+    "visibleCount": "Hiển thị {{count}} chương",
+    "filterLabel": "Lọc trạng thái",
+    "emptyFiltered": "Không có chương phù hợp",
+    "finalizing": "Đang hoàn tất",
+    "writing": "Đang viết",
+    "repairing": "Đang sửa",
+    "nextStep": "Bước tiếp theo",
+    "currentWordCount": "{{count}} từ",
+    "removing": "Đang xóa…",
+    "removeEmptyChapter": "Xóa chương trống"
+  },
+  "chapter": {
+    "labelWithTitle": "Chương {{number}}: {{title}}",
+    "untitled": "Chưa đặt tiêu đề"
+  },
+  "statusFlow": {
+    "currentStage": "Giai đoạn hiện tại: {{stage}}",
+    "notStarted": "Chưa bắt đầu",
+    "order": {
+      "executionPlan": "Kế hoạch thực thi",
+      "writing": "Viết",
+      "review": "Kiểm tra",
+      "repair": "Sửa chữa",
+      "stateSync": "Đồng bộ trạng thái",
+      "payoffSync": "Đồng bộ nút thắt",
+      "ready": "Sẵn sàng"
+    },
+    "notes": {
+      "executionPlanDone": "Kế hoạch thực thi của chương đã đầy đủ.",
+      "executionPlanPending": "Chương còn thiếu kế hoạch thực thi; hệ thống sẽ chuẩn bị phiếu tác vụ hoặc phân rã cảnh.",
+      "writingInProgress": "AI đang viết nội dung chương này.",
+      "writingPending": "Đã có kế hoạch thực thi, bạn có thể bắt đầu viết nội dung.",
+      "reviewInProgress": "Nội dung đã được tạo và hệ thống đang kiểm tra.",
+      "reviewPending": "Chương đã có nội dung; bước tiếp theo là kiểm tra.",
+      "repairInProgress": "Hệ thống đang sửa nội dung theo các vấn đề đã phát hiện.",
+      "repairPending": "Nếu kiểm tra phát hiện vấn đề, chương sẽ chuyển sang giai đoạn sửa chữa.",
+      "stateSyncInProgress": "Nội dung đã sẵn sàng đọc; hệ thống đang đồng bộ trạng thái, thay đổi nhân vật và tài nguyên chính.",
+      "stateSyncPending": "Sau khi nội dung sẵn sàng, hệ thống sẽ đồng bộ trạng thái và tài nguyên chính.",
+      "payoffSyncInProgress": "Hệ thống đang cân chỉnh sổ nút thắt của chương.",
+      "payoffSyncPending": "Sau khi đồng bộ tài nguyên, hệ thống sẽ cân chỉnh sổ nút thắt theo rủi ro và nhịp độ.",
+      "readyDone": "Chương đã đạt trạng thái có thể tiếp tục.",
+      "readyInProgress": "Chương đã hoàn tất lượt kiểm tra hiện tại; bạn có thể tiếp tục chỉnh sửa hoặc xử lý đề xuất.",
+      "readyPending": "Hoàn tất các bước trước để tiếp tục chương."
+    }
+  },
+  "primary": {
+    "selectChapter": "Hãy chọn một chương",
+    "selectChapterReason": "Hãy chọn chương cần thực hiện ở bên trái để hệ thống xác định bước tiếp theo.",
+    "openEditor": "Mở trình chỉnh sửa chương",
+    "openEditorReason": "Chương đã có nội dung. Bạn có thể mở trình chỉnh sửa hoặc sửa nhanh bên dưới.",
+    "openEditorExistingReason": "Chương đã có nội dung; mở trình chỉnh sửa sẽ hiệu quả hơn để tinh chỉnh.",
+    "fullAudit": "Kiểm tra toàn bộ",
+    "fullAuditRunning": "Đang kiểm tra toàn bộ…",
+    "fullAuditReason": "Nội dung đã có; hãy kiểm tra toàn bộ trước khi sửa hoặc viết lại.",
+    "createPlan": "Tạo kế hoạch thực thi",
+    "planRunning": "Đang tạo kế hoạch thực thi…",
+    "createPlanReason": "Chương còn thiếu mục tiêu hoặc phiếu tác vụ; hãy bổ sung kế hoạch trước.",
+    "writeChapter": "Viết chương này",
+    "writeRunning": "Đang viết chương này…",
+    "writeChapterReason": "Thông tin chuẩn bị đã đủ; bước phù hợp nhất là tạo nội dung chương."
+  },
+  "sections": {
+    "assetsAndReview": "Bổ sung tài nguyên và kiểm tra chuyên sâu",
+    "polish": "Tinh chỉnh và nâng cao",
+    "advancedStrategy": "Chiến lược viết nâng cao"
+  },
+  "actions": {
+    "autoRepair": "Sửa nhanh vấn đề",
+    "autoRepairRunning": "Đang sửa vấn đề…",
+    "continuity": "Kiểm tra tính liên tục",
+    "continuityRunning": "Đang kiểm tra tính liên tục…",
+    "characterConsistency": "Kiểm tra nhất quán nhân vật",
+    "characterConsistencyRunning": "Đang kiểm tra nhất quán nhân vật…",
+    "pacing": "Kiểm tra nhịp độ",
+    "pacingRunning": "Đang kiểm tra nhịp độ…",
+    "rewrite": "Viết lại chương",
+    "rewriteRunning": "Đang viết lại chương…",
+    "expand": "Mở rộng chương",
+    "expandRunning": "Đang mở rộng chương…",
+    "compress": "Rút gọn chương",
+    "compressRunning": "Đang rút gọn chương…",
+    "strengthenConflict": "Tăng cường xung đột",
+    "strengthenConflictRunning": "Đang tăng cường xung đột…",
+    "enhanceEmotion": "Tăng cường cảm xúc",
+    "enhanceEmotionRunning": "Đang tăng cường cảm xúc…",
+    "unifyStyle": "Thống nhất văn phong",
+    "unifyStyleRunning": "Đang thống nhất văn phong…",
+    "addDialogue": "Thêm đối thoại",
+    "addDialogueRunning": "Đang thêm đối thoại…",
+    "addDescription": "Thêm miêu tả",
+    "addDescriptionRunning": "Đang thêm miêu tả…"
+  },
+  "strategy": {
+    "hint": "Khi chưa chắc, hãy giữ giá trị mặc định. Chỉ điều chỉnh khi chương cần nhịp nhanh hơn, xung đột mạnh hơn hoặc AI tự do hơn.",
+    "runMode": "Chế độ chạy",
+    "fast": "Nhanh",
+    "polish": "Tinh chỉnh",
+    "wordSize": "Độ dài",
+    "short": "Ngắn",
+    "medium": "Trung bình",
+    "long": "Dài",
+    "conflict": "Cường độ xung đột",
+    "pace": "Nhịp độ",
+    "slow": "Chậm",
+    "balanced": "Cân bằng",
+    "fastPace": "Nhanh",
+    "aiFreedom": "Mức tự do của AI",
+    "low": "Thấp",
+    "high": "Cao",
+    "apply": "Áp dụng chiến lược cho chương hiện tại",
+    "applyRunning": "Đang áp dụng chiến lược…"
+  },
+  "status": {
+    "unplanned": {
+      "label": "Chờ chuẩn bị",
+      "description": "Chờ chuẩn bị: chương còn thiếu tài nguyên thực thi."
+    },
+    "pendingGeneration": {
+      "label": "Chờ viết",
+      "description": "Chờ viết: kế hoạch chương đã cơ bản đầy đủ."
+    },
+    "generating": {
+      "label": "Đang viết",
+      "description": "Đang viết: AI đang tạo nội dung chương."
+    },
+    "pendingReview": {
+      "label": "Đã kiểm tra",
+      "description": "Đã kiểm tra: bạn có thể xem đề xuất hoặc tiếp tục chỉnh sửa."
+    },
+    "needsRepair": {
+      "label": "Nên sửa",
+      "description": "Nên sửa: kiểm tra đã phát hiện vấn đề nhưng không chặn việc chỉnh sửa."
+    },
+    "completed": {
+      "label": "Đã hoàn tất",
+      "description": "Đã hoàn tất: chương đã vượt qua quy trình hiện tại."
+    },
+    "unset": {
+      "label": "Chưa thiết lập",
+      "description": "Chưa thiết lập: chương chưa có trạng thái quy trình rõ ràng."
+    }
+  },
+  "generationState": {
+    "planned": {
+      "label": "Đã vào mục lục",
+      "description": "Chương đã vào mục lục nhưng chưa có bản nháp."
+    },
+    "drafted": {
+      "label": "Đã viết nháp",
+      "description": "Đã có bản nháp nhưng chưa xác nhận kiểm tra."
+    },
+    "reviewed": {
+      "label": "Đã kiểm tra",
+      "description": "Đã hoàn tất một lượt kiểm tra."
+    },
+    "repaired": {
+      "label": "Đã sửa",
+      "description": "Đã sửa theo các vấn đề được phát hiện."
+    },
+    "approved": {
+      "label": "Đã xác nhận",
+      "description": "Chương đã vượt qua ngưỡng chất lượng."
+    },
+    "published": {
+      "label": "Đã xuất bản",
+      "description": "Chương đã ở trạng thái xuất bản."
+    }
+  },
+  "risk": {
+    "qualityLoop": {
+      "continue": "Chất lượng có thể tiếp tục",
+      "patchRepair": "Nên bổ sung để sửa",
+      "replan": "Nên lập kế hoạch lại",
+      "manualGate": "Cần xác nhận phạm vi sửa",
+      "recordedDebt": "Đã ghi nhận khoản nợ chất lượng"
+    },
+    "status": {
+      "risk": "Chất lượng có rủi ro",
+      "invalid": "Chất lượng cần sửa",
+      "missing": "Thiếu thông tin chất lượng"
+    },
+    "artifact": {
+      "chapterRetention": "Rủi ro giữ chân",
+      "continuity": "Rủi ro liên tục",
+      "rollingWindow": "Rủi ro nối chương",
+      "proseQuality": "Kiểm tra độ tự nhiên của văn bản"
+    }
+  },
+  "queuePreview": {
+    "sceneBudgetContract": "Chương đã có hợp đồng ngân sách cảnh.",
+    "legacySceneCards": "Chương có phân rã cảnh phiên bản cũ; nên tạo lại.",
+    "noObjective": "Chương chưa có mục tiêu rõ ràng; nên bổ sung kế hoạch."
+  },
+  "suggestedAction": {
+    "nextChapter": "Tiếp tục chương sau",
+    "writeChapter": "Viết chương này",
+    "waitForGeneration": "Chờ tạo nội dung",
+    "autoRepair": "Sửa nhanh",
+    "viewSuggestions": "Xem đề xuất",
+    "runReview": "Chạy kiểm tra",
+    "continuePolishing": "Tiếp tục tinh chỉnh",
+    "createPlan": "Bổ sung kế hoạch chương",
+    "openEditor": "Mở trình chỉnh sửa"
+  },
+  "textEditor": {
+    "pendingOriginal": "Bản gốc đang chờ",
+    "aiGeneratingCandidate": "AI đang tạo bản đề xuất",
+    "original": "Bản gốc",
+    "rewrite": "Bản viết lại",
+    "body": "Nội dung chương",
+    "helper": {
+      "inlineDiff": "So sánh thay đổi trong dòng",
+      "loading": "Đang tải…",
+      "blockPatch": "Bản sửa theo khối",
+      "readOnly": "Chỉ đọc",
+      "editable": "Có thể chỉnh sửa"
+    }
+  },
+  "takeoverTarget": {
+    "advanceTo": "Tiếp tục đến chương {{number}}",
+    "advanceToAria": "Chọn chương đích {{number}}",
+    "range": "Chương {{start}}–{{end}}"
+  }
+}

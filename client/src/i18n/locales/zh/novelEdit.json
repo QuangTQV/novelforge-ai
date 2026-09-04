@@ -1,0 +1,48 @@
+{
+  "toast": {
+    "switchModeFailed": "无法切换模式，请重试。",
+    "dismissTakeover": "已收起导演接管提醒。",
+    "noDirectorTask": "当前没有可继续的自动导演任务。",
+    "continueDirectorFailed": "继续自动导演失败。",
+    "stepValidated": "已检查当前步骤。",
+    "stepUpdated": "已更新当前步骤，请检查结果。",
+    "calibrationFailed": "步骤校准失败。",
+    "changesAccepted": "已确认修改；导演会从下一个未完成步骤继续。",
+    "acceptChangesFailed": "确认修改并继续失败。"
+  },
+  "takeover": {
+    "currentProject": "当前项目",
+    "unsavedChapterDraft": "拆章工作区还有未保存修改。请先保存，再让 AI 修复标题。",
+    "calibrationPrompt": "告诉 AI 这一步需要调整什么（可留空）",
+    "actions": {
+      "repairing": "AI 修复中...",
+      "confirmBookDirection": "确认书级方向",
+      "goReviewStage": "前往正在检查的步骤",
+      "continuing": "继续中...",
+      "continueDirector": "继续自动导演",
+      "checking": "检查中...",
+      "checkStep": "AI 检查当前步骤",
+      "improving": "完善中...",
+      "improveStep": "AI 完善当前步骤",
+      "generating": "生成中...",
+      "regenerateStep": "重新生成当前步骤",
+      "confirming": "确认中...",
+      "saveAndConfirm": "保存并确认",
+      "openChapterExecution": "打开章节执行",
+      "openQualityRepair": "打开质量修复",
+      "completeDirectorOutput": "补充导演产物",
+      "goCharacterPrep": "前往角色准备",
+      "cancelling": "取消中...",
+      "cancelTask": "取消任务",
+      "continueDirectorShort": "继续导演",
+      "exiting": "退出中...",
+      "exitDirector": "退出导演模式",
+      "removing": "删除中...",
+      "removeFromTasks": "从任务列表移除",
+      "collapsing": "收起中...",
+      "completeAndCollapse": "完成并收起",
+      "dismissReminder": "收起这条提醒",
+      "executionDetails": "执行详情"
+    }
+  }
+}

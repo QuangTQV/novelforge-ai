@@ -1,0 +1,48 @@
+{
+  "source": {
+    "imported": "来自世界样本库",
+    "generated": "按本小说生成",
+    "manual": "自定义世界",
+    "unset": "尚未设置"
+  },
+  "sync": {
+    "push": "仅推送到世界样本库",
+    "pull": "仅从世界样本库拉取",
+    "bidirectional": "双向同步",
+    "none": "不同步"
+  },
+  "section": {
+    "profile": "世界总览",
+    "rules": "核心规则",
+    "factions": "阵营",
+    "forces": "势力",
+    "locations": "地点",
+    "relations": "关系网"
+  },
+  "asset": {
+    "ready": "可查看",
+    "draft": "完善中",
+    "archived": "已归档",
+    "pending": "待生成"
+  },
+  "assetHints": {
+    "map": "补充舞台和地点风险，让地图体现区域和冲突点。",
+    "factionDiagram": "补充主要势力、目标和压力，让图谱体现阵营关系。",
+    "timeline": "补充核心冲突和共同后果，让时间线体现变动。",
+    "characterNetwork": "补充阵营和压力，让角色关系更贴合世界。",
+    "powerSystemTree": "补充规则、代价和边界，让体系树不会变成等级表。",
+    "default": "先完善世界手册，再整理视觉资产。"
+  },
+  "overview": {
+    "title": "世界总览",
+    "description": "背景信息帮你判断世界是否在支撑当前故事。",
+    "sourceUnset": "尚未设置来源",
+    "scopeReady": "写作范围已整理",
+    "scopePending": "正在等待整理写作范围",
+    "preparing": "本小说的世界正在准备中。",
+    "identity": "身份：{{value}}",
+    "tone": "气质：{{value}}",
+    "mainForces": "主要势力",
+    "noForces": "还没有明确势力。"
+  }
+}

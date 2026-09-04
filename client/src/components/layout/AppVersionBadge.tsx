@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { Download, RefreshCw, RotateCw } from "lucide-react";
 import { APP_RUNTIME, APP_VERSION } from "@/lib/constants";
 import { useDesktopUpdater } from "@/lib/desktop";
@@ -43,8 +44,8 @@ export default function AppVersionBadge({ className }: AppVersionBadgeProps) {
                 : "border-border/70 bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground",
               className,
             )}
-            title="打开版本与更新"
-            aria-label={`打开版本与更新，${label}`}
+            title={translateUi("打开版本与更新")}
+            aria-label={translateUi("打开版本与更新，{{value0}}", { value0: label })}
           >
             {Icon ? <Icon className={cn("h-3 w-3", isChecking && "animate-spin")} aria-hidden="true" /> : null}
             {label}
@@ -61,8 +62,8 @@ export default function AppVersionBadge({ className }: AppVersionBadgeProps) {
         "shrink-0 rounded-md border border-border/70 bg-muted/60 px-1.5 py-0.5 text-[10px] font-medium leading-none text-muted-foreground",
         className,
       )}
-      title={`当前版本 ${versionLabel}`}
-      aria-label={`当前版本 ${versionLabel}`}
+      title={translateUi("当前版本 {{value0}}", { value0: versionLabel })}
+      aria-label={translateUi("当前版本 {{value0}}", { value0: versionLabel })}
     >
       {versionLabel}
     </span>

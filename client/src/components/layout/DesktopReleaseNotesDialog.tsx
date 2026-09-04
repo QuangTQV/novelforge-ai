@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { AppDialogContent, Dialog } from "@/components/ui/dialog";
@@ -28,7 +29,7 @@ export default function DesktopReleaseNotesDialog() {
       <AppDialogContent
         className="max-w-xl"
         title={CURRENT_DESKTOP_RELEASE_NOTES.title}
-        description={`桌面版 ${CURRENT_DESKTOP_RELEASE_NOTES.version.startsWith("v") ? CURRENT_DESKTOP_RELEASE_NOTES.version : `v${CURRENT_DESKTOP_RELEASE_NOTES.version}`} 已准备完成。`}
+        description={translateUi("桌面版 {{value0}} 已准备完成。", { value0: CURRENT_DESKTOP_RELEASE_NOTES.version.startsWith("v") ? CURRENT_DESKTOP_RELEASE_NOTES.version : `v${CURRENT_DESKTOP_RELEASE_NOTES.version}` })}
       >
         <div className="space-y-5">
           <div className="flex items-start gap-3 rounded-xl border border-primary/25 bg-primary/10 p-4">

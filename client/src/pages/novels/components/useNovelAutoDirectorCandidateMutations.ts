@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { Dispatch, SetStateAction } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -115,7 +116,7 @@ export function useNovelAutoDirectorCandidateMutations({
     },
     onSuccess: ({ batch, workflowTaskId: nextWorkflowTaskId }) => {
       if (!batch) {
-        toast.error("自动导演没有返回可用方案。");
+        toast.error(translateUi("自动导演没有返回可用方案。"));
         return;
       }
       if (nextWorkflowTaskId && nextWorkflowTaskId !== workflowTaskId) {
@@ -129,7 +130,7 @@ export function useNovelAutoDirectorCandidateMutations({
       setCandidateDialogOpen(true);
       setExecutionRequested(false);
       setExecutionError("");
-      toast.success(`${batch.roundLabel} 已生成 ${batch.candidates.length} 套方案。`);
+      toast.success(translateUi("{{value0}} 已生成 {{value1}} 套方案。", { value0: batch.roundLabel, value1: batch.candidates.length }));
     },
     onError: (error) => {
       setDialogMode("execution_failed");
@@ -163,14 +164,14 @@ export function useNovelAutoDirectorCandidateMutations({
     },
     onSuccess: ({ batch, workflowTaskId: nextWorkflowTaskId, candidateId }) => {
       if (!batch) {
-        toast.error("定向修正失败，未返回更新后的方案。");
+        toast.error(translateUi("定向修正失败，未返回更新后的方案。"));
         return;
       }
       applyUpdatedBatch(batch, nextWorkflowTaskId);
       setCandidatePatchFeedbacks((prev) => ({ ...prev, [candidateId]: "" }));
       setDialogMode("candidate_selection");
       setCandidateDialogOpen(true);
-      toast.success("已按你的意见修正这套方案。");
+      toast.success(translateUi("已按你的意见修正这套方案。"));
     },
     onError: (error) => {
       setDialogMode("execution_failed");
@@ -204,14 +205,14 @@ export function useNovelAutoDirectorCandidateMutations({
     },
     onSuccess: ({ batch, workflowTaskId: nextWorkflowTaskId, candidateId }) => {
       if (!batch) {
-        toast.error("标题组修正失败，未返回更新后的书名组。");
+        toast.error(translateUi("标题组修正失败，未返回更新后的书名组。"));
         return;
       }
       applyUpdatedBatch(batch, nextWorkflowTaskId);
       setTitlePatchFeedbacks((prev) => ({ ...prev, [candidateId]: "" }));
       setDialogMode("candidate_selection");
       setCandidateDialogOpen(true);
-      toast.success("已重做这套方案的标题组。");
+      toast.success(translateUi("已重做这套方案的标题组。"));
     },
     onError: (error) => {
       setDialogMode("execution_failed");

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   BOOK_ANALYSIS_STRUCTURED_FIELD_SPECS,
   BOOK_ANALYSIS_STRUCTURED_FIELD_LABELS,
@@ -87,8 +88,8 @@ function TimelineNodeList({ nodes }: { nodes: BookAnalysisTimelineNode[] }) {
               <div className="leading-5 text-foreground">{node.label}</div>
               {node.timeHint || node.sourceRefs?.length ? (
                 <div className="mt-1 flex flex-wrap gap-1 text-[11px] text-muted-foreground">
-                  {node.timeHint ? <span>时间：{node.timeHint}</span> : null}
-                  {node.sourceRefs?.length ? <span>来源：{node.sourceRefs.join("、")}</span> : null}
+                  {node.timeHint ? <span>{translateUi("时间：")}{node.timeHint}</span> : null}
+                  {node.sourceRefs?.length ? <span>{translateUi("来源：")}{node.sourceRefs.join(translateUi("、"))}</span> : null}
                 </div>
               ) : null}
             </div>
@@ -119,14 +120,15 @@ export default function BookAnalysisStructuredSummary({
   return (
     <div className="space-y-4 rounded-2xl bg-muted/20 p-4 sm:p-5">
       <div className="flex items-center justify-between gap-2">
-        <div className="text-sm font-medium">{analysisMode === "diagnosis" ? "诊断结论" : "关键结论"}</div>
+        <div className="text-sm font-medium">{analysisMode === "diagnosis" ? translateUi("诊断结论") : translateUi("关键结论")}</div>
         <div className="text-xs text-muted-foreground">
-          {analysisMode === "diagnosis" ? "来自结构化稿件诊断" : "来自结构化拆书结果"}
+          {analysisMode === "diagnosis" ? translateUi("来自结构化稿件诊断") : translateUi("来自结构化拆书结果")}
         </div>
       </div>
       {warningLabels.length > 0 ? (
         <div className="rounded-md border border-warning/30 bg-warning/5 px-3 py-2 text-xs text-foreground">
-          以下字段内容较多，已按上限保留：{warningLabels.join("、")}
+
+          {translateUi("以下字段内容较多，已按上限保留：")}{warningLabels.join(translateUi("、"))}
         </div>
       ) : null}
       <div className="grid gap-x-8 gap-y-1 md:grid-cols-2">
@@ -136,14 +138,14 @@ export default function BookAnalysisStructuredSummary({
               <span>{row.label}</span>
               {row.evidence.length > 0 ? (
                 <span
-                  aria-label={`${row.label}的来源摘录`}
+                  aria-label={translateUi("{{value0}}的来源摘录", { value0: row.label })}
                   title={formatEvidenceTooltip(row.evidence)}
                 >
                   <Info className="h-3.5 w-3.5 text-primary" />
                 </span>
               ) : null}
               {currentChapterIndex !== null && row.timelineNodes.length > 0 && row.evidence.some((item) => item.chapterIndex === currentChapterIndex) ? (
-                <Badge variant="secondary">本章</Badge>
+                <Badge variant="secondary">{translateUi("本章")}</Badge>
               ) : null}
             </div>
             {row.timelineNodes.length > 0 ? (
@@ -161,7 +163,7 @@ export default function BookAnalysisStructuredSummary({
                       className="inline-flex items-center gap-1 rounded-lg bg-background/80 px-2.5 py-1.5 text-xs leading-5 text-foreground"
                     >
                       <span>{value}</span>
-                      {isCurrentChapterValue ? <Badge variant="secondary">本章</Badge> : null}
+                      {isCurrentChapterValue ? <Badge variant="secondary">{translateUi("本章")}</Badge> : null}
                     </span>
                   );
                 })}

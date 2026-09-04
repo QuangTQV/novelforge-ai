@@ -1,0 +1,295 @@
+{
+  "basicInfoTab": {
+    "directorTakeover": {
+      "title": "Để AI tiếp quản dự án hiện tại",
+      "description": "Nếu thông tin cơ bản đã tương đối đầy đủ, bạn có thể cho AI tự động tiếp quản ngay từ bước đã chọn, và chọn tiếp tục tiến độ hiện có hoặc chạy lại bước hiện tại."
+    },
+    "section": {
+      "title": "Định vị cấp sách",
+      "description": "Trước tiên xác định cuốn sách này viết cho ai, hấp dẫn người đọc bằng gì, giai đoạn đầu phải mang lại điều gì, rồi để thế giới, nhân vật và chương sau đó xoay quanh cùng một bộ cam kết."
+    },
+    "submitLabel": "Lưu thông tin cơ bản",
+    "styleAdvice": {
+      "title": "Gợi ý cách viết",
+      "description": "Xác định khẩu vị tự sự, mật độ diễn đạt và phong cách tham chiếu của cuốn sách, giúp các chương sau giữ được sự thống nhất.",
+      "meta": "Tham chiếu cách viết"
+    },
+    "ui": {
+      "volumeUnit": "tập",
+      "currentStructure": "Cấp độ cấu trúc hiện tại: {{profile}}.",
+      "chapterBudget": "Ngân sách chương vẫn tham chiếu {{min}}–{{max}} chương / tập, nhưng hệ thống ưu tiên cam kết giai đoạn, chuyển đổi điểm bán, nâng cấp tình thế và phần thưởng giai đoạn để đề xuất số tập.",
+      "collapseCustom": "Thu gọn số tập tùy chỉnh",
+      "customCount": "Tùy chỉnh số tập",
+      "restore": "Khôi phục đề xuất hệ thống",
+      "fixedCount": "Số tập cố định",
+      "applyCount": "Áp dụng số tập cố định",
+      "allowedRange": "Phạm vi cho phép: {{min}}–{{max}} tập. Số tập cố định sẽ ghi đè đề xuất cấu trúc.",
+      "critiqueTitle": "Rà soát chiến lược tập",
+      "risk": "Rủi ro {{risk}}",
+      "derivedTitle": "Văn bản phái sinh, quản lý phiên bản và phân tích ảnh hưởng",
+      "derivedDescription": "Phần này tập trung vào hoàn thiện và so sánh, không cần luôn theo dõi khi chỉnh sửa khung sườn tập hiện tại.",
+      "preview": "Xem trước văn bản phái sinh",
+      "versions": "Quản lý phiên bản",
+      "createdAt": "Thời gian tạo: {{date}}",
+      "noDiff": "Chưa có tóm tắt khác biệt",
+      "noVersions": "Chưa có phiên bản tập, hãy lưu phiên bản nháp trước.",
+      "saveDraft": "Lưu thành phiên bản nháp",
+      "overwrite": "Ghi đè bản nháp hiện tại",
+      "activate": "Đặt làm phiên bản áp dụng",
+      "freeze": "Đóng băng phiên bản hiện tại",
+      "diff": "Xem khác biệt phiên bản",
+      "diffLoading": "Đang tải...",
+      "versionDiff": "Xem trước khác biệt V{{version}}",
+      "changed": "Tập thay đổi {{volumes}} | Chương bị ảnh hưởng {{chapters}} | Dòng thay đổi {{lines}}",
+      "impactTitle": "Phân tích ảnh hưởng",
+      "analyzeDraft": "Phân tích bản nháp hiện tại",
+      "analyzeVersion": "Phân tích phiên bản hiện tại",
+      "analyzing": "Đang phân tích...",
+      "impactPreview": "Xem trước ảnh hưởng cấp tập",
+      "affected": "Tập bị ảnh hưởng {{volumes}} | Chương bị ảnh hưởng {{chapters}} | Dòng thay đổi {{lines}}",
+      "unwritten": "Đoạn chưa viết {{count}}",
+      "locked": "Đoạn bị khóa {{count}}",
+      "advancedActions": "Hành động nâng cao: {{actions}}",
+      "impactAdvice": "Nên phân tích ảnh hưởng cấp tập trước khi áp dụng.",
+      "tabsCurrent": "Tập hiện tại",
+      "tabsStrategy": "Tổng quan chiến lược",
+      "tabsAssets": "Ràng buộc tài sản",
+      "strategySummary": "Tóm tắt chiến lược tập",
+      "strategyDescription": "Xem phần thưởng và lộ trình nâng cấp cấp tập của toàn sách trước, sau đó chọn một tập bên dưới để chỉnh sửa chi tiết.",
+      "recommendedVolumes": "Đề xuất {{count}} tập",
+      "plannedVolumes": "Chốt cứng {{count}} tập",
+      "rewardLadder": "Bậc phần thưởng độc giả",
+      "escalationLadder": "Bậc nâng cấp",
+      "midpoint": "Chuyển hướng giữa truyện",
+      "volumeOverview": "Tổng quan nhịp cấp tập",
+      "noStrategy": "Chưa có đề xuất chiến lược tập. Hãy bấm “Tạo đề xuất chiến lược tập” trước.",
+      "volumeLabel": "Tập {{order}}: {{role}}, {{reward}}"
+    }
+  },
+  "basicInfoForm": {
+    "recommended": "Khuyến nghị"
+  },
+  "bookFramingQuickFill": {
+    "noSuggestion": "AI không trả về gợi ý người đọc và điểm bán nào khả dụng.",
+    "applied": "Đã điền gợi ý người đọc và điểm bán dựa trên tên sách và tóm tắt hiện tại.",
+    "failed": "Tự động điền người đọc và điểm bán thất bại. Thử lại sau.",
+    "needInput": "Hãy nhập tên sách hoặc một câu tóm tắt trước khi để AI điền giúp.",
+    "confirmOverwrite": "Sẽ ghi đè phần người đọc và điểm bán hiện tại bằng gợi ý của AI, tiếp tục chứ?",
+    "filling": "Đang điền...",
+    "trigger": "Điền giúp tôi"
+  },
+  "bookFramingSection": {
+    "heading": "Người đọc và lý do theo dõi",
+    "subtitle": "Không cần viết ngôn ngữ hoạch định chuyên nghiệp, chỉ cần nói theo trực giác ai sẽ thích, muốn xem gì nhất, và nhận được phần thưởng gì ở giai đoạn đầu.",
+    "targetAudience": {
+      "label": "Người đọc mục tiêu",
+      "placeholder": "Ví dụ: người đọc thích đô thị áp lực cao, phản kích, giằng co quan hệ và các hook giữ chân liên tục"
+    },
+    "commercialTags": {
+      "label": "Nhãn thương mại cốt lõi",
+      "placeholder": "Ví dụ: phản kích, xung đột mạnh, hồi hộp căng thẳng, đấu trí chốn công sở"
+    },
+    "competingFeel": {
+      "label": "Cảm giác gần sản phẩm cạnh tranh / cảm giác đọc quen thuộc",
+      "placeholder": "Ví dụ: cảm giác đè nén nơi công sở đời thực pha chút hài hước lạnh và giằng co quan hệ mật độ cao"
+    },
+    "sellingPoint": {
+      "label": "Điểm bán cốt lõi của sách",
+      "placeholder": "Ví dụ: mỗi lần nhân vật chính giải quyết một thế bí đời thực đều khuấy động chuỗi quan hệ và lợi ích lớn hơn, người đọc luôn mong đợi cú phản đòn tiếp theo."
+    },
+    "first30": {
+      "label": "Cam kết 30 chương đầu",
+      "placeholder": "Ví dụ: 30 chương đầu phải cho người đọc thấy nhân vật chính đứng vững ở vị thế giai đoạn một, đối thủ cốt lõi lộ diện, tuyến quan hệ đảo chiều mạnh lần đầu, và nói rõ càng về sau sách càng gắt."
+    }
+  },
+  "outline": {
+    "title": "Bảng điều khiển chiến lược tập",
+    "description": "Xác định cách phát triển theo từng tập, rồi rà soát cam kết, áp lực, phần thưởng và lực kéo sang tập tiếp theo.",
+    "readyCount": "{{completed}}/{{total}} đã sẵn sàng",
+    "unsaved": "Có bản nháp chưa lưu",
+    "generating": "Đang tạo…",
+    "reviewing": "Đang rà soát…",
+    "saving": "Đang lưu…",
+    "ready": "Đã sẵn sàng",
+    "notReady": "Chưa sẵn sàng",
+    "nextLabel": "Bước tiếp theo đề xuất",
+    "characterHint": "Nên hoàn thiện nhân vật trước khi tạo chiến lược và khung sườn tập.",
+    "goCharacters": "Mở quản lý nhân vật",
+    "takeover": {
+      "title": "Tiếp quản từ chiến lược tập",
+      "description": "AI sẽ kiểm tra chiến lược và khung sườn tập, sau đó bổ sung phần thiếu hoặc chạy lại bước hiện tại."
+    },
+    "actions": {
+      "generateStrategy": "Tạo đề xuất chiến lược tập",
+      "reviewStrategy": "AI rà soát chiến lược tập",
+      "regenerateSkeleton": "Tạo lại khung sườn toàn sách",
+      "generateSkeleton": "Tạo khung sườn toàn sách",
+      "save": "Lưu không gian làm việc tập"
+    },
+    "readiness": {
+      "title": "Mức độ sẵn sàng của giai đoạn",
+      "ready": "Giai đoạn tập đã đủ điều kiện để tiến hành.",
+      "blocked": "Còn {{count}} điều kiện cần xử lý.",
+      "canContinue": "Có thể tiếp tục tiến hành giai đoạn này.",
+      "workspaceReady": "Workspace hiện đã đủ điều kiện cơ bản để tiếp tục."
+    },
+    "next": {
+      "generateStrategy": "Tạo đề xuất chiến lược tập trước",
+      "generateSkeleton": "Có thể tạo khung sườn toàn sách",
+      "generateBeatSheet": "Khung sườn đã sẵn sàng; chuyển sang nhịp hoặc chia chương",
+      "generateChapterList": "Tạo bảng nhịp của tập hiện tại trước",
+      "ready": "Chiến lược tập đã đủ; có thể chuyển sang nhịp hoặc chia chương"
+    },
+    "volumeCount": {
+      "fixed": "Đang cố định {{count}} tập",
+      "draft": "Đang dùng bản nháp {{count}} tập",
+      "system": "Đang dùng đề xuất hệ thống {{count}} tập"
+    },
+    "chapterCount": "{{count}} chương",
+    "volumeCountLabel": "{{count}} tập",
+    "volumeRange": "{{min}}–{{max}} tập",
+    "volumeReview": {
+      "title": "Gợi ý số tập và rà soát chiến lược",
+      "description": "Đây là thông tin hỗ trợ quyết định. Hãy xem bước tiếp theo và tập hiện tại trước; chỉ mở phần này khi cần kiểm soát số tập.",
+      "countTitle": "Gợi ý số tập",
+      "chapterBudget": "Ngân sách chương tổng",
+      "range": "Khoảng cấu trúc đề xuất",
+      "recommended": "Số tập hệ thống đề xuất",
+      "hardRange": "Khoảng chốt cứng mặc định"
+    },
+    "structure": {
+      "short": "Cấu trúc truyện ngắn",
+      "compact": "Truyện vừa gọn",
+      "standard": "Truyện dài tiêu chuẩn",
+      "long": "Truyện dài mở rộng",
+      "epic": "Truyện trường thiên",
+      "mega": "Trường thiên siêu dài",
+      "default": "Đề xuất cấu trúc"
+    },
+    "versionStatus": {
+      "draft": "Bản nháp",
+      "active": "Đang áp dụng",
+      "frozen": "Đã đóng băng"
+    },
+    "impact": {
+      "locked": "Đã khóa bởi chính văn",
+      "pending": "Chờ tạo",
+      "unwritten": "Có thể đưa vào đoạn chưa viết",
+      "pendingChapters": "Chờ tạo chương",
+      "singleChapter": "Chương {{chapter}}",
+      "chapterRange": "Chương {{start}}–{{end}}"
+    },
+    "pipeline": {
+      "takeover": {
+        "title": "Tiếp quản từ sửa chất lượng",
+        "description": "AI sẽ kiểm tra các lô chương đang chạy hoặc điểm kiểm tra chờ sửa, rồi khôi phục bản sửa hiện tại hoặc mở lô mới."
+      },
+      "title": "Tạo hàng loạt và kiểm tra chất lượng",
+      "characterHint": "Hãy thêm ít nhất một nhân vật trước khi chạy quy trình.",
+      "goCharacters": "Mở quản lý nhân vật",
+      "focus": "Trọng tâm hiện tại",
+      "lowScoreFocus": "Xử lý {{count}} chương điểm thấp trước",
+      "noLowScore": "Không có chương nào dưới ngưỡng.",
+      "qualityThreshold": "Ngưỡng chất lượng",
+      "runMode": "Chế độ chạy",
+      "riskQueue": "Hàng đợi rủi ro chất lượng",
+      "chapterOption": "Chương {{order}} – {{title}}",
+      "empty": "Chưa có dữ liệu",
+      "repairAfterHint": "Hiển thị sau khi sửa xong",
+      "configTitle": "Model và cấu hình",
+      "configDescription": "Tác vụ hàng loạt, mô hình và tham số nâng cao nằm ở đây.",
+      "currentSettings": "Thiết lập hiện tại: {{mode}} | Ngưỡng {{threshold}} | {{repairMode}}",
+      "reportsTitle": "Báo cáo chất lượng và sản phẩm phát sinh",
+      "reportsDescription": "Báo cáo chất lượng, sổ tay tiểu thuyết và nhịp truyện đã lưu được thu gọn mặc định.",
+      "chapterLabel": "Chương: {{chapter}}",
+      "book": "Toàn sách",
+      "reviewScore": "Điểm kiểm tra",
+      "coherence": "Tính mạch lạc",
+      "repetition": "Tỷ lệ lặp",
+      "pacing": "Nhịp độ",
+      "voice": "Giọng điệu",
+      "engagement": "Sức hút theo dõi",
+      "overall": "Tổng hợp",
+      "lowScoreFilter": "Lọc chương điểm thấp (ngưỡng {{threshold}})",
+      "startChapter": "Chương bắt đầu",
+      "endChapter": "Chương kết thúc",
+      "maxRetries": "Số lần thử lại khi lỗi",
+      "repairModeTitle": "Chế độ sửa",
+      "autoReview": "Tự động kiểm tra",
+      "autoRepair": "Tự động sửa",
+      "skipCompleted": "Bỏ qua chương đã hoàn tất",
+      "stageVisualization": "Trực quan hóa giai đoạn",
+      "runPanel": "Bảng điều khiển chạy",
+      "startBatch": "Bắt đầu tạo hàng loạt",
+      "rerunLowScore": "Chạy lại chương điểm thấp",
+      "exportReport": "Xuất báo cáo tác vụ",
+      "generateBible": "Tạo Bible",
+      "stopBible": "Dừng Bible",
+      "generateBeats": "Tạo nhịp truyện",
+      "stopBeats": "Dừng nhịp truyện",
+      "lowScoreSummary": "Có {{count}} chương điểm thấp; phạm vi chạy lại: chương {{start}}–{{end}}.",
+      "taskStatus": "Trạng thái tác vụ",
+      "jobId": "ID tác vụ",
+      "status": "Trạng thái",
+      "currentStage": "Giai đoạn hiện tại",
+      "currentChapter": "Chương hiện tại",
+      "progress": "Tiến độ",
+      "completed": "Đã hoàn tất",
+      "retries": "Đã thử lại",
+      "failureType": "Loại lỗi",
+      "error": "Lỗi",
+      "noRunningTask": "Hiện không có tác vụ pipeline đang chạy.",
+      "actions": {
+        "review": "Kiểm tra chương",
+        "repair": "Sửa chương",
+        "hook": "Tạo móc câu"
+      },
+      "repairMode": {
+        "detectOnly": "Chỉ phát hiện, không sửa",
+        "light": "Tự sửa nhẹ",
+        "heavy": "Tự sửa sâu",
+        "continuity": "Chỉ sửa tính liên tục",
+        "character": "Chỉ sửa nhân vật",
+        "ending": "Chỉ sửa lực kết thúc"
+      },
+      "stage": {
+        "active": "Đang chạy",
+        "completed": "Đã hoàn tất",
+        "failed": "Bất thường",
+        "pending": "Chờ thực hiện"
+      },
+      "modes": {
+        "fast": "Nhanh",
+        "polish": "Tinh chỉnh"
+      }
+    }
+  },
+  "continuationSource": {
+    "section": {
+      "title": "Nguồn viết tiếp",
+      "description": "Ở chế độ viết tiếp, cần chỉ rõ tiểu thuyết hoặc tài liệu tri thức nguồn được tham chiếu, và quyết định có nạp kết quả mổ xẻ sách hay không."
+    },
+    "typeLabel": "Loại nguồn viết tiếp",
+    "novel": {
+      "label": "Tiểu thuyết trong hệ thống",
+      "summary": "Phù hợp khi viết tiếp dựa trên tiểu thuyết đã có sẵn trong hệ thống hiện tại."
+    },
+    "knowledge": {
+      "label": "Tài liệu trong cơ sở tri thức",
+      "summary": "Phù hợp khi viết tiếp dựa trên nguyên tác, tập thiết định hoặc tài liệu mổ xẻ sách nhập từ bên ngoài."
+    },
+    "priorNovel": "Tiểu thuyết tiền truyện",
+    "selectPriorNovel": "Vui lòng chọn tiểu thuyết tiền truyện",
+    "knowledgeDoc": "Tài liệu cơ sở tri thức",
+    "selectKnowledgeDoc": "Vui lòng chọn tài liệu cơ sở tri thức",
+    "bookAnalysisRef": "Trích dẫn mổ xẻ sách",
+    "bookAnalysisRefHint": "Kết quả mổ xẻ sách sẽ được nạp làm ngữ cảnh cấu trúc trọng số cao cho khâu lập kế hoạch và tạo chương sau đó.",
+    "bookAnalysisResult": "Kết quả mổ xẻ sách",
+    "noBookAnalysis": "Không trích dẫn mổ xẻ sách",
+    "loadingBookAnalyses": "Đang tải các kết quả mổ xẻ sách khả dụng cho nguồn hiện tại...",
+    "noBookAnalysesAvailable": "Nguồn viết tiếp hiện tại chưa có kết quả mổ xẻ sách khả dụng, cần hoàn thành một phân tích mổ xẻ sách thành công trước.",
+    "selectSectionsPrompt": "Chọn các phần mổ xẻ sách để nạp vào ngữ cảnh tạo sinh:",
+    "selectAll": "Chọn tất cả",
+    "clear": "Xóa hết"
+  }
+}

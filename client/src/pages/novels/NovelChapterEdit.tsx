@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { FlaskConical } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { getChapterEditorWorkspace, getNovelDetail } from "@/api/novel";
 import { queryKeys } from "@/api/queryKeys";
@@ -18,6 +19,7 @@ function PageStateCard(props: { message: string }) {
 export default function NovelChapterEdit() {
   const { id = "", chapterId = "" } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation("novelChapters");
 
   const novelDetailQuery = useQuery({
     queryKey: queryKeys.novels.detail(id),
@@ -39,7 +41,7 @@ export default function NovelChapterEdit() {
   if (novelDetailQuery.isLoading && !detail) {
     return (
       <div className="flex h-full min-h-0 flex-col gap-4">
-        <PageStateCard message="正在加载章节编辑器..." />
+        <PageStateCard message={t("page.loading")} />
       </div>
     );
   }
@@ -47,7 +49,7 @@ export default function NovelChapterEdit() {
   if (novelDetailQuery.isError) {
     return (
       <div className="flex h-full min-h-0 flex-col gap-4">
-        <PageStateCard message="章节数据加载失败，请刷新后重试。" />
+        <PageStateCard message={t("page.loadError")} />
       </div>
     );
   }
@@ -55,7 +57,7 @@ export default function NovelChapterEdit() {
   if (!chapter) {
     return (
       <div className="flex h-full min-h-0 flex-col gap-4">
-        <PageStateCard message="没有找到对应章节，可能已被删除或当前链接不完整。" />
+        <PageStateCard message={t("page.notFound")} />
       </div>
     );
   }
@@ -66,7 +68,7 @@ export default function NovelChapterEdit() {
         <Button asChild variant="outline">
           <Link to={`/prompt-workbench?experience=writing&novelId=${encodeURIComponent(id)}&chapterId=${encodeURIComponent(chapterId)}`}>
             <FlaskConical className="mr-2 h-4 w-4" />
-            正文效果实验室
+            {t("page.textEffectLab")}
           </Link>
         </Button>
       </div>

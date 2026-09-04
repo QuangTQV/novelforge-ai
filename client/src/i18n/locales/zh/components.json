@@ -1,0 +1,58 @@
+{
+  "assetLibrary": {
+    "recommendation": {
+      "ariaLabel": "资源建议"
+    },
+    "statusGrid": {
+      "ariaLabel": "资源状态"
+    },
+    "tree": {
+      "collapseNode": "收起 {{name}}",
+      "expandNode": "展开 {{name}}",
+      "selectNode": "选择 {{name}}"
+    }
+  },
+  "streamOutput": {
+    "title": "AI 结果",
+    "waiting": "等待结果…",
+    "generating": "生成中…",
+    "wordCount": "{{count}} 字",
+    "stop": "停止"
+  },
+  "select": {
+    "placeholder": "选择一项",
+    "empty": "暂无选项",
+    "search": "搜索",
+    "noOptions": "没有找到结果"
+  },
+  "fullscreenView": {
+    "enter": "打开全屏",
+    "exit": "退出全屏"
+  },
+  "aiRevisionWorkspace": {
+    "instructionLabel": "修改要求",
+    "instructionPlaceholder": "描述你想让 AI 怎么修改…",
+    "selectionTitle": "已选范围",
+    "noSelectionHint": "选中一段文字可以单独修改。",
+    "optimizing": "AI 优化中…",
+    "optimizeFullPreview": "优化整个预览",
+    "optimizeSelectionOnly": "只优化选中部分",
+    "previewLabel": "预览",
+    "applyPreview": "应用预览",
+    "cancelPreview": "取消预览"
+  },
+  "llmSelector": {
+    "model": "模型",
+    "selectProvider": "选择厂商",
+    "configureProvider": "请配置可用的厂商",
+    "selectModel": "选择模型",
+    "noModels": "还没有可用模型",
+    "searchModel": "搜索模型",
+    "temperatureHint": "温度越高结果越发散；规划建议用 0.3-0.7",
+    "temperature": "温度",
+    "modelTemperature": "模型温度",
+    "noConfiguredProvider": "还没有可用的模型厂商。请在系统设置里完成 API Key 和模型配置。",
+    "temperatureRange": "温度（0-2）",
+    "maxTokens": "最大 Tokens（留空 = 不限制）"
+  }
+}

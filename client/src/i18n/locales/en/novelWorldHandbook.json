@@ -1,0 +1,48 @@
+{
+  "source": {
+    "imported": "From the world sample library",
+    "generated": "Generated for this novel",
+    "manual": "Custom world",
+    "unset": "Not set"
+  },
+  "sync": {
+    "push": "Push to the world sample library only",
+    "pull": "Pull from the world sample library only",
+    "bidirectional": "Two-way sync",
+    "none": "No sync"
+  },
+  "section": {
+    "profile": "World overview",
+    "rules": "Core rules",
+    "factions": "Camps",
+    "forces": "Forces",
+    "locations": "Locations",
+    "relations": "Relationship network"
+  },
+  "asset": {
+    "ready": "Viewable",
+    "draft": "In progress",
+    "archived": "Archived",
+    "pending": "Pending"
+  },
+  "assetHints": {
+    "map": "Add the stage and location risks so the map reflects regions and conflict points.",
+    "factionDiagram": "Add the main forces, goals and pressure so the graph reflects camp relations.",
+    "timeline": "Add the core conflict and shared consequences so the timeline reflects change.",
+    "characterNetwork": "Add camps and pressure so character relations fit the world better.",
+    "powerSystemTree": "Add rules, costs and limits so the system tree doesn't become a rank chart.",
+    "default": "Complete the world handbook first, then organize the visual assets."
+  },
+  "overview": {
+    "title": "World overview",
+    "description": "Background info to judge whether the world is supporting the current story.",
+    "sourceUnset": "Source not set",
+    "scopeReady": "Writing scope organized",
+    "scopePending": "Waiting to organize the writing scope",
+    "preparing": "This novel's world is being prepared.",
+    "identity": "Identity: {{value}}",
+    "tone": "Tone: {{value}}",
+    "mainForces": "Main forces",
+    "noForces": "No clear forces yet."
+  }
+}

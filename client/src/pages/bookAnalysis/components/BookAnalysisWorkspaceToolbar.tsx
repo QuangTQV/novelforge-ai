@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { BookAnalysisDetail } from "@ai-novel/shared/types/bookAnalysis";
 import { Columns2, Pencil, WandSparkles } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -74,20 +75,22 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
       <div className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-sm font-semibold tracking-normal text-foreground">结果工具</h2>
+            <h2 className="text-sm font-semibold tracking-normal text-foreground">{translateUi("结果工具")}</h2>
             <Badge variant="secondary" className="border-0 bg-muted/70 font-normal">
               <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${selectedAnalysis.status === "succeeded" ? "bg-success" : "bg-muted-foreground/50"}`} />
               {formatStatus(selectedAnalysis.status)}
             </Badge>
-            {selectedAnalysis.publishedDocumentId ? <Badge variant="secondary" className="border-0 font-normal">已发布</Badge> : null}
+            {selectedAnalysis.publishedDocumentId ? <Badge variant="secondary" className="border-0 font-normal">{translateUi("已发布")}</Badge> : null}
             <Badge variant={budgetExceeded ? "destructive" : "secondary"} className="border-0 font-normal">
-              预算 {budgetTokens
+
+              {translateUi("预算")} {budgetTokens
                 ? `${formatTokenCount(usedTokens)}/${formatTokenCount(budgetTokens)}`
-                : `${formatTokenCount(usedTokens)}/不限`}
+                : translateUi("{{value0}}/不限", { value0: formatTokenCount(usedTokens) })}
             </Badge>
           </div>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
-            阅读结果是当前主任务；发布、导出和维护操作可按需使用。
+
+            {translateUi("阅读结果是当前主任务；发布、导出和维护操作可按需使用。")}
           </p>
         </div>
         <div className="mobile-full-actions flex flex-wrap gap-2">
@@ -98,7 +101,8 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
             disabled={selectedAnalysis.status !== "succeeded" || pending.createStyleProfile}
           >
             <WandSparkles className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-            照着这本书写
+
+            {translateUi("照着这本书写")}
           </Button>
           {budgetResumeAvailable ? (
             <Button
@@ -107,7 +111,7 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
               onClick={onOpenBudgetResume}
               disabled={pending.resumeWithBudget || selectedAnalysis.status === "archived"}
             >
-              {pending.resumeWithBudget ? "提交中..." : "扩容预算并续跑"}
+              {pending.resumeWithBudget ? translateUi("提交中...") : translateUi("扩容预算并续跑")}
             </Button>
           ) : null}
           {dualPaneAvailable ? (
@@ -116,10 +120,10 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
               size="sm"
               variant={isDualPane ? "secondary" : "outline"}
               onClick={() => onDualPaneChange(!isDualPane)}
-              title={isDualPane ? "关闭双栏对照" : "打开双栏对照"}
+              title={isDualPane ? translateUi("关闭双栏对照") : translateUi("打开双栏对照")}
             >
               <Columns2 className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-              {isDualPane ? "关闭双栏" : "原文双栏"}
+              {isDualPane ? translateUi("关闭双栏") : translateUi("原文双栏")}
             </Button>
           ) : null}
           <Button
@@ -127,34 +131,35 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
             variant="outline"
             onClick={onPublish}
             disabled={!selectedNovelId || pending.publish || selectedAnalysis.status === "archived"}
-            title={!selectedNovelId ? "请在下方「分析信息与发布」中选择目标小说" : "发布到小说知识库"}
+            title={!selectedNovelId ? translateUi("请在下方「分析信息与发布」中选择目标小说") : translateUi("发布到小说知识库")}
           >
-            {pending.publish ? "发布中..." : "发布到知识库"}
+            {pending.publish ? translateUi("发布中...") : translateUi("发布到知识库")}
           </Button>
           <Button asChild size="sm" variant="outline">
-            <Link to={`/tasks?kind=book_analysis&id=${selectedAnalysis.id}`}>任务详情</Link>
+            <Link to={`/tasks?kind=book_analysis&id=${selectedAnalysis.id}`}>{translateUi("任务详情")}</Link>
           </Button>
           <OpenInCreativeHubButton
             bindings={{
               bookAnalysisId: selectedAnalysis.id,
               knowledgeDocumentIds: selectedAnalysis.documentId ? [selectedAnalysis.documentId] : [],
             }}
-            label="创作中枢引用"
+            label={translateUi("创作中枢引用")}
           />
         </div>
       </div>
 
       <details className="border-t border-border/35 px-5 py-3">
-        <summary className="cursor-pointer text-xs font-medium text-muted-foreground">更多维护操作</summary>
+        <summary className="cursor-pointer text-xs font-medium text-muted-foreground">{translateUi("更多维护操作")}</summary>
         <div className="mobile-full-actions mt-3 flex flex-wrap gap-2">
-          <Button size="sm" variant="outline" onClick={onCopy} disabled={pending.copy}>复制分析</Button>
+          <Button size="sm" variant="outline" onClick={onCopy} disabled={pending.copy}>{translateUi("复制分析")}</Button>
           <Button
             size="sm"
             variant="outline"
             onClick={() => onRebuild(selectedAnalysis.id)}
             disabled={pending.rebuild || selectedAnalysis.status === "archived"}
           >
-            重新生成
+
+            {translateUi("重新生成")}
           </Button>
           {canAdjustBudget ? (
             <Button
@@ -165,18 +170,19 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
               disabled={pending.updateBudget || pending.resumeWithBudget}
             >
               <Pencil className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-              调整预算
+
+              {translateUi("调整预算")}
             </Button>
           ) : null}
-          <Button size="sm" variant="outline" onClick={() => onDownload("markdown")}>导出 MD</Button>
-          <Button size="sm" variant="outline" onClick={() => onDownload("json")}>导出 JSON</Button>
+          <Button size="sm" variant="outline" onClick={() => onDownload("markdown")}>{translateUi("导出 MD")}</Button>
+          <Button size="sm" variant="outline" onClick={() => onDownload("json")}>{translateUi("导出 JSON")}</Button>
           <Button
             size="sm"
             variant="outline"
             onClick={onCreateStyleProfile}
             disabled={pending.createStyleProfile || selectedAnalysis.status === "archived"}
           >
-            {pending.createStyleProfile ? "生成写法中..." : "生成写法"}
+            {pending.createStyleProfile ? translateUi("生成写法中...") : translateUi("生成写法")}
           </Button>
           <Button
             size="sm"
@@ -184,7 +190,8 @@ export default function BookAnalysisWorkspaceToolbar(props: BookAnalysisWorkspac
             onClick={() => onArchive(selectedAnalysis.id)}
             disabled={pending.archive || selectedAnalysis.status === "archived"}
           >
-            归档
+
+            {translateUi("归档")}
           </Button>
         </div>
       </details>

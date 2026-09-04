@@ -1,5 +1,11 @@
 import type { TensionCurvePoint } from "./tensionCurveTypes";
 
+/**
+ * i18n 文案键在此以数据形式保留，渲染处调用 t() 解析（命名空间 `creativeHub`）。
+ * The `labelKey` fields hold i18n keys (namespace `creativeHub`); resolve them with t() at the render site.
+ */
+export type TensionCurveTranslate = (key: string, options?: Record<string, unknown>) => string;
+
 export interface TensionCurveShapeHint {
   key: string;
   label: string;
@@ -8,19 +14,19 @@ export interface TensionCurveShapeHint {
 
 export interface TensionCurveReferenceTemplate {
   key: string;
-  label: string;
+  labelKey: string;
   values: number[];
 }
 
 export const tensionCurveReferenceTemplates: TensionCurveReferenceTemplate[] = [
   {
     key: "escalation",
-    label: "升级流",
+    labelKey: "tensionCurve.analysis.templates.escalation",
     values: [22, 30, 42, 38, 56, 66, 62, 82, 72],
   },
   {
     key: "suspense",
-    label: "悬疑流",
+    labelKey: "tensionCurve.analysis.templates.suspense",
     values: [35, 46, 40, 58, 52, 68, 64, 78, 88],
   },
 ];
@@ -48,7 +54,10 @@ export function buildReferenceCurveValues(template: TensionCurveReferenceTemplat
   });
 }
 
-export function analyzeTensionCurveShape(points: TensionCurvePoint[]): TensionCurveShapeHint[] {
+export function analyzeTensionCurveShape(
+  points: TensionCurvePoint[],
+  t: TensionCurveTranslate,
+): TensionCurveShapeHint[] {
   const values = numericPoints(points);
   if (values.length < 3) {
     return [];
@@ -61,8 +70,11 @@ export function analyzeTensionCurveShape(points: TensionCurvePoint[]): TensionCu
       if (index - flatStartIndex >= 2) {
         hints.push({
           key: `flat-${values[flatStartIndex].id}-${values[index].id}`,
-          label: "节奏平坝",
-          detail: `第${values[flatStartIndex].chapterOrder}-${values[index].chapterOrder}章冲突强度变化很小，可以检查这里是否需要更清晰的推进或回报。`,
+          label: t("tensionCurve.analysis.flatPlateau.label"),
+          detail: t("tensionCurve.analysis.flatPlateau.detail", {
+            start: values[flatStartIndex].chapterOrder,
+            end: values[index].chapterOrder,
+          }),
         });
         break;
       }
@@ -77,8 +89,8 @@ export function analyzeTensionCurveShape(points: TensionCurvePoint[]): TensionCu
   if (peak && finalPeak && finalPeak.value < peak.value - 8) {
     hints.push({
       key: "late-peak-missing",
-      label: "卷末峰值偏弱",
-      detail: `当前最高点在第${peak.chapterOrder}章，卷末四分之一没有形成更强峰值，可以检查高潮承诺是否足够集中。`,
+      label: t("tensionCurve.analysis.latePeak.label"),
+      detail: t("tensionCurve.analysis.latePeak.detail", { chapter: peak.chapterOrder }),
     });
   }
 
@@ -100,8 +112,11 @@ export function analyzeTensionCurveShape(points: TensionCurvePoint[]): TensionCu
     if (max - min <= 5) {
       hints.push({
         key: `beat-flat-${group[0].beatKey}`,
-        label: "节拍内起伏不足",
-        detail: `第${group[0].chapterOrder}-${group[group.length - 1].chapterOrder}章在同一节拍内接近持平，可以检查是否需要转折点。`,
+        label: t("tensionCurve.analysis.beatFlat.label"),
+        detail: t("tensionCurve.analysis.beatFlat.detail", {
+          start: group[0].chapterOrder,
+          end: group[group.length - 1].chapterOrder,
+        }),
       });
       break;
     }

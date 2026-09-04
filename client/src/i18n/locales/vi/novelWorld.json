@@ -1,0 +1,18 @@
+{
+  "worldInjectionHint": {
+    "missing": "Thiếu thế giới sách khả dụng, quá trình tạo sinh sẽ tạm dựa trên thông tin cơ bản của tiểu thuyết để tiến hành.",
+    "used": "Thế giới sách đã được dùng cho lần tạo sinh này",
+    "viewDetails": "Xem chi tiết",
+    "hideDetails": "Thu gọn chi tiết"
+  },
+  "worldSetupTab": {
+    "directorTakeover": {
+      "title": "Để AI hoàn thiện thế giới quan của sách",
+      "description": "Trước tiên xác định quy tắc thế giới, các thế lực và ràng buộc then chốt, rồi để nhân vật, kế hoạch tập và sản xuất chương tiếp tục xoay quanh cùng một thế giới quan."
+    },
+    "section": {
+      "title": "Chuẩn bị thế giới quan",
+      "description": "Nơi đây duy trì thế giới quan mà sách thực sự sử dụng. Khi tạo sinh, kiểm tra và xác nhận thế giới quan, AI sẽ căn cứ vào các tài sản này."
+    }
+  }
+}

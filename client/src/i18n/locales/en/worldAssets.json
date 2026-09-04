@@ -1,0 +1,84 @@
+{
+  "planning": {
+    "title": "World asset planning",
+    "description": "Maps, faction graphs, timelines and system trees all grow from the world handbook. Refine rules, forces, locations and tensions first, then generate visual assets.",
+    "reserved": "Coming soon"
+  },
+  "references": {
+    "title": "Reference material"
+  },
+  "library": {
+    "title": "World assets",
+    "keyword": "Keyword",
+    "saveCurrent": "Save the current settings as a world asset",
+    "name": "Asset name",
+    "descriptionPlaceholder": "Optional description (blank uses current layer content)",
+    "addToLayer": "Add to current layer ({{field}})",
+    "addToForces": "Add to faction handbook",
+    "addToLocations": "Add to location handbook"
+  },
+  "categories": {
+    "all": "All categories",
+    "terrain": "Terrain",
+    "race": "Race",
+    "power": "Power system",
+    "organization": "Organization / faction",
+    "resource": "Resource",
+    "event": "Event",
+    "artifact": "Item / artifact",
+    "custom": "Custom"
+  },
+  "actions": {
+    "refresh": "Refresh",
+    "saving": "Saving...",
+    "saveAsset": "Save asset"
+  },
+  "snapshots": {
+    "title": "Version snapshots",
+    "labelPlaceholder": "Snapshot label (optional)",
+    "create": "Create snapshot",
+    "restore": "Restore",
+    "from": "From snapshot",
+    "to": "To snapshot",
+    "compare": "Compare diff"
+  },
+  "export": {
+    "title": "Export backup",
+    "markdown": "Export Markdown (copy to clipboard)",
+    "json": "Export JSON (copy to clipboard)"
+  },
+  "import": {
+    "title": "Import text",
+    "text": "Plain text",
+    "placeholder": "Paste the content to import",
+    "importing": "Importing...",
+    "createWorld": "Import as a new world"
+  },
+  "presets": {
+    "map": {
+      "title": "World map",
+      "description": "Use regions, routes, borders and story sites to show how characters move and where conflict erupts.",
+      "readiness": "Add the story stage, location risks and faction control zones."
+    },
+    "factions": {
+      "title": "Faction graph",
+      "description": "Turn factions, camps, allies, rivals and vassal ties into a visual network.",
+      "readiness": "Add the main forces, current goals and the pressure between them."
+    },
+    "timeline": {
+      "title": "World timeline",
+      "description": "Record major events, catastrophes, dynastic shifts and situation changes so the world has a clear progression.",
+      "readiness": "Add the core conflict, shared consequences and key historical milestones."
+    },
+    "characters": {
+      "title": "Character relationship network",
+      "description": "Connect characters to factions, locations, resources and taboos to reduce setting drift.",
+      "readiness": "Add each character's camp, pressure and key locations."
+    },
+    "power": {
+      "title": "Power system tree",
+      "description": "Organize power sources, upgrade paths, costs and taboo limits into a hierarchy.",
+      "readiness": "Add the core rules, costs and lines that can't be crossed."
+    }
+  }
+}

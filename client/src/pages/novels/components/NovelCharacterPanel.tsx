@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import type {
@@ -148,8 +149,8 @@ export default function NovelCharacterPanel(props: NovelCharacterPanelProps) {
   return (
     <div className="space-y-5">
       <DirectorTakeoverEntryPanel
-        title="从角色准备接管"
-        description="AI 会先判断角色资产是否齐备，再决定继续补角色还是按你的选择重跑当前步骤。"
+        title={translateUi("从角色准备接管")}
+        description={translateUi("AI 会先判断角色资产是否齐备，再决定继续补角色还是按你的选择重跑当前步骤。")}
         entry={directorTakeoverEntry}
       />
       {characterMessage ? <div className="text-sm text-muted-foreground">{characterMessage}</div> : null}

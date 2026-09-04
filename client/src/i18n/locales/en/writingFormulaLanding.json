@@ -1,0 +1,36 @@
+{
+  "emptySummary": "This formula hasn't spelled out its reading feel yet.",
+  "recentBinding": "Recent binding: {{title}}",
+  "actions": {
+    "edit": "Edit settings",
+    "apply": "Apply & test",
+    "clean": "De-AI"
+  },
+  "panels": {
+    "feel": {
+      "title": "Reading feel & positioning",
+      "description": "Quickly judge what feel this formula creates and which projects it fits."
+    },
+    "sourceSample": "Source text sample",
+    "rules": {
+      "title": "Rule summary",
+      "description": "Shows the four rule layers that actually govern reading feel, readable at a glance.",
+      "narrative": "Plot progression",
+      "character": "Character expression",
+      "language": "Language texture",
+      "rhythm": "Rhythm control"
+    },
+    "antiAi": {
+      "title": "Anti-AI constraints",
+      "description": "Defines which risks the system will prioritize detecting and fixing in the draft."
+    },
+    "asset": {
+      "title": "Asset overview",
+      "description": "Helps you gauge how complete this formula currently is."
+    },
+    "next": {
+      "title": "Next step",
+      "description": "Each button does one thing so you're not sent back to the same area."
+    }
+  }
+}

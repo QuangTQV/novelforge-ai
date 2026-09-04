@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -141,7 +142,7 @@ export default function AutoDirectorSettingsSection(props: {
 
       {collapseAdvanced ? (
         <details className="rounded-md border bg-muted/20 p-4">
-          <summary className="cursor-pointer text-sm font-medium">高级控制</summary>
+          <summary className="cursor-pointer text-sm font-medium">{translateUi("高级控制")}</summary>
           <div className="mt-4 space-y-4">
             <AdvancedControls />
           </div>

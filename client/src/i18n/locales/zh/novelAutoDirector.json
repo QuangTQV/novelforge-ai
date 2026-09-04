@@ -1,0 +1,33 @@
+{
+  "approvalPoints": {
+    "risk": {
+      "high": "高风险",
+      "low": "低风险",
+      "medium": "中风险"
+    },
+    "summary": {
+      "andMore": "{{items}} 等 {{count}} 项",
+      "none": "不会自动通过审批点",
+      "separator": "、"
+    }
+  },
+  "approvalStrategy": {
+    "advanced": "高级审批授权",
+    "auto": {
+      "description": "目标范围内全自动推进；只有模型不可用、服务异常、保护正文或不可恢复风险会停下。",
+      "title": "AI 自动推进"
+    },
+    "copilot": {
+      "description": "按高级审批授权放行低风险节点，其余审批点交给你判断。",
+      "title": "AI 副驾确认"
+    },
+    "heading": "自动推进方式",
+    "note": {
+      "auto": "自动推进：系统会在目标范围内自动确认规划、章节执行、质量修复和必要重规划。",
+      "copilot": "副驾确认边界：{{summary}}。未包含的审批点会等待你确认。"
+    }
+  },
+  "directorBookAutomationCard": {
+    "projectNav": "项目导航"
+  }
+}

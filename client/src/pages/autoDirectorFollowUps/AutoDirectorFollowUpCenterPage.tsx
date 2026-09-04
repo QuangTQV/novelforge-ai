@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
@@ -99,7 +100,7 @@ function shouldConfirmAction(action: AutoDirectorAction): boolean {
   if (!action.requiresConfirm) {
     return false;
   }
-  return window.confirm(`确认执行“${action.label}”？`);
+  return window.confirm(translateUi("确认执行“{{value0}}”？", { value0: action.label }));
 }
 
 function formatActionFeedbackMessage(message: string, fallback: string): string {
@@ -253,7 +254,7 @@ export default function AutoDirectorFollowUpCenterPage() {
     }),
     onSuccess: async (response) => {
       await invalidateFollowUps();
-      toast.success(formatActionFeedbackMessage(response.message ?? "", "操作已提交"));
+      toast.success(formatActionFeedbackMessage(response.message ?? "", translateUi("操作已提交")));
     },
   });
 
@@ -268,7 +269,7 @@ export default function AutoDirectorFollowUpCenterPage() {
     }),
     onSuccess: async (response) => {
       await invalidateFollowUps();
-      toast.success(formatActionFeedbackMessage(response.message ?? "", "批量操作已提交"));
+      toast.success(formatActionFeedbackMessage(response.message ?? "", translateUi("批量操作已提交")));
       setSelectedDirectorTaskIds([]);
     },
   });
@@ -280,7 +281,7 @@ export default function AutoDirectorFollowUpCenterPage() {
         queryKeys.autoDirectorFollowUps.detail(directorTaskId),
         response,
       );
-      toast.success("校验结果已刷新。");
+      toast.success(translateUi("校验结果已刷新。"));
     },
   });
 
@@ -412,14 +413,14 @@ export default function AutoDirectorFollowUpCenterPage() {
     <div className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpPageRoot}>
       <WorkspaceHeader
         icon={ShieldAlert}
-        context="自动导演"
-        title="导演跟进中心"
-        description="只汇总 AI 自动导演任务，不混入手动工作区任务；阻塞、质量提醒、待操作和自动推进使用不同等级。"
+        context={translateUi("自动导演")}
+        title={translateUi("导演跟进中心")}
+        description={translateUi("只汇总 AI 自动导演任务，不混入手动工作区任务；阻塞、质量提醒、待操作和自动推进使用不同等级。")}
         meta={(
           <>
-            <span>阻塞 {criticalCount} 项</span>
-            <span>待操作 {pendingActionCount} 项</span>
-            <span>自动推进 {progressCount} 项</span>
+            <span>{translateUi("阻塞")} {criticalCount}  {translateUi("项")}</span>
+            <span>{translateUi("待操作")} {pendingActionCount}  {translateUi("项")}</span>
+            <span>{translateUi("自动推进")} {progressCount}  {translateUi("项")}</span>
           </>
         )}
         actions={(
@@ -430,7 +431,8 @@ export default function AutoDirectorFollowUpCenterPage() {
             onClick={() => void Promise.all([overviewQuery.refetch(), listQuery.refetch()])}
           >
             <RefreshCw className={overviewQuery.isFetching || listQuery.isFetching ? "h-4 w-4 animate-spin" : "h-4 w-4"} aria-hidden="true" />
-            刷新跟进
+
+            {translateUi("刷新跟进")}
           </Button>
         )}
       />
@@ -439,36 +441,37 @@ export default function AutoDirectorFollowUpCenterPage() {
         <WorkspaceNextAction
           icon={Activity}
           tone="info"
-          title="正在读取导演跟进"
-          description="正在汇总阻塞、待操作和自动推进任务，请稍候。"
+          title={translateUi("正在读取导演跟进")}
+          description={translateUi("正在汇总阻塞、待操作和自动推进任务，请稍候。")}
         />
       ) : overviewErrorMessage ? (
         <WorkspaceNextAction
           icon={RefreshCw}
           tone="danger"
-          title="重新读取导演跟进"
+          title={translateUi("重新读取导演跟进")}
           description={overviewErrorMessage}
-          consequence="只重新读取跟进摘要，不会执行恢复、重试或重规划。"
-          action={<Button size="sm" variant="outline" onClick={() => void overviewQuery.refetch()}>重新读取</Button>}
+          consequence={translateUi("只重新读取跟进摘要，不会执行恢复、重试或重规划。")}
+          action={<Button size="sm" variant="outline" onClick={() => void overviewQuery.refetch()}>{translateUi("重新读取")}</Button>}
         />
       ) : (
         <WorkspaceNextAction
           icon={criticalCount > 0 ? ShieldAlert : Activity}
           tone={criticalCount > 0 ? "danger" : pendingActionCount > 0 ? "info" : progressCount > 0 ? "info" : "success"}
-          title={replanCount > 0 ? "先处理明确的重规划" : criticalCount > 0 ? "先处理阻塞任务" : pendingActionCount > 0 ? "确认待操作节点" : progressCount > 0 ? "自动导演正在推进" : "当前没有需要跟进的导演任务"}
+          title={replanCount > 0 ? translateUi("先处理明确的重规划") : criticalCount > 0 ? translateUi("先处理阻塞任务") : pendingActionCount > 0 ? translateUi("确认待操作节点") : progressCount > 0 ? translateUi("自动导演正在推进") : translateUi("当前没有需要跟进的导演任务")}
           description={criticalCount > 0
             ? replanCount > 0
-              ? "后续章节已明确要求停止并重规划；先确认影响范围，再进入重规划入口。"
-              : "先查看校验或异常原因，再选择安全修复、恢复或重试。"
+              ? translateUi("后续章节已明确要求停止并重规划；先确认影响范围，再进入重规划入口。")
+              : translateUi("先查看校验或异常原因，再选择安全修复、恢复或重试。")
             : pendingActionCount > 0
-              ? "待操作节点需要确认或继续；质量提醒不会阻止全书继续执行。"
+              ? translateUi("待操作节点需要确认或继续；质量提醒不会阻止全书继续执行。")
               : progressCount > 0
-                ? "自动推进记录用于了解进度，不需要手动干预。"
-                : "后续出现审批、异常或恢复需要时，会按影响等级出现在这里。"}
-          consequence={recommendedSection ? "只切换跟进分区，不会自动执行导演动作。" : undefined}
+                ? translateUi("自动推进记录用于了解进度，不需要手动干预。")
+                : translateUi("后续出现审批、异常或恢复需要时，会按影响等级出现在这里。")}
+          consequence={recommendedSection ? translateUi("只切换跟进分区，不会自动执行导演动作。") : undefined}
           action={recommendedSection ? (
             <Button size="sm" variant={criticalCount > 0 ? "destructive" : "outline"} onClick={() => handleSectionChange(recommendedSection)}>
-              查看推荐分区
+
+              {translateUi("查看推荐分区")}
             </Button>
           ) : undefined}
         />

@@ -1,0 +1,20 @@
+{
+  "title": "AI execution console",
+  "description": "Keeps only the most recommended step; other actions live in the collapsed area below to avoid button clutter.",
+  "currentTarget": "Current target",
+  "recommendedAction": "Recommended action",
+  "recommendedHint": "When unsure, use the recommended action first. Other options remain below.",
+  "actions": {
+    "openEditor": "Open the chapter editor",
+    "fullAuditRunning": "Running full audit...",
+    "fullAudit": "Full audit",
+    "taskSheetRunning": "Generating task sheet...",
+    "taskSheet": "Generate task sheet",
+    "sceneCardsRunning": "Splitting scenes...",
+    "sceneCards": "Generate scene breakdown",
+    "summaryRunning": "Generating summary...",
+    "summary": "Generate summary",
+    "replanRunning": "Adjusting later planning...",
+    "replan": "Adjust later chapter planning"
+  }
+}

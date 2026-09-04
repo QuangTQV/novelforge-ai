@@ -1,0 +1,91 @@
+{
+  "status": {
+    "queued": "Queued",
+    "running": "Running",
+    "waitingApproval": "Waiting for approval",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
+    "recovery": "Awaiting recovery"
+  },
+  "defaultScope": "First 10 chapters",
+  "empty": "None",
+  "checkpoint": {
+    "rewriteSnapshot": "Snapshot created before rewriting",
+    "candidateSelection": "Waiting to confirm the book-level direction",
+    "bookContract": "Book Contract ready",
+    "characterSetup": "Character preparation awaiting approval",
+    "volumeStrategy": "Volume strategy and skeleton awaiting approval",
+    "productionExperience": "Ready to write, waiting to choose a production mode",
+    "chapterBatch": "{{scope}} auto-execution paused",
+    "stepReview": "Current step awaiting review",
+    "completed": "Main flow completed"
+  },
+  "step": {
+    "running": "Running",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
+    "pending": "Pending"
+  },
+  "risk": {
+    "high": "High risk",
+    "medium": "Needs judgment",
+    "low": "Low risk"
+  },
+  "source": {
+    "auto": "Found via auto-sync",
+    "manual": "Found via manual check"
+  },
+  "priority": {
+    "p0": "P0 Handle now",
+    "p1": "P1 Handle soon",
+    "p2": "P2 Handle later"
+  },
+  "ui": {
+    "impact": "Impact after confirming: {{value}}",
+    "evidence": "Evidence: {{value}}",
+    "reason": "Assessment reason: {{value}}",
+    "sourceChapter": "Source chapter",
+    "viewSource": "View source",
+    "detailsTitle": "Execution details",
+    "detailsDescription": "View this book's AI progress history, quick actions and diagnostics.",
+    "resourcePending": "Resource changes awaiting confirmation",
+    "resourceDescription": "These assessments affect key resources later chapters may use.",
+    "count": "{{count}} items",
+    "moreResources": "{{count}} more resource changes; handle them in the matching chapters.",
+    "progress": "Progress",
+    "currentStage": "Current stage",
+    "currentAction": "Current action",
+    "checkpoint": "Latest checkpoint",
+    "heartbeat": "Latest heartbeat",
+    "latestError": "Latest error",
+    "recovery": "Recovery suggestion: {{value}}",
+    "actions": "Actions that need handling now",
+    "blockedReason": "Why the action is blocked: ",
+    "taskModel": "The current task's model",
+    "advanceMode": "Advancement mode",
+    "riskImpact": "Change risk and impact",
+    "retryOtherModel": "Retry with another model",
+    "quickActions": "Quick actions",
+    "noQuickActions": "No quick actions can be run directly right now.",
+    "modelInfo": "Model info",
+    "boundModel": "The model bound to the task",
+    "uiModel": "The current UI's model",
+    "temperature": "Current temperature: {{value}}",
+    "tokenStats": "Token stats",
+    "callCount": "Total calls",
+    "totalTokens": "Total tokens",
+    "inputTokens": "Input tokens",
+    "outputTokens": "Output tokens",
+    "recentRecord": "Latest record: ",
+    "noTokenUsage": "This task has no token usage to show yet; it refreshes automatically once the model starts returning usage.",
+    "stepStatus": "Step status",
+    "milestones": "Milestone history",
+    "recordedAt": "Recorded at: {{value}}",
+    "noMilestones": "No milestones to show yet.",
+    "noTasks": "This novel has no auto-director tasks to show yet. You can keep writing manually or check other tasks in the task center.",
+    "openSource": "Open the source page",
+    "openTaskCenter": "Open the task center"
+  }
+}

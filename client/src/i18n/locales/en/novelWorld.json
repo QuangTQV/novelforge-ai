@@ -1,0 +1,18 @@
+{
+  "worldInjectionHint": {
+    "missing": "No usable book world yet; generation will proceed based on the novel's basic info for now.",
+    "used": "The book world was used for this generation",
+    "viewDetails": "View details",
+    "hideDetails": "Hide details"
+  },
+  "worldSetupTab": {
+    "directorTakeover": {
+      "title": "Let AI complete the book's worldbuilding",
+      "description": "First set the world rules, factions and key constraints, then let characters, volume planning and chapter production proceed around the same worldbuilding."
+    },
+    "section": {
+      "title": "Worldbuilding preparation",
+      "description": "This maintains the worldbuilding the book actually uses. When generating, checking and confirming the worldbuilding, AI relies on these assets."
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   Chapter,
   StoryPlan,
@@ -61,7 +62,8 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
   if (!selectedChapter) {
     return (
       <div className="rounded-xl border border-dashed p-8 text-sm leading-7 text-muted-foreground">
-        先从左侧选中一个章节，这里会变成当前章节的主写作区，集中展示正文、任务单、质量反馈和修复记录。
+
+        {translateUi("先从左侧选中一个章节，这里会变成当前章节的主写作区，集中展示正文、任务单、质量反馈和修复记录。")}
       </div>
     );
   }
@@ -137,8 +139,8 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
         <CardContent className="flex h-full min-h-0 flex-col gap-5 pt-5">
           {writingInOtherChapter ? (
             <WorkspaceNotice
-              title="还有其他章节正在后台写作"
-              description={`${streamingChapterLabel ?? "另一章"} 仍在生成中。切到这一章后不会再把那一章的流式正文带过来，返回对应章节即可继续查看实时输出。`}
+              title={translateUi("还有其他章节正在后台写作")}
+              description={translateUi("{{value0}} 仍在生成中。切到这一章后不会再把那一章的流式正文带过来，返回对应章节即可继续查看实时输出。", { value0: streamingChapterLabel ?? translateUi("另一章") })}
             />
           ) : null}
 
@@ -148,35 +150,36 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant={isSelectedChapterStreaming ? "default" : "secondary"}>
                     {isSelectedChapterFinalizing
-                      ? "收尾处理中"
+                      ? translateUi("收尾处理中")
                       : isSelectedChapterStreaming
-                        ? "实时写作中"
-                        : "已保存版本"}
+                        ? translateUi("实时写作中")
+                        : translateUi("已保存版本")}
                   </Badge>
                   <Badge variant="outline">{chapterLabel}</Badge>
-                  <Badge variant="outline">当前展示 {contentPanelWordCount} 字</Badge>
+                  <Badge variant="outline">{translateUi("当前展示")} {contentPanelWordCount}  {translateUi("字")}</Badge>
                 </div>
                 <div>
                   <div className="text-base font-semibold text-foreground">{chapterTitle}</div>
                   <div className="mt-1 text-xs leading-6 text-muted-foreground">
-                    {contentPanelTitle}。{isSelectedChapterFinalizing
-                      ? (chapterRunStatus?.message ?? "正文可读，系统正在保存草稿并回灌章节资产。")
+                    {contentPanelTitle}{translateUi("。")}{isSelectedChapterFinalizing
+                      ? (chapterRunStatus?.message ?? translateUi("正文可读，系统正在保存草稿并回灌章节资产。"))
                       : isSelectedChapterStreaming
-                        ? "AI 正在持续输出这一章的正文，先在这里观察节奏和手感，不满意时可以随时停止。"
+                        ? translateUi("AI 正在持续输出这一章的正文，先在这里观察节奏和手感，不满意时可以随时停止。")
                         : chapterObjective}
                   </div>
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs text-muted-foreground">字数 {contentPanelWordCount}</span>
+                <span className="text-xs text-muted-foreground">{translateUi("字数")} {contentPanelWordCount}</span>
                 {needsAuditPrompt ? (
                   <Button size="sm" onClick={onRunFullAudit} disabled={isRunningFullAudit}>
-                    {isRunningFullAudit ? "审校中..." : "去审校"}
+                    {isRunningFullAudit ? translateUi("审校中...") : translateUi("去审校")}
                   </Button>
                 ) : null}
                 {needsConfirmationPrompt ? (
                   <Button size="sm" variant="outline" onClick={openQualityPanel}>
-                    查看建议
+
+                    {translateUi("查看建议")}
                   </Button>
                 ) : null}
                 {(needsConfirmationPrompt || needsRepairPrompt) ? (
@@ -186,12 +189,13 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
                     onClick={runAutoRepairFromWorkspace}
                     disabled={isSelectedChapterRepairStreaming}
                   >
-                    {isSelectedChapterRepairStreaming ? "修复中..." : "一键修复"}
+                    {isSelectedChapterRepairStreaming ? translateUi("修复中...") : translateUi("一键修复")}
                   </Button>
                 ) : null}
                 {isSelectedChapterStreaming && !isSelectedChapterFinalizing ? (
                   <Button size="sm" variant="secondary" onClick={onAbortStream}>
-                    停止生成
+
+                    {translateUi("停止生成")}
                   </Button>
                 ) : null}
               </div>
@@ -204,7 +208,8 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
                 </article>
               ) : (
                 <div className="mx-auto max-w-3xl rounded-3xl border border-dashed bg-muted/15 p-8 text-sm leading-7 text-muted-foreground">
-                  当前章节还没有正文。建议先补章节计划或任务单，然后从右侧直接执行“写本章”。
+
+                  {translateUi("当前章节还没有正文。建议先补章节计划或任务单，然后从右侧直接执行“写本章”。")}
                 </div>
               )}
             </div>

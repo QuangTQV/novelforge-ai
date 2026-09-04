@@ -48,7 +48,7 @@ test("creation entry uses a focused editorial canvas instead of a stacked form c
   assert.match(createSource, /目标平台/);
   assert.match(createSource, /writingPlatformPreference: initialPlatformPreference/);
   assert.match(createSource, /from "@\/components\/ui\/select"/);
-  assert.match(createSource, /<SelectTrigger aria-label="选择目标平台"/);
+  assert.match(createSource, /<SelectTrigger\s+aria-label=(?:"|\{translateUi\(")选择目标平台/);
   assert.doesNotMatch(createSource, /CardHeader|CardTitle/);
 });
 

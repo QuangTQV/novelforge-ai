@@ -1,0 +1,34 @@
+{
+  "empty": "暂无",
+  "issueAction": {
+    "autoRetry": "自动重试",
+    "continueWithWarning": "警告后继续",
+    "pauseForManual": "暂停待处理",
+    "failTask": "结束任务"
+  },
+  "policySource": {
+    "global": "全局规则",
+    "novel": "小说规则",
+    "taskSnapshot": "任务启动时规则",
+    "safety": "安全上限"
+  },
+  "duration": {
+    "lessThanSecond": "<1 秒",
+    "seconds": "{{count}} 秒",
+    "minutes": "{{minutes}} 分钟",
+    "minutesSeconds": "{{minutes}} 分 {{seconds}} 秒"
+  },
+  "usage": {
+    "calls": "{{count}} 次调用",
+    "input": "输入 {{count}}",
+    "output": "输出 {{count}}",
+    "total": "共 {{count}} Tokens",
+    "duration": "调用总耗时 {{value}}"
+  },
+  "policy": {
+    "suggestOnly": "仅给出建议",
+    "runNextStep": "推进下一步",
+    "autoSafeScope": "在安全范围内自动推进",
+    "toCheckpoint": "推进到检查点"
+  }
+}

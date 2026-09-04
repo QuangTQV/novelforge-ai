@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -430,7 +431,7 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
       toast.success(feedback.message);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "继续自动导演失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("继续自动导演失败。"));
     },
   });
 
@@ -451,7 +452,8 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
                 </div>
                 <div className="min-w-0">
                   <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                    创作工作台
+
+                    {translateUi("创作工作台")}
                   </div>
                   <div className="truncate text-sm font-semibold text-foreground">{novelTitle}</div>
                 </div>
@@ -463,8 +465,8 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
               size="icon"
               className="h-8 w-8 shrink-0 text-muted-foreground"
               onClick={onToggle}
-              aria-label={collapsed ? "展开创作导航" : "收起创作导航"}
-              title={collapsed ? "展开创作导航" : "收起创作导航"}
+              aria-label={collapsed ? translateUi("展开创作导航") : translateUi("收起创作导航")}
+              title={collapsed ? translateUi("展开创作导航") : translateUi("收起创作导航")}
             >
               {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </Button>
@@ -477,7 +479,8 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
             className="justify-start bg-background"
             onClick={() => navigate("/novels")}
           >
-            返回小说列表
+
+            {translateUi("返回小说列表")}
           </Button>
         ) : (
           <Button
@@ -486,8 +489,8 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
             size="icon"
             className="mx-auto h-9 w-9"
             onClick={() => navigate("/novels")}
-            title="返回小说列表"
-            aria-label="返回小说列表"
+            title={translateUi("返回小说列表")}
+            aria-label={translateUi("返回小说列表")}
           >
             <BookOpenText className="h-4 w-4" />
           </Button>
@@ -496,7 +499,7 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
         {!collapsed ? (
           <div className="rounded-2xl bg-background/75 px-3 py-2 text-xs text-muted-foreground">
             <div className="flex items-center justify-between gap-2">
-              <span>流程：{getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab)}</span>
+              <span>{translateUi("流程：")}{getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab)}</span>
               <span>{workflowProgressCount}/{NOVEL_WORKSPACE_FLOW_STEPS.length}</span>
             </div>
           </div>
@@ -568,7 +571,7 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
           <button
             type="button"
             onClick={() => goToTab("history")}
-            title="版本历史"
+            title={translateUi("版本历史")}
             className={cn(
               "flex w-full items-center rounded-xl transition-colors hover:bg-background/75",
               collapsed ? "justify-center px-2 py-3" : "gap-3 px-3 py-3 text-left",
@@ -576,7 +579,7 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
             )}
           >
             <History className="h-4 w-4 shrink-0" />
-            {!collapsed ? <span className="text-sm font-medium">版本历史</span> : null}
+            {!collapsed ? <span className="text-sm font-medium">{translateUi("版本历史")}</span> : null}
           </button>
 
           {!collapsed ? (
@@ -597,8 +600,8 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
                 variant="outline"
                 className="h-9 w-9"
                 onClick={openProgressDialog}
-                title={`查看导演进度：${formatTaskStatus(activeTask?.status)}`}
-                aria-label="查看导演进度"
+                title={translateUi("查看导演进度：{{value0}}", { value0: formatTaskStatus(activeTask?.status) })}
+                aria-label={translateUi("查看导演进度")}
               >
                 <ListTodo className="h-4 w-4" />
               </Button>
@@ -609,8 +612,8 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
                   variant="outline"
                   className="h-9 w-9"
                   onClick={onSwitchToProjectNav}
-                  title="切换到项目导航"
-                  aria-label="切换到项目导航"
+                  title={translateUi("切换到项目导航")}
+                  aria-label={translateUi("切换到项目导航")}
                 >
                   <LayoutDashboard className="h-4 w-4" />
                 </Button>
@@ -624,9 +627,10 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
       <Dialog open={progressDialogOpen} onOpenChange={setProgressDialogOpen}>
         <DialogContent className="max-h-[88vh] overflow-hidden p-0 sm:max-w-5xl">
           <DialogHeader className="border-b px-5 py-4 text-left">
-            <DialogTitle>AI 自动导演进度</DialogTitle>
+            <DialogTitle>{translateUi("AI 自动导演进度")}</DialogTitle>
             <DialogDescription>
-              查看这本书的推进步骤、最近进展和 AI 用量。
+
+              {translateUi("查看这本书的推进步骤、最近进展和 AI 用量。")}
             </DialogDescription>
           </DialogHeader>
           <div className="max-h-[calc(88vh-6.5rem)] overflow-y-auto p-4 sm:p-6">

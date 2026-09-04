@@ -1,0 +1,20 @@
+{
+  "title": "Bàn điều khiển thực thi AI",
+  "description": "Chỉ giữ lại bước được đề xuất nhiều nhất; các thao tác khác nằm trong phần thu gọn bên dưới để tránh quá nhiều nút.",
+  "currentTarget": "Đối tượng đang thao tác",
+  "recommendedAction": "Thao tác được đề xuất",
+  "recommendedHint": "Nếu chưa biết nên chọn gì, hãy ưu tiên thao tác được đề xuất. Các khả năng bổ sung vẫn nằm bên dưới.",
+  "actions": {
+    "openEditor": "Mở trình chỉnh sửa chương",
+    "fullAuditRunning": "Đang kiểm tra toàn bộ...",
+    "fullAudit": "Kiểm tra toàn bộ",
+    "taskSheetRunning": "Đang tạo phiếu tác vụ...",
+    "taskSheet": "Tạo phiếu tác vụ",
+    "sceneCardsRunning": "Đang tách cảnh...",
+    "sceneCards": "Tạo phân rã cảnh",
+    "summaryRunning": "Đang tạo tóm tắt...",
+    "summary": "Tạo tóm tắt",
+    "replanRunning": "Đang điều chỉnh kế hoạch sau...",
+    "replan": "Điều chỉnh kế hoạch chương sau"
+  }
+}

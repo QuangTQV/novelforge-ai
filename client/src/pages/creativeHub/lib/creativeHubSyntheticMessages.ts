@@ -1,3 +1,4 @@
+import { translateUi } from "../../../i18n/legacy.ts";
 import type { FailureDiagnostic } from "@ai-novel/shared/types/agent";
 import type { CreativeHubInterrupt, CreativeHubTurnSummary } from "@ai-novel/shared/types/creativeHub";
 import type { CreativeHubStreamFrame } from "@ai-novel/shared/types/api";
@@ -174,8 +175,8 @@ function buildDebugTraceEntry(
       entry: {
         id: `run_status_${sequence}`,
         kind: "运行状态",
-        title: "运行状态",
-        summary: frame.data.message || `当前状态：${toStatusLabel(frame.data.status)}`,
+        title: translateUi("运行状态"),
+        summary: frame.data.message || translateUi("当前状态：{{value0}}", { value0: toStatusLabel(frame.data.status) }),
         meta: [toStatusLabel(frame.data.status), `Run ${runId.slice(0, 8)}`],
         tone: frame.data.status === "failed" || frame.data.status === "cancelled"
           ? "destructive"
@@ -197,7 +198,7 @@ function buildDebugTraceEntry(
         id: `tool_call_${sequence}`,
         kind: "工具调用",
         title: frame.data.toolName,
-        summary: frame.data.inputSummary || "正在准备工具输入。",
+        summary: frame.data.inputSummary || translateUi("正在准备工具输入。"),
         meta: [
           `Run ${runId.slice(0, 8)}`,
           frame.data.stepId ? `Step ${frame.data.stepId.slice(0, 8)}` : "",
@@ -217,7 +218,7 @@ function buildDebugTraceEntry(
         id: `tool_result_${sequence}`,
         kind: frame.data.success ? "工具完成" : "工具失败",
         title: frame.data.toolName,
-        summary: frame.data.outputSummary || "工具返回了空结果。",
+        summary: frame.data.outputSummary || translateUi("工具返回了空结果。"),
         meta: [
           frame.data.success ? "成功" : "失败",
           `Run ${runId.slice(0, 8)}`,
@@ -237,8 +238,8 @@ function buildDebugTraceEntry(
       entry: {
         id: `approval_${sequence}`,
         kind: "审批结果",
-        title: frame.data.action === "approved" ? "审批通过" : "审批拒绝",
-        summary: frame.data.note?.trim() || "当前审批动作已记录。",
+        title: frame.data.action === "approved" ? translateUi("审批通过") : translateUi("审批拒绝"),
+        summary: frame.data.note?.trim() || translateUi("当前审批动作已记录。"),
         meta: [
           `Approval ${frame.data.approvalId.slice(0, 8)}`,
         ],
@@ -257,7 +258,7 @@ function buildDebugTraceEntry(
       entry: {
         id: `error_${sequence}`,
         kind: "运行异常",
-        title: "运行异常",
+        title: translateUi("运行异常"),
         summary: frame.data.message,
         meta: [`Run ${runId.slice(0, 8)}`],
         tone: "destructive",
@@ -275,7 +276,7 @@ function buildDebugTraceEntry(
       entry: {
         id: `reasoning_${sequence}`,
         kind: "推理更新",
-        title: "推理更新",
+        title: translateUi("推理更新"),
         summary: frame.data.reasoning,
         meta: [`Run ${runId.slice(0, 8)}`],
       },
@@ -293,8 +294,8 @@ function buildDebugTraceEntry(
       entry: {
         id: `planner_${sequence}`,
         kind: "意图识别",
-        title: "意图识别",
-        summary: `来源：${getPlannerSourceDisplayLabel(planner.source)}；意图：${getIntentDisplayLabel(planner.intent)}`,
+        title: translateUi("意图识别"),
+        summary: translateUi("来源：{{source}}；意图：{{intent}}", { source: getPlannerSourceDisplayLabel(planner.source), intent: getIntentDisplayLabel(planner.intent) }),
         meta: [
           "confidence" in planner ? `置信度 ${String(planner.confidence ?? "-")}` : "",
           `Run ${runId.slice(0, 8)}`,
@@ -315,8 +316,8 @@ function buildDebugTraceEntry(
       entry: {
         id: `checkpoint_${sequence}`,
         kind: "Checkpoint",
-        title: "检查点已写回",
-        summary: `Checkpoint ${frame.data.checkpointId.slice(0, 8)} 已写回线程历史。`,
+        title: translateUi("检查点已写回"),
+        summary: translateUi("Checkpoint {{id}} 已写回线程历史。", { id: frame.data.checkpointId.slice(0, 8) }),
         meta: [`Run ${runId.slice(0, 8)}`],
       },
     };

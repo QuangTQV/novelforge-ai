@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ChevronDown, ChevronRight, Clipboard, Eraser, Expand, GripHorizontal, Maximize2, Minimize2, Radio, Shrink, X } from "lucide-react";
@@ -191,12 +192,12 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
           props.className,
         )}
         onClick={() => handleOpenChange(true)}
-        title="查看 AI 创作实况"
+        title={translateUi("查看 AI 创作实况")}
       >
         <Radio className={activeCount > 0 ? "mr-1.5 h-3.5 w-3.5 animate-pulse text-primary" : "mr-1.5 h-3.5 w-3.5"} aria-hidden="true" />
-        {!props.compact ? <span className="hidden sm:inline">AI 实况</span> : null}
+        {!props.compact ? <span className="hidden sm:inline">{translateUi("AI 实况")}</span> : null}
         {activeCount > 0 ? (
-          <Badge className="ml-1.5 h-5 min-w-5 px-1.5 text-[10px]" aria-label={`${activeCount} 项 AI 生成正在进行`}>
+          <Badge className="ml-1.5 h-5 min-w-5 px-1.5 text-[10px]" aria-label={translateUi("{{value0}} 项 AI 生成正在进行", { value0: activeCount })}>
             {activeCount}
           </Badge>
         ) : null}
@@ -249,16 +250,17 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
             >
               <GripHorizontal className="mt-1 h-4 w-4 shrink-0 text-emerald-400/80" aria-hidden="true" />
               <div className="min-w-0 flex-1">
-                <DialogPrimitive.Title className="font-mono text-sm font-semibold tracking-wide text-emerald-100">AI 创作实况 / LIVE LOG</DialogPrimitive.Title>
+                <DialogPrimitive.Title className="font-mono text-sm font-semibold tracking-wide text-emerald-100">{translateUi("AI 创作实况 / LIVE LOG")}</DialogPrimitive.Title>
                 <DialogPrimitive.Description
                   id="live-execution-description"
                   className={cn("mt-1 text-xs leading-5 text-emerald-100/65", briefMode && "sr-only")}
                 >
-                  每次调用独立显示。新调用会自动聚焦，已完成调用会收起；清空只影响当前窗口。
+
+                  {translateUi("每次调用独立显示。新调用会自动聚焦，已完成调用会收起；清空只影响当前窗口。")}
                 </DialogPrimitive.Description>
               </div>
               <Badge variant="outline" className="shrink-0 border-emerald-400/50 bg-emerald-400/10 font-mono text-emerald-200">
-                {activeCount > 0 ? `${activeCount} 项进行中` : connected ? "等待生成" : "正在连接"}
+                {activeCount > 0 ? translateUi("{{value0}} 项进行中", { value0: activeCount }) : connected ? translateUi("等待生成") : translateUi("正在连接")}
               </Badge>
               <Button
                 type="button"
@@ -269,11 +271,11 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                 onPointerDown={(event) => event.stopPropagation()}
                 onPointerMove={(event) => event.stopPropagation()}
                 onPointerUp={(event) => event.stopPropagation()}
-                aria-label={briefMode ? "切换到详细模式" : "切换到简略模式"}
-                title={briefMode ? "查看全部调用" : "只看最新输出"}
+                aria-label={briefMode ? translateUi("切换到详细模式") : translateUi("切换到简略模式")}
+                title={briefMode ? translateUi("查看全部调用") : translateUi("只看最新输出")}
               >
                 {briefMode ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
-                {briefMode ? "详细" : "简略"}
+                {briefMode ? translateUi("详细") : translateUi("简略")}
               </Button>
               <Button
                 type="button"
@@ -284,8 +286,8 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                 onPointerDown={(event) => event.stopPropagation()}
                 onPointerMove={(event) => event.stopPropagation()}
                 onPointerUp={(event) => event.stopPropagation()}
-                aria-label={fullScreen ? "退出全屏" : "全屏显示"}
-                title={fullScreen ? "退出全屏" : "全屏显示"}
+                aria-label={fullScreen ? translateUi("退出全屏") : translateUi("全屏显示")}
+                title={fullScreen ? translateUi("退出全屏") : translateUi("全屏显示")}
               >
                 {fullScreen ? <Shrink className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
               </Button>
@@ -301,7 +303,8 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                 onPointerUp={(event) => event.stopPropagation()}
               >
                 <Eraser className="h-3.5 w-3.5" />
-                清空前台
+
+                {translateUi("清空前台")}
               </Button>
               ) : null}
               <DialogPrimitive.Close asChild>
@@ -310,7 +313,7 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                   variant="ghost"
                   size="icon"
                   className="-mr-1 -mt-1 h-8 w-8 shrink-0 text-emerald-100 hover:bg-emerald-400/10 hover:text-emerald-50"
-                  aria-label="关闭 AI 创作实况"
+                  aria-label={translateUi("关闭 AI 创作实况")}
                   onPointerDown={(event) => event.stopPropagation()}
                   onPointerMove={(event) => event.stopPropagation()}
                   onPointerUp={(event) => event.stopPropagation()}
@@ -366,7 +369,7 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                         >
                           {collapsed ? <ChevronRight className="h-4 w-4 shrink-0 text-emerald-300" /> : <ChevronDown className="h-4 w-4 shrink-0 text-emerald-300" />}
                           <span className="min-w-0 flex-1 truncate font-semibold text-emerald-50">{session.context.label}</span>
-                          <span className="shrink-0 text-[11px] text-emerald-100/55">{session.totalChars.toLocaleString()} 字符</span>
+                          <span className="shrink-0 text-[11px] text-emerald-100/55">{session.totalChars.toLocaleString()}  {translateUi("字符")}</span>
                           <span className={cn("shrink-0 rounded border px-1.5 py-0.5 text-[10px]", active ? "border-emerald-400/45 text-emerald-200" : "border-emerald-400/20 text-emerald-100/65")}>
                             {phaseLabel(session.phase)}
                           </span>
@@ -378,14 +381,14 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                               <div className="mb-2">
                                 <button type="button" className="inline-flex items-center gap-1.5 text-[11px] text-emerald-200/80 hover:text-emerald-50" onClick={() => togglePrompt(interactionId)}>
                                   <Clipboard className="h-3 w-3" />
-                                  {promptSessionIds.has(interactionId) ? "收起发送 Prompt" : "查看发送 Prompt"}
+                                  {promptSessionIds.has(interactionId) ? translateUi("收起发送 Prompt") : translateUi("查看发送 Prompt")}
                                 </button>
                                 {promptSessionIds.has(interactionId) ? (
                                   <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-words rounded border border-emerald-400/20 bg-black/20 p-2 text-[11px] leading-5 text-emerald-100/85">{session.context.promptText}</pre>
                                 ) : null}
                               </div>
                             ) : null}
-                            <pre className="m-0 whitespace-pre-wrap break-words text-emerald-100">{session.preview || "等待模型开始返回内容…"}</pre>
+                            <pre className="m-0 whitespace-pre-wrap break-words text-emerald-100">{session.preview || translateUi("等待模型开始返回内容…")}</pre>
                           </div>
                         ) : null}
                       </section>
@@ -394,7 +397,7 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
                 </div>
               ) : (
                 <div className="text-emerald-200/65">
-                  {connected ? "前台日志已清空，等待新的 AI 生成开始…" : "正在连接 AI 实况服务…"}
+                  {connected ? translateUi("前台日志已清空，等待新的 AI 生成开始…") : translateUi("正在连接 AI 实况服务…")}
                 </div>
               )}
             </div>
@@ -403,10 +406,11 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
               "flex shrink-0 items-center justify-between gap-3 border-t border-emerald-400/25 bg-[#0d1714] px-3 text-xs text-emerald-100/65",
               briefMode ? "py-1.5" : "py-2",
             )}>
-              <span>{followingLatest ? "正在跟随最新输出" : "已停留在当前阅读位置"}</span>
+              <span>{followingLatest ? translateUi("正在跟随最新输出") : translateUi("已停留在当前阅读位置")}</span>
               {!briefMode ? (
                 <Button type="button" size="sm" variant="ghost" className="h-7 px-2 font-mono text-xs text-emerald-200 hover:bg-emerald-400/10 hover:text-emerald-50" onClick={scrollToLatest}>
-                  回到最新输出
+
+                  {translateUi("回到最新输出")}
                 </Button>
               ) : (
                 <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-300/60">Live</span>

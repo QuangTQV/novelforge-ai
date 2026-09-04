@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   Component,
   useEffect,
@@ -7,6 +8,7 @@ import {
   type ErrorInfo,
   type ReactNode,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { UnifiedTaskDetail } from "@ai-novel/shared/types/task";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -97,6 +99,7 @@ function getDraftStorage(): Storage | null {
 }
 
 function AutoDirectorCreatePage() {
+  useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const reducedMotion = useReducedMotion();
@@ -220,13 +223,13 @@ function AutoDirectorCreatePage() {
         sourceKnowledgeDocumentId: referenceDocumentId,
         continuationBookAnalysisId: referenceBookAnalysisId,
         continuationBookAnalysisSections: [...ALL_BOOK_ANALYSIS_SECTIONS],
-        description: current.description || `基于${sourceLabel}现有角色、世界规则、终局状态和未完线索，继续创作后续故事。`,
+        description: current.description || translateUi("基于{{value0}}现有角色、世界规则、终局状态和未完线索，继续创作后续故事。", { value0: sourceLabel }),
       }
       : {
         writingMode: "original",
         referenceBookAnalysisId,
         referenceBookAnalysisSections: [...TRANSFERABLE_BOOK_ANALYSIS_SECTIONS],
-        description: current.description || `参考${sourceLabel}的结构机制、节奏和写法，创作一部拥有全新角色、世界和剧情的独立小说。`,
+        description: current.description || translateUi("参考{{value0}}的结构机制、节奏和写法，创作一部拥有全新角色、世界和剧情的独立小说。", { value0: sourceLabel }),
       }));
   }, [referenceBookAnalysisId, referenceDocumentId, referenceMode, referenceTitle]);
 
@@ -297,7 +300,7 @@ function AutoDirectorCreatePage() {
       }
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "恢复自动导演任务失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("恢复自动导演任务失败。"));
     },
   });
 
@@ -366,12 +369,12 @@ function AutoDirectorCreatePage() {
   const enterSimpleMutation = useMutation({
     mutationFn: () => setNovelCreationExperience(createdNovelId, "simple"),
     onSuccess: () => navigate(`/novels/${createdNovelId}/simple`, { replace: true }),
-    onError: (error) => toast.error(error instanceof Error ? error.message : "进入简易模式失败，请重试。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("进入简易模式失败，请重试。")),
   });
   const enterProfessionalMutation = useMutation({
     mutationFn: () => setNovelCreationExperience(createdNovelId, "professional"),
     onSuccess: () => navigate(`/novels/${createdNovelId}/edit`, { replace: true }),
-    onError: (error) => toast.error(error instanceof Error ? error.message : "进入专业模式失败，请重试。"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : translateUi("进入专业模式失败，请重试。")),
   });
 
   useEffect(() => {
@@ -478,13 +481,13 @@ function AutoDirectorCreatePage() {
           storyModeTree={storyModeTree}
           selectedGenreId={controller.directorBasicForm.genreId}
           selectedGenreLabel={selectedGenre
-            ? `故事类型：${selectedGenre.path}`
-            : controller.directorBasicForm.genreId ? "故事类型：选择已失效" : ""}
+            ? translateUi("故事类型：{{value0}}", { value0: selectedGenre.path })
+            : controller.directorBasicForm.genreId ? translateUi("故事类型：选择已失效") : ""}
           selectedGenreSource={selectedGenreSource}
           selectedStoryModeId={controller.directorBasicForm.primaryStoryModeId}
           selectedStoryModeLabel={selectedStoryMode
-            ? `推进方式：${selectedStoryMode.path}`
-            : controller.directorBasicForm.primaryStoryModeId ? "推进方式：选择已失效" : ""}
+            ? translateUi("推进方式：{{value0}}", { value0: selectedStoryMode.path })
+            : controller.directorBasicForm.primaryStoryModeId ? translateUi("推进方式：选择已失效") : ""}
           selectedStoryModeSource={selectedStoryModeSource}
           genreLoading={genreTreeQuery.isPending}
           genreError={genreTreeQuery.isError}
@@ -561,49 +564,50 @@ function AutoDirectorCreatePage() {
       {referenceMode ? (
         <div className="rounded-xl bg-muted/45 px-4 py-3 text-sm">
           <div className="font-medium text-foreground">
-            {referenceMode === "continuation" ? "续写原作" : "参考创作新书"}
+            {referenceMode === "continuation" ? translateUi("续写原作") : translateUi("参考创作新书")}
             {referenceTitle ? ` · ${referenceTitle}` : ""}
           </div>
           <div className="mt-1 text-xs leading-5 text-muted-foreground">
             {referenceMode === "continuation"
-              ? "拆书结论会持续用于方向、大纲、角色和卷章规划；原作事实会作为续写约束。"
-              : "拆书结论会持续用于方向、大纲和卷章规划；只继承结构与节奏，不带入原作事实。"}
+              ? translateUi("拆书结论会持续用于方向、大纲、角色和卷章规划；原作事实会作为续写约束。")
+              : translateUi("拆书结论会持续用于方向、大纲和卷章规划；只继承结构与节奏，不带入原作事实。")}
           </div>
           <div className="mt-2 text-xs leading-5 text-muted-foreground">
             {referenceStyleProfileQuery.isFetching
-              ? "参考写法正在后台准备，不影响继续设置。"
+              ? translateUi("参考写法正在后台准备，不影响继续设置。")
               : referenceStyleProfileQuery.isError
-                ? "拆书结论已带入；参考写法暂未完成，可继续开书并稍后补充。"
+                ? translateUi("拆书结论已带入；参考写法暂未完成，可继续开书并稍后补充。")
                 : resolvedInitialStyleProfileId
-                  ? "参考写法会随项目进入后续正文生成。"
-                  : "拆书结论已带入，可以继续设置。"}
+                  ? translateUi("参考写法会随项目进入后续正文生成。")
+                  : translateUi("拆书结论已带入，可以继续设置。")}
           </div>
         </div>
       ) : null}
       {showSummaryBar ? (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="text-2xl font-semibold tracking-normal text-foreground">AI 自动导演创建</div>
+            <div className="text-2xl font-semibold tracking-normal text-foreground">{translateUi("AI 自动导演创建")}</div>
             <div className="mt-1 text-sm leading-6 text-muted-foreground">
-              从一个起始想法开始，AI 会持续准备创作资源；项目建立后即可打开查看已完成成果。
+
+              {translateUi("从一个起始想法开始，AI 会持续准备创作资源；项目建立后即可打开查看已完成成果。")}
             </div>
           </div>
           <div className="flex flex-wrap items-end gap-3 sm:justify-end">
               {createdNovelId ? (
                 <div className="space-y-1.5">
-                  <div className="text-xs font-medium text-muted-foreground">选择创作界面</div>
-                  <div className="flex items-center gap-1 rounded-lg bg-muted/55 p-1" role="group" aria-label="选择创作模式">
+                  <div className="text-xs font-medium text-muted-foreground">{translateUi("选择创作界面")}</div>
+                  <div className="flex items-center gap-1 rounded-lg bg-muted/55 p-1" role="group" aria-label={translateUi("选择创作模式")}>
                     <Button type="button" size="sm" variant="secondary" disabled={enterSimpleMutation.isPending} onClick={() => enterSimpleMutation.mutate()}>
-                      {enterSimpleMutation.isPending ? "正在打开…" : "简易模式"}
+                      {enterSimpleMutation.isPending ? translateUi("正在打开…") : translateUi("简易模式")}
                     </Button>
                     <Button type="button" size="sm" variant="secondary" disabled={enterProfessionalMutation.isPending} onClick={() => enterProfessionalMutation.mutate()}>
-                      {enterProfessionalMutation.isPending ? "正在打开…" : "专业模式"}
+                      {enterProfessionalMutation.isPending ? translateUi("正在打开…") : translateUi("专业模式")}
                     </Button>
                   </div>
               </div>
             ) : null}
             <Button type="button" size="sm" variant="ghost" asChild>
-              <Link to="/novels/create">手动创建</Link>
+              <Link to="/novels/create">{translateUi("手动创建")}</Link>
             </Button>
           </div>
         </div>
@@ -634,7 +638,8 @@ function AutoDirectorCreatePage() {
 
       {restoreWorkflowMutation.isPending && normalizedTaskId ? (
         <div className="rounded-lg bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
-          正在恢复自动导演现场。
+
+          {translateUi("正在恢复自动导演现场。")}
         </div>
       ) : null}
 
@@ -644,19 +649,20 @@ function AutoDirectorCreatePage() {
             <div className="min-w-0">
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                 <span className="h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
-                雷达开书参考
+
+                {translateUi("雷达开书参考")}
                 {marketBriefQuery.data?.data?.selectedSignals.length ? (
                   <span className="font-normal text-muted-foreground">
-                    {marketBriefQuery.data.data.selectedSignals.length} 项信号
+                    {marketBriefQuery.data.data.selectedSignals.length}  {translateUi("项信号")}
                   </span>
                 ) : null}
               </div>
               <p className="mt-1 max-w-4xl text-sm leading-6 text-muted-foreground">
-                {marketBriefQuery.data?.data?.summary || (marketBriefQuery.isPending ? "正在读取市场创作简报。" : "市场简报暂时无法读取，仍可继续按你的想法开书。")}
+                {marketBriefQuery.data?.data?.summary || (marketBriefQuery.isPending ? translateUi("正在读取市场创作简报。") : translateUi("市场简报暂时无法读取，仍可继续按你的想法开书。"))}
               </p>
             </div>
             <Button type="button" variant="ghost" size="sm" className="shrink-0" asChild>
-              <Link to="/market-radar">调整雷达信号</Link>
+              <Link to="/market-radar">{translateUi("调整雷达信号")}</Link>
             </Button>
           </div>
 
@@ -673,36 +679,37 @@ function AutoDirectorCreatePage() {
           {marketBriefQuery.data?.data?.creativeSeed ? (
             <div className="mt-4 grid gap-4 border-t border-border/50 pt-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.35fr)]">
               <div className="min-w-0">
-                <div className="text-xs font-medium text-muted-foreground">金手指 / 核心优势</div>
+                <div className="text-xs font-medium text-muted-foreground">{translateUi("金手指 / 核心优势")}</div>
                 <p className="mt-1 line-clamp-2 text-sm leading-6 text-foreground">
                   {marketBriefQuery.data.data.creativeSeed.coreAdvantage}
                 </p>
               </div>
               <div className="min-w-0">
-                <div className="text-xs font-medium text-muted-foreground">开书思路</div>
+                <div className="text-xs font-medium text-muted-foreground">{translateUi("开书思路")}</div>
                 <p className="mt-1 line-clamp-2 text-sm leading-6 text-foreground">
                   {marketBriefQuery.data.data.creativeSeed.openingIdea}
                 </p>
               </div>
               <details className="lg:col-span-2">
                 <summary className="w-fit cursor-pointer list-none text-xs font-medium text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
-                  查看完整雷达设定
+
+                  {translateUi("查看完整雷达设定")}
                 </summary>
                 <div className="mt-3 grid gap-4 text-sm leading-6 sm:grid-cols-2">
                   <div>
-                    <div className="text-xs text-muted-foreground">完整核心优势</div>
+                    <div className="text-xs text-muted-foreground">{translateUi("完整核心优势")}</div>
                     <p className="mt-1 text-foreground">{marketBriefQuery.data.data.creativeSeed.coreAdvantage}</p>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">完整开书思路</div>
+                    <div className="text-xs text-muted-foreground">{translateUi("完整开书思路")}</div>
                     <p className="mt-1 text-foreground">{marketBriefQuery.data.data.creativeSeed.openingIdea}</p>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">核心卖点</div>
+                    <div className="text-xs text-muted-foreground">{translateUi("核心卖点")}</div>
                     <p className="mt-1 text-foreground">{marketBriefQuery.data.data.creativeSeed.bookSellingPoint}</p>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">前 30 章承诺</div>
+                    <div className="text-xs text-muted-foreground">{translateUi("前 30 章承诺")}</div>
                     <p className="mt-1 text-foreground">{marketBriefQuery.data.data.creativeSeed.first30ChapterPromise}</p>
                   </div>
                 </div>
@@ -710,26 +717,27 @@ function AutoDirectorCreatePage() {
             </div>
           ) : marketBriefQuery.data?.data ? (
             <div className="mt-3 text-sm leading-6 text-amber-700 dark:text-amber-300">
-              这份简报缺少完整开书思路，请返回雷达重新确认信号。
+
+              {translateUi("这份简报缺少完整开书思路，请返回雷达重新确认信号。")}
             </div>
           ) : null}
 
           {marketProductionFoundation ? (
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
-              <span><span className="text-foreground">题材基底</span> {marketProductionFoundation.genre.path}</span>
-              <span><span className="text-foreground">主要推进</span> {marketProductionFoundation.primaryStoryMode.path}</span>
+              <span><span className="text-foreground">{translateUi("题材基底")}</span> {marketProductionFoundation.genre.path}</span>
+              <span><span className="text-foreground">{translateUi("主要推进")}</span> {marketProductionFoundation.primaryStoryMode.path}</span>
               {marketProductionFoundation.secondaryStoryMode ? (
-                <span><span className="text-foreground">辅助推进</span> {marketProductionFoundation.secondaryStoryMode.path}</span>
+                <span><span className="text-foreground">{translateUi("辅助推进")}</span> {marketProductionFoundation.secondaryStoryMode.path}</span>
               ) : null}
             </div>
           ) : null}
         </section>
       ) : activeStage === "idea" ? (
         <div className="flex flex-col gap-3 rounded-xl bg-muted/35 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <span className="text-muted-foreground">也可以从一部参考小说或近期热门方向开始。</span>
+          <span className="text-muted-foreground">{translateUi("也可以从一部参考小说或近期热门方向开始。")}</span>
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="secondary" size="sm" onClick={() => setReferenceStartOpen(true)}>照着一本书写</Button>
-            <Button type="button" variant="outline" size="sm" asChild><Link to="/market-radar">参考热门题材</Link></Button>
+            <Button type="button" variant="secondary" size="sm" onClick={() => setReferenceStartOpen(true)}>{translateUi("照着一本书写")}</Button>
+            <Button type="button" variant="outline" size="sm" asChild><Link to="/market-radar">{translateUi("参考热门题材")}</Link></Button>
           </div>
         </div>
       ) : null}
@@ -775,12 +783,14 @@ class AutoDirectorCreateErrorBoundary extends Component<
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-4 py-12">
         <div className="w-full max-w-lg text-center">
-          <h1 className="text-2xl font-semibold text-foreground">创建页遇到问题</h1>
+          <h1 className="text-2xl font-semibold text-foreground">{translateUi("创建页遇到问题")}</h1>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            重新加载后，系统会尝试恢复保存在本机的开书草稿；已创建的任务和小说不会受影响。
+
+            {translateUi("重新加载后，系统会尝试恢复保存在本机的开书草稿；已创建的任务和小说不会受影响。")}
           </p>
           <Button type="button" className="mt-6" onClick={() => window.location.reload()}>
-            重新加载创建页
+
+            {translateUi("重新加载创建页")}
           </Button>
         </div>
       </div>

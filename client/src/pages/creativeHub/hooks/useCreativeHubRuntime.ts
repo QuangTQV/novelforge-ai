@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   getExternalStoreMessages,
@@ -493,7 +494,7 @@ export function useCreativeHubRuntime({
           threadId,
           message: error instanceof Error && error.message.trim()
             ? error.message.trim()
-            : "当前线程内容加载失败。",
+            : translateUi("当前线程内容加载失败。"),
         });
       });
     return () => {

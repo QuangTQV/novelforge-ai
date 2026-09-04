@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import { ArrowRight, BookOpen, Map, Network, Workflow } from "lucide-react";
 import type {
@@ -137,7 +138,7 @@ function WorldSignal(props: {
 function GenerationChain() {
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-      {["本书世界", "角色", "大纲", "章节"].map((item, index, array) => (
+      {[translateUi("本书世界"), translateUi("角色"), translateUi("大纲"), translateUi("章节")].map((item, index, array) => (
         <span key={item} className="flex items-center gap-2">
           <span className="rounded-full bg-background/80 px-2 py-1 shadow-sm ring-1 ring-border/25">{item}</span>
           {index < array.length - 1 ? <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> : null}
@@ -214,36 +215,39 @@ export default function NovelWorldManagerCard(props: NovelWorldManagerCardProps)
         <div className="grid gap-5 p-5 xl:grid-cols-[minmax(0,1.25fr)_420px]">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              {props.isLoading ? <span>读取中</span> : null}
-              <span>{novelWorld ? labelSourceType(novelWorld.sourceType) : "未设置来源"}</span>
+              {props.isLoading ? <span>{translateUi("读取中")}</span> : null}
+              <span>{novelWorld ? labelSourceType(novelWorld.sourceType) : translateUi("未设置来源")}</span>
               <span>{writingStatus}</span>
               <span>{syncStatus}</span>
-              {lastSyncedAtText ? <span>同步 {lastSyncedAtText}</span> : null}
-              {pendingSectionText ? <span>待处理 {pendingSectionText}</span> : null}
+              {lastSyncedAtText ? <span>{translateUi("同步")} {lastSyncedAtText}</span> : null}
+              {pendingSectionText ? <span>{translateUi("待处理")} {pendingSectionText}</span> : null}
             </div>
             <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div className="min-w-0">
-                <div className="text-sm text-muted-foreground">本书世界</div>
+                <div className="text-sm text-muted-foreground">{translateUi("本书世界")}</div>
                 <h2 className="mt-1 truncate text-3xl font-semibold tracking-normal text-foreground">{activeWorldName}</h2>
               </div>
               <div className="flex shrink-0 flex-wrap gap-2">
                 {novelWorld ? (
                   <>
                     <Button type="button" onClick={() => openDialog("overview")}>
-                      打开完整世界手册
+
+                      {translateUi("打开完整世界手册")}
                     </Button>
                     <Button type="button" variant="outline" onClick={() => openDialog("usage")}>
-                      整理使用范围
+
+                      {translateUi("整理使用范围")}
                     </Button>
                   </>
                 ) : (
                   <Button asChild>
-                    <a href="#novel-world-source">选择或生成本书世界</a>
+                    <a href="#novel-world-source">{translateUi("选择或生成本书世界")}</a>
                   </Button>
                 )}
                 {hasSyncDiff ? (
                   <Button type="button" variant="outline" onClick={() => openDialog("sync")}>
-                    处理同步差异
+
+                    {translateUi("处理同步差异")}
                   </Button>
                 ) : null}
               </div>
@@ -257,37 +261,37 @@ export default function NovelWorldManagerCard(props: NovelWorldManagerCardProps)
             <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <WorldSignal
                 icon={BookOpen}
-                label="核心规则"
+                label={translateUi("核心规则")}
                 count={handbook?.coreRules.length ?? 0}
-                sample={handbook?.coreRules[0]?.name ?? "等待补齐规则"}
+                sample={handbook?.coreRules[0]?.name ?? translateUi("等待补齐规则")}
               />
               <WorldSignal
                 icon={Network}
-                label="主要势力"
+                label={translateUi("主要势力")}
                 count={forces.length}
-                sample={forces[0]?.name ?? "等待补齐势力"}
+                sample={forces[0]?.name ?? translateUi("等待补齐势力")}
               />
               <WorldSignal
                 icon={Map}
-                label="故事舞台"
+                label={translateUi("故事舞台")}
                 count={handbook?.locations.length ?? 0}
-                sample={handbook?.locations[0]?.name ?? "等待补齐地点"}
+                sample={handbook?.locations[0]?.name ?? translateUi("等待补齐地点")}
               />
               <WorldSignal
                 icon={Workflow}
-                label="关键张力"
+                label={translateUi("关键张力")}
                 count={handbook?.tensions.length ?? 0}
-                sample={handbook?.tensions[0] ?? "等待补齐张力"}
+                sample={handbook?.tensions[0] ?? translateUi("等待补齐张力")}
               />
             </div>
 
             <div className="mt-6 flex flex-col gap-3 rounded-xl bg-background/70 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <div className="text-sm font-medium text-foreground">生成链会读取这份世界</div>
+                <div className="text-sm font-medium text-foreground">{translateUi("生成链会读取这份世界")}</div>
                 <div className="mt-1 text-xs leading-5 text-muted-foreground">
                   {novelWorld?.hasStorySlice
-                    ? "角色、大纲和章节会优先继承本书使用范围里的规则、势力和地点。"
-                    : "整理本书使用范围后，生成链会读取更精准的世界约束。"}
+                    ? translateUi("角色、大纲和章节会优先继承本书使用范围里的规则、势力和地点。")
+                    : translateUi("整理本书使用范围后，生成链会读取更精准的世界约束。")}
                 </div>
               </div>
               <GenerationChain />
@@ -296,21 +300,21 @@ export default function NovelWorldManagerCard(props: NovelWorldManagerCardProps)
 
           <aside className="space-y-4 rounded-2xl bg-background/65 p-4 shadow-sm ring-1 ring-border/30">
             <div>
-              <div className="text-sm font-medium text-foreground">世界约束条</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("世界约束条")}</div>
               <div className="mt-1 text-sm leading-6 text-muted-foreground">
                 {firstText([
                   props.usageView?.slice?.coreWorldFrame,
                   handbook?.generationGuidance?.chapterUses[0],
-                  novelWorld?.hasStorySlice ? "章节生成会读取本书使用范围。" : null,
-                ], "创建本书世界后，会在这里显示章节生成将读取的约束。")}
+                  novelWorld?.hasStorySlice ? translateUi("章节生成会读取本书使用范围。") : null,
+                ], translateUi("创建本书世界后，会在这里显示章节生成将读取的约束。"))}
               </div>
             </div>
             <div className="grid gap-3 text-sm">
               {[
-                { label: "规则", value: props.usageView?.slice?.appliedRules.length ?? handbook?.coreRules.length ?? 0 },
-                { label: "势力", value: props.usageView?.slice?.activeForces.length ?? forces.length },
-                { label: "地点", value: props.usageView?.slice?.activeLocations.length ?? handbook?.locations.length ?? 0 },
-                { label: "压力", value: props.usageView?.slice?.pressureSources.length ?? handbook?.tensions.length ?? 0 },
+                { label: translateUi("规则"), value: props.usageView?.slice?.appliedRules.length ?? handbook?.coreRules.length ?? 0 },
+                { label: translateUi("势力"), value: props.usageView?.slice?.activeForces.length ?? forces.length },
+                { label: translateUi("地点"), value: props.usageView?.slice?.activeLocations.length ?? handbook?.locations.length ?? 0 },
+                { label: translateUi("压力"), value: props.usageView?.slice?.pressureSources.length ?? handbook?.tensions.length ?? 0 },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between border-t border-border/45 pt-2">
                   <span className="text-muted-foreground">{item.label}</span>
@@ -330,9 +334,9 @@ export default function NovelWorldManagerCard(props: NovelWorldManagerCardProps)
         />
       ) : (
         <DetailDisclosure
-          title="选择或生成本书世界"
-          description="从世界库导入、根据本书生成，或先创建一个自定义世界骨架。"
-          meta="待选择"
+          title={translateUi("选择或生成本书世界")}
+          description={translateUi("从世界库导入、根据本书生成，或先创建一个自定义世界骨架。")}
+          meta={translateUi("待选择")}
           defaultOpen
         >
           <div id="novel-world-source">

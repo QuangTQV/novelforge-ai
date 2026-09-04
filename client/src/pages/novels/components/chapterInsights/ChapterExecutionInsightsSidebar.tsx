@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import type { ChapterExecutionInsightsSidebarProps } from "./chapterInsights.types";
 import CharacterDynamicsPanel from "./CharacterDynamicsPanel";
@@ -21,11 +22,11 @@ function DesktopSidebar(props: ChapterExecutionInsightsSidebarProps) {
       <CardHeader className="gap-3 border-b bg-gradient-to-b from-muted/30 via-background to-background pb-4 xl:shrink-0">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <CardTitle className="text-base">章节侧栏</CardTitle>
-            <p className="text-sm leading-6 text-muted-foreground">先看本章概览，再查看时间线、角色动态和资源风险。</p>
+            <CardTitle className="text-base">{translateUi("章节侧栏")}</CardTitle>
+            <p className="text-sm leading-6 text-muted-foreground">{translateUi("先看本章概览，再查看时间线、角色动态和资源风险。")}</p>
           </div>
           <Badge variant="outline" className="shrink-0">
-            {props.selectedChapter ? `第${props.selectedChapter.order}章` : "未选章节"}
+            {props.selectedChapter ? translateUi("第{{value0}}章", { value0: props.selectedChapter.order }) : translateUi("未选章节")}
           </Badge>
         </div>
       </CardHeader>
@@ -33,10 +34,10 @@ function DesktopSidebar(props: ChapterExecutionInsightsSidebarProps) {
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "overview" | "timeline" | "character" | "resources")} className="xl:flex xl:h-full xl:min-h-0 xl:flex-col">
           <div className="shrink-0 border-b px-4 py-3">
             <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-xl bg-muted/50 p-1.5">
-              <TabsTrigger value="overview" className="rounded-lg px-2 py-2 text-xs">本章概览</TabsTrigger>
-              <TabsTrigger value="timeline" className="rounded-lg px-2 py-2 text-xs">时间线</TabsTrigger>
-              <TabsTrigger value="character" className="rounded-lg px-2 py-2 text-xs">角色动态</TabsTrigger>
-              <TabsTrigger value="resources" className="rounded-lg px-2 py-2 text-xs">资源风险</TabsTrigger>
+              <TabsTrigger value="overview" className="rounded-lg px-2 py-2 text-xs">{translateUi("本章概览")}</TabsTrigger>
+              <TabsTrigger value="timeline" className="rounded-lg px-2 py-2 text-xs">{translateUi("时间线")}</TabsTrigger>
+              <TabsTrigger value="character" className="rounded-lg px-2 py-2 text-xs">{translateUi("角色动态")}</TabsTrigger>
+              <TabsTrigger value="resources" className="rounded-lg px-2 py-2 text-xs">{translateUi("资源风险")}</TabsTrigger>
             </TabsList>
           </div>
           <div className="min-h-0 xl:flex-1 xl:overflow-y-auto xl:px-4 xl:pb-4 xl:pt-4">
@@ -77,18 +78,18 @@ function MobileSidebar(props: ChapterExecutionInsightsSidebarProps) {
       <div className="rounded-xl border border-border/70 bg-background p-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="text-sm font-semibold text-foreground">章节侧栏</div>
-            <div className="mt-1 text-xs leading-5 text-muted-foreground">先看本章概览，再查看时间线、角色动态和资源风险。</div>
+            <div className="text-sm font-semibold text-foreground">{translateUi("章节侧栏")}</div>
+            <div className="mt-1 text-xs leading-5 text-muted-foreground">{translateUi("先看本章概览，再查看时间线、角色动态和资源风险。")}</div>
           </div>
-          <Badge variant="outline">{props.selectedChapter ? `第${props.selectedChapter.order}章` : "未选章节"}</Badge>
+          <Badge variant="outline">{props.selectedChapter ? translateUi("第{{value0}}章", { value0: props.selectedChapter.order }) : translateUi("未选章节")}</Badge>
         </div>
       </div>
 
       <details className="group rounded-xl border border-border/70 bg-background p-3" open>
         <summary className="cursor-pointer list-none">
           <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-medium text-foreground">本章概览</div>
-            <Badge variant="secondary">优先查看</Badge>
+            <div className="text-sm font-medium text-foreground">{translateUi("本章概览")}</div>
+            <Badge variant="secondary">{translateUi("优先查看")}</Badge>
           </div>
         </summary>
         <div className="pt-3">
@@ -106,8 +107,8 @@ function MobileSidebar(props: ChapterExecutionInsightsSidebarProps) {
       <details className="group rounded-xl border border-border/70 bg-background p-3" open>
         <summary className="cursor-pointer list-none">
           <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-medium text-foreground">时间线</div>
-            <Badge variant="secondary">默认</Badge>
+            <div className="text-sm font-medium text-foreground">{translateUi("时间线")}</div>
+            <Badge variant="secondary">{translateUi("默认")}</Badge>
           </div>
         </summary>
         <div className="pt-3">
@@ -123,8 +124,8 @@ function MobileSidebar(props: ChapterExecutionInsightsSidebarProps) {
       <details className="group rounded-xl border border-border/70 bg-background p-3">
         <summary className="cursor-pointer list-none">
           <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-medium text-foreground">角色动态</div>
-            <Badge variant="outline">展开查看</Badge>
+            <div className="text-sm font-medium text-foreground">{translateUi("角色动态")}</div>
+            <Badge variant="outline">{translateUi("展开查看")}</Badge>
           </div>
         </summary>
         <div className="pt-3">
@@ -135,8 +136,8 @@ function MobileSidebar(props: ChapterExecutionInsightsSidebarProps) {
       <details className="group rounded-xl border border-border/70 bg-background p-3">
         <summary className="cursor-pointer list-none">
           <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-medium text-foreground">资源与风险</div>
-            <Badge variant="outline">展开查看</Badge>
+            <div className="text-sm font-medium text-foreground">{translateUi("资源与风险")}</div>
+            <Badge variant="outline">{translateUi("展开查看")}</Badge>
           </div>
         </summary>
         <div className="pt-3">

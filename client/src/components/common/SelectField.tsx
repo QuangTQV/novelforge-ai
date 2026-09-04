@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Select,
   SelectContent,
@@ -37,18 +38,21 @@ export default function SelectField({
   value,
   onValueChange,
   options,
-  placeholder = "请选择",
+  placeholder: placeholderProp,
   label,
   description,
   helperText,
   error,
   required = false,
   disabled = false,
-  emptyText = "暂无可选项",
+  emptyText: emptyTextProp,
   className,
   triggerClassName,
   contentClassName,
 }: SelectFieldProps) {
+  const { t } = useTranslation("components");
+  const placeholder = placeholderProp ?? t("select.placeholder");
+  const emptyText = emptyTextProp ?? t("select.empty");
   const fieldId = useId();
   const normalizedValue = value === "" ? EMPTY_OPTION_VALUE : value;
 

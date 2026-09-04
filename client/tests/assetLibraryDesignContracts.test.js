@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { assertCopy } from "./localeCopy.mjs";
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -82,37 +83,37 @@ test("phase one asset pages expose purpose status recommendation and recovery st
 });
 
 test("knowledge library presents a document shelf before maintenance controls", () => {
-  assert.match(knowledgeOverview, /aria-label="知识资料状态"/);
+  assertCopy(knowledgeOverview, "知识资料状态");
   assert.match(knowledgeOverview, /recommendation\.tone !== "success"/);
   assert.match(knowledgePage, /TabsTrigger value="documents" className="rounded-full/);
-  assert.match(knowledgeDocuments, /资料书架/);
+  assertCopy(knowledgeDocuments, "资料书架");
   assert.match(knowledgeDocuments, /xl:grid-cols-2/);
-  assert.match(knowledgeDocuments, /更多操作/);
-  assert.match(knowledgeDocuments, /label="继续创作"/);
+  assertCopy(knowledgeDocuments, "更多操作");
+  assertCopy(knowledgeDocuments, "继续创作");
   assert.match(knowledgeDocuments, /onOpenRecallTest/);
   assert.match(knowledgeDocuments, /onReindexDocument/);
   assert.match(knowledgeDocuments, /confirmArchiveDocument/);
 });
 
 test("knowledge maintenance keeps recovery obvious and technical detail secondary", () => {
-  assert.match(knowledgeOps, /资料检索可用状态/);
-  assert.match(knowledgeOps, /检查检索设置/);
-  assert.match(knowledgeOps, /资料同步记录/);
-  assert.match(knowledgeOps, /任务详情/);
+  assertCopy(knowledgeOps, "资料检索可用状态");
+  assertCopy(knowledgeOps, "检查检索设置");
+  assertCopy(knowledgeOps, "资料同步记录");
+  assertCopy(knowledgeOps, "任务详情");
   assert.doesNotMatch(knowledgeOps, /最近失败任务/);
-  assert.match(knowledgeSettings, /让资料参与创作/);
-  assert.match(knowledgeSettings, /选择资料理解方式/);
-  assert.match(knowledgeSettings, /连接资料库/);
-  assert.match(knowledgeSettings, /高级配置/);
-  assert.match(knowledgeSettings, /保存检索设置/);
+  assertCopy(knowledgeSettings, "让资料参与创作");
+  assertCopy(knowledgeSettings, "选择资料理解方式");
+  assertCopy(knowledgeSettings, "连接资料库");
+  assertCopy(knowledgeSettings, "高级配置");
+  assertCopy(knowledgeSettings, "保存检索设置");
 });
 
 test("world library presents reusable story samples before handbook detail", () => {
-  assert.match(worldList, /如何把样本用于小说/);
-  assert.match(worldList, /展开创作线索/);
+  assertCopy(worldList, "如何把样本用于小说");
+  assertCopy(worldList, "展开创作线索");
   assert.match(worldList, /2xl:grid-cols-3/);
-  assert.match(worldList, /查看世界手册/);
-  assert.match(worldList, /整理样本/);
+  assertCopy(worldList, "查看世界手册");
+  assertCopy(worldList, "整理样本");
   assert.match(worldList, /handleDelete/);
   assert.match(worldList, /worldListQuery\.isLoading/);
   assert.match(worldList, /worldListQuery\.isError/);
@@ -120,27 +121,27 @@ test("world library presents reusable story samples before handbook detail", () 
 });
 
 test("world workspace keeps handbook reading primary and AI maintenance guided", () => {
-  assert.match(worldWorkspace, /返回世界样本库/);
-  assert.match(worldWorkspace, /创作模型/);
+  assertCopy(worldWorkspace, "返回世界样本库");
+  assertCopy(worldWorkspace, "创作模型");
   assert.match(worldWorkspace, /TabsTrigger value="structure" className="rounded-full/);
-  assert.match(worldHandbook, /先确认世界给读者的印象与核心矛盾/);
-  assert.match(worldOverview, /阅读世界与图谱/);
-  assert.match(worldOverview, /条核心规则/);
-  assert.match(worldLayers, /AI 分层整理/);
-  assert.match(worldLayers, /AI 精修当前内容/);
-  assert.match(worldDeepening, /补齐关键设定/);
-  assert.match(worldConsistency, /检查世界一致性/);
+  assertCopy(worldHandbook, "世界给读者的第一眼");
+  assert.match(worldOverview, /t\("ui\.(?:readGraph|readHandbook)"\)/);
+  assertCopy(worldOverview, "条核心规则");
+  assertCopy(worldLayers, "分层整理");
+  assertCopy(worldLayers, "精修当前内容");
+  assertCopy(worldDeepening, "补齐关键设定");
+  assertCopy(worldConsistency, "检查世界一致性");
   assert.match(worldAssets, /rounded-full px-4 py-2/);
-  assert.match(worldAssets, /地图与图谱/);
-  assert.match(worldAssets, /版本快照/);
-  assert.match(worldAssets, /导出备份/);
-  assert.match(worldAssets, /导入文本/);
+  assertCopy(worldAssets, "地图与图谱");
+  assertCopy(worldAssets, "版本快照");
+  assertCopy(worldAssets, "导出备份");
+  assertCopy(worldAssets, "导入文本");
 });
 
 test("world visualizations separate layout, canvas, and view controls", () => {
   assert.match(worldVisualization, /WorldGraphCanvas/);
-  assert.match(worldVisualization, /势力图谱 ·/);
-  assert.match(worldVisualization, /世界地图 ·/);
+  assertCopy(worldVisualization, "势力图谱 ·");
+  assertCopy(worldVisualization, "世界地图 ·");
   assert.match(worldVisualization, /WorldTimelinePanel/);
   assert.match(worldGraphCanvas, /ReactFlow/);
   assert.match(worldGraphCanvas, /WorldGraphNode/);
@@ -148,23 +149,23 @@ test("world visualizations separate layout, canvas, and view controls", () => {
   assert.match(worldGraphCanvas, /getVisibleEdgeLabelIds/);
   assert.match(worldGraphCanvas, /edgeHoverTimerRef/);
   assert.match(worldGraphCanvas, /window\.setTimeout/);
-  assert.match(worldGraphCanvas, /拖动地点整理空间/);
-  assert.match(worldGraphCanvas, /悬停连线查看双方与完整关系/);
+  assertCopy(worldGraphCanvas, "拖动地点整理空间");
+  assertCopy(worldGraphCanvas, "悬停连线查看双方与完整关系");
   assert.match(worldGraphCanvas, /FullscreenView/);
-  assert.match(worldGraphCanvas, /全屏查看图谱/);
-  assert.match(worldGraphCanvas, /退出图谱全屏/);
+  assertCopy(worldGraphCanvas, "全屏查看图谱");
+  assertCopy(worldGraphCanvas, "退出图谱全屏");
   assert.match(worldGraphElements, /EdgeLabelRenderer/);
   assert.match(worldGraphElements, /interactionWidth=\{28\}/);
   assert.match(worldGraphElements, /line-clamp-2/);
   assert.match(worldGraphElements, /group-focus-within:block/);
-  assert.match(worldGraphElements, /点击画布空白处收起/);
+  assertCopy(worldGraphElements, "点击画布空白处收起");
   assert.match(worldGraphLayout, /forceSimulation/);
   assert.match(worldGraphLayout, /forceLink/);
   assert.match(worldGraphLayout, /forceX/);
   assert.match(worldGraphLayout, /spreadAxis/);
   assert.match(worldGraphLayout, /seededRandom/);
   assert.match(worldGraphLayout, /getVisibleEdgeLabelIds/);
-  assert.match(worldTimeline, /横向世界时间线，可左右滚动/);
+  assertCopy(worldTimeline, "横向世界时间线，可左右滚动");
   assert.match(worldTimeline, /gridTemplateColumns/);
   assert.match(worldTimeline, /bottom-\[calc\(50%\+38px\)\]/);
   assert.match(worldTimeline, /md:hidden/);
@@ -180,7 +181,7 @@ test("genre library uses a compact tree browser with a separate detail surface",
   assert.match(genreTreeBrowser, /AssetTreeNavigator/);
   assert.match(assetTreeNavigator, /role="tree"/);
   assert.match(assetTreeNavigator, /role="treeitem"/);
-  assert.match(genreTreeBrowser, /题材目录/);
+  assertCopy(genreTreeBrowser, "题材目录");
   assert.match(genreTreeBrowser, /selected-genre-title/);
   assert.match(genreTreeBrowser, /lg:grid-cols-\[320px_minmax\(0,1fr\)\]/);
   assert.match(genreTreeBrowser, /viewportClassName="max-h-\[380px\]"/);
@@ -191,30 +192,30 @@ test("genre library uses a compact tree browser with a separate detail surface",
 test("story mode library reuses the tree navigator and keeps mode contracts in the detail pane", () => {
   assert.match(storyModePage, /StoryModeTreeBrowser/);
   assert.match(storyModeTreeBrowser, /AssetTreeNavigator/);
-  assert.match(storyModeTreeBrowser, /推进模式目录/);
+  assertCopy(storyModeTreeBrowser, "推进模式目录");
   assert.match(storyModeTreeBrowser, /StoryModeProfileDetails/);
-  assert.match(storyModeProfileDetails, /核心驱动/);
-  assert.match(storyModeProfileDetails, /读者回报/);
-  assert.match(storyModeProfileDetails, /推进单元/);
-  assert.match(storyModeProfileDetails, /冲突上限/);
+  assertCopy(storyModeProfileDetails, "核心驱动");
+  assertCopy(storyModeProfileDetails, "读者回报");
+  assertCopy(storyModeProfileDetails, "推进单元");
+  assertCopy(storyModeProfileDetails, "冲突上限");
   assert.doesNotMatch(storyModeTreeBrowser, /shadow-(?:sm|md|lg|xl|2xl)/);
 });
 
 test("writing formula keeps a compact asset list and reveals the selected profile in place", () => {
-  assert.match(writingFormulaLanding, /先选一套写法，再决定要编辑、应用还是去 AI 味/);
+  assertCopy(writingFormulaLanding, "先选一套写法，再决定要编辑、应用还是去 AI 味");
   assert.match(writingFormulaLanding, /isSelected \? \(/);
-  assert.match(writingFormulaLanding, /读感与定位/);
-  assert.match(writingFormulaLanding, /规则摘要/);
-  assert.match(writingFormulaLanding, /资产概览/);
-  assert.match(writingFormulaLanding, /编辑设定/);
-  assert.match(writingFormulaLanding, /应用与测试/);
-  assert.match(writingFormulaLanding, /去 AI 味/);
+  assertCopy(writingFormulaLanding, "读感定位");
+  assertCopy(writingFormulaLanding, "规则摘要");
+  assertCopy(writingFormulaLanding, "我的写法资产");
+  assertCopy(writingFormulaLanding, "编辑设定");
+  assertCopy(writingFormulaLanding, "应用与测试");
+  assertCopy(writingFormulaLanding, "去 AI 味");
   assert.doesNotMatch(writingFormulaLanding, /xl:sticky xl:top-4/);
-  assert.match(writingFormulaCreateDialog, /从一种读感开始/);
-  assert.match(writingFormulaCreateDialog, /用模板开始/);
-  assert.match(writingFormulaCreateDialog, /说一句想法/);
-  assert.match(writingFormulaCreateDialog, /从素材学习/);
-  assert.match(writingFormulaCreateDialog, /AI 帮我先搭一套/);
+  // create dialog keeps three entry paths (template / brief / material) plus an AI-drafts option
+  assert.match(writingFormulaCreateDialog, /t\("ui\.tabs\.template"\)/);
+  assert.match(writingFormulaCreateDialog, /t\("ui\.tabs\.brief"\)/);
+  assert.match(writingFormulaCreateDialog, /t\("ui\.tabs\.material"\)/);
+  assert.match(writingFormulaCreateDialog, /t\("ui\.(?:aiTitle|generateFormula)"\)/);
   assert.ok(writingFormulaLanding.split("\n").length < 450);
   assert.ok(writingFormulaWorkbench.split("\n").length < 350);
   assert.ok(writingFormulaCreateDialog.split("\n").length < 700);
@@ -225,9 +226,9 @@ test("story mode creation keeps AI assistance beside a grouped, independently sc
   assert.match(storyModeCreateDialog, /AppDialogContent/);
   assert.match(storyModeCreateDialog, /lg:grid-cols-\[340px_minmax\(0,1fr\)\]/);
   assert.match(storyModeCreateDialog, /lg:overflow-y-auto/);
-  assert.match(storyModeCreateDialog, /让 AI 起草/);
-  assert.match(storyModeCreateDialog, /同时创建的子类/);
-  assert.match(storyModeCreateDialog, /高级设置：人工提示补充/);
+  assertCopy(storyModeCreateDialog, "让 AI 起草");
+  assertCopy(storyModeCreateDialog, "同时创建的子类");
+  assertCopy(storyModeCreateDialog, "高级设置：人工提示补充");
   assert.doesNotMatch(storyModeCreateDialog, /max-h-\[90vh\].*overflow-auto/);
 
   for (const section of ["核心体验", "推进节奏", "边界与防跑偏"]) {
@@ -238,10 +239,10 @@ test("story mode creation keeps AI assistance beside a grouped, independently sc
 test("story mode expansion recommends distinct additions from the existing library", () => {
   assert.match(storyModePage, /StoryModeExpansionDialog/);
   assert.match(storyModePage, /generateStoryModeExpansion/);
-  assert.match(storyModePage, /扩展推进模式/);
-  assert.match(storyModeExpansionDialog, /扩展范围/);
-  assert.match(storyModeExpansionDialog, /推荐新方向/);
-  assert.match(storyModeExpansionDialog, /推进单元/);
-  assert.match(storyModeExpansionDialog, /加入模式库/);
+  assertCopy(storyModePage, "扩展推进模式");
+  assertCopy(storyModeExpansionDialog, "扩展范围");
+  assertCopy(storyModeExpansionDialog, "推荐新方向");
+  assertCopy(storyModeExpansionDialog, "推进单元");
+  assertCopy(storyModeExpansionDialog, "加入模式库");
   assert.doesNotMatch(storyModeExpansionDialog, /shadow-(?:sm|md|lg|xl|2xl)/);
 });

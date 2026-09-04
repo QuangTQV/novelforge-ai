@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import type { DirectorContinuationMode } from "@ai-novel/shared/types/novelDirector";
 import type {
@@ -127,10 +128,10 @@ export default function NovelList() {
     mutationFn: (id: string) => deleteNovel(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.novels.all });
-      toast.success("小说已删除。");
+      toast.success(translateUi("小说已删除。"));
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "删除小说失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("删除小说失败。"));
     },
   });
 
@@ -143,10 +144,10 @@ export default function NovelList() {
     ),
     onSuccess: ({ blob, fileName }) => {
       createDownload(blob, fileName);
-      toast.success("导出已开始。");
+      toast.success(translateUi("导出已开始。"));
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "导出小说失败。");
+      toast.error(error instanceof Error ? error.message : translateUi("导出小说失败。"));
     },
   });
 
@@ -180,8 +181,8 @@ export default function NovelList() {
         error instanceof Error
           ? error.message
           : input.mode === "auto_execute_range"
-            ? "继续自动执行当前章节范围失败。"
-            : "继续自动导演失败。",
+            ? translateUi("继续自动执行当前章节范围失败。")
+            : translateUi("继续自动导演失败。"),
       );
     },
   });
@@ -202,7 +203,7 @@ export default function NovelList() {
   }, [page, totalPages]);
 
   const handleDelete = (novelId: string, title: string) => {
-    const confirmed = window.confirm(`确认删除《${title}》吗？该操作会直接删除当前小说。`);
+    const confirmed = window.confirm(translateUi("确认删除《{{value0}}》吗？该操作会直接删除当前小说。", { value0: title }));
     if (!confirmed) {
       return;
     }
@@ -314,11 +315,11 @@ export default function NovelList() {
       ) : novelListQuery.isError ? (
         <Card>
           <CardHeader>
-            <CardTitle>加载小说列表失败</CardTitle>
-            <CardDescription>当前无法读取项目列表，可以重试一次。</CardDescription>
+            <CardTitle>{translateUi("加载小说列表失败")}</CardTitle>
+            <CardDescription>{translateUi("当前无法读取项目列表，可以重试一次。")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => void novelListQuery.refetch()}>重新加载</Button>
+            <Button onClick={() => void novelListQuery.refetch()}>{translateUi("重新加载")}</Button>
           </CardContent>
         </Card>
       ) : novels.length === 0 ? (
@@ -329,7 +330,7 @@ export default function NovelList() {
             <div className="space-y-7">
               {continueNovels.length > 0 ? (
                 <section className="space-y-3">
-                  <h2 className="text-lg font-semibold">继续创作</h2>
+                  <h2 className="text-lg font-semibold">{translateUi("继续创作")}</h2>
                   <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
                     {continueNovels.map((novel) => (
                       <NovelContinueCard key={`continue-${novel.id}`} novel={novel} onManageCover={setCoverNovelId} onDelete={handleDelete} />
@@ -338,7 +339,7 @@ export default function NovelList() {
                 </section>
               ) : null}
               <section className="space-y-3">
-                <h2 className="text-lg font-semibold">我的作品</h2>
+                <h2 className="text-lg font-semibold">{translateUi("我的作品")}</h2>
                 <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
                   {novels.filter((novel) => !continueNovels.some((item) => item.id === novel.id)).map((novel) => (
                     <NovelShelfCard key={novel.id} novel={novel} onManageCover={setCoverNovelId} onDownload={downloadNovelMutation.mutate} onDelete={handleDelete} />
@@ -404,20 +405,21 @@ export default function NovelList() {
       >
         <AppDialogContent
           className="max-w-2xl"
-          title="AI 驾驶舱"
+          title={translateUi("AI 驾驶舱")}
           description={
             selectedCockpitNovel?.title
-              ? `查看《${selectedCockpitNovel.title}》的 AI 推进状态和下一步动作。`
-              : "查看这本书的 AI 推进状态和下一步动作。"
+              ? translateUi("查看《{{value0}}》的 AI 推进状态和下一步动作。", { value0: selectedCockpitNovel.title })
+              : translateUi("查看这本书的 AI 推进状态和下一步动作。")
           }
         >
           {cockpitProjectionQuery.isPending ? (
             <div className="rounded-lg border p-3 text-sm text-muted-foreground">
-              读取这本书的 AI 状态...
+
+              {translateUi("读取这本书的 AI 状态...")}
             </div>
           ) : cockpitProjectionQuery.isError ? (
             <div className="rounded-lg border p-3">
-              <div className="text-sm text-muted-foreground">无法读取这本书的 AI 状态，请稍后重试。</div>
+              <div className="text-sm text-muted-foreground">{translateUi("无法读取这本书的 AI 状态，请稍后重试。")}</div>
               <Button
                 type="button"
                 size="sm"
@@ -425,7 +427,8 @@ export default function NovelList() {
                 className="mt-3"
                 onClick={() => void cockpitProjectionQuery.refetch()}
               >
-                重新读取
+
+                {translateUi("重新读取")}
               </Button>
             </div>
           ) : cockpitProjection ? (
@@ -440,7 +443,7 @@ export default function NovelList() {
               }}
             />
           ) : (
-            <AICockpit fallbackSummary="这本书没有需要处理的 AI 自动推进任务。" />
+            <AICockpit fallbackSummary={translateUi("这本书没有需要处理的 AI 自动推进任务。")} />
           )}
         </AppDialogContent>
       </Dialog>

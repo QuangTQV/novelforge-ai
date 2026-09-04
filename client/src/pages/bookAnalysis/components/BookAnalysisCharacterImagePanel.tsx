@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { BookAnalysisCharacter } from "@ai-novel/shared/types/bookAnalysisCharacter";
@@ -92,7 +93,7 @@ export default function BookAnalysisCharacterImagePanel({
     onSuccess: async (response) => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.baseCharacters.all });
       setPromoteOpen(false);
-      toast.success(response.data?.baseCharacter.name ? `已加入角色库：${response.data.baseCharacter.name}` : "已加入角色库。");
+      toast.success(response.data?.baseCharacter.name ? translateUi("已加入角色库：{{value0}}", { value0: response.data.baseCharacter.name }) : translateUi("已加入角色库。"));
     },
   });
 
@@ -120,30 +121,33 @@ export default function BookAnalysisCharacterImagePanel({
       <ImageGenerationConfirmDialog {...flow.dialogProps} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-medium">形象图</span>
-          <span className="text-xs text-muted-foreground">{assets.length} 张</span>
-          {primaryAsset ? <Badge variant="secondary" className="border-0 font-normal">已设主图</Badge> : null}
+          <span className="font-medium">{translateUi("形象图")}</span>
+          <span className="text-xs text-muted-foreground">{assets.length}  {translateUi("张")}</span>
+          {primaryAsset ? <Badge variant="secondary" className="border-0 font-normal">{translateUi("已设主图")}</Badge> : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <Button size="sm" variant="secondary" className="rounded-full" onClick={startGenerate} disabled={disabled || Boolean(activeTaskId)}>
-            生成形象图
+
+            {translateUi("生成形象图")}
           </Button>
           <Button size="sm" variant="ghost" className="rounded-full" onClick={() => setPromoteOpen(true)} disabled={disabled || promoteMutation.isPending}>
-            加入角色库
+
+            {translateUi("加入角色库")}
           </Button>
         </div>
       </div>
 
       {activeTask ? (
         <div className="rounded-xl bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
-          当前任务：{IMAGE_STATUS_TEXT[activeTask.status] ?? activeTask.status}
+
+          {translateUi("当前任务：")}{IMAGE_STATUS_TEXT[activeTask.status] ?? activeTask.status}
           {activeTask.error ? <span className="ml-2 text-destructive">{activeTask.error}</span> : null}
         </div>
       ) : null}
 
-      {assetsQuery.isLoading ? <div className="text-xs text-muted-foreground">正在读取形象图。</div> : null}
+      {assetsQuery.isLoading ? <div className="text-xs text-muted-foreground">{translateUi("正在读取形象图。")}</div> : null}
       {!assetsQuery.isLoading && assets.length === 0 ? (
-        <div className="text-xs text-muted-foreground">可生成一张角色形象图，再决定是否加入角色库。</div>
+        <div className="text-xs text-muted-foreground">{translateUi("可生成一张角色形象图，再决定是否加入角色库。")}</div>
       ) : null}
       {assets.length > 0 ? (
         <div className="grid gap-2 sm:grid-cols-2">
@@ -151,12 +155,12 @@ export default function BookAnalysisCharacterImagePanel({
             <div key={asset.id} className="space-y-2 overflow-hidden rounded-xl bg-muted/20 p-2">
               <img
                 src={resolveImageAssetUrl(asset.url)}
-                alt={`${character.name}-形象图`}
+                alt={translateUi("{{value0}}-形象图", { value0: character.name })}
                 className="aspect-square w-full rounded-lg object-cover"
                 loading="lazy"
               />
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs text-muted-foreground">{asset.isPrimary ? "主图" : "候选图"}</span>
+                <span className="text-xs text-muted-foreground">{asset.isPrimary ? translateUi("主图") : translateUi("候选图")}</span>
                 <div className="flex flex-wrap gap-2">
                   <Button
                     size="sm"
@@ -165,20 +169,22 @@ export default function BookAnalysisCharacterImagePanel({
                     onClick={() => setPrimaryMutation.mutate(asset.id)}
                     disabled={asset.isPrimary || setPrimaryMutation.isPending}
                   >
-                    设主图
+
+                    {translateUi("设主图")}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     className="rounded-full text-muted-foreground hover:text-destructive"
                     onClick={() => {
-                      if (window.confirm("确认删除这张形象图？")) {
+                      if (window.confirm(translateUi("确认删除这张形象图？"))) {
                         deleteMutation.mutate(asset);
                       }
                     }}
                     disabled={deleteMutation.isPending && deleteMutation.variables?.id === asset.id}
                   >
-                    删除
+
+                    {translateUi("删除")}
                   </Button>
                 </div>
               </div>
@@ -189,21 +195,23 @@ export default function BookAnalysisCharacterImagePanel({
 
       <Dialog open={promoteOpen} onOpenChange={setPromoteOpen}>
         <AppDialogContent
-          title={`加入角色库：${character.name}`}
+          title={translateUi("加入角色库：{{value0}}", { value0: character.name })}
           bodyClassName="space-y-3"
           footer={(
             <>
               <Button type="button" variant="outline" onClick={() => setPromoteOpen(false)} disabled={promoteMutation.isPending}>
-                取消
+
+                {translateUi("取消")}
               </Button>
               <Button type="button" onClick={() => promoteMutation.mutate()} disabled={promoteMutation.isPending}>
-                {promoteMutation.isPending ? "加入中..." : "确认加入"}
+                {promoteMutation.isPending ? translateUi("加入中...") : translateUi("确认加入")}
               </Button>
             </>
           )}
         >
           <div className="text-sm text-muted-foreground">
-            会把该角色的人物字段复制到角色库；拆书证据和场景记录仍保留在拆书档案中。
+
+            {translateUi("会把该角色的人物字段复制到角色库；拆书证据和场景记录仍保留在拆书档案中。")}
           </div>
           <label className="flex items-center gap-2 text-sm">
             <input
@@ -211,11 +219,11 @@ export default function BookAnalysisCharacterImagePanel({
               checked={includePrimaryImage}
               onChange={(event) => setIncludePrimaryImage(event.target.checked)}
             />
-            <span>同时把主图加入角色库</span>
+            <span>{translateUi("同时把主图加入角色库")}</span>
           </label>
           {promoteMutation.error ? (
             <div className="text-sm text-destructive">
-              {promoteMutation.error instanceof Error ? promoteMutation.error.message : "加入角色库失败。"}
+              {promoteMutation.error instanceof Error ? promoteMutation.error.message : translateUi("加入角色库失败。")}
             </div>
           ) : null}
         </AppDialogContent>

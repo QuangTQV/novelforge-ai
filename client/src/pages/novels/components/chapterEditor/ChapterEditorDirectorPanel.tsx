@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   ChapterEditorCandidate,
   ChapterEditorDiagnosticCard,
@@ -80,7 +81,7 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
       <div className="shrink-0 space-y-3 border-b border-border/70 px-4 py-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-sm font-medium text-foreground">AI 修正导演面板</div>
+            <div className="text-sm font-medium text-foreground">{translateUi("AI 修正导演面板")}</div>
             <div className="text-xs text-muted-foreground">{statusText}</div>
           </div>
           <div className="flex items-center gap-2">
@@ -90,7 +91,8 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
               onClick={() => onChangeViewMode("block")}
               disabled={isIdle}
             >
-              段落对比
+
+              {translateUi("段落对比")}
             </Button>
             <Button
               size="sm"
@@ -98,7 +100,8 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
               onClick={() => onChangeViewMode("inline")}
               disabled={isIdle}
             >
-              细节标记
+
+              {translateUi("细节标记")}
             </Button>
           </div>
         </div>
@@ -109,14 +112,16 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
             variant={revisionScope === "selection" ? "default" : "outline"}
             onClick={() => onScopeChange("selection")}
           >
-            片段模式
+
+            {translateUi("片段模式")}
           </Button>
           <Button
             size="sm"
             variant={revisionScope === "chapter" ? "default" : "outline"}
             onClick={() => onScopeChange("chapter")}
           >
-            整章模式
+
+            {translateUi("整章模式")}
           </Button>
         </div>
       </div>
@@ -126,9 +131,10 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
           <>
             {isWorkspaceLoading ? (
               <div className="rounded-2xl border border-dashed border-border/70 bg-muted/10 p-4">
-                <div className="text-sm font-medium text-foreground">AI 正在梳理当前章节</div>
+                <div className="text-sm font-medium text-foreground">{translateUi("AI 正在梳理当前章节")}</div>
                 <div className="mt-2 text-sm leading-6 text-muted-foreground">
-                  正在分析本章在卷中的位置、优先修正任务和可直接处理的片段，你可以稍等几秒再开始。
+
+                  {translateUi("正在分析本章在卷中的位置、优先修正任务和可直接处理的片段，你可以稍等几秒再开始。")}
                 </div>
                 <div className="mt-4 space-y-3">
                   <LoadingBar widthClassName="w-2/3" />
@@ -139,7 +145,7 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
             ) : null}
 
             <div className="rounded-2xl border border-border/70 bg-muted/10 p-4">
-              <div className="text-sm font-medium text-foreground">当前最推荐动作</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("当前最推荐动作")}</div>
               {isWorkspaceLoading ? (
                 <div className="mt-3 space-y-3">
                   <LoadingBar widthClassName="w-1/2" />
@@ -151,12 +157,12 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
                 <>
                   <div className="mt-2 text-sm leading-6 text-muted-foreground">
                     {recommendedTask
-                      ? `${recommendedTask.title}。${recommendedTask.summary}`
-                      : "AI 暂未生成推荐任务，你可以直接告诉 AI 你的修改想法。"}
+                      ? translateUi("{{value0}}。{{value1}}", { value0: recommendedTask.title, value1: recommendedTask.summary })
+                      : translateUi("AI 暂未生成推荐任务，你可以直接告诉 AI 你的修改想法。")}
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <Button size="sm" onClick={onRunRecommended} disabled={!recommendedTask || isGenerating}>
-                      {isGenerating ? "处理中..." : "直接处理推荐任务"}
+                      {isGenerating ? translateUi("处理中...") : translateUi("直接处理推荐任务")}
                     </Button>
                   </div>
                 </>
@@ -178,14 +184,15 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
                     onClick={onRunSelectedDiagnostic}
                     disabled={selectedDiagnosticCard.recommendedScope === "selection" && !canRunSelectionRevision}
                   >
-                    直接用 AI 处理这张问题卡
+
+                    {translateUi("直接用 AI 处理这张问题卡")}
                   </Button>
                 </div>
               </div>
             ) : null}
 
             <div className="rounded-2xl border border-border/70 bg-muted/10 p-4">
-              <div className="text-sm font-medium text-foreground">告诉 AI 怎么改</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("告诉 AI 怎么改")}</div>
               {isWorkspaceLoading ? (
                 <div className="mt-3 space-y-3">
                   <LoadingBar widthClassName="w-1/3" />
@@ -196,28 +203,29 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
               ) : (
                 <>
                   <div className="mt-2 text-xs text-muted-foreground">
-                    当前目标：{currentTargetDescription}
+
+                    {translateUi("当前目标：")}{currentTargetDescription}
                   </div>
                   <textarea
                     className="mt-3 min-h-[140px] w-full resize-none rounded-2xl border border-border bg-background px-3 py-3 text-sm outline-none"
                     placeholder={revisionScope === "selection"
-                      ? "例如：让这段更压抑一点，但不要改剧情事实，并把节奏压得更紧。"
-                      : "例如：把这一章整体改得更压抑一点，但不要改剧情事实，并且更贴近卷中承压阶段。"}
+                      ? translateUi("例如：让这段更压抑一点，但不要改剧情事实，并把节奏压得更紧。")
+                      : translateUi("例如：把这一章整体改得更压抑一点，但不要改剧情事实，并且更贴近卷中承压阶段。")}
                     value={revisionInstruction}
                     onChange={(event) => onInstructionChange(event.target.value)}
                   />
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                     <div className="text-xs text-muted-foreground">
                       {revisionScope === "selection"
-                        ? "片段模式会优先使用你手动选中的正文；如果没有手动选段，会使用当前问题卡定位的片段。"
-                        : "整章模式会基于整章内容生成候选，仍然需要你先比较再接受。"}
+                        ? translateUi("片段模式会优先使用你手动选中的正文；如果没有手动选段，会使用当前问题卡定位的片段。")
+                        : translateUi("整章模式会基于整章内容生成候选，仍然需要你先比较再接受。")}
                     </div>
                     <Button
                       size="sm"
                       onClick={onRunFreeform}
                       disabled={isGenerating || revisionInstruction.trim().length === 0 || (revisionScope === "selection" && !canRunSelectionRevision)}
                     >
-                      {isGenerating ? "生成中..." : "发起 AI 修正"}
+                      {isGenerating ? translateUi("生成中...") : translateUi("发起 AI 修正")}
                     </Button>
                   </div>
                 </>
@@ -228,31 +236,33 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
 
         {session.status === "loading" ? (
           <div className="rounded-2xl border border-dashed border-border/70 bg-muted/10 p-4 text-sm text-muted-foreground">
-            AI 正在结合章节宏观定位和你的修改要求生成 2 到 3 个候选版本。
+
+            {translateUi("AI 正在结合章节宏观定位和你的修改要求生成 2 到 3 个候选版本。")}
           </div>
         ) : null}
 
         {session.status === "error" ? (
           <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
-            {session.errorMessage || "候选生成失败，请重试。"}
+            {session.errorMessage || translateUi("候选生成失败，请重试。")}
           </div>
         ) : null}
 
         {session.status === "ready" && activeCandidate ? (
           <>
             <div className="rounded-2xl border border-border/70 bg-muted/10 p-4">
-              <div className="text-sm font-medium text-foreground">AI 理解到的修改目标</div>
+              <div className="text-sm font-medium text-foreground">{translateUi("AI 理解到的修改目标")}</div>
               <div className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
-                <div>目标：{session.resolvedIntent?.editGoal}</div>
-                <div>语气：{session.resolvedIntent?.toneShift}</div>
-                <div>节奏：{session.resolvedIntent?.paceAdjustment}</div>
-                <div>冲突：{session.resolvedIntent?.conflictAdjustment}</div>
-                <div>情绪：{session.resolvedIntent?.emotionAdjustment}</div>
-                <div>说明：{session.resolvedIntent?.reasoningSummary}</div>
+                <div>{translateUi("目标：")}{session.resolvedIntent?.editGoal}</div>
+                <div>{translateUi("语气：")}{session.resolvedIntent?.toneShift}</div>
+                <div>{translateUi("节奏：")}{session.resolvedIntent?.paceAdjustment}</div>
+                <div>{translateUi("冲突：")}{session.resolvedIntent?.conflictAdjustment}</div>
+                <div>{translateUi("情绪：")}{session.resolvedIntent?.emotionAdjustment}</div>
+                <div>{translateUi("说明：")}{session.resolvedIntent?.reasoningSummary}</div>
               </div>
               {session.macroAlignmentNote ? (
                 <div className="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50/90 p-3 text-sm leading-6 text-emerald-900">
-                  与本章/本卷目标的对齐：{session.macroAlignmentNote}
+
+                  {translateUi("与本章/本卷目标的对齐：")}{session.macroAlignmentNote}
                 </div>
               ) : null}
             </div>
@@ -276,11 +286,12 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
                 <div className="text-sm leading-6 text-muted-foreground">{activeCandidate.summary}</div>
               ) : null}
               {activeCandidate.rationale ? (
-                <div className="text-sm leading-6 text-foreground/80">为什么这样改：{activeCandidate.rationale}</div>
+                <div className="text-sm leading-6 text-foreground/80">{translateUi("为什么这样改：")}{activeCandidate.rationale}</div>
               ) : null}
               {activeCandidate.riskNotes && activeCandidate.riskNotes.length > 0 ? (
                 <div className="rounded-2xl border border-amber-200 bg-amber-50/90 p-3 text-sm leading-6 text-amber-900">
-                  需要注意：{activeCandidate.riskNotes.join("；")}
+
+                  {translateUi("需要注意：")}{activeCandidate.riskNotes.join(translateUi("；"))}
                 </div>
               ) : null}
             </div>
@@ -290,13 +301,15 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
 
       <div className="shrink-0 flex flex-wrap items-center justify-end gap-2 border-t border-border/70 px-4 py-4">
         <Button size="sm" variant="outline" onClick={onReject} disabled={isIdle || session.status === "loading" || isApplying}>
-          拒绝全部
+
+          {translateUi("拒绝全部")}
         </Button>
         <Button size="sm" variant="outline" onClick={onRegenerate} disabled={isIdle || session.status === "loading" || isApplying}>
-          再生成
+
+          {translateUi("再生成")}
         </Button>
         <Button size="sm" onClick={onAccept} disabled={session.status !== "ready" || !activeCandidate || isApplying}>
-          {isApplying ? "应用中..." : "接受全部"}
+          {isApplying ? translateUi("应用中...") : translateUi("接受全部")}
         </Button>
       </div>
     </div>

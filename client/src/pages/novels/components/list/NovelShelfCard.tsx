@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { BookOpen, Clock3, Download, ImagePlus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ImageTaskStatus } from "@ai-novel/shared/types/image";
@@ -29,19 +30,19 @@ function getPrimaryAction(novel: NovelListItem): { label: string; href: string }
   if (novel.narrativeForm === "short_story") {
     const task = novel.latestCreationStudioTask;
     return {
-      label: task?.status === "succeeded" ? "阅读作品" : "继续创作",
+      label: task?.status === "succeeded" ? translateUi("阅读作品") : translateUi("继续创作"),
       href: `/novels/${novel.id}/story`,
     };
   }
   const task = novel.latestAutoDirectorTask;
   const workspaceHref = getNovelWorkspaceHref(novel);
   if (task?.status === "failed" || task?.status === "cancelled") {
-    return { label: "恢复创作", href: workspaceHref };
+    return { label: translateUi("恢复创作"), href: workspaceHref };
   }
   if (task?.status === "waiting_approval") {
-    return { label: "继续处理", href: workspaceHref };
+    return { label: translateUi("继续处理"), href: workspaceHref };
   }
-  return { label: task ? "继续创作" : "编辑作品", href: workspaceHref };
+  return { label: task ? translateUi("继续创作") : translateUi("编辑作品"), href: workspaceHref };
 }
 
 function getPreviewHref(novel: NovelListItem): string {
@@ -76,11 +77,11 @@ export function NovelShelfCard(props: {
   return (
     <Card className="group overflow-hidden rounded-2xl border-border/60 bg-card/70 shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg hover:shadow-black/10">
       <CardContent className="flex h-full flex-col p-2.5">
-        <Link to={getPreviewHref(novel)} className="block" aria-label={`预览《${novel.title}》`}>
+        <Link to={getPreviewHref(novel)} className="block" aria-label={translateUi("预览《{{value0}}》", { value0: novel.title })}>
           <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-muted/50 ring-1 ring-border/60">
             <img
               src={coverUrl}
-              alt={hasGeneratedCover ? `${novel.title}封面` : ""}
+              alt={hasGeneratedCover ? translateUi("{{value0}}封面", { value0: novel.title }) : ""}
               className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]"
               loading="lazy"
             />
@@ -109,14 +110,14 @@ export function NovelShelfCard(props: {
                 <span>{getFormLabel(novel)}</span>
                 {novel.writingPlatform ? <><span aria-hidden="true">·</span><span>{novel.writingPlatform}</span></> : null}
                 <span aria-hidden="true">·</span>
-                <span>{novel.status === "published" ? "已发布" : "草稿"}</span>
+                <span>{novel.status === "published" ? translateUi("已发布") : translateUi("草稿")}</span>
               </div>
             </div>
           </div>
 
           <div className="mt-3 space-y-1.5">
             <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-              <span>{progress > 0 ? `创作进度 ${progress}%` : "尚未开始正文"}</span>
+              <span>{progress > 0 ? translateUi("创作进度 {{value0}}%", { value0: progress }) : translateUi("尚未开始正文")}</span>
               <span className="inline-flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" aria-hidden="true" />{formatDate(novel.updatedAt)}</span>
             </div>
             <div className="h-1 overflow-hidden rounded-full bg-muted">
@@ -144,8 +145,8 @@ export function NovelShelfCard(props: {
               size="sm"
               variant="ghost"
               className="h-8 w-8 p-0 text-muted-foreground"
-              title="导出作品"
-              aria-label="导出作品"
+              title={translateUi("导出作品")}
+              aria-label={translateUi("导出作品")}
               onClick={() => props.onDownload({ novelId: novel.id, novelTitle: novel.title })}
             >
               <Download className="h-4 w-4" aria-hidden="true" />
@@ -155,8 +156,8 @@ export function NovelShelfCard(props: {
               size="sm"
               variant="ghost"
               className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
-              title="删除作品"
-              aria-label="删除作品"
+              title={translateUi("删除作品")}
+              aria-label={translateUi("删除作品")}
               onClick={() => props.onDelete(novel.id, novel.title)}
             >
               <Trash2 className="h-4 w-4" aria-hidden="true" />
@@ -184,8 +185,8 @@ export function NovelContinueCard(props: {
   return (
     <Card className="group rounded-2xl border-border/60 bg-card/70 shadow-none transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:shadow-black/10">
       <CardContent className="flex min-h-[140px] items-center gap-4 p-3">
-        <Link to={getPreviewHref(novel)} className="relative h-[116px] w-[78px] shrink-0 overflow-hidden rounded-lg bg-muted ring-1 ring-border/60" aria-label={`预览《${novel.title}》`}>
-          <img src={coverUrl} alt={hasGeneratedCover ? `${novel.title}封面` : ""} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]" loading="lazy" />
+        <Link to={getPreviewHref(novel)} className="relative h-[116px] w-[78px] shrink-0 overflow-hidden rounded-lg bg-muted ring-1 ring-border/60" aria-label={translateUi("预览《{{value0}}》", { value0: novel.title })}>
+          <img src={coverUrl} alt={hasGeneratedCover ? translateUi("{{value0}}封面", { value0: novel.title }) : ""} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]" loading="lazy" />
           {!hasGeneratedCover ? (
             <div className="absolute inset-0 flex items-center justify-center bg-black/45 px-2 text-center text-[11px] font-medium leading-4 text-white">
               <span className="line-clamp-4 drop-shadow">{novel.title}</span>
@@ -194,7 +195,7 @@ export function NovelContinueCard(props: {
         </Link>
         <div className="min-w-0 flex-1 py-1">
           <Link to={action.href} className="line-clamp-2 text-[15px] font-semibold leading-6 tracking-tight hover:text-primary">{novel.title}</Link>
-          <div className="mt-1 text-[11px] text-muted-foreground">{getFormLabel(novel)} · 创作进度 {progress}%</div>
+          <div className="mt-1 text-[11px] text-muted-foreground">{getFormLabel(novel)}  {translateUi("· 创作进度")} {progress}%</div>
           <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted">
             <div className="h-full rounded-full bg-primary" style={{ width: `${progress}%` }} />
           </div>
@@ -202,10 +203,10 @@ export function NovelContinueCard(props: {
             <Button asChild size="sm" variant="secondary" className="h-8 flex-1 px-2 text-xs">
               <Link to={action.href}><BookOpen className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />{action.label}</Link>
             </Button>
-            <Button type="button" size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground" title="管理封面" aria-label="管理封面" onClick={() => props.onManageCover(novel.id)}>
+            <Button type="button" size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground" title={translateUi("管理封面")} aria-label={translateUi("管理封面")} onClick={() => props.onManageCover(novel.id)}>
               <ImagePlus className="h-4 w-4" aria-hidden="true" />
             </Button>
-            <Button type="button" size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="删除作品" aria-label="删除作品" onClick={() => props.onDelete(novel.id, novel.title)}>
+            <Button type="button" size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title={translateUi("删除作品")} aria-label={translateUi("删除作品")} onClick={() => props.onDelete(novel.id, novel.title)}>
               <Trash2 className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>

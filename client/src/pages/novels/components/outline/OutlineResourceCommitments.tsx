@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { OutlineTabViewProps } from "../NovelEditView.types";
@@ -60,9 +61,10 @@ export default function OutlineResourceCommitments(props: {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">本卷关键资源承诺</CardTitle>
+        <CardTitle className="text-base">{translateUi("本卷关键资源承诺")}</CardTitle>
         <div className="text-sm text-muted-foreground">
-          只显示会影响本卷行动边界、铺垫或后续兑现的资源。
+
+          {translateUi("只显示会影响本卷行动边界、铺垫或后续兑现的资源。")}
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -84,7 +86,8 @@ export default function OutlineResourceCommitments(props: {
           ))
         ) : (
           <div className="rounded-xl border border-dashed px-4 py-5 text-sm text-muted-foreground">
-            当前卷没有需要特别盯住的角色资源承诺。
+
+            {translateUi("当前卷没有需要特别盯住的角色资源承诺。")}
           </div>
         )}
       </CardContent>

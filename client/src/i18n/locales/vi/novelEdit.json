@@ -1,0 +1,48 @@
+{
+  "toast": {
+    "switchModeFailed": "Không thể chuyển chế độ, hãy thử lại.",
+    "dismissTakeover": "Đã thu gọn nhắc nhở tiếp quản đạo diễn.",
+    "noDirectorTask": "Hiện không có tác vụ đạo diễn tự động để tiếp tục.",
+    "continueDirectorFailed": "Tiếp tục đạo diễn tự động thất bại.",
+    "stepValidated": "Đã kiểm tra bước hiện tại.",
+    "stepUpdated": "Đã cập nhật bước hiện tại, hãy kiểm tra kết quả.",
+    "calibrationFailed": "Hiệu chỉnh bước thất bại.",
+    "changesAccepted": "Đã xác nhận thay đổi; đạo diễn sẽ tiếp tục từ bước chưa hoàn tất tiếp theo.",
+    "acceptChangesFailed": "Xác nhận thay đổi và tiếp tục thất bại."
+  },
+  "takeover": {
+    "currentProject": "Dự án hiện tại",
+    "unsavedChapterDraft": "Khu vực tách chương còn thay đổi chưa lưu. Hãy lưu trước khi yêu cầu AI sửa tiêu đề.",
+    "calibrationPrompt": "Hãy cho AI biết cần điều chỉnh gì ở bước này (có thể để trống)",
+    "actions": {
+      "repairing": "Đang sửa bằng AI...",
+      "confirmBookDirection": "Xác nhận định hướng cấp sách",
+      "goReviewStage": "Đến bước đang kiểm tra",
+      "continuing": "Đang tiếp tục...",
+      "continueDirector": "Tiếp tục đạo diễn tự động",
+      "checking": "Đang kiểm tra...",
+      "checkStep": "AI kiểm tra bước hiện tại",
+      "improving": "Đang hoàn thiện...",
+      "improveStep": "AI hoàn thiện bước hiện tại",
+      "generating": "Đang tạo...",
+      "regenerateStep": "Tạo lại bước hiện tại",
+      "confirming": "Đang xác nhận...",
+      "saveAndConfirm": "Lưu và xác nhận",
+      "openChapterExecution": "Mở thực thi chương",
+      "openQualityRepair": "Mở sửa chất lượng",
+      "completeDirectorOutput": "Bổ sung sản phẩm đạo diễn",
+      "goCharacterPrep": "Đến chuẩn bị nhân vật",
+      "cancelling": "Đang hủy...",
+      "cancelTask": "Hủy tác vụ",
+      "continueDirectorShort": "Tiếp tục đạo diễn",
+      "exiting": "Đang thoát...",
+      "exitDirector": "Thoát chế độ đạo diễn",
+      "removing": "Đang xóa...",
+      "removeFromTasks": "Xóa khỏi danh sách tác vụ",
+      "collapsing": "Đang thu gọn...",
+      "completeAndCollapse": "Hoàn tất và thu gọn",
+      "dismissReminder": "Thu gọn nhắc nhở này",
+      "executionDetails": "Chi tiết thực thi"
+    }
+  }
+}

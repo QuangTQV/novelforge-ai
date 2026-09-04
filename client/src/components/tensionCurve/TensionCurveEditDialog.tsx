@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AppDialogContent, Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -68,6 +69,7 @@ export function TensionCurveEditDialog(props: TensionCurveEditDialogProps) {
     onPointRelease,
     onPointReleaseMany,
   } = props;
+  const { t } = useTranslation("creativeHub");
   const [showReferenceCurve, setShowReferenceCurve] = useState(false);
   const [referenceTemplateKey, setReferenceTemplateKey] = useState(tensionCurveReferenceTemplates[0]?.key ?? "escalation");
 
@@ -79,7 +81,7 @@ export function TensionCurveEditDialog(props: TensionCurveEditDialogProps) {
   const selectedUserAnchorCount = primaryPoints.filter((point) => (
     point.source === "user" && selectedScopeMatches(point, selectedViewportKey)
   )).length;
-  const shapeHints = useMemo(() => analyzeTensionCurveShape(primaryPoints), [primaryPoints]);
+  const shapeHints = useMemo(() => analyzeTensionCurveShape(primaryPoints, t), [primaryPoints, t]);
   const referenceTemplate = tensionCurveReferenceTemplates.find((template) => template.key === referenceTemplateKey)
     ?? tensionCurveReferenceTemplates[0];
   const referenceValues = useMemo(
@@ -120,24 +122,24 @@ export function TensionCurveEditDialog(props: TensionCurveEditDialogProps) {
               {showReferenceCurve && referenceTemplate ? (
                 <span className="inline-flex items-center gap-1.5">
                   <span className="h-px w-5 border-t border-dashed border-slate-500" />
-                  {referenceTemplate.label}参考
+                  {t("tensionCurve.panel.referenceSuffix", { label: t(referenceTemplate.labelKey) })}
                 </span>
               ) : null}
-              {userAnchorCount > 0 ? <span>{userAnchorCount} 个手动固定点</span> : <span>暂无手动固定点</span>}
+              {userAnchorCount > 0 ? <span>{t("tensionCurve.panel.manualAnchors", { count: userAnchorCount })}</span> : <span>{t("tensionCurve.editDialog.noManualAnchors")}</span>}
             </div>
             <div className="flex flex-wrap items-center justify-end gap-2">
               {userAnchorCount > 0 ? (
                 <Button type="button" size="sm" variant="outline" onClick={() => releaseScope("all")}>
-                  整卷交还 AI
+                  {t("tensionCurve.editDialog.releaseAllToAi")}
                 </Button>
               ) : null}
               {selectedViewportKey !== "all" && selectedUserAnchorCount > 0 ? (
                 <Button type="button" size="sm" variant="outline" onClick={() => releaseScope("selected")}>
-                  当前节奏段交还 AI
+                  {t("tensionCurve.editDialog.releaseBeatToAi")}
                 </Button>
               ) : null}
               <Button type="button" size="sm" variant="secondary" onClick={() => onOpenChange(false)}>
-                完成编辑
+                {t("tensionCurve.editDialog.finishEditing")}
               </Button>
             </div>
           </>
@@ -155,15 +157,15 @@ export function TensionCurveEditDialog(props: TensionCurveEditDialogProps) {
           <div className="min-w-0 space-y-3">
             <div className="flex flex-col gap-3 rounded-xl border border-border/70 bg-background p-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="text-sm text-muted-foreground">
-                拖动章节节点会固定该章强度；点选节点可在右侧查看章节摘要。
+                {t("tensionCurve.editDialog.dragHint")}
               </div>
               {primaryPointCount > 1 ? (
                 <div className="flex items-center gap-2 rounded-md border border-border/70 px-2 py-1">
-                  <span className="text-xs text-muted-foreground">参考线</span>
+                  <span className="text-xs text-muted-foreground">{t("tensionCurve.panel.referenceLine")}</span>
                   <Switch
                     checked={showReferenceCurve}
                     onCheckedChange={setShowReferenceCurve}
-                    aria-label="显示紧张度参考线"
+                    aria-label={t("tensionCurve.panel.referenceLineAria")}
                     className="h-5 w-9"
                   />
                   {showReferenceCurve ? (
@@ -174,7 +176,7 @@ export function TensionCurveEditDialog(props: TensionCurveEditDialogProps) {
                       <SelectContent>
                         {tensionCurveReferenceTemplates.map((template) => (
                           <SelectItem key={template.key} value={template.key}>
-                            {template.label}
+                            {t(template.labelKey)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -199,7 +201,7 @@ export function TensionCurveEditDialog(props: TensionCurveEditDialogProps) {
             />
 
             {canvasWidth > 900 ? (
-              <div className="text-xs text-muted-foreground">拖动画布或滚轮可横向浏览更多章节；拖动点时按住 Shift 可按 1 点精度调整。</div>
+              <div className="text-xs text-muted-foreground">{t("tensionCurve.editDialog.panHint")}</div>
             ) : null}
 
             <CompactLegend />

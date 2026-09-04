@@ -67,5 +67,5 @@ test("issue management exposes the two production presets with a single retry ce
   assert.match(issuePolicySource, /优先完成整本书/);
   assert.match(issuePolicySource, /质量优先/);
   assert.match(novelPolicySource, /hasCompleteActionMap/);
-  assert.match(novelPolicySource, /!hasCompleteActionMap \? <option value="">继承全局<\/option> : null/);
+  assert.match(novelPolicySource, /!hasCompleteActionMap \? <option value="">\{translateUi\("继承全局"\)\}<\/option> : null/);
 });

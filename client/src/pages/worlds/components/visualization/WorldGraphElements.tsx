@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -80,7 +81,7 @@ export function WorldGraphNode(props: NodeProps<WorldFlowNode>) {
       )}
       style={{ borderColor: active ? tone : undefined }}
       tabIndex={0}
-      aria-label={`${graphNode.label}，${metaText}`}
+      aria-label={translateUi("{{value0}}，{{value1}}", { value0: graphNode.label, value1: metaText })}
     >
       {HANDLE_POSITIONS.flatMap((position) => [
         <Handle
@@ -185,7 +186,7 @@ export function WorldGraphEdge(props: EdgeProps<WorldFlowEdge>) {
                 event.stopPropagation();
                 data.onSelect(props.id);
               }}
-              aria-label={`${data.sourceLabel}与${data.targetLabel}：${data.graphEdge.relation}`}
+              aria-label={translateUi("{{value0}}与{{value1}}：{{value2}}", { value0: data.sourceLabel, value1: data.targetLabel, value2: data.graphEdge.relation })}
             >
               {data.shortLabel}
             </button>
@@ -202,7 +203,7 @@ export function WorldGraphEdge(props: EdgeProps<WorldFlowEdge>) {
                 <span className="text-muted-foreground">→</span>
                 <span className="truncate">{data.targetLabel}</span>
               </div>
-              <div className="mt-2 leading-5 text-muted-foreground">{data.graphEdge.relation || "存在关联"}</div>
+              <div className="mt-2 leading-5 text-muted-foreground">{data.graphEdge.relation || translateUi("存在关联")}</div>
               {data.layout === "map" ? (
                 <div className="mt-2 space-y-1 border-t border-border/45 pt-2 text-muted-foreground">
                   <div className="flex items-center gap-1.5">
@@ -217,7 +218,7 @@ export function WorldGraphEdge(props: EdgeProps<WorldFlowEdge>) {
                   ) : null}
                 </div>
               ) : null}
-              {data.detailPinned ? <div className="mt-2 text-[10px] text-muted-foreground">点击画布空白处收起</div> : null}
+              {data.detailPinned ? <div className="mt-2 text-[10px] text-muted-foreground">{translateUi("点击画布空白处收起")}</div> : null}
             </div>
           ) : null}
         </div>

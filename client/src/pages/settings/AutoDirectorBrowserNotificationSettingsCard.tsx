@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { BellRing } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,9 +90,10 @@ export function AutoDirectorBrowserNotificationSettingsCard(props: {
         <div className="flex min-w-0 items-start gap-3">
           <BellRing className="mt-1 h-5 w-5 shrink-0 text-primary" />
           <div className="min-w-0 space-y-1.5">
-            <CardTitle>自动导演暂停提醒</CardTitle>
+            <CardTitle>{translateUi("自动导演暂停提醒")}</CardTitle>
             <CardDescription className={AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}>
-              当自动导演等待确认、需要恢复或被校验拦住时，通过浏览器通知提醒你回到跟进中心。
+
+              {translateUi("当自动导演等待确认、需要恢复或被校验拦住时，通过浏览器通知提醒你回到跟进中心。")}
             </CardDescription>
           </div>
         </div>
@@ -99,24 +101,26 @@ export function AutoDirectorBrowserNotificationSettingsCard(props: {
       <CardContent className="space-y-4">
         <div className="flex min-w-0 items-center justify-between gap-4 rounded-md border bg-muted/10 p-3">
           <div className="min-w-0 space-y-1">
-            <div className="text-sm font-medium">桌面提醒</div>
+            <div className="text-sm font-medium">{translateUi("桌面提醒")}</div>
             <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} text-xs text-muted-foreground`}>
-              只影响这台电脑上的当前浏览器。
+
+              {translateUi("只影响这台电脑上的当前浏览器。")}
             </div>
           </div>
           <Switch
             checked={enabled && permission === "granted"}
             onCheckedChange={handleToggle}
             disabled={permission === "unsupported"}
-            aria-label="开启或关闭自动导演暂停提醒"
+            aria-label={translateUi("开启或关闭自动导演暂停提醒")}
           />
         </div>
 
         <div className="flex min-w-0 flex-col gap-3 rounded-md border bg-background p-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0 space-y-1">
-            <div className="text-sm font-medium">通知权限：{permissionLabel}</div>
+            <div className="text-sm font-medium">{translateUi("通知权限：")}{permissionLabel}</div>
             <div className={`${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText} text-xs text-muted-foreground`}>
-              若浏览器已阻止通知，请在地址栏权限设置中允许本网站发送通知。
+
+              {translateUi("若浏览器已阻止通知，请在地址栏权限设置中允许本网站发送通知。")}
             </div>
           </div>
           {canRequestPermission ? (
@@ -126,7 +130,8 @@ export function AutoDirectorBrowserNotificationSettingsCard(props: {
               className={AUTO_DIRECTOR_MOBILE_CLASSES.fullWidthAction}
               onClick={() => void handleEnable()}
             >
-              授权浏览器通知
+
+              {translateUi("授权浏览器通知")}
             </Button>
           ) : null}
         </div>

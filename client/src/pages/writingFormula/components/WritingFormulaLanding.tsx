@@ -1,4 +1,6 @@
+import { translateUi } from "@/i18n/legacy";
 import type { KeyboardEvent, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -66,6 +68,7 @@ function SummaryCard(props: { title: string; summary: string }) {
 }
 
 export default function WritingFormulaLanding(props: WritingFormulaLandingProps) {
+  const { t } = useTranslation("writingFormulaLanding");
   const {
     onOpenCreate,
     onSelectProfile,
@@ -102,7 +105,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
         <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0 flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <div className="text-base font-semibold text-foreground">{profile.name}</div>
+              <div className="text-base font-semibold text-foreground">{translateUi(profile.name)}</div>
               <Badge variant={profile.isStarter ? "outline" : (isSelected ? "default" : "secondary")} className={badgeClassName}>
                 {profile.originLabel}
               </Badge>
@@ -116,7 +119,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
               </Badge>
             </div>
             <div className="max-w-3xl text-sm leading-6 text-muted-foreground">
-              {truncateText(profile.summaryLine, 120) || "暂无写法摘要。"}
+              {truncateText(profile.summaryLine, 120) || t("emptySummary")}
             </div>
             <div className="flex flex-wrap gap-2">
               {profile.tags.slice(0, 4).map((tag) => (
@@ -126,7 +129,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
               ))}
               {profile.recentNovelTitle ? (
               <Badge variant="secondary" className="h-6">
-                  最近绑定：{profile.recentNovelTitle}
+                  {t("recentBinding", { title: profile.recentNovelTitle })}
                 </Badge>
               ) : null}
             </div>
@@ -142,7 +145,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 onEditProfile(profile.id);
               }}
             >
-              编辑设定
+              {t("actions.edit")}
             </Button>
             <Button
               type="button"
@@ -153,7 +156,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 onOpenWorkbench(profile.id);
               }}
             >
-              应用与测试
+              {t("actions.apply")}
             </Button>
             <Button
               type="button"
@@ -164,7 +167,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 onUseProfileForClean(profile.id);
               }}
             >
-              去 AI 味
+              {t("actions.clean")}
             </Button>
             <Button
               type="button"
@@ -176,7 +179,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 onDeleteProfile(profile.id);
               }}
             >
-              {deletePending ? "删除中..." : "删除"}
+              {deletePending ? translateUi("删除中...") : translateUi("删除")}
             </Button>
           </div>
         </div>
@@ -185,11 +188,11 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
           <div className="mt-5 space-y-4 rounded-2xl border bg-muted/25 p-4 md:p-5">
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_280px]">
               <DetailPanel
-                title="读感与定位"
-                description="这一列帮助你快速判断这套写法想写成什么感觉，适合先拿来做哪类项目。"
+                title={t("panels.feel.title")}
+                description={t("panels.feel.description")}
               >
                 <div className="rounded-2xl border border-slate-200 bg-white/85 p-4 text-sm leading-7 text-slate-700">
-                  {profile.description}
+                  {translateUi(profile.description)}
                 </div>
                 {profile.detailLines.length > 0 ? (
                   <div className="grid gap-2">
@@ -202,7 +205,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 ) : null}
                 {profile.sourceContentPreview ? (
                   <div className="rounded-2xl border border-slate-200 bg-[linear-gradient(135deg,rgba(241,245,249,0.9),rgba(255,255,255,0.98))] px-4 py-4 text-sm leading-7 text-slate-700">
-                    <div className="mb-2 text-xs font-semibold tracking-[0.12em] text-slate-500">原文样本片段</div>
+                    <div className="mb-2 text-xs font-semibold tracking-[0.12em] text-slate-500">{t("panels.sourceSample")}</div>
                     <div>{profile.sourceContentPreview}</div>
                   </div>
                 ) : null}
@@ -210,20 +213,20 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
 
               <div className="space-y-4">
                 <DetailPanel
-                  title="规则摘要"
-                  description="这里把这套写法真正控制读感的四层规则读出来，方便你在列表里先看懂。"
+                  title={t("panels.rules.title")}
+                  description={t("panels.rules.description")}
                 >
                   <div className="grid gap-3 md:grid-cols-2">
-                    <SummaryCard title="剧情推进" summary={profile.narrativeSummary} />
-                    <SummaryCard title="人物表达" summary={profile.characterSummary} />
-                    <SummaryCard title="语言质感" summary={profile.languageSummary} />
-                    <SummaryCard title="节奏控制" summary={profile.rhythmSummary} />
+                    <SummaryCard title={t("panels.rules.narrative")} summary={profile.narrativeSummary} />
+                    <SummaryCard title={t("panels.rules.character")} summary={profile.characterSummary} />
+                    <SummaryCard title={t("panels.rules.language")} summary={profile.languageSummary} />
+                    <SummaryCard title={t("panels.rules.rhythm")} summary={profile.rhythmSummary} />
                   </div>
                 </DetailPanel>
 
                 <DetailPanel
-                  title="反 AI 约束"
-                  description="这部分决定系统在检测和修正文稿时会优先盯住哪些风险。"
+                  title={t("panels.antiAi.title")}
+                  description={t("panels.antiAi.description")}
                 >
                   {profile.antiAiFocus.length > 0 || profile.antiAiRuleNames.length > 0 || profile.extractionAntiAiRecommendationCount > 0 ? (
                     <div className="space-y-3">
@@ -247,13 +250,15 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                       ) : null}
                       {profile.extractionAntiAiRecommendationCount > 0 ? (
                         <div className="rounded-xl border bg-slate-50/80 px-3 py-3 text-sm leading-6 text-slate-600">
-                          这套写法在提取阶段额外建议了 {profile.extractionAntiAiRecommendationCount} 条反 AI 规则，适合后续继续精配。
+
+                          {translateUi("这套写法在提取阶段额外建议了")} {profile.extractionAntiAiRecommendationCount}  {translateUi("条反 AI 规则，适合后续继续精配。")}
                         </div>
                       ) : null}
                     </div>
                   ) : (
                     <div className="rounded-xl border border-dashed px-3 py-3 text-sm leading-6 text-slate-500">
-                      这套写法还没有绑定明确的反 AI 约束，所以“去 AI 味”时可读性会偏弱。
+
+                      {translateUi("这套写法还没有绑定明确的反 AI 约束，所以“去 AI 味”时可读性会偏弱。")}
                     </div>
                   )}
                 </DetailPanel>
@@ -261,42 +266,42 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
 
               <div className="space-y-4">
                 <DetailPanel
-                  title="资产概览"
-                  description="这一列主要帮你判断这套写法现在成熟到什么程度。"
+                  title={t("panels.asset.title")}
+                  description={t("panels.asset.description")}
                 >
                   <div className="space-y-2">
-                    <DetailStatRow label="来源" value={profile.sourceTypeLabel} />
-                    <DetailStatRow label="最近更新" value={profile.updatedAtLabel} />
-                    <DetailStatRow label="启用特征" value={`${profile.extractedFeatureCount} 项`} />
-                    <DetailStatRow label="高风险指纹" value={`${profile.highRiskFeatureCount} 项`} />
+                    <DetailStatRow label={translateUi("来源")} value={profile.sourceTypeLabel} />
+                    <DetailStatRow label={translateUi("最近更新")} value={profile.updatedAtLabel} />
+                    <DetailStatRow label={translateUi("启用特征")} value={translateUi("{{value0}} 项", { value0: profile.extractedFeatureCount })} />
+                    <DetailStatRow label={translateUi("高风险指纹")} value={translateUi("{{value0}} 项", { value0: profile.highRiskFeatureCount })} />
                     <DetailStatRow
-                      label="当前预设"
-                      value={profile.selectedPresetLabel || "未锁定"}
+                      label={translateUi("当前预设")}
+                      value={profile.selectedPresetLabel || translateUi("未锁定")}
                     />
                     <DetailStatRow
-                      label="可选预设"
-                      value={profile.presetLabels.length > 0 ? profile.presetLabels.join(" / ") : "暂无"}
+                      label={translateUi("可选预设")}
+                      value={profile.presetLabels.length > 0 ? profile.presetLabels.join(" / ") : translateUi("暂无")}
                     />
-                    <DetailStatRow label="已绑定目标" value={`${profile.bindingCount} 个`} />
+                    <DetailStatRow label={translateUi("已绑定目标")} value={translateUi("{{value0}} 个", { value0: profile.bindingCount })} />
                     <DetailStatRow
-                      label="最近小说"
-                      value={profile.recentNovelTitle || "还没有绑定到小说"}
+                      label={translateUi("最近小说")}
+                      value={profile.recentNovelTitle || translateUi("还没有绑定到小说")}
                     />
                     <DetailStatRow
-                      label="适用题材"
-                      value={profile.applicableGenres.length > 0 ? profile.applicableGenres.join(" / ") : "未填写"}
+                      label={translateUi("适用题材")}
+                      value={profile.applicableGenres.length > 0 ? profile.applicableGenres.join(" / ") : translateUi("未填写")}
                     />
                   </div>
                 </DetailPanel>
 
                 <DetailPanel
-                  title="下一步"
-                  description="三个按钮现在各自只负责一件事，不会再跳到同一块内容里。"
+                  title={t("panels.next.title")}
+                  description={t("panels.next.description")}
                 >
                   <div className="space-y-2 text-sm leading-6 text-slate-700">
-                    <div>编辑设定：维护这套写法本身的说明、规则和反 AI 约束。</div>
-                    <div>应用与测试：绑定到小说或章节，并做试写验证。</div>
-                    <div>去 AI 味：只处理正文检测和修正，不改写法字段。</div>
+                    <div>{translateUi("编辑设定：维护这套写法本身的说明、规则和反 AI 约束。")}</div>
+                    <div>{translateUi("应用与测试：绑定到小说或章节，并做试写验证。")}</div>
+                    <div>{translateUi("去 AI 味：只处理正文检测和修正，不改写法字段。")}</div>
                   </div>
                 </DetailPanel>
               </div>
@@ -314,41 +319,49 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="space-y-2">
               <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary">
-                我的写法资产
+
+                {translateUi("我的写法资产")}
               </Badge>
               <div className="space-y-2">
                 <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-                  先选一套写法，再决定要编辑、应用还是去 AI 味。
+
+                  {translateUi("先选一套写法，再决定要编辑、应用还是去 AI 味。")}
                 </h1>
                 <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                  首页负责看清你已有的写法资产。展开后会直接展示这套写法的读感定位、规则摘要、反 AI 约束和当前成熟度。
+
+                  {translateUi("首页负责看清你已有的写法资产。展开后会直接展示这套写法的读感定位、规则摘要、反 AI 约束和当前成熟度。")}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
               <Button type="button" variant="outline" onClick={onOpenPromptLab}>
-                正文效果实验室
+
+                {translateUi("正文效果实验室")}
               </Button>
               <Button type="button" onClick={onOpenCreate}>
-                新建一套写法
+
+                {translateUi("新建一套写法")}
               </Button>
             </div>
           </div>
 
           <div className="rounded-2xl border border-primary/15 bg-primary/[0.045] px-4 py-3 text-sm leading-7 text-muted-foreground">
-            书级默认写法请从小说基础信息进入，由小说来选择要使用的写法资产，再带入后续导演和正文流程。
+
+            {translateUi("书级默认写法请从小说基础信息进入，由小说来选择要使用的写法资产，再带入后续导演和正文流程。")}
           </div>
 
           {profileItems.length === 0 ? (
             <div className="rounded-3xl border border-dashed bg-muted/20 p-6">
-              <div className="text-lg font-semibold text-foreground">当前还没有写法资产</div>
+              <div className="text-lg font-semibold text-foreground">{translateUi("当前还没有写法资产")}</div>
               <div className="mt-2 text-sm leading-7 text-muted-foreground">
-                先创建第一套写法，后面再回来慢慢补规则、做试写和绑定目标。
+
+                {translateUi("先创建第一套写法，后面再回来慢慢补规则、做试写和绑定目标。")}
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Button type="button" onClick={onOpenCreate}>
-                  去创建第一套写法
+
+                  {translateUi("去创建第一套写法")}
                 </Button>
               </div>
             </div>
@@ -358,13 +371,14 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 <section className="space-y-3">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <div className="text-sm font-semibold text-slate-950">你自己创建的写法</div>
+                      <div className="text-sm font-semibold text-slate-950">{translateUi("你自己创建的写法")}</div>
                       <div className="text-xs leading-6 text-slate-500">
-                        这些是你沉淀下来的可复用资产，应该优先在这里挑。
+
+                        {translateUi("这些是你沉淀下来的可复用资产，应该优先在这里挑。")}
                       </div>
                     </div>
                     <Badge variant="secondary" className="bg-slate-100 text-slate-700">
-                      {customProfiles.length} 套
+                      {customProfiles.length}  {translateUi("套")}
                     </Badge>
                   </div>
                   <div className="grid gap-3">
@@ -377,13 +391,14 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
                 <section className="space-y-3">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <div className="text-sm font-semibold text-slate-950">可直接改的起步写法</div>
+                      <div className="text-sm font-semibold text-slate-950">{translateUi("可直接改的起步写法")}</div>
                       <div className="text-xs leading-6 text-slate-500">
-                        这些预置资产适合先借一套骨架，再按当前项目改成自己的写法。
+
+                        {translateUi("这些预置资产适合先借一套骨架，再按当前项目改成自己的写法。")}
                       </div>
                     </div>
                     <Badge variant="secondary" className="bg-slate-100 text-slate-700">
-                      {starterProfiles.length} 套
+                      {starterProfiles.length}  {translateUi("套")}
                     </Badge>
                   </div>
                   <div className="grid gap-3 md:grid-cols-2">

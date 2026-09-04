@@ -1,0 +1,47 @@
+{
+  "title": "完善世界手册",
+  "description": "先确认印象和核心矛盾，再按需完善规则、势力、地点和冲突张力。",
+  "loading": {
+    "title": "正在读取世界手册",
+    "description": "需要时，可以让 AI 把现有设定整理成完整手册。"
+  },
+  "actions": {
+    "organizing": "整理中...",
+    "organizeWithAi": "让 AI 整理世界手册",
+    "viewHandbook": "查看手册",
+    "saving": "保存中...",
+    "save": "保存手册",
+    "editProfile": "整理世界总览",
+    "generating": "补充中...",
+    "generateSection": "补充所选部分",
+    "editRules": "整理规则"
+  },
+  "sections": {
+    "profile": "世界印象",
+    "rules": "规则",
+    "factions": "势力",
+    "locations": "地点",
+    "relations": "张力"
+  },
+  "profile": {
+    "identity": "一句话世界印象",
+    "identityFallback": "补充一句话印象，让作者一眼知道这个世界的类型、时代感和核心奇观。",
+    "summary": "世界给读者的第一眼",
+    "summaryFallback": "补充世界的画面、秩序、危险或核心奇观。",
+    "tone": "阅读气质",
+    "toneFallback": "补充阅读气质，例如热血升级、黑暗史诗、轻喜冒险或权谋争霸。",
+    "coreConflict": "能持续推动剧情的矛盾",
+    "coreConflictFallback": "补充反复让角色做出选择、势力冲突和章节发生事件的问题。"
+  },
+  "ai": {
+    "title": "AI 辅助整理",
+    "description": "让 AI 基于现有内容补充一部分手册；保存前你仍可继续修改。"
+  },
+  "rules": {
+    "description": "{{count}} 条规则会约束力量、资源、禁忌和代价。",
+    "summary": "规则总览",
+    "summaryFallback": "补充运转世界的硬规则，避免能力和剧情解法失控。",
+    "axioms": "代表性规则",
+    "axiomsFallback": "补充 2-3 条必须遵守的核心规则。"
+  }
+}

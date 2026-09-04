@@ -1,0 +1,116 @@
+{
+  "title": "让资料参与创作",
+  "description": "选择向量模型并连接资料库，让已索引的数据可用于分析、规划和正文创作。",
+  "retrieval": {
+    "enabled": "已开启资料检索",
+    "paused": "已暂停资料检索"
+  },
+  "understanding": {
+    "title": "选择资料理解方式",
+    "description": "建议使用已配置且可用的厂商；模型只理解资料含义，不会修改原文。"
+  },
+  "fields": {
+    "embeddingProvider": "Embedding 厂商",
+    "embeddingModel": "Embedding 模型",
+    "embeddingApiKey": "向量服务 API Key",
+    "embeddingBaseUrl": "向量服务 API 地址",
+    "qdrantUrl": "向量库 URL",
+    "qdrantApiKey": "向量库 API Key",
+    "clearQdrantKey": "保存时清除已存的向量库 API Key",
+    "ragStatus": "RAG 状态"
+  },
+  "provider": {
+    "configured": "已配置连接",
+    "pending": "待配置连接",
+    "available": "可用",
+    "disabled": "未启用",
+    "keyAvailable": "Key 可用",
+    "unset": "未设置"
+  },
+  "model": {
+    "loading": "正在加载可用 Embedding 模型...",
+    "select": "选择 Embedding 模型",
+    "search": "搜索 Embedding 模型",
+    "empty": "没有匹配的 Embedding 模型",
+    "availableCount": "厂商有 {{count}} 个可用模型。",
+    "remoteHint": "可以先用推荐模型；连接可用后，厂商的模型列表会显示在这里。",
+    "example": "例如：text-embedding-3-small"
+  },
+  "placeholders": {
+    "keepKey": "留空以保留已存 Key",
+    "embeddingKey": "输入向量服务 API Key",
+    "defaultUrl": "留空以使用厂商默认地址",
+    "qdrantKey": "输入向量库 API Key"
+  },
+  "actions": {
+    "expand": "展开",
+    "collapse": "收起",
+    "enable": "启用",
+    "disable": "停用",
+    "saving": "保存中...",
+    "save": "保存检索设置"
+  },
+  "advanced": {
+    "title": "高级配置",
+    "description": "Collection 版本 v{{version}} · collection 名称、索引、检索质量和后台任务参数"
+  },
+  "collection": {
+    "title": "Collection 与索引",
+    "description": "名称按厂商、模型、标签和版本自动区分 collection，降低向量维度冲突风险。",
+    "naming": "collection 命名方式",
+    "auto": "自动生成",
+    "manual": "手动指定",
+    "tag": "collection 标签",
+    "tagPlaceholder": "例如：kb / prod / novel",
+    "tagHint": "用短标签区分环境或数据组。",
+    "autoName": "自动 collection 名称",
+    "name": "向量 collection 名称",
+    "namePlaceholder": "例如：ai_novel_rag_openai_text_embedding_3_small_kb_v1",
+    "autoReindex": "Embedding 变化时自动重新索引",
+    "target": "目标 collection"
+  },
+  "hints": {
+    "qdrantUrl": "本地地址通常是 http://127.0.0.1:6333；云端 URL 可填完整地址。"
+  },
+  "sections": {
+    "connection": "连接与写入参数",
+    "retrieval": "检索微调",
+    "embedding": "Embedding 请求行为"
+  },
+  "options": {
+    "enabled": "启用",
+    "paused": "暂停"
+  },
+  "parameters": {
+    "qdrantTimeout": "向量库超时（毫秒）",
+    "upsertBytes": "单次写入最大字节数",
+    "upsertConcurrency": "向量库并发写入数",
+    "chunkSize": "分段大小",
+    "chunkOverlap": "分段重叠",
+    "finalTopK": "最终 Top K",
+    "vectorCandidates": "向量候选数",
+    "keywordCandidates": "关键词候选数",
+    "batchSize": "Embedding 批大小",
+    "concurrency": "Embedding 并发数",
+    "timeout": "Embedding 超时（毫秒）",
+    "maxRetries": "Embedding 最大重试次数",
+    "retryBase": "Embedding 基础重试间隔（毫秒）",
+    "workerPoll": "Worker 轮询间隔（毫秒）",
+    "workerAttempts": "Worker 最大尝试次数",
+    "workerRetry": "Worker 基础重试间隔（毫秒）",
+    "httpTimeout": "RAG 的 HTTP 超时（毫秒）"
+  },
+  "parameterHints": {
+    "general": "默认值适合大多数资料库；仅在连接慢、批量写入失败或需要暂停检索时调整。",
+    "upsertConcurrency": "同时向 Qdrant 发送分段批次的最大数量。默认 3；大文档可提到 4-6 以加快。",
+    "retrieval": "当检索内容不够精确或需要控制延迟时，可以调整分段方式和候选数量。",
+    "embedding": "批量导入或服务响应慢时，可以调整批大小、超时、重试次数和轮询参数。",
+    "embeddingConcurrency": "同时发送的 embedding API 请求数。默认 4；提高可明显缩短大文档索引时间，但要遵守厂商配额。",
+    "save": "保存后，新建或重新索引的资料会使用这套检索设置。"
+  },
+  "embeddingConnectionHint": "这个连接只用于理解资料，不改变创作模型、默认模型或任务路由。",
+  "database": {
+    "title": "连接资料库",
+    "description": "支持 Qdrant Cloud、自托管 Qdrant 或本地资料库。"
+  }
+}

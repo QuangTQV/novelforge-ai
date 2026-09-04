@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Background,
@@ -193,7 +194,7 @@ export default function WorldGraphCanvas({
       selectable: true,
       focusable: true,
       selected: edge.id === selectedEdgeId,
-      ariaLabel: `${nodeById.get(edge.source)?.label ?? edge.source}与${nodeById.get(edge.target)?.label ?? edge.target}：${edge.relation}`,
+      ariaLabel: translateUi("{{source}}与{{target}}：{{relation}}", { source: nodeById.get(edge.source)?.label ?? edge.source, target: nodeById.get(edge.target)?.label ?? edge.target, relation: edge.relation }),
       data: {
         graphEdge: edge,
         layout,
@@ -247,12 +248,12 @@ export default function WorldGraphCanvas({
     <FullscreenView
       title={title}
       description={layout === "map"
-        ? "拖动地点整理空间，悬停路线查看距离、风险和完整关系。"
-        : "拖动势力整理关系，悬停连线查看双方与完整关系。"}
+        ? translateUi("拖动地点整理空间，悬停路线查看距离、风险和完整关系。")
+        : translateUi("拖动势力整理关系，悬停连线查看双方与完整关系。")}
       fullscreen={isFullscreen}
       onFullscreenChange={setIsFullscreen}
-      toggleLabel="全屏查看图谱"
-      exitLabel="退出图谱全屏"
+      toggleLabel={translateUi("全屏查看图谱")}
+      exitLabel={translateUi("退出图谱全屏")}
       className="rounded-3xl border-border/35 shadow-none"
       headerClassName="bg-none px-5 py-4"
       bodyClassName="flex min-h-0 flex-col"
@@ -265,7 +266,7 @@ export default function WorldGraphCanvas({
             size="icon"
             className="h-8 w-8 rounded-full"
             onClick={() => void flowInstance?.zoomOut({ duration: 160 })}
-            aria-label="缩小图谱"
+            aria-label={translateUi("缩小图谱")}
           >
             <Minus className="h-4 w-4" />
           </Button>
@@ -276,11 +277,11 @@ export default function WorldGraphCanvas({
             size="icon"
             className="h-8 w-8 rounded-full"
             onClick={() => void flowInstance?.zoomIn({ duration: 160 })}
-            aria-label="放大图谱"
+            aria-label={translateUi("放大图谱")}
           >
             <Plus className="h-4 w-4" />
           </Button>
-          <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={resetGraph} aria-label="重置图谱布局">
+          <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={resetGraph} aria-label={translateUi("重置图谱布局")}>
             <RotateCcw className="h-4 w-4" />
           </Button>
         </div>
@@ -339,20 +340,21 @@ export default function WorldGraphCanvas({
           />
           {layout === "map" ? (
             <Panel position="top-right" className="pointer-events-none m-4 grid h-14 w-14 place-items-center rounded-full border border-border/50 bg-background/75 text-[10px] font-semibold text-muted-foreground shadow-sm backdrop-blur">
-              <span className="absolute top-1">北</span>
-              <span className="absolute bottom-1">南</span>
-              <span className="absolute left-1">西</span>
-              <span className="absolute right-1">东</span>
+              <span className="absolute top-1">{translateUi("北")}</span>
+              <span className="absolute bottom-1">{translateUi("南")}</span>
+              <span className="absolute left-1">{translateUi("西")}</span>
+              <span className="absolute right-1">{translateUi("东")}</span>
               <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
             </Panel>
           ) : null}
         </ReactFlow>
         {displayNodes.length === 0 ? (
-          <div className="pointer-events-none absolute inset-0 grid place-items-center text-sm text-muted-foreground">暂无可展示的图谱内容</div>
+          <div className="pointer-events-none absolute inset-0 grid place-items-center text-sm text-muted-foreground">{translateUi("暂无可展示的图谱内容")}</div>
         ) : null}
       </div>
       <div className="border-t border-border/25 px-5 py-3 text-xs text-muted-foreground">
-        拖动画布移动视图，拖动节点整理布局；悬停关系查看详情，点击可固定详情。
+
+        {translateUi("拖动画布移动视图，拖动节点整理布局；悬停关系查看详情，点击可固定详情。")}
       </div>
     </FullscreenView>
   );

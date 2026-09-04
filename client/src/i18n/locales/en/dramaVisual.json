@@ -1,0 +1,67 @@
+{
+  "emptyProject": "Create episodes and a script first, then open storyboarding and video prompts.",
+  "metrics": {
+    "currentPrompt": "Current prompt",
+    "createdTasks": "Created tasks",
+    "generating": "Generating",
+    "completed": "Completed",
+    "failed": "Failed",
+    "history": "Older versions"
+  },
+  "fields": {
+    "videoProvider": "Video channel",
+    "imageProvider": "First-frame image provider",
+    "imageProviderUnset": "Image provider not configured",
+    "characterReference": "Character reference image"
+  },
+  "actions": {
+    "createStoryboard": "Generate storyboard",
+    "createEpisodeKeyframe": "Generate this episode's first frames",
+    "createEpisodeVideo": "Create this episode's video tasks"
+  },
+  "storyboard": {
+    "title": "Storyboard",
+    "generated": "Shot sequence generated."
+  },
+  "ui": {
+    "episode": "Episode {{order}}",
+    "keyframeEstimate": "Estimated first-frame cost",
+    "videoEstimate": "Estimated video cost",
+    "keyframeBatch": "Batch first-frame tasks",
+    "videoBatch": "Batch video tasks",
+    "currentVideoChannel": "Current video channel: {{value}}",
+    "noStoryboard": "This episode has no storyboard yet.",
+    "shot": "Shot {{order}} · {{size}}",
+    "sizeUnset": "Shot size not set",
+    "keyframe": "First frame v{{version}}",
+    "keyframeHistory": "{{count}} first-frame history entries",
+    "videoPrompt": "Video prompt v{{version}}",
+    "refresh": "Refresh status",
+    "videoTasks": "Video tasks",
+    "videoTasksDescription": "Centrally view this project's generated video prompts and provider task status.",
+    "history": "Older versions",
+    "task": "Task: {{value}}",
+    "createTask": "Create task",
+    "skipped": "Skipped {{count}}",
+    "failed": "Failed {{count}}",
+    "channel": "Channel: {{value}}",
+    "estimated": "Estimated: {{value}}",
+    "actual": "Actual: {{value}}",
+    "failedShots": "Failed shots: {{value}}",
+    "retryFailed": "Retry failed shots",
+    "shotFrame": "Shot frame",
+    "location": "Location: {{value}}",
+    "keyframeChannel": "First-frame channel: {{value}}",
+    "keyframeHistoryTitle": "First-frame history",
+    "negativePrompt": "Negative prompt",
+    "version": "Version: v{{value}}",
+    "aspect": "Aspect ratio: {{value}}",
+    "duration": "Duration: {{value}} s",
+    "videoStatus": "Video channel status: {{value}}",
+    "viewResult": "View the generated result",
+    "keyframeGenerating": "Generating the first frame",
+    "keyframeError": "Failed to generate the first frame",
+    "keyframePending": "First frame not generated yet",
+    "videoFailed": "The video task failed. Refresh the status or regenerate the prompt before creating a task."
+  }
+}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { TakeoverChapterTargetViewModel } from "../novelExistingProjectTakeoverViewModel";
 import { Input } from "@/components/ui/input";
 import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
@@ -14,6 +15,7 @@ export default function TakeoverChapterTargetSelector({
   disabled = false,
   onChange,
 }: TakeoverChapterTargetSelectorProps) {
+  const { t } = useTranslation("novelChapters");
   const [draftValue, setDraftValue] = useState(() => String(target.selectedOrder));
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function TakeoverChapterTargetSelector({
   return (
     <div className="rounded-lg border bg-background/70 p-3">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="text-sm font-medium text-foreground">推进至</div>
+        <div className="text-sm font-medium text-foreground">{t("takeoverTarget.advanceTo")}</div>
         <Input
           className="h-10 sm:w-40"
           type="number"
@@ -57,11 +59,15 @@ export default function TakeoverChapterTargetSelector({
               commitDraftValue();
             }
           }}
-          aria-label="推进至章节"
+          aria-label={t("takeoverTarget.advanceToAria")}
         />
       </div>
       <div className={`mt-2 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
-        {target.summary} 可输入范围：第 {target.startOrder}-{target.maxOrder} 章。
+        {t("takeoverTarget.range", {
+          summary: target.summary,
+          start: target.startOrder,
+          max: target.maxOrder,
+        })}
       </div>
     </div>
   );

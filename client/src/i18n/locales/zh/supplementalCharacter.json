@@ -1,0 +1,37 @@
+{
+  "title": "补充角色",
+  "description": "适合补充对手、盟友、压力来源或关键关系角色。AI 会基于现有阵容推荐候选。",
+  "fields": {
+    "mode": "补充方式",
+    "modeHint": "默认让 AI 判断；只有当你清楚要加哪类角色时才手动指定。",
+    "referenceCharacter": "参考角色",
+    "referenceHint": "可以留空；留空时 AI 会自行决定围绕谁展开。",
+    "storyFunction": "期望定位",
+    "count": "生成数量",
+    "extraInstructions": "补充说明",
+    "extraPlaceholder": "例如：加一个给主角制造压力但不完全是反派的普通人；或一个与母亲线相关的旧相识。"
+  },
+  "options": {
+    "modeAuto": "AI 决定需要补充的类型",
+    "modeLinked": "从现有角色衍生关系角色",
+    "modeIndependent": "创建相对独立的角色",
+    "aiDecide": "AI 决定",
+    "protagonist": "主角",
+    "antagonist": "主要对手",
+    "ally": "盟友",
+    "foil": "对照角色",
+    "mentor": "引路人",
+    "loveInterest": "情感关系",
+    "pressureSource": "压力来源",
+    "catalyst": "催化剂",
+    "count": "{{count}} 个角色"
+  },
+  "status": {
+    "noCharacters": "目前还没有已创建角色，无法按关系补充。请先创建核心角色或选择独立补充。",
+    "generated": "已生成补充角色候选。",
+    "generateFailed": "生成补充角色失败。",
+    "relationSuffix": "，并同步 {{count}} 条关系",
+    "applied": "已把 {{name}} 加入当前小说{{relationSuffix}}。",
+    "applyFailed": "应用补充角色失败。"
+  }
+}

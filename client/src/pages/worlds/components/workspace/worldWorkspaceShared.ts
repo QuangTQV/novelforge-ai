@@ -1,12 +1,13 @@
+import { translateUi } from "../../../../i18n/legacy.ts";
 import type { World } from "@ai-novel/shared/types/world";
 
 export const LAYERS = [
-  { key: "foundation", label: "L1 基础层", primaryField: "background" },
-  { key: "power", label: "L2 力量层", primaryField: "magicSystem" },
-  { key: "society", label: "L3 社会层", primaryField: "politics" },
-  { key: "culture", label: "L4 文化层", primaryField: "cultures" },
-  { key: "history", label: "L5 历史层", primaryField: "history" },
-  { key: "conflict", label: "L6 冲突层", primaryField: "conflicts" },
+  { key: "foundation", label: translateUi("L1 基础层"), primaryField: "background" },
+  { key: "power", label: translateUi("L2 力量层"), primaryField: "magicSystem" },
+  { key: "society", label: translateUi("L3 社会层"), primaryField: "politics" },
+  { key: "culture", label: translateUi("L4 文化层"), primaryField: "cultures" },
+  { key: "history", label: translateUi("L5 历史层"), primaryField: "history" },
+  { key: "conflict", label: translateUi("L6 冲突层"), primaryField: "conflicts" },
 ] as const;
 
 export type LayerKey = (typeof LAYERS)[number]["key"];
@@ -58,19 +59,19 @@ export type RefineAttribute =
   | "factions";
 
 export const REFINE_ATTRIBUTE_OPTIONS: Array<{ value: RefineAttribute; label: string }> = [
-  { value: "background", label: "基础背景" },
-  { value: "geography", label: "地理环境" },
-  { value: "cultures", label: "文化习俗" },
-  { value: "magicSystem", label: "力量体系" },
-  { value: "politics", label: "政治结构" },
-  { value: "races", label: "种族设定" },
-  { value: "religions", label: "宗教信仰" },
-  { value: "technology", label: "技术体系" },
-  { value: "history", label: "历史脉络" },
-  { value: "economy", label: "经济系统" },
-  { value: "conflicts", label: "核心冲突" },
-  { value: "description", label: "世界概述" },
-  { value: "factions", label: "势力关系" },
+  { value: "background", label: translateUi("基础背景") },
+  { value: "geography", label: translateUi("地理环境") },
+  { value: "cultures", label: translateUi("文化习俗") },
+  { value: "magicSystem", label: translateUi("力量体系") },
+  { value: "politics", label: translateUi("政治结构") },
+  { value: "races", label: translateUi("种族设定") },
+  { value: "religions", label: translateUi("宗教信仰") },
+  { value: "technology", label: translateUi("技术体系") },
+  { value: "history", label: translateUi("历史脉络") },
+  { value: "economy", label: translateUi("经济系统") },
+  { value: "conflicts", label: translateUi("核心冲突") },
+  { value: "description", label: translateUi("世界概述") },
+  { value: "factions", label: translateUi("势力关系") },
 ];
 
 export function normalizeLayerText(raw: unknown): string {

@@ -10,6 +10,7 @@ import {
   BASIC_INFO_FIELD_HINTS,
   DEFAULT_ESTIMATED_CHAPTER_COUNT,
   EMOTION_OPTIONS,
+  NOVEL_LANGUAGE_OPTIONS,
   PACE_OPTIONS,
   POV_OPTIONS,
   PROJECT_MODE_OPTIONS,
@@ -330,6 +331,21 @@ export default function NovelBasicInfoForm(props: NovelBasicInfoFormProps) {
                 </SelectControl>
                 <div className="text-xs text-muted-foreground">{findOptionSummary(WRITING_PLATFORM_OPTIONS, basicForm.writingPlatformPreference)}</div>
               </div>
+              <div className="space-y-2">
+                <FieldLabel htmlFor="basic-novel-language" hint={BASIC_INFO_FIELD_HINTS.novelLanguage}>{translateUi("Ngôn ngữ tiểu thuyết")}</FieldLabel>
+                <SelectControl
+                  id="basic-novel-language"
+                  className="w-full rounded-md border bg-background p-2 text-sm"
+                  value={basicForm.novelLanguage}
+                  onChange={(event) => onFormChange({ novelLanguage: event.target.value as NovelBasicFormState["novelLanguage"] })}
+                >
+                  {NOVEL_LANGUAGE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </SelectControl>
+                <div className="text-xs text-muted-foreground">{findOptionSummary(NOVEL_LANGUAGE_OPTIONS, basicForm.novelLanguage)}</div>
+              </div>
+
               <div className="space-y-2">
                 <FieldLabel htmlFor="basic-pov" hint={BASIC_INFO_FIELD_HINTS.narrativePov}>{t("fields.pov")}</FieldLabel>
                 <SelectControl

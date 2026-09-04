@@ -4,6 +4,7 @@ import type { NovelBasicFormState } from "../novelBasicInfo.shared";
 import {
   BASIC_INFO_FIELD_HINTS,
   EMOTION_OPTIONS,
+  NOVEL_LANGUAGE_OPTIONS,
   PACE_OPTIONS,
   POV_OPTIONS,
   READER_CHANNEL_OPTIONS,
@@ -99,6 +100,25 @@ export default function StageBasicSetup({
           </SelectControl>
           <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
             {findOptionSummary(READER_CHANNEL_OPTIONS, basicForm.readerChannelPreference)}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <FieldLabel htmlFor="director-basic-language" hint={BASIC_INFO_FIELD_HINTS.novelLanguage}>{translateUi("Ngôn ngữ tiểu thuyết")}</FieldLabel>
+          <SelectControl
+            id="director-basic-language"
+            className={controlClassName}
+            value={basicForm.novelLanguage}
+            onChange={(event) => onBasicFormChange({
+              novelLanguage: event.target.value as NovelBasicFormState["novelLanguage"],
+            })}
+          >
+            {NOVEL_LANGUAGE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </SelectControl>
+          <div className={`text-xs text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
+            {findOptionSummary(NOVEL_LANGUAGE_OPTIONS, basicForm.novelLanguage)}
           </div>
         </div>
 

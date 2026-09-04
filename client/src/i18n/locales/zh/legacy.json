@@ -35,5 +35,21 @@
   "{{field}} của chương {{order}} chưa xong, có thể chi tiết hóa tiếp từ đây.": "第{{order}}章的{{field}}暂未完成，可从这里继续细化。",
   "[Ảnh: {{name}}]": "[图片:{{name}}]",
   "[Tệp: {{name}}]": "[文件:{{name}}]",
-  "Chương {{order}}": "第 {{order}} 章"
+  "Chương {{order}}": "第 {{order}} 章",
+  "Ngôn ngữ tiểu thuyết": "小说语言",
+  "Tiếng Việt": "越南语",
+  "Tiếng Trung (giản thể)": "简体中文",
+  "Tiếng Anh": "英语",
+  "Tiếng Nhật": "日语",
+  "Tiếng Hàn": "韩语",
+  "Tiếng Pháp": "法语",
+  "Tiếng Tây Ban Nha": "西班牙语",
+  "AI sẽ viết chính văn, tên và mô tả bằng tiếng Việt.": "AI 会用越南语撰写正文、名称和描述。",
+  "Ngôn ngữ gốc của hệ thống prompt.": "提示词系统的原生语言。",
+  "AI sẽ viết nội dung bằng tiếng Anh.": "AI 会用英语撰写内容。",
+  "AI sẽ viết nội dung bằng tiếng Nhật.": "AI 会用日语撰写内容。",
+  "AI sẽ viết nội dung bằng tiếng Hàn.": "AI 会用韩语撰写内容。",
+  "AI sẽ viết nội dung bằng tiếng Pháp.": "AI 会用法语撰写内容。",
+  "AI sẽ viết nội dung bằng tiếng Tây Ban Nha.": "AI 会用西班牙语撰写内容。",
+  "Ngôn ngữ AI dùng để viết nội dung tiểu thuyết (chính văn, tên, mô tả). Độc lập với ngôn ngữ giao diện; mặc định lấy theo ngôn ngữ giao diện. Đổi về sau chỉ áp dụng cho nội dung sinh mới.": "AI 撰写小说内容（正文、名称、描述）所用的语言。独立于界面语言，默认跟随界面语言。之后修改只影响新生成的内容。"
 }

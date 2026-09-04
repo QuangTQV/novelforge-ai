@@ -7940,5 +7940,21 @@
   "马甲只是名字不同没有用途": "The alias is just a different name with no purpose",
   "高压主线喧宾夺主": "The high-pressure main line hijacks everything",
   "高手试探": "A master testing the lead",
-  "黑化式推进": "Progression by turning dark"
+  "黑化式推进": "Progression by turning dark",
+  "Ngôn ngữ tiểu thuyết": "Novel language",
+  "Tiếng Việt": "Vietnamese",
+  "Tiếng Trung (giản thể)": "Chinese (Simplified)",
+  "Tiếng Anh": "English",
+  "Tiếng Nhật": "Japanese",
+  "Tiếng Hàn": "Korean",
+  "Tiếng Pháp": "French",
+  "Tiếng Tây Ban Nha": "Spanish",
+  "AI sẽ viết chính văn, tên và mô tả bằng tiếng Việt.": "The AI writes prose, names and descriptions in Vietnamese.",
+  "Ngôn ngữ gốc của hệ thống prompt.": "The prompt system's native language.",
+  "AI sẽ viết nội dung bằng tiếng Anh.": "The AI writes content in English.",
+  "AI sẽ viết nội dung bằng tiếng Nhật.": "The AI writes content in Japanese.",
+  "AI sẽ viết nội dung bằng tiếng Hàn.": "The AI writes content in Korean.",
+  "AI sẽ viết nội dung bằng tiếng Pháp.": "The AI writes content in French.",
+  "AI sẽ viết nội dung bằng tiếng Tây Ban Nha.": "The AI writes content in Spanish.",
+  "Ngôn ngữ AI dùng để viết nội dung tiểu thuyết (chính văn, tên, mô tả). Độc lập với ngôn ngữ giao diện; mặc định lấy theo ngôn ngữ giao diện. Đổi về sau chỉ áp dụng cho nội dung sinh mới.": "The language the AI uses to write novel content (prose, names, descriptions). Independent of the interface language; defaults to it. Changing it later only affects newly generated content."
 }

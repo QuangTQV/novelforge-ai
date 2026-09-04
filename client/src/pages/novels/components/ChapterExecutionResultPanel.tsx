@@ -68,9 +68,9 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
     );
   }
 
-  const chapterLabel = `第${selectedChapter.order}章`;
-  const chapterTitle = selectedChapter.title || "未命名章节";
-  const chapterObjective = chapterPlan?.objective ?? selectedChapter.expectation ?? "这一章还没有明确目标，建议先补章节计划。";
+  const chapterLabel = translateUi("第{{v0}}章", { v0: selectedChapter.order });
+  const chapterTitle = selectedChapter.title || translateUi("未命名章节");
+  const chapterObjective = chapterPlan?.objective ?? selectedChapter.expectation ?? translateUi("这一章还没有明确目标，建议先补章节计划。");
   const savedChapterContent = selectedChapter.content?.trim() ?? "";
   const hasSavedChapterContent = hasText(savedChapterContent);
 
@@ -80,10 +80,10 @@ export default function ChapterExecutionResultPanel(props: ChapterExecutionResul
   const hasVisibleLiveWritingOutput = hasText(visibleLiveWritingOutput);
   const useLiveWritingPanel = isSelectedChapterStreaming || (!hasSavedChapterContent && hasVisibleLiveWritingOutput);
   const contentPanelTitle = isSelectedChapterFinalizing
-    ? "章节收尾中"
+    ? translateUi("章节收尾中")
     : useLiveWritingPanel
-      ? "实时写作稿"
-      : "已保存正文";
+      ? translateUi("实时写作稿")
+      : translateUi("已保存正文");
   const contentPanelContent = useLiveWritingPanel
     ? visibleLiveWritingOutput
     : hasSavedChapterContent

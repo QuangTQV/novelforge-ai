@@ -17,13 +17,13 @@ import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
 function formatPermission(permission: BrowserNotificationPermissionState): string {
   switch (permission) {
     case "granted":
-      return "已允许";
+      return translateUi("已允许");
     case "denied":
-      return "已阻止";
+      return translateUi("已阻止");
     case "default":
-      return "待授权";
+      return translateUi("待授权");
     case "unsupported":
-      return "不支持";
+      return translateUi("不支持");
   }
 }
 
@@ -54,7 +54,7 @@ export function AutoDirectorBrowserNotificationSettingsCard(props: {
     if (nextPermission === "unsupported") {
       setAutoDirectorPauseNotificationEnabled(false);
       refreshState();
-      onActionResult("当前浏览器不支持桌面提醒。");
+      onActionResult(translateUi("当前浏览器不支持桌面提醒。"));
       return;
     }
     if (nextPermission === "default") {
@@ -63,19 +63,19 @@ export function AutoDirectorBrowserNotificationSettingsCard(props: {
     if (nextPermission !== "granted") {
       setAutoDirectorPauseNotificationEnabled(false);
       refreshState();
-      onActionResult("浏览器未允许通知，自动导演暂停时不会发送桌面提醒。");
+      onActionResult(translateUi("浏览器未允许通知，自动导演暂停时不会发送桌面提醒。"));
       return;
     }
     setAutoDirectorPauseNotificationEnabled(true);
     refreshState();
-    onActionResult("自动导演暂停提醒已开启。");
+    onActionResult(translateUi("自动导演暂停提醒已开启。"));
   };
 
   const handleToggle = (checked: boolean) => {
     if (!checked) {
       setAutoDirectorPauseNotificationEnabled(false);
       refreshState();
-      onActionResult("自动导演暂停提醒已关闭。");
+      onActionResult(translateUi("自动导演暂停提醒已关闭。"));
       return;
     }
     void handleEnable();

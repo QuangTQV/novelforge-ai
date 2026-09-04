@@ -251,15 +251,15 @@ function GenderSelector({ character }: { character: ComicCharacter }) {
 // 一次编辑，所有生图（三视图/表情稿/资产/格子图）后续生成都会读新版
 
 const FACE_PRESETS: Array<{ key: string; label: string; snippet: string }> = [
-  { key: "round", label: translateUi("圆脸"), snippet: "脸型圆润饱满，下巴线条柔和不尖锐，round soft face, gentle rounded jawline" },
-  { key: "square", label: translateUi("方脸"), snippet: "脸型方正，下颌角清晰，square face shape, defined jawline angle" },
-  { key: "oval", label: translateUi("鹅蛋脸"), snippet: "脸型为标准鹅蛋脸，oval face shape, balanced proportions" },
-  { key: "long", label: translateUi("长脸"), snippet: "脸型偏长，long face shape, vertically elongated" },
-  { key: "young", label: translateUi("童颜"), snippet: "面部线条柔和带婴儿肥，年龄感偏小，youthful baby face, soft cheeks" },
-  { key: "mature", label: translateUi("成熟"), snippet: "面部骨骼明显，气质成熟，mature defined bone structure, adult features" },
-  { key: "sharp", label: translateUi("棱角分明"), snippet: "颧骨与下颌线条分明，sharp cheekbones, well-defined jawline" },
-  { key: "wide_eyes", label: translateUi("眼距偏宽"), snippet: "双眼间距偏宽，wide-set eyes" },
-  { key: "narrow_eyes", label: translateUi("丹凤眼"), snippet: "眼型为细长丹凤眼，narrow phoenix eyes, upturned outer corners" },
+  { key: "round", label: translateUi("圆脸"), snippet: translateUi("脸型圆润饱满，下巴线条柔和不尖锐，round soft face, gentle rounded jawline") },
+  { key: "square", label: translateUi("方脸"), snippet: translateUi("脸型方正，下颌角清晰，square face shape, defined jawline angle") },
+  { key: "oval", label: translateUi("鹅蛋脸"), snippet: translateUi("脸型为标准鹅蛋脸，oval face shape, balanced proportions") },
+  { key: "long", label: translateUi("长脸"), snippet: translateUi("脸型偏长，long face shape, vertically elongated") },
+  { key: "young", label: translateUi("童颜"), snippet: translateUi("面部线条柔和带婴儿肥，年龄感偏小，youthful baby face, soft cheeks") },
+  { key: "mature", label: translateUi("成熟"), snippet: translateUi("面部骨骼明显，气质成熟，mature defined bone structure, adult features") },
+  { key: "sharp", label: translateUi("棱角分明"), snippet: translateUi("颧骨与下颌线条分明，sharp cheekbones, well-defined jawline") },
+  { key: "wide_eyes", label: translateUi("眼距偏宽"), snippet: translateUi("双眼间距偏宽，wide-set eyes") },
+  { key: "narrow_eyes", label: translateUi("丹凤眼"), snippet: translateUi("眼型为细长丹凤眼，narrow phoenix eyes, upturned outer corners") },
 ];
 
 function getFaceShapeOverride(character: ComicCharacter): string {
@@ -850,12 +850,12 @@ function CharacterDetail({
 // ─── Asset Section ────────────────────────────────────────────────────────────
 
 const ASSET_TYPE_LABELS: Record<CharacterAssetType, string> = {
-  costume: "服装",
-  weapon: "武器",
-  item: "道具",
-  vehicle: "载具",
-  ability: "技能",
-  other: "其他",
+  costume: translateUi("服装"),
+  weapon: translateUi("武器"),
+  item: translateUi("道具"),
+  vehicle: translateUi("载具"),
+  ability: translateUi("技能"),
+  other: translateUi("其他"),
 };
 
 const ASSET_TYPE_ORDER: CharacterAssetType[] = ["costume", "weapon", "item", "vehicle", "ability", "other"];
@@ -877,9 +877,9 @@ const STATUS_DOT_STYLE: Record<string, string> = {
 };
 
 const STATUS_DOT_TITLE: Record<string, string> = {
-  idle: "未生成",
-  generating: "生成中",
-  done: "已就绪",
+  idle: translateUi("未生成"),
+  generating: translateUi("生成中"),
+  done: translateUi("已就绪"),
   error: translateUi("生成失败"),
 };
 
@@ -1014,7 +1014,7 @@ function AssetAddRow({
   });
 
   const accent = ASSET_TYPE_ACCENT[type];
-  const placeholderName = type === "costume" ? "战斗套装" : type === "weapon" ? "月光剑" : type === "vehicle" ? "踏雪马" : type === "ability" ? "破云剑诀" : "宗门腰牌";
+  const placeholderName = type === "costume" ? translateUi("战斗套装") : type === "weapon" ? translateUi("月光剑") : type === "vehicle" ? translateUi("踏雪马") : type === "ability" ? translateUi("破云剑诀") : translateUi("宗门腰牌");
 
   return (
     <div className="mb-3 rounded-lg border-2 border-dashed border-primary/30 bg-background px-3 py-2.5">

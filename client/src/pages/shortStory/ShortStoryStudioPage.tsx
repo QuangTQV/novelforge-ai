@@ -99,7 +99,7 @@ export default function ShortStoryStudioPage() {
 
   const revisionApplyMutation = useMutation({
     mutationFn: () => {
-      if (!revisionImpact) throw new Error("修改预览已失效。");
+      if (!revisionImpact) throw new Error(translateUi("修改预览已失效。"));
       return applyShortStoryRevision(novelId, revisionImpact.intentVersionId);
     },
     onSuccess: async () => {
@@ -371,10 +371,10 @@ function RevisionPreview(props: {
 }) {
   const impact = props.impact;
   const strategyLabel = impact.recommendedStrategy === "local_patch"
-    ? "局部调整"
+    ? translateUi("局部调整")
     : impact.recommendedStrategy === "rewrite_downstream"
-      ? "从影响处向后调整"
-      : "重新规划整篇";
+      ? translateUi("从影响处向后调整")
+      : translateUi("重新规划整篇");
   return (
     <div className="rounded-xl border border-primary/25 bg-primary/[0.03] p-4">
       <div className="font-medium">{translateUi("AI 对修改的理解")}</div>

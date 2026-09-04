@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   LlmLiveEvent,
@@ -18,7 +19,7 @@ function updateSession(
       context: event.context,
       seq: event.seq,
       phase: "requesting",
-      phaseMessage: "正在连接模型",
+      phaseMessage: translateUi("正在连接模型"),
       preview: "",
       totalChars: 0,
       startedAt: event.at,
@@ -35,7 +36,7 @@ function updateSession(
       ...current,
       seq: event.seq,
       phase: current.phase === "requesting" ? "streaming" : current.phase,
-      phaseMessage: current.phase === "requesting" ? "模型正在返回内容" : current.phaseMessage,
+      phaseMessage: current.phase === "requesting" ? translateUi("模型正在返回内容") : current.phaseMessage,
       preview: preview.length > MAX_PREVIEW_CHARS ? preview.slice(-MAX_PREVIEW_CHARS) : preview,
       totalChars: event.totalChars,
       updatedAt: event.at,
@@ -58,7 +59,7 @@ function updateSession(
       ...current,
       seq: event.seq,
       phase: "completed",
-      phaseMessage: "模型结果已准备完成",
+      phaseMessage: translateUi("模型结果已准备完成"),
       totalChars: event.totalChars,
       updatedAt: event.at,
       completedAt: event.at,
@@ -150,7 +151,7 @@ export function useLlmLiveFeed(input: {
             { signal: controller.signal },
           );
           if (!response.ok || !response.body) {
-            throw new Error("生成实况连接失败");
+            throw new Error(translateUi("生成实况连接失败"));
           }
           setConnected(true);
           const reader = response.body.getReader();

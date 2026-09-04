@@ -51,22 +51,22 @@ function safeJson<T>(input: string | null | undefined, fallback: T): T {
 
 function statusLabel(status?: QualityStatus): string {
   const labels: Record<QualityStatus, string> = {
-    approved: "已通过",
-    repairable: "建议修复",
-    continue_with_warning: "可继续",
-    blocked: "需处理",
+    approved: translateUi("已通过"),
+    repairable: translateUi("建议修复"),
+    continue_with_warning: translateUi("可继续"),
+    blocked: translateUi("需处理"),
   };
-  return status ? labels[status] : "未检查";
+  return status ? labels[status] : translateUi("未检查");
 }
 
 function severityLabel(severity?: QualityFlag["severity"]): string {
   const labels: Record<NonNullable<QualityFlag["severity"]>, string> = {
-    low: "轻微",
-    medium: "中等",
-    high: "重要",
-    critical: "严重",
+    low: translateUi("轻微"),
+    medium: translateUi("中等"),
+    high: translateUi("重要"),
+    critical: translateUi("严重"),
   };
-  return severity ? labels[severity] : "提示";
+  return severity ? labels[severity] : translateUi("提示");
 }
 
 function qualityVariant(status?: QualityStatus): "default" | "secondary" | "destructive" | "outline" {
@@ -78,11 +78,11 @@ function qualityVariant(status?: QualityStatus): "default" | "secondary" | "dest
 
 function complianceLabel(level?: ComplianceLevel): string {
   const labels: Record<ComplianceLevel, string> = {
-    pass: "合规通过",
-    warn: "合规提醒",
-    block: "合规需修复",
+    pass: translateUi("合规通过"),
+    warn: translateUi("合规提醒"),
+    block: translateUi("合规需修复"),
   };
-  return level ? labels[level] : "未预检";
+  return level ? labels[level] : translateUi("未预检");
 }
 
 function complianceVariant(level?: ComplianceLevel): "default" | "secondary" | "destructive" | "outline" {

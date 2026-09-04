@@ -13,14 +13,14 @@ export const DRAMA_TRACK_OPTIONS = [
 ] as const;
 
 export const DRAMA_SOURCE_LABELS: Record<DramaSourceType, string> = {
-  novel_import: "小说导入",
-  original: "原创短剧",
-  text_import: "文本导入",
+  novel_import: translateUi("小说导入"),
+  original: translateUi("原创短剧"),
+  text_import: translateUi("文本导入"),
 };
 
 export function dramaTrackLabel(track?: string | null): string {
   if (!track) {
-    return "未选择赛道";
+    return translateUi("未选择赛道");
   }
   return DRAMA_TRACK_OPTIONS.find((option) => option.value === track)?.label ?? track;
 }

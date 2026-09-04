@@ -21,24 +21,24 @@ function formatPercent(ratio: number): string {
 }
 
 function formatStageLabel(stage: string): string {
-  if (stage === "candidate_selection") return "开书方向";
-  if (stage === "candidate_confirm") return "创建项目";
-  if (stage === "story_macro") return "故事宏观规划";
-  if (stage === "book_contract") return "书级创作约定";
-  if (stage === "character_setup") return "角色准备";
-  if (stage === "volume_strategy") return "卷规划";
-  if (stage === "structured_outline") return "节奏与拆章";
-  if (stage === "chapter_execution") return "正文生成";
-  if (stage === "quality_repair") return "质量闭环";
-  if (stage === "takeover") return "接手已有项目";
+  if (stage === "candidate_selection") return translateUi("开书方向");
+  if (stage === "candidate_confirm") return translateUi("创建项目");
+  if (stage === "story_macro") return translateUi("故事宏观规划");
+  if (stage === "book_contract") return translateUi("书级创作约定");
+  if (stage === "character_setup") return translateUi("角色准备");
+  if (stage === "volume_strategy") return translateUi("卷规划");
+  if (stage === "structured_outline") return translateUi("节奏与拆章");
+  if (stage === "chapter_execution") return translateUi("正文生成");
+  if (stage === "quality_repair") return translateUi("质量闭环");
+  if (stage === "takeover") return translateUi("接手已有项目");
   return stage;
 }
 
 function formatNextAction(action?: string | null): string {
-  if (!action) return "当前没有额外动作建议";
-  if (action === "run_chapter_detail_generation") return "继续细化剩余章节任务单";
-  if (action === "run_chapter_list_generation") return "继续补齐卷拆章列表";
-  if (action === "sync_execution_contracts") return "同步章节执行合同";
+  if (!action) return translateUi("当前没有额外动作建议");
+  if (action === "run_chapter_detail_generation") return translateUi("继续细化剩余章节任务单");
+  if (action === "run_chapter_list_generation") return translateUi("继续补齐卷拆章列表");
+  if (action === "sync_execution_contracts") return translateUi("同步章节执行合同");
   const text = action
     .replace(/_/g, " ")
     .replace(/\./g, " ")
@@ -47,15 +47,15 @@ function formatNextAction(action?: string | null): string {
 }
 
 function formatResumeFrom(resumeFrom?: string | null): string {
-  if (!resumeFrom) return "按当前现场重新判断";
-  if (resumeFrom === "chapter_detail_bundle") return "从剩余未细化章节继续";
-  if (resumeFrom === "chapter_list") return "从卷拆章列表继续";
-  if (resumeFrom === "beat_sheet") return "从卷节奏板继续";
+  if (!resumeFrom) return translateUi("按当前现场重新判断");
+  if (resumeFrom === "chapter_detail_bundle") return translateUi("从剩余未细化章节继续");
+  if (resumeFrom === "chapter_list") return translateUi("从卷拆章列表继续");
+  if (resumeFrom === "beat_sheet") return translateUi("从卷节奏板继续");
   if (resumeFrom.startsWith("chapter:")) {
     const rawOrder = resumeFrom.slice("chapter:".length).trim();
     const order = Number(rawOrder);
     if (Number.isFinite(order) && order > 0) {
-      return `第 ${order} 章`;
+      return translateUi("第 {{v0}} 章", { v0: order });
     }
   }
   return resumeFrom.replace(/_/g, " ").trim() || resumeFrom;
@@ -77,27 +77,27 @@ function summarizeStep(step: DirectorTaskFactInspectionStep): {
     return {
       tone: "done",
       title: translateUi("已确认完成"),
-      detail: "系统已经找到这一步对应的真实产出，可以直接复用。",
+      detail: translateUi("系统已经找到这一步对应的真实产出，可以直接复用。"),
     };
   }
   if (!step.ready) {
     return {
       tone: "blocked",
       title: translateUi("还不能执行"),
-      detail: step.blockers[0]?.reason || "上游事实还没补齐，所以这一步暂时不能开始。",
+      detail: step.blockers[0]?.reason || translateUi("上游事实还没补齐，所以这一步暂时不能开始。"),
     };
   }
   if (step.isCurrentFactStep) {
     return {
       tone: "current",
       title: translateUi("当前优先补这一段"),
-      detail: step.progress?.label || "这是系统根据现有事实判断出的下一段主处理步骤。",
+      detail: step.progress?.label || translateUi("这是系统根据现有事实判断出的下一段主处理步骤。"),
     };
   }
   return {
     tone: "working",
     title: translateUi("还没闭环"),
-    detail: step.progress?.label || "这一步已经具备执行条件，但事实还没有完全闭环。",
+    detail: step.progress?.label || translateUi("这一步已经具备执行条件，但事实还没有完全闭环。"),
   };
 }
 

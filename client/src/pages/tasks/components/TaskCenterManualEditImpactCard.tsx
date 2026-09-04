@@ -14,15 +14,15 @@ interface TaskCenterManualEditImpactCardProps {
 
 function formatImpactLevel(level: DirectorManualEditImpactLevel): string {
   if (level === "none") {
-    return "没有发现影响";
+    return translateUi("没有发现影响");
   }
   if (level === "low") {
-    return "轻微影响";
+    return translateUi("轻微影响");
   }
   if (level === "medium") {
-    return "中等影响";
+    return translateUi("中等影响");
   }
-  return "高影响";
+  return translateUi("高影响");
 }
 
 function impactVariant(level: DirectorManualEditImpactLevel): "default" | "outline" | "secondary" | "destructive" {

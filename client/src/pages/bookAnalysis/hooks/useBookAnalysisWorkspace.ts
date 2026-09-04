@@ -31,7 +31,7 @@ import { useAnalysisPublishing } from "./actions/useAnalysisPublishing";
 import { useAnalysisCharacters } from "./character/useAnalysisCharacters";
 import { useSectionDrafts } from "./drafts/useSectionDrafts";
 
-const DIAGNOSIS_FOCUS_INSTRUCTION = "请从作者自检角度诊断当前稿子，优先指出节奏断点、人物模糊点、主题表达不清、伏笔回收风险和后续改稿优先级。";
+const DIAGNOSIS_FOCUS_INSTRUCTION = translateUi("请从作者自检角度诊断当前稿子，优先指出节奏断点、人物模糊点、主题表达不清、伏笔回收风险和后续改稿优先级。");
 
 function buildNovelOptions(items: Array<{ id: string; title: string }>): NovelOption[] {
   return items.map((item) => ({ id: item.id, title: item.title }));
@@ -161,7 +161,7 @@ export function useBookAnalysisWorkspace(): BookAnalysisWorkspace {
   const sourceChaptersError = sourceChaptersQuery.error instanceof Error
     ? sourceChaptersQuery.error.message
     : sourceChaptersQuery.error
-      ? "章节范围加载失败。"
+      ? translateUi("章节范围加载失败。")
       : "";
   const versionOptions = sourceDocumentQuery.data?.data?.versions ?? [];
   const selectedPreset = useMemo(
@@ -270,7 +270,7 @@ export function useBookAnalysisWorkspace(): BookAnalysisWorkspace {
       const documentResponse = await exportNovelAsKnowledgeDocument(selectedDiagnosisNovelId);
       const document = documentResponse.data;
       if (!document) {
-        throw new Error("小说正文导出失败。");
+        throw new Error(translateUi("小说正文导出失败。"));
       }
       const analysisResponse = await createBookAnalysis({
         documentId: document.id,
@@ -580,13 +580,13 @@ export function useBookAnalysisWorkspace(): BookAnalysisWorkspace {
     },
     queryState: {
       analysesLoading: analysesQuery.isLoading,
-      analysesError: getQueryErrorMessage(analysesQuery.error, "拆书列表加载失败。"),
+      analysesError: getQueryErrorMessage(analysesQuery.error, translateUi("拆书列表加载失败。")),
       detailLoading: detailQuery.isLoading,
-      detailError: getQueryErrorMessage(detailQuery.error, "拆书详情加载失败。"),
+      detailError: getQueryErrorMessage(detailQuery.error, translateUi("拆书详情加载失败。")),
       sourceLoading: sourceDocumentQuery.isLoading,
-      sourceError: getQueryErrorMessage(sourceDocumentQuery.error, "来源文档加载失败。"),
+      sourceError: getQueryErrorMessage(sourceDocumentQuery.error, translateUi("来源文档加载失败。")),
       chaptersLoading: documentChaptersQuery.isLoading,
-      chaptersError: getQueryErrorMessage(documentChaptersQuery.error, "原文章节加载失败。"),
+      chaptersError: getQueryErrorMessage(documentChaptersQuery.error, translateUi("原文章节加载失败。")),
     },
     setKeyword,
     setStatus,

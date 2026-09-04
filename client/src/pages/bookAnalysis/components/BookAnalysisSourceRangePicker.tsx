@@ -242,14 +242,14 @@ export default function BookAnalysisSourceRangePicker({
   };
 
   const rangeTitle = selectedRange && selectedStartChapter && selectedEndChapter
-    ? `第 ${selectedStartChapter.chapterIndex + 1} 章 ~ 第 ${selectedEndChapter.chapterIndex + 1} 章`
-    : "全文";
+    ? translateUi("第 {{v0}} 章 ~ 第 {{v1}} 章", { v0: selectedStartChapter.chapterIndex + 1, v1: selectedEndChapter.chapterIndex + 1 })
+    : translateUi("全文");
   const rangeDetail = selectedRange && selectedStartChapter && selectedEndChapter
-    ? `${selectedChapterCount} 章 · 约 ${formatCount(selectedCharCount)} 字 · 占全文 ${Math.round(percent)}%`
+    ? translateUi("{{v0}} 章 · 约 {{v1}} 字 · 占全文 {{v2}}%", { v0: selectedChapterCount, v1: formatCount(selectedCharCount), v2: Math.round(percent) })
     : `${sortedChapters.length > 0 ? `${sortedChapters.length} 章 · ` : ""}约 ${formatCount(sourceCharCount)} 字`;
   const charModeHint = selectedRange && selectedStartChapter && selectedEndChapter
-    ? `按章节边界覆盖第 ${selectedStartChapter.chapterIndex + 1} 章 ~ 第 ${selectedEndChapter.chapterIndex + 1} 章`
-    : "输入字数后会自动换算为章节范围";
+    ? translateUi("按章节边界覆盖第 {{v0}} 章 ~ 第 {{v1}} 章", { v0: selectedStartChapter.chapterIndex + 1, v1: selectedEndChapter.chapterIndex + 1 })
+    : translateUi("输入字数后会自动换算为章节范围");
 
   return (
     <div className="space-y-2 rounded-md border bg-background p-3">
@@ -418,15 +418,15 @@ function RangeLoadHint({
   error?: string;
   sourceSelected: boolean;
 }) {
-  let message = "选择文档后可按章节或字数限制本次分析输入。";
+  let message = translateUi("选择文档后可按章节或字数限制本次分析输入。");
   if (sourceSelected && loading) {
-    message = "正在加载章节范围...";
+    message = translateUi("正在加载章节范围...");
   } else if (sourceSelected && error) {
-    message = "章节范围加载失败，可先按全文创建拆书。";
+    message = translateUi("章节范围加载失败，可先按全文创建拆书。");
   } else if (sourceSelected && requested) {
-    message = "当前文档章节不足，可按全文创建拆书。";
+    message = translateUi("当前文档章节不足，可按全文创建拆书。");
   } else if (sourceSelected) {
-    message = "切换到范围模式后会加载章节范围。";
+    message = translateUi("切换到范围模式后会加载章节范围。");
   }
   return (
     <div className="rounded-md border bg-muted/20 px-3 py-2 text-xs leading-5 text-muted-foreground">

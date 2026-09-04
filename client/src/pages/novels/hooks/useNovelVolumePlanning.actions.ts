@@ -99,11 +99,11 @@ export function startBeatSheetGenerationAction(params: {
 }): void {
   const targetVolume = params.normalizedVolumeDraft.find((volume) => volume.id === params.volumeId);
   if (!targetVolume) {
-    params.setStructuredMessage("当前卷不存在，无法生成节奏板。");
+    params.setStructuredMessage(translateUi("当前卷不存在，无法生成节奏板。"));
     return;
   }
   if (!params.strategyPlan) {
-    params.setStructuredMessage("请先生成卷战略建议，再生成当前卷节奏板。");
+    params.setStructuredMessage(translateUi("请先生成卷战略建议，再生成当前卷节奏板。"));
     return;
   }
   if (!params.ensureCharacterGuard()) {
@@ -137,11 +137,11 @@ export function startChapterListGenerationAction(params: {
 }): void {
   const targetVolume = params.normalizedVolumeDraft.find((volume) => volume.id === params.volumeId);
   if (!targetVolume) {
-    params.setStructuredMessage("当前卷不存在，无法生成章节列表。");
+    params.setStructuredMessage(translateUi("当前卷不存在，无法生成章节列表。"));
     return;
   }
   if (!findBeatSheet(params.beatSheets, params.volumeId)) {
-    params.setStructuredMessage("当前卷还没有节奏板，默认不能直接拆章节列表。");
+    params.setStructuredMessage(translateUi("当前卷还没有节奏板，默认不能直接拆章节列表。"));
     return;
   }
   if (!params.ensureCharacterGuard()) {
@@ -150,7 +150,7 @@ export function startChapterListGenerationAction(params: {
   const generationMode = params.request?.generationMode ?? "full_volume";
   const targetBeatKey = params.request?.targetBeatKey?.trim();
   if (generationMode === "single_beat" && !targetBeatKey) {
-    params.setStructuredMessage("当前节奏段不存在，无法重生该段章节标题。");
+    params.setStructuredMessage(translateUi("当前节奏段不存在，无法重生该段章节标题。"));
     return;
   }
   params.generate({

@@ -401,13 +401,13 @@ export default function AutoDirectorFollowUpCenterPage() {
   } = resolveFollowUpOverviewPresentation(overview);
   const overviewErrorMessage = overviewQuery.error instanceof Error
     ? overviewQuery.error.message
-    : overviewQuery.isError ? "导演跟进摘要读取失败，请重试。" : null;
+    : overviewQuery.isError ? translateUi("导演跟进摘要读取失败，请重试。") : null;
   const listErrorMessage = listQuery.error instanceof Error
     ? listQuery.error.message
-    : listQuery.isError ? "导演跟进列表读取失败，请重试。" : null;
+    : listQuery.isError ? translateUi("导演跟进列表读取失败，请重试。") : null;
   const detailErrorMessage = detailQuery.error instanceof Error
     ? detailQuery.error.message
-    : detailQuery.isError ? "导演跟进详情读取失败，请重试。" : null;
+    : detailQuery.isError ? translateUi("导演跟进详情读取失败，请重试。") : null;
 
   return (
     <div className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpPageRoot}>

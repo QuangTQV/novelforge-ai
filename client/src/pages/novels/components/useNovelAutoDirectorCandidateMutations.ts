@@ -134,7 +134,7 @@ export function useNovelAutoDirectorCandidateMutations({
     },
     onError: (error) => {
       setDialogMode("execution_failed");
-      setExecutionError(error instanceof Error ? error.message : "导演候选方案生成失败。");
+      setExecutionError(error instanceof Error ? error.message : translateUi("导演候选方案生成失败。"));
     },
   });
 
@@ -175,7 +175,7 @@ export function useNovelAutoDirectorCandidateMutations({
     },
     onError: (error) => {
       setDialogMode("execution_failed");
-      setExecutionError(error instanceof Error ? error.message : "定向修正方案失败。");
+      setExecutionError(error instanceof Error ? error.message : translateUi("定向修正方案失败。"));
     },
   });
 
@@ -216,7 +216,7 @@ export function useNovelAutoDirectorCandidateMutations({
     },
     onError: (error) => {
       setDialogMode("execution_failed");
-      setExecutionError(error instanceof Error ? error.message : "标题组修正失败。");
+      setExecutionError(error instanceof Error ? error.message : translateUi("标题组修正失败。"));
     },
   });
 

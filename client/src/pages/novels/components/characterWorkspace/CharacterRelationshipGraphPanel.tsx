@@ -277,7 +277,7 @@ function CharacterRelationshipNode(props: NodeProps) {
   const character = graphNode.character;
   const isProtagonist = isProtagonistCharacter(character);
   const tone = getNodeTone(character);
-  const shortName = character.name.trim().slice(0, 2) || "角";
+  const shortName = character.name.trim().slice(0, 2) || translateUi("角");
 
   return (
     <div
@@ -555,15 +555,15 @@ function getEdgeTone(edge?: RelationshipGraphEdge) {
 
 function getRelationNames(edge: RelationshipGraphEdge): string {
   if (edge.sourceName || edge.targetName) {
-    return `${edge.sourceName || "未知角色"} -> ${edge.targetName || "未知角色"}`;
+    return `${edge.sourceName || translateUi("未知角色")} → ${edge.targetName || translateUi("未知角色")}`;
   }
   const staticRelation = edge.staticRelation;
   if (staticRelation?.sourceCharacterName || staticRelation?.targetCharacterName) {
-    return `${staticRelation.sourceCharacterName ?? "未知角色"} -> ${staticRelation.targetCharacterName ?? "未知角色"}`;
+    return `${staticRelation.sourceCharacterName ?? translateUi("未知角色")} → ${staticRelation.targetCharacterName ?? translateUi("未知角色")}`;
   }
   const stage = edge.dynamicStages[0];
   if (stage) {
-    return `${stage.sourceCharacterName ?? "未知角色"} -> ${stage.targetCharacterName ?? "未知角色"}`;
+    return `${stage.sourceCharacterName ?? translateUi("未知角色")} → ${stage.targetCharacterName ?? translateUi("未知角色")}`;
   }
-  return "角色关系";
+  return translateUi("角色关系");
 }

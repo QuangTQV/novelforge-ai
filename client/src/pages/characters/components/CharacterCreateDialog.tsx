@@ -37,11 +37,11 @@ export function CharacterCreateDialog({ onCreated }: CharacterCreateDialogProps)
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState({
     name: "",
-    role: "主角",
+    role: translateUi("主角"),
     personality: "",
     background: "",
     development: "",
-    category: "主角",
+    category: translateUi("主角"),
   });
   const [aiDescription, setAIDescription] = useState("");
   const [constraints, setConstraints] = useState<CharacterGenerateConstraints>(createDefaultConstraints());

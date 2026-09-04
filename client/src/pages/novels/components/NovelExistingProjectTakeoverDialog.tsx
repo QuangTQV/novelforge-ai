@@ -95,13 +95,13 @@ function summarizeCurrentContext(
   const primaryStoryModePath = storyModeOptions.find((item) => item.id === basicForm.primaryStoryModeId)?.path ?? basicForm.primaryStoryModeId;
   const worldName = worldOptions.find((item) => item.id === basicForm.worldId)?.name ?? basicForm.worldId;
   return [
-    basicForm.description.trim() ? `概述：${basicForm.description.trim()}` : "",
-    basicForm.targetAudience.trim() ? `目标读者：${basicForm.targetAudience.trim()}` : "",
-    basicForm.bookSellingPoint.trim() ? `书级卖点：${basicForm.bookSellingPoint.trim()}` : "",
-    genrePath ? `题材：${genrePath}` : "",
-    primaryStoryModePath ? `主推进模式：${primaryStoryModePath}` : "",
-    worldName ? `参考世界样本：${worldName}` : "",
-    commercialTags.length > 0 ? `商业标签：${commercialTags.join(" / ")}` : "",
+    basicForm.description.trim() ? translateUi("概述：{{v0}}", { v0: basicForm.description.trim() }) : "",
+    basicForm.targetAudience.trim() ? translateUi("目标读者：{{v0}}", { v0: basicForm.targetAudience.trim() }) : "",
+    basicForm.bookSellingPoint.trim() ? translateUi("书级卖点：{{v0}}", { v0: basicForm.bookSellingPoint.trim() }) : "",
+    genrePath ? translateUi("题材：{{v0}}", { v0: genrePath }) : "",
+    primaryStoryModePath ? translateUi("主推进模式：{{v0}}", { v0: primaryStoryModePath }) : "",
+    worldName ? translateUi("参考世界样本：{{v0}}", { v0: worldName }) : "",
+    commercialTags.length > 0 ? translateUi("商业标签：{{v0}}", { v0: commercialTags.join(" / ") }) : "",
   ].filter(Boolean);
 }
 
@@ -237,7 +237,7 @@ export default function NovelExistingProjectTakeoverDialog({
   );
   const progressInspection = buildTakeoverProgressInspection(readiness, contextTaskSnapshot);
   const readinessErrorMessage = readinessQuery.isError
-    ? readinessQuery.error instanceof Error ? readinessQuery.error.message : "读取接管状态失败。"
+    ? readinessQuery.error instanceof Error ? readinessQuery.error.message : translateUi("读取接管状态失败。")
     : null;
 
   const enterCurrentTask = () => {

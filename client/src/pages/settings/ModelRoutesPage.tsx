@@ -78,7 +78,7 @@ export default function ModelRoutesPage() {
   const saveModelRouteMutation = useMutation({
     mutationFn: (payload: RouteSavePayload) => saveModelRoute(payload),
     onSuccess: async () => {
-      setActionResult("保存完成，这个任务会使用新路由。");
+      setActionResult(translateUi("保存完成，这个任务会使用新路由。"));
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.settings.modelRoutes }),
         queryClient.invalidateQueries({ queryKey: queryKeys.settings.modelRouteConnectivity }),
@@ -92,7 +92,7 @@ export default function ModelRoutesPage() {
       return payloads.length;
     },
     onSuccess: async (count) => {
-      setActionResult(`保存完成，${count} 个任务会使用新路由。`);
+      setActionResult(translateUi("保存完成，{{v0}} 个任务会使用新路由。", { v0: count }));
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.settings.modelRoutes }),
         queryClient.invalidateQueries({ queryKey: queryKeys.settings.modelRouteConnectivity }),
@@ -103,7 +103,7 @@ export default function ModelRoutesPage() {
   const saveStructuredFallbackMutation = useMutation({
     mutationFn: (payload: Partial<StructuredFallbackSettings>) => saveStructuredFallbackConfig(payload),
     onSuccess: async () => {
-      setActionResult("结构化备用模型保存完成。");
+      setActionResult(translateUi("结构化备用模型保存完成。"));
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.settings.structuredFallback }),
         queryClient.invalidateQueries({ queryKey: queryKeys.settings.modelRouteConnectivity }),
@@ -211,7 +211,7 @@ export default function ModelRoutesPage() {
 
   function applyBulkDraftToRoutes(targetTaskTypes: ModelRouteTaskType[]) {
     if (targetTaskTypes.length === 0) {
-      setActionResult("没有需要套用的任务。");
+      setActionResult(translateUi("没有需要套用的任务。"));
       return;
     }
     const draft = getBulkDraft();
@@ -222,7 +222,7 @@ export default function ModelRoutesPage() {
       });
       return next;
     });
-    setActionResult(`模型设置填入 ${targetTaskTypes.length} 个任务，保存后生效。`);
+    setActionResult(translateUi("模型设置填入 {{v0}} 个任务，保存后生效。", { v0: targetTaskTypes.length }));
   }
 
   function getStructuredFallbackDraft(): StructuredFallbackDraft {

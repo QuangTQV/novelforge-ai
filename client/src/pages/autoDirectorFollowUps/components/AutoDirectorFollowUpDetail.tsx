@@ -48,17 +48,17 @@ export function AutoDirectorFollowUpDetailPanel({
   onRetry,
 }: AutoDirectorFollowUpDetailPanelProps) {
   const deliveryStatusLabels = {
-    delivered: "已送达",
-    pending: "投递中",
-    failed: "投递失败",
+    delivered: translateUi("已送达"),
+    pending: translateUi("投递中"),
+    failed: translateUi("投递失败"),
   } as const;
   const eventTypeLabels = {
-    "auto_director.approval_required": "需要处理",
-    "auto_director.auto_approved": "AI 已自动通过",
-    "auto_director.exception": "任务异常",
-    "auto_director.recovered": "已恢复",
-    "auto_director.completed": "已完成",
-    "auto_director.progress_changed": "进度变化",
+    "auto_director.approval_required": translateUi("需要处理"),
+    "auto_director.auto_approved": translateUi("AI 已自动通过"),
+    "auto_director.exception": translateUi("任务异常"),
+    "auto_director.recovered": translateUi("已恢复"),
+    "auto_director.completed": translateUi("已完成"),
+    "auto_director.progress_changed": translateUi("进度变化"),
   } as const;
   const tone = selectedItem ? getFollowUpTone(selectedItem) : "neutral";
 

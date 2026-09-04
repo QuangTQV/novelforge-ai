@@ -109,24 +109,24 @@ function DesktopNovelEditView(props: NovelEditViewProps) {
   const pendingResourceProposalCount = taskDrawer?.resourceProposals?.length ?? 0;
   const taskAttentionLabel = (() => {
     if (pendingResourceProposalCount > 0) {
-      return `${pendingResourceProposalCount} 条资源`;
+      return translateUi("{{v0}} 条资源", { v0: pendingResourceProposalCount });
     }
     if (!taskDrawer?.task) {
       return null;
     }
     if (taskDrawer.task.pendingManualRecovery) {
-      return "待恢复";
+      return translateUi("待恢复");
     }
     if (taskDrawer.task.status === "failed") {
-      return "异常";
+      return translateUi("异常");
     }
     if (taskDrawer.task.status === "waiting_approval") {
-      return "待审核";
+      return translateUi("待审核");
     }
     if (taskDrawer.task.status === "running" || taskDrawer.task.status === "queued") {
-      return "进行中";
+      return translateUi("进行中");
     }
-    return "最近任务";
+    return translateUi("最近任务");
   })();
 
   const normalizedActiveTab = normalizeNovelWorkspaceTab(activeTab);
@@ -136,7 +136,7 @@ function DesktopNovelEditView(props: NovelEditViewProps) {
       ? "basic"
       : normalizedWorkflowTab
     : normalizedActiveTab;
-  const novelTitle = basicTab.basicForm.title.trim() || "\u672a\u547d\u540d\u5c0f\u8bf4";
+  const novelTitle = basicTab.basicForm.title.trim() || translateUi("未命名小说");
   const directorDisplayState = taskDrawer?.snapshot?.displayState ?? null;
   const currentPageLabel = getNovelWorkspaceTabLabel(normalizedActiveTab);
   const currentStepLabel = directorDisplayState?.stageLabel ?? currentPageLabel;

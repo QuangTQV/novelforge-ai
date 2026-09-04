@@ -65,11 +65,11 @@ export function getHomeNovelTask(novel: HomeNovelItem) {
 
 export function formatHomeDate(value: string | undefined): string {
   if (!value) {
-    return "暂无";
+    return translateUi("暂无");
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "暂无";
+    return translateUi("暂无");
   }
   return date.toLocaleString();
 }
@@ -106,9 +106,9 @@ export function getNovelLeadSummary(novel: HomeNovelItem): string {
     return novel.description.trim();
   }
   if (novel.world?.name) {
-    return `当前项目绑定世界观「${novel.world.name}」，可以继续创作。`;
+    return translateUi("当前项目绑定世界观「{{v0}}」，可以继续创作。", { v0: novel.world.name });
   }
-  return "当前项目暂无简介，可以进入编辑页继续推进。";
+  return translateUi("当前项目暂无简介，可以进入编辑页继续推进。");
 }
 
 export function selectPrimaryNovel(novels: HomeNovelItem[]): HomeNovelItem | null {

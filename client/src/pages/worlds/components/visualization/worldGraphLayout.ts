@@ -204,7 +204,7 @@ export function truncateText(text: string, maxLength: number): string {
 }
 
 export function getShortRelation(edge: GraphEdge): string {
-  return truncateText(edge.relation || "关系", 5);
+  return truncateText(edge.relation || translateUi("关系"), 5);
 }
 
 export function getNodeBadgeText(label: string): string {

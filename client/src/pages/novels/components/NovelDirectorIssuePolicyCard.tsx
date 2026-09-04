@@ -15,10 +15,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ACTION_LABELS: Record<DirectorIssueAction, string> = {
-  auto_retry: "自动重试",
-  continue_with_warning: "提醒后继续",
-  pause_for_manual: "暂停处理",
-  fail_task: "结束任务",
+  auto_retry: translateUi("自动重试"),
+  continue_with_warning: translateUi("提醒后继续"),
+  pause_for_manual: translateUi("暂停处理"),
+  fail_task: translateUi("结束任务"),
 };
 
 const CONFIGURABLE_ISSUES = DIRECTOR_ISSUE_CATALOG;
@@ -40,10 +40,10 @@ export default function NovelDirectorIssuePolicyCard({ novelId }: { novelId: str
   const mutation = useMutation({
     mutationFn: (override: DirectorIssuePolicyOverride | null) => saveNovelDirectorIssuePolicy(novelId, override),
     onSuccess: async (result) => {
-      setMessage(result.message ?? "本书处理规则已保存。");
+      setMessage(result.message ?? translateUi("本书处理规则已保存。"));
       await queryClient.invalidateQueries({ queryKey: queryKeys.tasks.directorIssuePolicy(novelId) });
     },
-    onError: (error) => setMessage(error instanceof Error ? error.message : "保存本书处理规则失败。"),
+    onError: (error) => setMessage(error instanceof Error ? error.message : translateUi("保存本书处理规则失败。")),
   });
 
   if (!response || draft === null) return null;

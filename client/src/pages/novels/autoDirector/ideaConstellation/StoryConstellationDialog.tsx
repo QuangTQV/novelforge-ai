@@ -184,8 +184,8 @@ export default function StoryConstellationDialog({
   };
 
   const statusText = selected.length === 0
-    ? "可以只调整故事类型与推进方式，也可以选择具体开书素材。"
-    : `已选 ${selected.length}/7 类开书素材，确认后 AI 会整理并回填。`;
+    ? translateUi("可以只调整故事类型与推进方式，也可以选择具体开书素材。")
+    : translateUi("已选 {{v0}}/7 类开书素材，确认后 AI 会整理并回填。", { v0: selected.length });
 
   const footer = (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-3 rounded-2xl border border-border/60 bg-background/80 px-4 py-3 shadow-[0_18px_70px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:px-5">

@@ -523,7 +523,7 @@ export default function DramaProjectPage() {
         content: input.content,
         durationSec: durationSec !== undefined && Number.isFinite(durationSec) ? durationSec : null,
       }),
-      `第 ${order} 集已保存。`,
+      translateUi("第 {{v0}} 集已保存。", { v0: order }),
     );
   };
 

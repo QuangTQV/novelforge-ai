@@ -176,17 +176,17 @@ function policyForSubject(kind: CharacterSubjectRef["kind"]): CharacterConversat
 }
 
 function policyLabel(policy: CharacterConversationPolicy) {
-  return policy === "novel_influence" ? "可带入创作" : policy === "evidence_interview" ? "证据访谈" : "只读访谈";
+  return policy === "novel_influence" ? translateUi("可带入创作") : policy === "evidence_interview" ? translateUi("证据访谈") : translateUi("只读访谈");
 }
 
 function sourceLabelForPolicy(policy: CharacterConversationPolicy) {
-  return policy === "novel_influence" ? "小说角色" : policy === "evidence_interview" ? "拆书角色档案" : "基础角色库";
+  return policy === "novel_influence" ? translateUi("小说角色") : policy === "evidence_interview" ? translateUi("拆书角色档案") : translateUi("基础角色库");
 }
 
 function sourceDescriptionForPolicy(policy: CharacterConversationPolicy) {
   return policy === "novel_influence"
-    ? "角色会结合当前小说处境回应；只有你确认后，谈话倾向才会带入后续创作。"
+    ? translateUi("角色会结合当前小说处境回应；只有你确认后，谈话倾向才会带入后续创作。")
     : policy === "evidence_interview"
-      ? "角色只依据选定章节范围内的原文证据回应，不会改写原文。"
-      : "角色依据角色库中的稳定设定回应；交流只用于理解人物，不会改写设定。";
+      ? translateUi("角色只依据选定章节范围内的原文证据回应，不会改写原文。")
+      : translateUi("角色依据角色库中的稳定设定回应；交流只用于理解人物，不会改写设定。");
 }

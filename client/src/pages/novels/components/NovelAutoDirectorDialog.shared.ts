@@ -18,7 +18,7 @@ export const RUN_MODE_OPTIONS: DirectorRunModeOption[] = [
     label: translateUi("先完成导演准备"),
     description: translateUi("AI 会准备书级规划、角色、卷章安排和章节执行资源，再由你选择简易生产或专业生产。"),
     recommended: true,
-    recommendation: "正文不会提前生成，准备完成后再决定如何生产整本书。",
+    recommendation: translateUi("正文不会提前生成，准备完成后再决定如何生产整本书。"),
   },
 ];
 
@@ -33,8 +33,8 @@ export interface AutoDirectorRequestLlmOptions {
 export function buildInitialIdea(basicForm: NovelBasicFormState): string {
   const lines = [
     basicForm.description.trim(),
-    basicForm.title.trim() ? `我想写一本暂名为《${basicForm.title.trim()}》的小说。` : "",
-    basicForm.styleTone.trim() ? `文风希望偏 ${basicForm.styleTone.trim()}。` : "",
+    basicForm.title.trim() ? translateUi("我想写一本暂名为《{{v0}}》的小说。", { v0: basicForm.title.trim() }) : "",
+    basicForm.styleTone.trim() ? translateUi("文风希望偏 {{v0}}。", { v0: basicForm.styleTone.trim() }) : "",
   ].filter(Boolean);
   return lines.join("\n");
 }

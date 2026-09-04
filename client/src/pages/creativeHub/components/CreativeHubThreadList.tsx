@@ -24,10 +24,10 @@ interface CreativeHubThreadListProps {
 }
 
 function toStatusLabel(status: CreativeHubThread["status"]): string {
-  if (status === "busy") return "执行中";
-  if (status === "interrupted") return "待确认";
-  if (status === "error") return "异常";
-  return "空闲";
+  if (status === "busy") return translateUi("执行中");
+  if (status === "interrupted") return translateUi("待确认");
+  if (status === "error") return translateUi("异常");
+  return translateUi("空闲");
 }
 
 function toStatusVariant(

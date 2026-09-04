@@ -34,41 +34,41 @@ import OnboardingTip from "@/components/onboarding/OnboardingTip";
 import SimpleCreationIssueGovernancePanel from "./SimpleCreationIssueGovernancePanel";
 
 const STATUS_LABELS: Record<SimpleCreationShelfChapterStatus, string> = {
-  waiting_planning: "等待规划",
-  waiting_writing: "等待写作",
-  generating: "生成中",
-  reviewing: "审校修复中",
-  quality_debt: "已保存 · 待优化",
-  replan_required: "等待重规划",
-  completed: "已完成",
+  waiting_planning: translateUi("等待规划"),
+  waiting_writing: translateUi("等待写作"),
+  generating: translateUi("生成中"),
+  reviewing: translateUi("审校修复中"),
+  quality_debt: translateUi("已保存 · 待优化"),
+  replan_required: translateUi("等待重规划"),
+  completed: translateUi("已完成"),
   error: translateUi("异常"),
 };
 
 const QUALITY_DEBT_SOURCE_LABELS: Record<ChapterQualityDebtSource, string> = {
-  manual_review: "手动审校",
-  pipeline_review: "AI 正文审校",
-  repair_recheck: "AI 修复后复查",
+  manual_review: translateUi("手动审校"),
+  pipeline_review: translateUi("AI 正文审校"),
+  repair_recheck: translateUi("AI 修复后复查"),
 };
 
 function formatQualityDebtSource(source: ChapterQualityDebtSource | null): string {
-  return source ? QUALITY_DEBT_SOURCE_LABELS[source] : "历史质量记录";
+  return source ? QUALITY_DEBT_SOURCE_LABELS[source] : translateUi("历史质量记录");
 }
 
 function formatQualityDebtAttempts(details: ChapterQualityDebtDetails): string {
   if (details.repairAttemptsUsed === null) {
-    return `次数未记录 · 当前最多 ${details.repairAttemptsAllowed} 次`;
+    return translateUi("次数未记录 · 当前最多 {{v0}} 次", { v0: details.repairAttemptsAllowed });
   }
   if (details.repairAttemptsAllowed === 0) {
-    return `${details.repairAttemptsUsed} 次 · 本次未启用自动修复`;
+    return translateUi("{{v0}} 次 · 本次未启用自动修复", { v0: details.repairAttemptsUsed });
   }
-  return `${details.repairAttemptsUsed}/${details.repairAttemptsAllowed} 次`;
+  return translateUi("{{v0}}/{{v1}} 次", { v0: details.repairAttemptsUsed, v1: details.repairAttemptsAllowed });
 }
 
 function formatQualityDebtTime(value: string | null): string {
-  if (!value) return "时间未记录";
+  if (!value) return translateUi("时间未记录");
   const date = new Date(value);
   return Number.isNaN(date.getTime())
-    ? "时间未记录"
+    ? translateUi("时间未记录")
     : date.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
@@ -86,12 +86,12 @@ function saveBlob(blob: Blob, fileName: string): void {
 function formatUpdatedAt(value: string): string {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
-    ? "更新时间未知"
-    : `更新于 ${date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+    ? translateUi("更新时间未知")
+    : translateUi("更新于 {{v0}}", { v0: date.toLocaleDateString(undefined, { month: "short", day: "numeric" }) });
 }
 
 function formatWordCount(value: number): string {
-  return `${Math.max(0, Math.round(value)).toLocaleString()} 字`;
+  return translateUi("{{v0}} 字", { v0: Math.max(0, Math.round(value)).toLocaleString() });
 }
 
 export default function SimpleNovelShelfPage() {
@@ -143,7 +143,7 @@ export default function SimpleNovelShelfPage() {
     mutationFn: async () => {
       const directorTaskId = shelf?.progress.directorTaskId;
       if (!directorTaskId) {
-        throw new Error("没有找到可恢复的 AI 任务。");
+        throw new Error(translateUi("没有找到可恢复的 AI 任务。"));
       }
       // 书架已投影出本书最近的自动导演任务。重规划检查点会将任务标记为
       // failed，因此不能再用“仅运行中任务”的查询覆盖这个恢复锚点。

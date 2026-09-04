@@ -12,12 +12,12 @@ interface WorldVisualizationBoardProps {
 }
 
 const FACTION_TYPE_LABELS: Record<string, string> = {
-  all: "全部类型",
-  state: "政权",
-  faction: "阵营",
-  race: "种族",
-  organization: "组织",
-  other: "其他",
+  all: translateUi("全部类型"),
+  state: translateUi("政权"),
+  faction: translateUi("阵营"),
+  race: translateUi("种族"),
+  organization: translateUi("组织"),
+  other: translateUi("其他"),
 };
 
 const FACTION_TYPE_COLORS: Record<string, string> = {

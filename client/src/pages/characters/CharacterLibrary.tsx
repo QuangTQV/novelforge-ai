@@ -183,12 +183,12 @@ export default function CharacterLibrary() {
             label: translateUi("可复用角色"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : characters.length,
             detail: characterListQuery.isPending
-              ? "正在读取角色资产"
+              ? translateUi("正在读取角色资产")
               : characterListQuery.isError
-                ? "重新加载后查看"
+                ? translateUi("重新加载后查看")
                 : characters.length > 0
-                  ? "可在小说筹备和角色补充时继续使用"
-                  : "创建后即可用于新小说",
+                  ? translateUi("可在小说筹备和角色补充时继续使用")
+                  : translateUi("创建后即可用于新小说"),
             icon: LibraryBig,
             tone: characterListQuery.isPending || characterListQuery.isError
               ? "neutral"
@@ -198,14 +198,14 @@ export default function CharacterLibrary() {
             key: "categories",
             label: translateUi("角色类型"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : categoryCount,
-            detail: "按主角、配角等角色定位整理",
+            detail: translateUi("按主角、配角等角色定位整理"),
             icon: UsersRound,
           },
           {
             key: "images",
             label: translateUi("已有形象资料"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : characterWithImageCount,
-            detail: "至少保存一张角色形象图",
+            detail: translateUi("至少保存一张角色形象图"),
             icon: ImageIcon,
             tone: characterListQuery.isPending || characterListQuery.isError
               ? "neutral"
@@ -215,7 +215,7 @@ export default function CharacterLibrary() {
             key: "incomplete",
             label: translateUi("待补核心资料"),
             value: characterListQuery.isPending || characterListQuery.isError ? "—" : incompleteCharacterCount,
-            detail: "缺少性格、背景或成长轨迹",
+            detail: translateUi("缺少性格、背景或成长轨迹"),
             icon: CircleAlert,
             tone: characterListQuery.isPending || characterListQuery.isError
               ? "neutral"

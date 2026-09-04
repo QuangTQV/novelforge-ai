@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,8 +18,8 @@ export default function CollapsibleSummary(props: CollapsibleSummaryProps) {
     description,
     meta,
     className,
-    collapsedLabel = "展开查看",
-    expandedLabel = "收起内容",
+    collapsedLabel = translateUi("展开查看"),
+    expandedLabel = translateUi("收起内容"),
   } = props;
 
   return (

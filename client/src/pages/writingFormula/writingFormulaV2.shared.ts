@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   StyleDetectionReport,
   StyleExtractionDraft,
@@ -80,22 +81,22 @@ export function getStyleProfileOriginLabel(
   profile: Pick<StyleProfile, "sourceRefId" | "sourceType">,
 ): string {
   if (isStarterStyleProfile(profile)) {
-    return "预置";
+    return translateUi("预置");
   }
   if (profile.sourceRefId?.startsWith(AI_STYLE_BRIEF_SOURCE_PREFIX)) {
-    return "AI生成";
+    return translateUi("AI生成");
   }
   if (profile.sourceType === "from_text") {
-    return "文本提取";
+    return translateUi("文本提取");
   }
   if (profile.sourceType === "from_book_analysis") {
-    return "拆书生成";
+    return translateUi("拆书生成");
   }
   if (profile.sourceType === "from_knowledge_document") {
-    return "知识库原文";
+    return translateUi("知识库原文");
   }
   if (profile.sourceType === "from_current_work") {
-    return "当前作品";
+    return translateUi("当前作品");
   }
-  return "手动创建";
+  return translateUi("手动创建");
 }

@@ -14,7 +14,7 @@ import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
 
 function formatBaseline(value: string | null | undefined): string {
   if (!value) {
-    return "未建立";
+    return translateUi("未建立");
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -41,7 +41,7 @@ export function AutoDirectorPendingReviewAutoPromotionCard(props: {
   const [acknowledgedRisks, setAcknowledgedRisks] = useState(false);
   const [confirmationText, setConfirmationText] = useState("");
   const enabled = Boolean(settings?.enabled);
-  const acknowledgementText = settings?.acknowledgementText ?? "我已了解自动放行风险";
+  const acknowledgementText = settings?.acknowledgementText ?? translateUi("我已了解自动放行风险");
   const baselineLabel = useMemo(() => formatBaseline(settings?.baselineAt), [settings?.baselineAt]);
   const canConfirm = acknowledgedRisks && confirmationText.trim() === acknowledgementText && !isSaving;
 

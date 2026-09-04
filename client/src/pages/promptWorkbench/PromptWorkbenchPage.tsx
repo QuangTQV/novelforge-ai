@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -251,7 +252,7 @@ export default function PromptWorkbenchPage() {
           <PromptEditorShell
             prompt={selectedPrompt}
             simplified={writingLab}
-            heading={writingLab ? "正文效果实验室" : undefined}
+            heading={writingLab ? translateUi("正文效果实验室") : undefined}
             immersive={immersiveMode}
             onImmersiveChange={setImmersiveMode}
             entrypoint={entrypoint}
@@ -273,27 +274,27 @@ export default function PromptWorkbenchPage() {
               <div className="space-y-4">
                 <div className="flex flex-col gap-3 rounded-md border border-border bg-card/80 p-3 lg:flex-row lg:items-center lg:justify-between">
                   <div>
-                    <div className="text-sm font-semibold text-foreground">编辑模式</div>
+                    <div className="text-sm font-semibold text-foreground">{translateUi("编辑模式")}</div>
                     <div className="text-xs text-muted-foreground">
-                      安全槽位适合稳定调整，高级模板适合本书正文写作自定义。
+                      {translateUi("安全槽位适合稳定调整，高级模板适合本书正文写作自定义。")}
                     </div>
                   </div>
                   <Tabs value={activeEditMode} onValueChange={(value) => setEditMode(value as PromptEditMode)}>
                     <TabsList className="h-10">
-                      <TabsTrigger value="slots" className="px-4">安全槽位</TabsTrigger>
+                      <TabsTrigger value="slots" className="px-4">{translateUi("安全槽位")}</TabsTrigger>
                       <TabsTrigger
                         value="advanced"
                         className="px-4"
                         disabled={!advancedTemplateSupported}
                       >
-                        高级模板
+                        {translateUi("高级模板")}
                       </TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
                 {slotState.isNovelScopeDisabled ? (
                   <div className="rounded-md bg-muted/[0.35] px-4 py-3 text-sm text-muted-foreground">
-                    选择小说后可设置本书独立的槽位覆盖；未选择小说时仅能查看继承值和生成通用预览。
+                    {translateUi("选择小说后可设置本书独立的槽位覆盖；未选择小说时仅能查看继承值和生成通用预览。")}
                   </div>
                 ) : null}
                 {isAdvancedMode ? (
@@ -376,8 +377,8 @@ export default function PromptWorkbenchPage() {
                 onTestLlmChange={setTestLlm}
                 resetDisabled={effectiveResetDisabled}
                 officialVersionDisabled={effectiveOfficialDisabled}
-                officialVersionLabel={isAdvancedMode ? "恢复官方模板" : "官方版本"}
-                saveLabel={isAdvancedMode ? "保存为新版本" : "保存覆盖"}
+                officialVersionLabel={isAdvancedMode ? translateUi("恢复官方模板") : translateUi("官方版本")}
+                saveLabel={isAdvancedMode ? translateUi("保存为新版本") : translateUi("保存覆盖")}
                 onGeneratePreview={previewState.generatePreview}
                 onRunTest={handleRunTest}
                 onOpenOfficialVersion={
@@ -398,7 +399,7 @@ export default function PromptWorkbenchPage() {
         ) : (
           <div className="flex h-full items-center justify-center p-8">
             <div className="rounded-md border border-dashed bg-background/80 p-6 text-sm text-muted-foreground">
-              请选择一个提示词。
+              {translateUi("请选择一个提示词。")}
             </div>
           </div>
         )}

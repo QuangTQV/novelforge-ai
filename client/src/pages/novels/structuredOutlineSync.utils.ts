@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { StructuredChapter, StructuredVolume } from "./structuredOutline.utils";
 
 export interface OutlineSyncChapter {
@@ -84,25 +85,25 @@ function compareNullableNumber(a: number | null | undefined, b: number | null | 
 function getChangedFields(existing: OutlineSyncChapter, chapter: StructuredChapter): string[] {
   const changed: string[] = [];
   if (!compareNullableString(existing.title, chapter.title)) {
-    changed.push("标题");
+    changed.push(translateUi("标题"));
   }
   if (!compareNullableString(existing.expectation, chapter.summary)) {
-    changed.push("摘要");
+    changed.push(translateUi("摘要"));
   }
   if (!compareNullableNumber(existing.targetWordCount, chapter.targetWordCount)) {
-    changed.push("目标字数");
+    changed.push(translateUi("目标字数"));
   }
   if (!compareNullableNumber(existing.conflictLevel, chapter.conflictLevel)) {
-    changed.push("冲突等级");
+    changed.push(translateUi("冲突等级"));
   }
   if (!compareNullableNumber(existing.revealLevel, chapter.revealLevel)) {
-    changed.push("揭露等级");
+    changed.push(translateUi("揭露等级"));
   }
   if (!compareNullableString(existing.mustAvoid, chapter.mustAvoid)) {
-    changed.push("禁止事项");
+    changed.push(translateUi("禁止事项"));
   }
   if (chapter.taskSheet?.trim() && !compareNullableString(existing.taskSheet, chapter.taskSheet)) {
-    changed.push("任务单");
+    changed.push(translateUi("任务单"));
   }
   return changed;
 }
@@ -133,7 +134,7 @@ export function buildStructuredOutlineSyncPreview(
         order: chapter.order,
         nextTitle: chapter.title,
         hasContent: false,
-        changedFields: ["新章节"],
+        changedFields: [translateUi("新章节")],
       });
       continue;
     }
@@ -180,7 +181,7 @@ export function buildStructuredOutlineSyncPreview(
         order: chapter.order,
         nextTitle: chapter.title,
         hasContent,
-        changedFields: ["从大纲移除"],
+        changedFields: [translateUi("从大纲移除")],
       });
     } else {
       deleteCandidateCount += 1;
@@ -189,7 +190,7 @@ export function buildStructuredOutlineSyncPreview(
         order: chapter.order,
         nextTitle: chapter.title,
         hasContent,
-        changedFields: ["待确认删除"],
+        changedFields: [translateUi("待确认删除")],
       });
     }
   }

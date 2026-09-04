@@ -189,13 +189,13 @@ function AutoDirectorCreatePage() {
       }
       const created = await createStyleProfileFromBookAnalysis({
         bookAnalysisId: referenceBookAnalysisId,
-        name: `${referenceTitle || "参考小说"}参考写法`,
+        name: translateUi("Lối viết tham khảo từ {{title}}", { title: referenceTitle || translateUi("参考小说") }),
         provider: llm.provider || undefined,
         model: llm.model || undefined,
         temperature: llm.temperature,
       });
       if (!created.data) {
-        throw new Error("参考写法准备失败。");
+        throw new Error(translateUi("参考写法准备失败。"));
       }
       return created.data;
     },
@@ -215,7 +215,7 @@ function AutoDirectorCreatePage() {
       return;
     }
     referenceAppliedRef.current = referenceKey;
-    const sourceLabel = referenceTitle ? `《${referenceTitle}》` : "这份拆书";
+    const sourceLabel = referenceTitle ? `《${referenceTitle}》` : translateUi("这份拆书");
     setBasicForm((current) => patchNovelBasicForm(current, referenceMode === "continuation"
       ? {
         writingMode: "continuation",
@@ -423,10 +423,10 @@ function AutoDirectorCreatePage() {
       postGenerationStyleReviewEnabled: controller.directorBasicForm.postGenerationStyleReviewEnabled,
     }),
     candidates: controller.batches.length > 0
-      ? `已生成 ${controller.batches.length} 批方向候选`
+      ? translateUi("已生成 {{v0}} 批方向候选", { v0: controller.batches.length })
       : controller.hasActiveDirectorTask
-        ? "导演任务进行中"
-        : "等待生成方向候选",
+        ? translateUi("导演任务进行中")
+        : translateUi("等待生成方向候选"),
   }), [
     controller.batches.length,
     controller.directorBasicForm,

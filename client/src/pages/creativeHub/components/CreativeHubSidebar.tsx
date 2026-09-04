@@ -121,7 +121,7 @@ function buildBlockerCardData(input: {
       ].filter(Boolean),
       tone: "border-warning/30 bg-warning/5 text-foreground",
       actionLabel: t("sidebar.blocker.viewConfirmation"),
-      actionPrompt: "总结当前待确认的创作决策，并说明推荐处理方式",
+      actionPrompt: translateUi("总结当前待确认的创作决策，并说明推荐处理方式"),
     };
   }
 
@@ -135,7 +135,7 @@ function buildBlockerCardData(input: {
       ].filter(Boolean),
       tone: "border-destructive/30 bg-destructive/5 text-foreground",
       actionLabel: t("sidebar.blocker.createRecovery"),
-      actionPrompt: input.diagnostics.recoveryHint || "分析当前失败原因并给出恢复步骤",
+      actionPrompt: input.diagnostics.recoveryHint || translateUi("分析当前失败原因并给出恢复步骤"),
     };
   }
 
@@ -149,7 +149,7 @@ function buildBlockerCardData(input: {
       ].filter(Boolean),
       tone: "border-destructive/30 bg-destructive/5 text-foreground",
       actionLabel: t("sidebar.blocker.viewBlocked"),
-      actionPrompt: input.productionStatus.recoveryHint || "分析当前生产阻塞和正式处理入口",
+      actionPrompt: input.productionStatus.recoveryHint || translateUi("分析当前生产阻塞和正式处理入口"),
     };
   }
 
@@ -163,7 +163,7 @@ function buildBlockerCardData(input: {
       ],
       tone: "border-info/30 bg-info/5 text-foreground",
       actionLabel: t("sidebar.blocker.viewSuggestion"),
-      actionPrompt: `解释当前建议和正式入口：${input.latestTurnSummary.nextSuggestion}`,
+      actionPrompt: translateUi("解释当前建议和正式入口：{{v0}}", { v0: input.latestTurnSummary.nextSuggestion }),
     };
   }
 
@@ -176,7 +176,7 @@ function buildBlockerCardData(input: {
     tone: "border-border bg-muted/20 text-foreground",
     actionLabel: input.latestTurnSummary?.nextSuggestion ? t("sidebar.blocker.viewSuggestion") : undefined,
     actionPrompt: input.latestTurnSummary?.nextSuggestion
-      ? `解释当前建议和正式入口：${input.latestTurnSummary.nextSuggestion}`
+      ? translateUi("解释当前建议和正式入口：{{v0}}", { v0: input.latestTurnSummary.nextSuggestion })
       : undefined,
   };
 }

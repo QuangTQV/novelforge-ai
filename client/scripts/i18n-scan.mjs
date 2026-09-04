@@ -35,8 +35,8 @@ const EXCLUDE = [
   /\.test\.(ts|tsx|mjs|js)$/,
   /\/tests?\//,
   /\/api\//,
-  /prompt/i,
-  /Prompt/,
+  /promptWorkbench\/hooks\/usePromptPreview/,
+  /promptWorkbench\/promptWorkbenchLabels/,
   /\.d\.ts$/,
 ];
 

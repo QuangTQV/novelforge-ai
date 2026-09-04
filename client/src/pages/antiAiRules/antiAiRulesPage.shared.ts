@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { AntiAiRule } from "@ai-novel/shared/types/styleEngine";
 
 export type RuleFilter = "all" | "global" | "style" | "disabled";
@@ -31,15 +32,15 @@ export const emptyForm: RuleFormState = {
 };
 
 export const typeLabels: Record<AntiAiRule["type"], string> = {
-  forbidden: "禁用",
-  risk: "风险",
-  encourage: "鼓励",
+  forbidden: translateUi("禁用"),
+  risk: translateUi("风险"),
+  encourage: translateUi("鼓励"),
 };
 
 export const severityLabels: Record<AntiAiRule["severity"], string> = {
-  low: "低",
-  medium: "中",
-  high: "高",
+  low: translateUi("低"),
+  medium: translateUi("中"),
+  high: translateUi("高"),
 };
 
 export function ruleToForm(rule: AntiAiRule): RuleFormState {

@@ -40,17 +40,17 @@ export interface CreativeHubWorkspacePresentation {
 export function formatCreativeHubThreadStatus(
   status: CreativeHubThread["status"] | undefined,
 ): string {
-  if (status === "busy") return "执行中";
-  if (status === "interrupted") return "等待确认";
-  if (status === "error") return "运行异常";
-  if (status === "idle") return "等待指令";
-  return "正在初始化";
+  if (status === "busy") return translateUi("执行中");
+  if (status === "interrupted") return translateUi("等待确认");
+  if (status === "error") return translateUi("运行异常");
+  if (status === "idle") return translateUi("等待指令");
+  return translateUi("正在初始化");
 }
 
 function formatSetupStage(stage: CreativeHubNovelSetupStatus["stage"] | undefined): string | null {
-  if (stage === "setup_in_progress") return "补齐开书信息";
-  if (stage === "ready_for_planning") return "准备故事规划";
-  if (stage === "ready_for_production") return "准备整本生产";
+  if (stage === "setup_in_progress") return translateUi("补齐开书信息");
+  if (stage === "ready_for_planning") return translateUi("准备故事规划");
+  if (stage === "ready_for_production") return translateUi("准备整本生产");
   return null;
 }
 
@@ -79,14 +79,14 @@ export function resolveCreativeHubWorkspacePresentation(input: {
   const objectTitle = input.currentNovelTitle?.trim()
     || input.productionStatus?.title?.trim()
     || input.novelSetup?.title?.trim()
-    || "未绑定小说";
+    || translateUi("未绑定小说");
   const stageLabel = input.latestTurnSummary?.currentStage?.trim()
     || input.productionStatus?.currentStage?.trim()
     || formatSetupStage(input.novelSetup?.stage)
-    || "等待创作目标";
+    || translateUi("等待创作目标");
   const threadStatusLabel = formatCreativeHubThreadStatus(input.thread?.status);
 
-  const threadsError = errorText(input.threadsError, "创作线程加载失败。");
+  const threadsError = errorText(input.threadsError, translateUi("创作线程加载失败。"));
   if (threadsError) {
     return {
       objectTitle,
@@ -102,7 +102,7 @@ export function resolveCreativeHubWorkspacePresentation(input: {
     };
   }
 
-  const createThreadError = errorText(input.createThreadError, "创作线程创建失败。");
+  const createThreadError = errorText(input.createThreadError, translateUi("创作线程创建失败。"));
   if (createThreadError) {
     return {
       objectTitle,
@@ -118,8 +118,8 @@ export function resolveCreativeHubWorkspacePresentation(input: {
     };
   }
 
-  const stateError = errorText(input.stateError, "线程状态加载失败。")
-    || errorText(input.threadLoadError, "线程内容加载失败。");
+  const stateError = errorText(input.stateError, translateUi("线程状态加载失败。"))
+    || errorText(input.threadLoadError, translateUi("线程内容加载失败。"));
   if (stateError) {
     return {
       objectTitle,
@@ -135,7 +135,7 @@ export function resolveCreativeHubWorkspacePresentation(input: {
     };
   }
 
-  const novelsError = errorText(input.novelsError, "小说列表加载失败。");
+  const novelsError = errorText(input.novelsError, translateUi("小说列表加载失败。"));
   if (novelsError) {
     return {
       objectTitle,
@@ -204,12 +204,12 @@ export function resolveCreativeHubWorkspacePresentation(input: {
     || input.productionStatus?.failureSummary?.trim()
     || input.thread?.latestError?.trim()
     || failedTurn?.impactSummary?.trim()
-    || (input.thread?.status === "error" ? "当前创作线程处于异常状态。" : null);
+    || (input.thread?.status === "error" ? translateUi("当前创作线程处于异常状态。") : null);
   if (failureSummary) {
     const recoveryHint = input.diagnostics?.recoveryHint?.trim()
       || input.productionStatus?.recoveryHint?.trim()
       || failedTurn?.nextSuggestion?.trim()
-      || "分析当前失败原因并给出安全恢复步骤";
+      || translateUi("分析当前失败原因并给出安全恢复步骤");
     return {
       objectTitle,
       stageLabel,
@@ -220,7 +220,7 @@ export function resolveCreativeHubWorkspacePresentation(input: {
         description: translateUi("{{error}} 恢复操作会继续使用现有小说资产和任务记录。", { error: failureSummary }),
         action: "send_prompt",
         actionLabel: translateUi("查看失败原因"),
-        prompt: `请解释失败原因、执行记录和正式处理入口：${recoveryHint}`,
+        prompt: translateUi("请解释失败原因、执行记录和正式处理入口：{{v0}}", { v0: recoveryHint }),
       },
     };
   }
@@ -256,7 +256,7 @@ export function resolveCreativeHubWorkspacePresentation(input: {
         description: nextSuggestion,
         action: "send_prompt",
         actionLabel: translateUi("查看建议"),
-        prompt: `请解释当前状态、执行记录和建议入口：${nextSuggestion}`,
+        prompt: translateUi("请解释当前状态、执行记录和建议入口：{{v0}}", { v0: nextSuggestion }),
       },
     };
   }

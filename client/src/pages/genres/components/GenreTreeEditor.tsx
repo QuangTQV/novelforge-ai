@@ -13,12 +13,12 @@ interface GenreTreeEditorProps {
 
 function getLevelLabel(depth: number): string {
   if (depth === 0) {
-    return "主类型";
+    return translateUi("主类型");
   }
   if (depth === 1) {
-    return "子类型";
+    return translateUi("子类型");
   }
-  return "下级类型";
+  return translateUi("下级类型");
 }
 
 export default function GenreTreeEditor({

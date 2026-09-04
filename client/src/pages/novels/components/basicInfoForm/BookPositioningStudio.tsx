@@ -43,19 +43,19 @@ export default function BookPositioningStudio(props: BookPositioningStudioProps)
   const readinessItems = [
     {
       label: translateUi("目标读者"),
-      value: createPreview(basicForm.targetAudience, "写清楚谁会追这本书"),
+      value: createPreview(basicForm.targetAudience, translateUi("写清楚谁会追这本书")),
       description: hasText(basicForm.targetAudience) ? translateUi("已就绪") : translateUi("待补充"),
       tone: hasText(basicForm.targetAudience) ? "success" as const : "neutral" as const,
     },
     {
       label: translateUi("核心卖点"),
-      value: createPreview(basicForm.bookSellingPoint, "明确最抓人的爽点或悬念"),
+      value: createPreview(basicForm.bookSellingPoint, translateUi("明确最抓人的爽点或悬念")),
       description: hasText(basicForm.bookSellingPoint) ? translateUi("已就绪") : translateUi("待补充"),
       tone: hasText(basicForm.bookSellingPoint) ? "success" as const : "neutral" as const,
     },
     {
       label: translateUi("前 30 章牵引"),
-      value: createPreview(basicForm.first30ChapterPromise, "告诉 AI 前期必须兑现什么"),
+      value: createPreview(basicForm.first30ChapterPromise, translateUi("告诉 AI 前期必须兑现什么")),
       description: hasText(basicForm.first30ChapterPromise) ? translateUi("已就绪") : translateUi("待补充"),
       tone: hasText(basicForm.first30ChapterPromise) ? "success" as const : "neutral" as const,
     },

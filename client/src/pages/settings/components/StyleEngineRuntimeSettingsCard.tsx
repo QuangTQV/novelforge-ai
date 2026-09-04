@@ -58,11 +58,11 @@ export default function StyleEngineRuntimeSettingsCard() {
         styleExtractionTimeoutMs: minutes * MS_PER_MINUTE,
       }),
     onSuccess: async (response) => {
-      setFeedback(response.message ?? "写法引擎运行设置保存成功。");
+      setFeedback(response.message ?? translateUi("写法引擎运行设置保存成功。"));
       await queryClient.invalidateQueries({ queryKey: queryKeys.settings.styleEngineRuntime });
     },
     onError: (error) => {
-      setFeedback(error instanceof Error ? error.message : "写法引擎运行设置保存失败。");
+      setFeedback(error instanceof Error ? error.message : translateUi("写法引擎运行设置保存失败。"));
     },
   });
 

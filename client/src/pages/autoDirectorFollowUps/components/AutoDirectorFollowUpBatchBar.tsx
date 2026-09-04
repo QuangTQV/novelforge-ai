@@ -15,12 +15,12 @@ interface AutoDirectorFollowUpBatchBarProps {
 
 function formatBatchActionLabel(actionCode: AutoDirectorMutationActionCode | null): string {
   if (actionCode === "continue_auto_execution") {
-    return "批量低风险继续";
+    return translateUi("批量低风险继续");
   }
   if (actionCode === "retry_with_task_model") {
-    return "批量重试异常任务";
+    return translateUi("批量重试异常任务");
   }
-  return "当前所选项没有共同批量动作";
+  return translateUi("当前所选项没有共同批量动作");
 }
 
 function getSelectedSection(items: AutoDirectorFollowUpItem[]): AutoDirectorFollowUpSection | null {
@@ -40,10 +40,10 @@ export function AutoDirectorFollowUpBatchBar({
   }
   const selectedSection = getSelectedSection(selectedItems);
   const consequence = batchActionCode === "continue_auto_execution"
-    ? "只向所选导演任务分别提交继续命令，不会跨任务合并状态。"
+    ? translateUi("只向所选导演任务分别提交继续命令，不会跨任务合并状态。")
     : batchActionCode === "retry_with_task_model"
-      ? "每个任务都会使用各自保存的模型重试，并保持对应的导演任务身份。"
-      : "不会执行批量操作；请重新选择同一分区且具有共同动作的任务。";
+      ? translateUi("每个任务都会使用各自保存的模型重试，并保持对应的导演任务身份。")
+      : translateUi("不会执行批量操作；请重新选择同一分区且具有共同动作的任务。");
 
   return (
     <div className={AUTO_DIRECTOR_MOBILE_CLASSES.followUpBatchBar}>

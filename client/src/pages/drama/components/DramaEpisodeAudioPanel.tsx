@@ -47,11 +47,11 @@ function isActiveBatch(job: DramaBatchJob | undefined): boolean {
 
 function batchStatusLabel(status: DramaBatchJob["status"]): string {
   const labels: Record<DramaBatchJob["status"], string> = {
-    pending: "等待中",
-    running: "执行中",
-    paused: "已暂停",
-    done: "已完成",
-    failed: "有失败项",
+    pending: translateUi("等待中"),
+    running: translateUi("执行中"),
+    paused: translateUi("已暂停"),
+    done: translateUi("已完成"),
+    failed: translateUi("有失败项"),
   };
   return labels[status] ?? status;
 }

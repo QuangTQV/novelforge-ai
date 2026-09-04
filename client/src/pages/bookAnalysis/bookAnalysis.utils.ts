@@ -1,24 +1,25 @@
+import { translateUi } from "@/i18n/legacy";
 import type { BookAnalysisDetail, BookAnalysisSection, BookAnalysisStatus } from "@ai-novel/shared/types/bookAnalysis";
 import type { SectionDraft } from "./bookAnalysis.types";
 
 export function formatStatus(status: BookAnalysisStatus | BookAnalysisSection["status"]): string {
   switch (status) {
     case "draft":
-      return "草稿";
+      return translateUi("草稿");
     case "queued":
-      return "排队中";
+      return translateUi("排队中");
     case "running":
-      return "运行中";
+      return translateUi("运行中");
     case "succeeded":
-      return "成功";
+      return translateUi("成功");
     case "failed":
-      return "失败";
+      return translateUi("失败");
     case "cancelled":
-      return "已取消";
+      return translateUi("已取消");
     case "archived":
-      return "已归档";
+      return translateUi("已归档");
     case "idle":
-      return "待处理";
+      return translateUi("待处理");
     default:
       return status;
   }
@@ -27,15 +28,15 @@ export function formatStatus(status: BookAnalysisStatus | BookAnalysisSection["s
 export function formatStage(stage?: string | null): string {
   switch (stage) {
     case "loading_cache":
-      return "查找可复用结果";
+      return translateUi("查找可复用结果");
     case "preparing_notes":
-      return "准备分析资料";
+      return translateUi("准备分析资料");
     case "generating_overview":
-      return "生成总览";
+      return translateUi("生成总览");
     case "generating_sections":
-      return "生成拆书小节";
+      return translateUi("生成拆书小节");
     default:
-      return stage?.trim() || "暂无";
+      return stage?.trim() || translateUi("暂无");
   }
 }
 
@@ -47,7 +48,7 @@ export function isBookAnalysisBudgetExceeded(lastError?: string | null): boolean
 
 export function formatDate(value?: string | null): string {
   if (!value) {
-    return "暂无";
+    return translateUi("暂无");
   }
   return new Date(value).toLocaleString();
 }

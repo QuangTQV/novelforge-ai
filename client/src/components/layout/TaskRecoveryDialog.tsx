@@ -12,18 +12,18 @@ import { useTaskRecovery } from "./TaskRecoveryContext";
 
 function formatTaskKind(kind: RecoverableTaskSummary["kind"]): string {
   if (kind === "novel_workflow") {
-    return "小说主流程";
+    return translateUi("小说主流程");
   }
   if (kind === "novel_pipeline") {
-    return "章节流水线";
+    return translateUi("章节流水线");
   }
   if (kind === "book_analysis") {
-    return "拆书任务";
+    return translateUi("拆书任务");
   }
   if (kind === "style_extraction") {
-    return "写法提取";
+    return translateUi("写法提取");
   }
-  return "图片任务";
+  return translateUi("图片任务");
 }
 
 export default function TaskRecoveryDialog() {

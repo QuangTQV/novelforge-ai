@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme, type ThemeMode } from "./ThemeProvider";
 
 const nextMode: Record<ThemeMode, ThemeMode> = { light: "dark", dark: "system", system: "light" };
-const labels: Record<ThemeMode, string> = { light: "浅色主题", dark: "深色主题", system: "跟随系统" };
+const labels: Record<ThemeMode, string> = { light: translateUi("浅色主题"), dark: translateUi("深色主题"), system: translateUi("跟随系统") };
 
 export default function ThemeToggle() {
   const { mode, resolvedMode, setMode } = useTheme();

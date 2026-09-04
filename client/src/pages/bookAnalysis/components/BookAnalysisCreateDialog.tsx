@@ -60,12 +60,12 @@ function formatCount(value: number): string {
 
 function getBookAnalysisScaleLabel(charCount: number): { label: string; tone: string } {
   if (charCount >= 300_000) {
-    return { label: translateUi("大型书籍"), tone: "建议使用成本更可控的模型，或先拆分文档范围。" };
+    return { label: translateUi("大型书籍"), tone: translateUi("建议使用成本更可控的模型，或先拆分文档范围。") };
   }
   if (charCount >= 100_000) {
-    return { label: translateUi("中等体量"), tone: "适合标准拆书，生成时间和 token 用量会随章节规模增加。" };
+    return { label: translateUi("中等体量"), tone: translateUi("适合标准拆书，生成时间和 token 用量会随章节规模增加。") };
   }
-  return { label: translateUi("轻量体量"), tone: "适合快速检查结构、人物和写法特征。" };
+  return { label: translateUi("轻量体量"), tone: translateUi("适合快速检查结构、人物和写法特征。") };
 }
 
 function getPresetSectionTitles(sectionKeys: readonly string[]): string {
@@ -142,8 +142,8 @@ export default function BookAnalysisCreateDialog(props: BookAnalysisCreateDialog
     : Boolean(selectedDocumentId) && sourceRangeValid && !createPending;
   const submitting = isDiagnosisMode ? createDiagnosisPending : createPending;
   const submitLabel = isDiagnosisMode
-    ? (createDiagnosisPending ? "正在创建诊断..." : "创建诊断拆书")
-    : (createPending ? "正在创建..." : "创建拆书");
+    ? (createDiagnosisPending ? translateUi("正在创建诊断...") : translateUi("创建诊断拆书"))
+    : (createPending ? translateUi("正在创建...") : translateUi("创建拆书"));
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

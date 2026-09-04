@@ -15,7 +15,7 @@ export function resolveWorkflowContinuationFeedback(
 } {
   const requestedScopeLabel = options?.scopeLabel?.trim();
   const taskScopeLabel = task && "executionScopeLabel" in task ? task.executionScopeLabel?.trim() : undefined;
-  const scopeLabel = requestedScopeLabel || taskScopeLabel || "当前章节范围";
+  const scopeLabel = requestedScopeLabel || taskScopeLabel || translateUi("当前章节范围");
 
   if (task && "kind" in task && task.status === "failed") {
     return {

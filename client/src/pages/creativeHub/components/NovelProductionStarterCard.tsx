@@ -38,9 +38,9 @@ function ProductionField(props: {
 }
 
 function fromNarrativePov(value: "first_person" | "third_person" | "mixed" | null | undefined): string {
-  if (value === "first_person") return "第一人称";
-  if (value === "third_person") return "第三人称";
-  if (value === "mixed") return "混合视角";
+  if (value === "first_person") return translateUi("第一人称");
+  if (value === "third_person") return translateUi("第三人称");
+  if (value === "mixed") return translateUi("混合视角");
   return "";
 }
 
@@ -52,9 +52,9 @@ function toNarrativePov(value: string): "first_person" | "third_person" | "mixed
 }
 
 function fromPacePreference(value: "slow" | "balanced" | "fast" | null | undefined): string {
-  if (value === "slow") return "慢节奏";
-  if (value === "balanced") return "均衡节奏";
-  if (value === "fast") return "快节奏";
+  if (value === "slow") return translateUi("慢节奏");
+  if (value === "balanced") return translateUi("均衡节奏");
+  if (value === "fast") return translateUi("快节奏");
   return "";
 }
 
@@ -66,10 +66,10 @@ function toPacePreference(value: string): "slow" | "balanced" | "fast" | null {
 }
 
 function fromProjectMode(value: "ai_led" | "co_pilot" | "draft_mode" | "auto_pipeline" | null | undefined): string {
-  if (value === "ai_led") return "AI 主导";
-  if (value === "co_pilot") return "人机协作";
-  if (value === "draft_mode") return "草稿优先";
-  if (value === "auto_pipeline") return "自动流水线";
+  if (value === "ai_led") return translateUi("AI 主导");
+  if (value === "co_pilot") return translateUi("人机协作");
+  if (value === "draft_mode") return translateUi("草稿优先");
+  if (value === "auto_pipeline") return translateUi("自动流水线");
   return "";
 }
 
@@ -82,9 +82,9 @@ function toProjectMode(value: string): "ai_led" | "co_pilot" | "draft_mode" | "a
 }
 
 function fromLevel(value: "low" | "medium" | "high" | null | undefined): string {
-  if (value === "low") return "低";
-  if (value === "medium") return "中";
-  if (value === "high") return "高";
+  if (value === "low") return translateUi("低");
+  if (value === "medium") return translateUi("中");
+  if (value === "high") return translateUi("高");
   return "";
 }
 
@@ -122,70 +122,70 @@ function buildProductionPrompt(input: {
   const worldType = input.worldType.trim();
   const targetChapterCount = Math.max(1, Math.min(200, Math.floor(input.targetChapterCount || 20)));
   if (input.currentNovelId) {
-    const segments = [`继续生成当前小说。目标章节数：${targetChapterCount}。`];
+    const segments = [translateUi("继续生成当前小说。目标章节数：{{v0}}。", { v0: targetChapterCount })];
     if (description) {
-      segments.push(`补充设定：${description}。`);
+      segments.push(translateUi("补充设定：{{v0}}。", { v0: description }));
     }
     if (genre) {
-      segments.push(`题材偏好：${genre}。`);
+      segments.push(translateUi("题材偏好：{{v0}}。", { v0: genre }));
     }
     if (styleTone) {
-      segments.push(`风格基调：${styleTone}。`);
+      segments.push(translateUi("风格基调：{{v0}}。", { v0: styleTone }));
     }
     if (narrativePov) {
-      segments.push(`叙事视角：${narrativePov}。`);
+      segments.push(translateUi("叙事视角：{{v0}}。", { v0: narrativePov }));
     }
     if (pacePreference) {
-      segments.push(`推进节奏：${pacePreference}。`);
+      segments.push(translateUi("推进节奏：{{v0}}。", { v0: pacePreference }));
     }
     if (projectMode) {
-      segments.push(`协作模式：${projectMode}。`);
+      segments.push(translateUi("协作模式：{{v0}}。", { v0: projectMode }));
     }
     if (emotionIntensity) {
-      segments.push(`情绪强度：${emotionIntensity}。`);
+      segments.push(translateUi("情绪强度：{{v0}}。", { v0: emotionIntensity }));
     }
     if (aiFreedom) {
-      segments.push(`AI 自由度：${aiFreedom}。`);
+      segments.push(translateUi("AI 自由度：{{v0}}。", { v0: aiFreedom }));
     }
     if (defaultChapterLength) {
-      segments.push(`默认章长：约 ${defaultChapterLength} 字。`);
+      segments.push(translateUi("默认章长：约 {{v0}} 字。", { v0: defaultChapterLength }));
     }
     if (worldType) {
-      segments.push(`世界观类型偏好：${worldType}。`);
+      segments.push(translateUi("世界观类型偏好：{{v0}}。", { v0: worldType }));
     }
     return segments.join("");
   }
   const title = input.title.trim();
-  const segments = [`创建一本${targetChapterCount}章小说《${title}》，并开始整本生成。`];
+  const segments = [translateUi("创建一本{{v0}}章小说《{{v1}}》，并开始整本生成。", { v0: targetChapterCount, v1: title })];
   if (description) {
-    segments.push(`简介：${description}。`);
+    segments.push(translateUi("简介：{{v0}}。", { v0: description }));
   }
   if (genre) {
-    segments.push(`题材：${genre}。`);
+    segments.push(translateUi("题材：{{v0}}。", { v0: genre }));
   }
   if (styleTone) {
-    segments.push(`风格基调：${styleTone}。`);
+    segments.push(translateUi("风格基调：{{v0}}。", { v0: styleTone }));
   }
   if (narrativePov) {
-    segments.push(`叙事视角：${narrativePov}。`);
+    segments.push(translateUi("叙事视角：{{v0}}。", { v0: narrativePov }));
   }
   if (pacePreference) {
-    segments.push(`推进节奏：${pacePreference}。`);
+    segments.push(translateUi("推进节奏：{{v0}}。", { v0: pacePreference }));
   }
   if (projectMode) {
-    segments.push(`协作模式：${projectMode}。`);
+    segments.push(translateUi("协作模式：{{v0}}。", { v0: projectMode }));
   }
   if (emotionIntensity) {
-    segments.push(`情绪强度：${emotionIntensity}。`);
+    segments.push(translateUi("情绪强度：{{v0}}。", { v0: emotionIntensity }));
   }
   if (aiFreedom) {
-    segments.push(`AI 自由度：${aiFreedom}。`);
+    segments.push(translateUi("AI 自由度：{{v0}}。", { v0: aiFreedom }));
   }
   if (defaultChapterLength) {
-    segments.push(`默认章长：约 ${defaultChapterLength} 字。`);
+    segments.push(translateUi("默认章长：约 {{v0}} 字。", { v0: defaultChapterLength }));
   }
   if (worldType) {
-    segments.push(`世界观类型：${worldType}。`);
+    segments.push(translateUi("世界观类型：{{v0}}。", { v0: worldType }));
   }
   return segments.join("");
 }

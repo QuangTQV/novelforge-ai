@@ -187,7 +187,7 @@ function ResourceProposalCard(props: {
     confirmingProposalId = "",
     rejectingProposalId = "",
   } = props;
-  const resourceName = readProposalPayloadText(proposal, "resourceName") || "关键资源";
+  const resourceName = readProposalPayloadText(proposal, "resourceName") || translateUi("关键资源");
   const holderName = readProposalPayloadText(proposal, "holderCharacterName");
   const narrativeImpact = readProposalPayloadText(proposal, "narrativeImpact");
   const isConfirming = confirmingProposalId === proposal.id;
@@ -306,7 +306,7 @@ export default function NovelTaskDrawer({
     && projection?.displayState === "needs_confirmation"
     && projection.latestTask?.checkpointType !== "replan_required"
   )
-    ? "确认并继续"
+    ? translateUi("确认并继续")
     : primaryAction?.label;
   const runProjectedAction = (action: DirectorBookAutomationAction) => {
     const matchedAction = actions.find((item) => {

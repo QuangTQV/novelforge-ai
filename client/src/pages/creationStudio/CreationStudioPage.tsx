@@ -91,7 +91,7 @@ export default function CreationStudioPage() {
       narrativeForm,
       targetWordCount: normalizeTarget(narrativeForm, targetWordCount),
       writingPlatformPreference: writingPlatform,
-      feedback: "请按我调整后的作品规模与目标平台重新适配两个方向。",
+      feedback: translateUi("请按我调整后的作品规模与目标平台重新适配两个方向。"),
     }),
     onSuccess: async (response) => {
       setConfirmedBaseline(`${narrativeForm}:${normalizeTarget(narrativeForm, targetWordCount)}:${writingPlatform}`);
@@ -104,7 +104,7 @@ export default function CreationStudioPage() {
 
   const confirmMutation = useMutation({
     mutationFn: () => {
-      if (!selectedDirection) throw new Error("请先选择一个方向。");
+      if (!selectedDirection) throw new Error(translateUi("请先选择一个方向。"));
       return confirmCreationDirection(taskId, {
         directionId: selectedDirection.id,
         narrativeForm,

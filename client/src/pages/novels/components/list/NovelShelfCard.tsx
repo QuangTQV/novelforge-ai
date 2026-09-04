@@ -10,13 +10,13 @@ import { getNovelWorkspaceHref, type NovelListItem } from "./novelListViewModel"
 
 function formatDate(value: string): string {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "最近编辑";
+  if (Number.isNaN(date.getTime())) return translateUi("最近编辑");
   return new Intl.DateTimeFormat("zh-CN", { month: "numeric", day: "numeric" }).format(date);
 }
 
 function getFormLabel(novel: NovelListItem): string {
-  if (novel.narrativeForm === "short_story") return "短篇";
-  return novel.writingMode === "continuation" ? "长篇续写" : "长篇原创";
+  if (novel.narrativeForm === "short_story") return translateUi("短篇");
+  return novel.writingMode === "continuation" ? translateUi("长篇续写") : translateUi("长篇原创");
 }
 
 function getProgress(novel: NovelListItem): number {
@@ -52,9 +52,9 @@ function getPreviewHref(novel: NovelListItem): string {
 }
 
 function coverStatusLabel(status?: ImageTaskStatus | null): string {
-  if (status === "queued" || status === "running") return "封面生成中";
-  if (status === "failed" || status === "cancelled") return "重新生成封面";
-  return "生成封面";
+  if (status === "queued" || status === "running") return translateUi("封面生成中");
+  if (status === "failed" || status === "cancelled") return translateUi("重新生成封面");
+  return translateUi("生成封面");
 }
 
 export function NovelShelfCard(props: {

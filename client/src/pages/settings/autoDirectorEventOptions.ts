@@ -99,10 +99,10 @@ export function summarizeSelectedAutoDirectorEvents(codes: string[]): string {
     .map((code) => AUTO_DIRECTOR_EVENT_LABEL_MAP.get(code))
     .filter((label): label is string => Boolean(label));
   if (labels.length === 0) {
-    return "未订阅事件";
+    return translateUi("未订阅事件");
   }
   if (labels.length <= 2) {
     return labels.join("、");
   }
-  return `${labels.slice(0, 2).join("、")} 等 ${labels.length} 项`;
+  return translateUi("{{v0}} 等 {{v1}} 项", { v0: labels.slice(0, 2).join("、"), v1: labels.length });
 }

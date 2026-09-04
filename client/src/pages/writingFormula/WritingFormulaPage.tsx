@@ -234,7 +234,7 @@ export default function WritingFormulaPage() {
     setActiveWorkspaceDialog("editor");
     setEditorFocusIntent("editor");
     if (incomingSource === "book-analysis") {
-      setMessage(`写法“${incomingProfile.name}”来自拆书结果，你可以继续检查规则、试写，或绑定到目标。`);
+      setMessage(translateUi("写法“{{v0}}”来自拆书结果，你可以继续检查规则、试写，或绑定到目标。", { v0: incomingProfile.name }));
     }
     setSearchParams(nextSearchParams, { replace: true });
   }, [incomingProfileId, incomingSource, profiles, searchParams, setSearchParams]);
@@ -297,7 +297,7 @@ export default function WritingFormulaPage() {
     },
     onExtractionTaskQueued: (task) => {
       setCreateDialogOpen(false);
-      setMessage(`写法提取任务“${task.title}”已提交。系统会在后台自动提取并保存，完成后会自动打开结果。`);
+      setMessage(translateUi("写法提取任务“{{v0}}”已提交。系统会在后台自动提取并保存，完成后会自动打开结果。", { v0: task.title }));
     },
     onFlowMessage: setMessage,
   });
@@ -312,11 +312,11 @@ export default function WritingFormulaPage() {
   const reextractFeaturesMutation = useMutation({
     mutationFn: async () => {
       if (!selectedProfileId || !editor.sourceContent.trim()) {
-        throw new Error("请先准备原文样本。");
+        throw new Error(translateUi("请先准备原文样本。"));
       }
 
       return extractStyleFeaturesFromText({
-        name: editor.name.trim() || selectedProfile?.name || "文本提取写法",
+        name: editor.name.trim() || selectedProfile?.name || translateUi("文本提取写法"),
         category: editor.category || undefined,
         sourceText: editor.sourceContent,
         provider: llm.provider,
@@ -343,8 +343,8 @@ export default function WritingFormulaPage() {
       }));
       setMessage(
         extractedFeatures.length > 0
-          ? `已重新提取 ${extractedFeatures.length} 条特征，请确认后保存。`
-          : "这次仍然没有生成可用特征，建议检查原文样本是否足够完整。",
+          ? translateUi("已重新提取 {{v0}} 条特征，请确认后保存。", { v0: extractedFeatures.length })
+          : translateUi("这次仍然没有生成可用特征，建议检查原文样本是否足够完整。"),
       );
     },
   });
@@ -372,7 +372,7 @@ export default function WritingFormulaPage() {
       });
     },
     onSuccess: async () => {
-      setMessage("写法资产保存完成。");
+      setMessage(translateUi("写法资产保存完成。"));
       await refreshStyleData();
     },
   });
@@ -380,7 +380,7 @@ export default function WritingFormulaPage() {
   const deleteProfileMutation = useMutation({
     mutationFn: (id: string) => deleteStyleProfile(id),
     onSuccess: async (_response, deletedProfileId) => {
-      setMessage("这套写法已删除。");
+      setMessage(translateUi("这套写法已删除。"));
       if (deletedProfileId === selectedProfileId) {
         setSelectedProfileId("");
         setActiveWorkspaceDialog(null);
@@ -410,7 +410,7 @@ export default function WritingFormulaPage() {
       });
     },
     onSuccess: async () => {
-      setMessage("这套写法会参与目标对象的生成。");
+      setMessage(translateUi("这套写法会参与目标对象的生成。"));
       await refreshStyleData();
     },
   });
@@ -425,7 +425,7 @@ export default function WritingFormulaPage() {
   const testWriteMutation = useMutation({
     mutationFn: () => {
       if (!selectedProfileId) {
-        throw new Error("请先选择写法资产。");
+        throw new Error(translateUi("请先选择写法资产。"));
       }
 
       return testWriteWithStyleProfile(selectedProfileId, {
@@ -444,7 +444,7 @@ export default function WritingFormulaPage() {
   const detectionMutation = useMutation({
     mutationFn: () => {
       if (!selectedProfileId) {
-        throw new Error("请先选择写法资产。");
+        throw new Error(translateUi("请先选择写法资产。"));
       }
 
       return detectStyleIssues({
@@ -460,7 +460,7 @@ export default function WritingFormulaPage() {
   const rewriteMutation = useMutation({
     mutationFn: async () => {
       if (!selectedProfileId) {
-        throw new Error("请先选择写法资产。");
+        throw new Error(translateUi("请先选择写法资产。"));
       }
 
       const report = detectionMutation.data?.data ?? (await detectStyleIssues({
@@ -490,7 +490,7 @@ export default function WritingFormulaPage() {
     },
     onSuccess: (response) => {
       setRewritePreview(response.data?.content ?? "");
-      setMessage("修订稿已经生成，可以继续在去 AI 味里检查和调整。");
+      setMessage(translateUi("修订稿已经生成，可以继续在去 AI 味里检查和调整。"));
     },
   });
 

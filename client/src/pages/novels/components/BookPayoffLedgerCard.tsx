@@ -17,19 +17,19 @@ interface BookPayoffLedgerCardProps {
 function payoffStatusLabel(status: string): string {
   switch (status) {
     case "setup":
-      return "已埋设";
+      return translateUi("已埋设");
     case "hinted":
-      return "已提示";
+      return translateUi("已提示");
     case "pending_payoff":
-      return "待回收";
+      return translateUi("待回收");
     case "paid_off":
-      return "已回收";
+      return translateUi("已回收");
     case "failed":
-      return "已失效";
+      return translateUi("已失效");
     case "overdue":
-      return "已逾期";
+      return translateUi("已逾期");
     default:
-      return status || "未知";
+      return status || translateUi("未知");
   }
 }
 
@@ -62,25 +62,25 @@ function formatWindow(item: PayoffLedgerItem): string {
     typeof item.targetStartChapterOrder === "number"
     && typeof item.targetEndChapterOrder === "number"
   ) {
-    return `第 ${item.targetStartChapterOrder}-${item.targetEndChapterOrder} 章`;
+    return translateUi("第 {{v0}}-{{v1}} 章", { v0: item.targetStartChapterOrder, v1: item.targetEndChapterOrder });
   }
   if (typeof item.targetEndChapterOrder === "number") {
-    return `最晚第 ${item.targetEndChapterOrder} 章`;
+    return translateUi("最晚第 {{v0}} 章", { v0: item.targetEndChapterOrder });
   }
   if (typeof item.targetStartChapterOrder === "number") {
-    return `从第 ${item.targetStartChapterOrder} 章开始`;
+    return translateUi("从第 {{v0}} 章开始", { v0: item.targetStartChapterOrder });
   }
-  return "未限定";
+  return translateUi("未限定");
 }
 
 function scopeLabel(scopeType: PayoffLedgerItem["scopeType"]): string {
   if (scopeType === "book") {
-    return "全书";
+    return translateUi("全书");
   }
   if (scopeType === "volume") {
-    return "卷级";
+    return translateUi("卷级");
   }
-  return "章节";
+  return translateUi("章节");
 }
 
 function sourceSummary(item: PayoffLedgerItem): string {
@@ -88,7 +88,7 @@ function sourceSummary(item: PayoffLedgerItem): string {
     .map((source) => source.refLabel?.trim())
     .filter(Boolean)
     .slice(0, 3);
-  return labels.length > 0 ? labels.join(" / ") : "暂无来源摘要";
+  return labels.length > 0 ? labels.join(" / ") : translateUi("暂无来源摘要");
 }
 
 export default function BookPayoffLedgerCard(props: BookPayoffLedgerCardProps) {

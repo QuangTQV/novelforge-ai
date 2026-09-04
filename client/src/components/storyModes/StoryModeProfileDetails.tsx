@@ -4,9 +4,9 @@ import type { NovelStoryMode } from "@ai-novel/shared/types/storyMode";
 import { cn } from "@/lib/utils";
 
 const conflictCeilingLabel = {
-  low: "低强度",
-  medium: "中等强度",
-  high: "高强度",
+  low: translateUi("低强度"),
+  medium: translateUi("中等强度"),
+  high: translateUi("高强度"),
 } as const;
 
 function ContractList({ title, items, emptyText }: { title: string; items: string[]; emptyText: string }) {
@@ -30,7 +30,7 @@ function ContractList({ title, items, emptyText }: { title: string; items: strin
 
 export default function StoryModeProfileDetails({
   node,
-  eyebrow = "推进模式",
+  eyebrow = translateUi("推进模式"),
   className,
   titleId,
 }: {

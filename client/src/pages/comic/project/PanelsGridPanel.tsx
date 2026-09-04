@@ -181,7 +181,7 @@ function BatchBar({
           {isRunning ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
           {isRunning
             ? translateUi("批量生成中...")
-            : translateUi("批量生成 {{count}} ô", { count: pendingCount })}
+            : translateUi("批量生成 {{count}} 格", { count: pendingCount })}
         </Button>
 
         {hasFailures && (

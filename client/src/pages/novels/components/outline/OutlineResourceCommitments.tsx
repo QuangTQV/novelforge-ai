@@ -7,27 +7,27 @@ type OutlineCharacterResource = NonNullable<OutlineTabViewProps["characterResour
 
 function getResourceStatusLabel(status: OutlineCharacterResource["status"]): string {
   const labels: Record<OutlineCharacterResource["status"], string> = {
-    available: "可用",
-    hidden: "隐藏",
-    borrowed: "借用",
-    transferred: "已转交",
-    lost: "已丢失",
-    consumed: "已消耗",
-    damaged: "受损",
-    destroyed: "毁坏",
-    stale: "淡出",
+    available: translateUi("可用"),
+    hidden: translateUi("隐藏"),
+    borrowed: translateUi("借用"),
+    transferred: translateUi("已转交"),
+    lost: translateUi("已丢失"),
+    consumed: translateUi("已消耗"),
+    damaged: translateUi("受损"),
+    destroyed: translateUi("毁坏"),
+    stale: translateUi("淡出"),
   };
   return labels[status] ?? status;
 }
 
 function getVolumeResourceWindow(resource: OutlineCharacterResource): string {
   if (resource.expectedUseStartChapterOrder || resource.expectedUseEndChapterOrder) {
-    return `预计第${resource.expectedUseStartChapterOrder ?? "?"}章至第${resource.expectedUseEndChapterOrder ?? "?"}章使用`;
+    return translateUi("预计第{{v0}}章至第{{v1}}章使用", { v0: resource.expectedUseStartChapterOrder ?? "?", v1: resource.expectedUseEndChapterOrder ?? "?" });
   }
   if (resource.lastTouchedChapterOrder) {
-    return `最近触达第${resource.lastTouchedChapterOrder}章`;
+    return translateUi("最近触达第{{v0}}章", { v0: resource.lastTouchedChapterOrder });
   }
-  return "后续章节可参考";
+  return translateUi("后续章节可参考");
 }
 
 function isResourceRelevantToVolume(

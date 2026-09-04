@@ -175,12 +175,12 @@ export default function BookAnalysisCharacterPanel(props: BookAnalysisCharacterP
   const freshCandidateCount = candidateCharacters.filter((character) => character.status === "candidate").length;
   const batchButtonTitle = (() => {
     if (failedCandidateCount > 0 && freshCandidateCount > 0) {
-      return `为 ${freshCandidateCount} 个新候选生成档案，并重试 ${failedCandidateCount} 个失败角色`;
+      return translateUi("为 {{v0}} 个新候选生成档案，并重试 {{v1}} 个失败角色", { v0: freshCandidateCount, v1: failedCandidateCount });
     }
     if (failedCandidateCount > 0) {
-      return `重试 ${failedCandidateCount} 个失败的角色`;
+      return translateUi("重试 {{v0}} 个失败的角色", { v0: failedCandidateCount });
     }
-    return `为 ${freshCandidateCount} 个候选生成深度档案`;
+    return translateUi("为 {{v0}} 个候选生成深度档案", { v0: freshCandidateCount });
   })();
   const operationPending = pending.generate || pending.identify || pending.generateProfile || pending.generateAll;
   const identifyDisabled = disabled || pending.identify;

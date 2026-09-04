@@ -68,9 +68,9 @@ export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOve
     );
   }
 
-  const chapterLabel = `第${selectedChapter.order}章`;
-  const chapterTitle = selectedChapter.title || "未命名章节";
-  const chapterObjective = chapterPlan?.objective ?? selectedChapter.expectation ?? "这一章还没有明确目标，建议先补章节计划。";
+  const chapterLabel = translateUi("第{{v0}}章", { v0: selectedChapter.order });
+  const chapterTitle = selectedChapter.title || translateUi("未命名章节");
+  const chapterObjective = chapterPlan?.objective ?? selectedChapter.expectation ?? translateUi("这一章还没有明确目标，建议先补章节计划。");
   const runtimePackage = chapterRuntimePackage?.chapterId === selectedChapter.id ? chapterRuntimePackage : null;
   const lengthControl = runtimePackage?.lengthControl ?? null;
   const qualityOverall = chapterQualityReport?.overall ?? selectedChapter.qualityScore ?? null;
@@ -80,7 +80,7 @@ export default function ChapterExecutionOverviewPanel(props: ChapterExecutionOve
   const currentWordCount = runtimePackage?.draft.wordCount ?? selectedChapter.content?.trim().length ?? 0;
   const targetWordCount = selectedChapter.targetWordCount ?? null;
   const issueCount = openAuditIssues.length || reviewResult?.issues?.length || 0;
-  const updatedAt = selectedChapter.updatedAt ? new Date(selectedChapter.updatedAt).toLocaleString("zh-CN") : "暂无";
+  const updatedAt = selectedChapter.updatedAt ? new Date(selectedChapter.updatedAt).toLocaleString("zh-CN") : translateUi("暂无");
 
   return (
     <section className="space-y-3 rounded-2xl border border-border/70 bg-background/95 p-4">

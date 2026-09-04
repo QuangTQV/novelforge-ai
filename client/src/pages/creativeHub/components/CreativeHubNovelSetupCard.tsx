@@ -13,11 +13,11 @@ interface CreativeHubNovelSetupCardProps {
 function stageLabel(stage: CreativeHubNovelSetupStatus["stage"]): string {
   switch (stage) {
     case "ready_for_production":
-      return "可进入生产";
+      return translateUi("可进入生产");
     case "ready_for_planning":
-      return "可进入规划";
+      return translateUi("可进入规划");
     default:
-      return "初始化中";
+      return translateUi("初始化中");
   }
 }
 

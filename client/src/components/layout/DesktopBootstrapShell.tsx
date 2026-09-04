@@ -25,15 +25,15 @@ interface DesktopBootstrapShellProps {
 function resolveStateLabel(snapshot: DesktopBootstrapSnapshot): string {
   switch (snapshot.state) {
     case "launching":
-      return "准备中";
+      return translateUi("准备中");
     case "starting-server":
-      return "启动本地引擎";
+      return translateUi("启动本地引擎");
     case "loading-ui":
-      return "加载工作区";
+      return translateUi("加载工作区");
     case "ready":
-      return "已就绪";
+      return translateUi("已就绪");
     case "error":
-      return "启动受阻";
+      return translateUi("启动受阻");
     default:
       return snapshot.state;
   }
@@ -42,21 +42,21 @@ function resolveStateLabel(snapshot: DesktopBootstrapSnapshot): string {
 function resolveStageLabel(snapshot: DesktopBootstrapSnapshot): string {
   switch (snapshot.stage) {
     case "launching":
-      return "准备启动";
+      return translateUi("准备启动");
     case "app-ready":
-      return "应用已就绪";
+      return translateUi("应用已就绪");
     case "splash-shown":
-      return "启动页已显示";
+      return translateUi("启动页已显示");
     case "server-starting":
-      return "本地服务启动中";
+      return translateUi("本地服务启动中");
     case "server-healthy":
-      return "本地服务已就绪";
+      return translateUi("本地服务已就绪");
     case "renderer-ready":
-      return "界面已准备";
+      return translateUi("界面已准备");
     case "main-window-shown":
-      return "主窗口已显示";
+      return translateUi("主窗口已显示");
     case "error":
-      return "启动失败";
+      return translateUi("启动失败");
     default:
       return snapshot.stage;
   }
@@ -65,15 +65,15 @@ function resolveStageLabel(snapshot: DesktopBootstrapSnapshot): string {
 function resolveProgressHint(snapshot: DesktopBootstrapSnapshot): string {
   switch (snapshot.state) {
     case "launching":
-      return "正在准备桌面运行时和启动资源。";
+      return translateUi("正在准备桌面运行时和启动资源。");
     case "starting-server":
-      return "桌面版需要先拉起本地服务，随后才会进入主工作区。";
+      return translateUi("桌面版需要先拉起本地服务，随后才会进入主工作区。");
     case "loading-ui":
-      return "本地服务已经可用，正在切入主工作台。";
+      return translateUi("本地服务已经可用，正在切入主工作台。");
     case "ready":
-      return "启动链路已经完成。";
+      return translateUi("启动链路已经完成。");
     case "error":
-      return "启动过程中遇到问题，建议先查看日志再重试。";
+      return translateUi("启动过程中遇到问题，建议先查看日志再重试。");
     default:
       return snapshot.detail;
   }
@@ -82,21 +82,21 @@ function resolveProgressHint(snapshot: DesktopBootstrapSnapshot): string {
 function resolveUpdaterStatusLabel(status: DesktopUpdaterSnapshot["status"]): string {
   switch (status) {
     case "disabled":
-      return "不可用";
+      return translateUi("不可用");
     case "idle":
-      return "待检查";
+      return translateUi("待检查");
     case "checking":
-      return "检查中";
+      return translateUi("检查中");
     case "update-available":
-      return "发现更新";
+      return translateUi("发现更新");
     case "downloading":
-      return "下载中";
+      return translateUi("下载中");
     case "downloaded":
-      return "待安装";
+      return translateUi("待安装");
     case "not-available":
-      return "无需更新";
+      return translateUi("无需更新");
     case "error":
-      return "检查失败";
+      return translateUi("检查失败");
     default:
       return status;
   }
@@ -105,11 +105,11 @@ function resolveUpdaterStatusLabel(status: DesktopUpdaterSnapshot["status"]): st
 function resolveUpdaterHint(updater: DesktopUpdaterSnapshot, bootstrapState: DesktopBootstrapSnapshot["state"]): string {
   if (!updater.isSupported) {
     if (updater.isPortable) {
-      return "便携版需要下载新版安装包后手动替换。";
+      return translateUi("便携版需要下载新版安装包后手动替换。");
     }
 
     if (!updater.isPackaged) {
-      return "开发运行不会连接发布更新通道，打包安装版会自动检查桌面版本。";
+      return translateUi("开发运行不会连接发布更新通道，打包安装版会自动检查桌面版本。");
     }
 
     return updater.message;
@@ -118,20 +118,20 @@ function resolveUpdaterHint(updater: DesktopUpdaterSnapshot, bootstrapState: Des
   switch (updater.status) {
     case "idle":
       return bootstrapState === "error"
-        ? "启动受阻时会同步检查桌面版本，方便先安装可用修复。"
-        : "进入工作区前会检查桌面版本，有可用版本时会在这里提示。";
+        ? translateUi("启动受阻时会同步检查桌面版本，方便先安装可用修复。")
+        : translateUi("进入工作区前会检查桌面版本，有可用版本时会在这里提示。");
     case "checking":
-      return "版本检查中，有可用版本时会提示下载。";
+      return translateUi("版本检查中，有可用版本时会提示下载。");
     case "update-available":
-      return `桌面版 ${updater.availableVersion ?? "新版本"} 可用，建议先下载更新包。`;
+      return translateUi("Bản máy tính {{v}} đã có, nên tải gói cập nhật trước.", { v: updater.availableVersion ?? translateUi("新版本") });
     case "downloading":
-      return "更新包下载中，请保持应用打开。";
+      return translateUi("更新包下载中，请保持应用打开。");
     case "downloaded":
-      return "更新包已下载，重启应用后完成安装。";
+      return translateUi("更新包已下载，重启应用后完成安装。");
     case "not-available":
-      return "本机安装版本与发布通道保持同步。";
+      return translateUi("本机安装版本与发布通道保持同步。");
     case "error":
-      return updater.message || "版本检查失败，可以稍后重试。";
+      return updater.message || translateUi("版本检查失败，可以稍后重试。");
     default:
       return updater.message;
   }

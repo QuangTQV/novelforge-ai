@@ -70,7 +70,7 @@ export function getNextNovelWorkspaceFlowTab(value: string | null | undefined): 
 
 export function getNovelWorkspaceTabLabel(value: string | null | undefined): string {
   const normalized = normalizeNovelWorkspaceTab(value);
-  return [...NOVEL_WORKSPACE_FLOW_STEPS, ...NOVEL_WORKSPACE_TOOL_TABS].find((item) => item.key === normalized)?.label ?? "项目设定";
+  return [...NOVEL_WORKSPACE_FLOW_STEPS, ...NOVEL_WORKSPACE_TOOL_TABS].find((item) => item.key === normalized)?.label ?? translateUi("项目设定");
 }
 
 export function scopeFromWorkspaceTab(tab: string): DirectorLockScope | null {

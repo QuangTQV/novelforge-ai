@@ -15,19 +15,19 @@ function compactArgs(record: Record<string, string | boolean | null | undefined>
 function toStatusLabel(status: string): string {
   switch (status) {
     case "running":
-      return "运行中";
+      return translateUi("运行中");
     case "queued":
-      return "排队中";
+      return translateUi("排队中");
     case "waiting_approval":
-      return "等待审批";
+      return translateUi("等待审批");
     case "succeeded":
-      return "已完成";
+      return translateUi("已完成");
     case "failed":
-      return "失败";
+      return translateUi("失败");
     case "cancelled":
-      return "已取消";
+      return translateUi("已取消");
     case "interrupted":
-      return "待确认";
+      return translateUi("待确认");
     default:
       return status;
   }
@@ -174,7 +174,7 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `run_status_${sequence}`,
-        kind: "运行状态",
+        kind: translateUi("运行状态"),
         title: translateUi("运行状态"),
         summary: frame.data.message || translateUi("当前状态：{{value0}}", { value0: toStatusLabel(frame.data.status) }),
         meta: [toStatusLabel(frame.data.status), `Run ${runId.slice(0, 8)}`],
@@ -196,7 +196,7 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `tool_call_${sequence}`,
-        kind: "工具调用",
+        kind: translateUi("工具调用"),
         title: frame.data.toolName,
         summary: frame.data.inputSummary || translateUi("正在准备工具输入。"),
         meta: [
@@ -216,11 +216,11 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `tool_result_${sequence}`,
-        kind: frame.data.success ? "工具完成" : "工具失败",
+        kind: frame.data.success ? translateUi("工具完成") : translateUi("工具失败"),
         title: frame.data.toolName,
         summary: frame.data.outputSummary || translateUi("工具返回了空结果。"),
         meta: [
-          frame.data.success ? "成功" : "失败",
+          frame.data.success ? translateUi("成功") : translateUi("失败"),
           `Run ${runId.slice(0, 8)}`,
         ],
         tone: frame.data.success ? "default" : "destructive",
@@ -237,7 +237,7 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `approval_${sequence}`,
-        kind: "审批结果",
+        kind: translateUi("审批结果"),
         title: frame.data.action === "approved" ? translateUi("审批通过") : translateUi("审批拒绝"),
         summary: frame.data.note?.trim() || translateUi("当前审批动作已记录。"),
         meta: [
@@ -257,7 +257,7 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `error_${sequence}`,
-        kind: "运行异常",
+        kind: translateUi("运行异常"),
         title: translateUi("运行异常"),
         summary: frame.data.message,
         meta: [`Run ${runId.slice(0, 8)}`],
@@ -275,7 +275,7 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `reasoning_${sequence}`,
-        kind: "推理更新",
+        kind: translateUi("推理更新"),
         title: translateUi("推理更新"),
         summary: frame.data.reasoning,
         meta: [`Run ${runId.slice(0, 8)}`],
@@ -293,11 +293,11 @@ function buildDebugTraceEntry(
       runId,
       entry: {
         id: `planner_${sequence}`,
-        kind: "意图识别",
+        kind: translateUi("意图识别"),
         title: translateUi("意图识别"),
         summary: translateUi("来源：{{source}}；意图：{{intent}}", { source: getPlannerSourceDisplayLabel(planner.source), intent: getIntentDisplayLabel(planner.intent) }),
         meta: [
-          "confidence" in planner ? `置信度 ${String(planner.confidence ?? "-")}` : "",
+          "confidence" in planner ? translateUi("置信度 {{v0}}", { v0: String(planner.confidence ?? "-") }) : "",
           `Run ${runId.slice(0, 8)}`,
         ].filter(Boolean),
       },

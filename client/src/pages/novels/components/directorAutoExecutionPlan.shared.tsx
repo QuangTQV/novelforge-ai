@@ -190,20 +190,20 @@ export function buildDirectorAutoExecutionPlanLabel(
   plan: DirectorAutoExecutionPlan | null | undefined,
 ): string {
   if (plan?.mode === "book") {
-    return "全书";
+    return translateUi("全书");
   }
   if (plan?.mode === "chapter_range") {
     const startOrder = normalizePositiveInteger(plan.startOrder, 1);
     const endOrder = Math.max(startOrder, normalizePositiveInteger(plan.endOrder, startOrder));
     if (startOrder === endOrder) {
-      return `第 ${startOrder} 章`;
+      return translateUi("第 {{v0}} 章", { v0: startOrder });
     }
-    return `第 ${startOrder}-${endOrder} 章`;
+    return translateUi("第 {{v0}}-{{v1}} 章", { v0: startOrder, v1: endOrder });
   }
   if (plan?.mode === "volume") {
-    return `第 ${normalizePositiveInteger(plan.volumeOrder, 1)} 卷`;
+    return translateUi("第 {{v0}} 卷", { v0: normalizePositiveInteger(plan.volumeOrder, 1) });
   }
-  return `第 1-${normalizePositiveInteger(plan?.endOrder, 10)} 章`;
+  return translateUi("第 1-{{v0}} 章", { v0: normalizePositiveInteger(plan?.endOrder, 10) });
 }
 
 export function buildTakeoverAutoExecutionDraftFromExecutableRange(
@@ -247,9 +247,9 @@ export function DirectorAutoExecutionPlanFields({
   const canEditVolumeOrder = usage === "takeover" && draft.mode === "volume";
   const reviewLabel = draft.autoReview
     ? draft.autoRepair
-      ? "正文后自动审核 + 自动修复"
-      : "正文后自动审核，不自动修复"
-    : "正文后不做自动审核与修复";
+      ? translateUi("正文后自动审核 + 自动修复")
+      : translateUi("正文后自动审核，不自动修复")
+    : translateUi("正文后不做自动审核与修复");
 
   return (
     <div className="mt-3 min-w-0 rounded-md border border-primary/15 bg-primary/5 p-3">

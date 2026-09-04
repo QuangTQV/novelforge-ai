@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { create } from "zustand";
 import { del, get, set } from "idb-keyval";
 
@@ -69,7 +70,7 @@ export const useChatStore = create<ChatStoreState>((setState, getState) => ({
       hydrated: true,
     });
   },
-  createSession: async (title = "新对话") => {
+  createSession: async (title = translateUi("新对话")) => {
     const now = new Date().toISOString();
     const session: ChatSession = {
       id: generateId("session"),

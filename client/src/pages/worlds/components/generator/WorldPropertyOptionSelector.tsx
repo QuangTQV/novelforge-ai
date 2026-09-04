@@ -12,12 +12,12 @@ interface WorldPropertyOptionSelectorProps {
 }
 
 const WORLD_LAYER_LABELS: Record<WorldPropertyOption["targetLayer"], string> = {
-  foundation: "基础层",
-  power: "力量层",
-  society: "社会层",
-  culture: "文化层",
-  history: "历史层",
-  conflict: "冲突层",
+  foundation: translateUi("基础层"),
+  power: translateUi("力量层"),
+  society: translateUi("社会层"),
+  culture: translateUi("文化层"),
+  history: translateUi("历史层"),
+  conflict: translateUi("冲突层"),
 };
 
 export default function WorldPropertyOptionSelector({

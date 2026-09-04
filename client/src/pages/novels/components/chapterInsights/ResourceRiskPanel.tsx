@@ -52,8 +52,8 @@ export default function ResourceRiskPanel(props: ChapterExecutionInsightsSidebar
 
   const isAutoDirectorMode = resourceWorkflowMode === "auto_director";
   const modeHint = isAutoDirectorMode
-    ? "自动导演会同步常规资源变化，只把高风险变更留给你判断。"
-    : "改完正文后可复查本章资源变化，确认后的结果会影响后续写作。";
+    ? translateUi("自动导演会同步常规资源变化，只把高风险变更留给你判断。")
+    : translateUi("改完正文后可复查本章资源变化，确认后的结果会影响后续写作。");
   const openConflicts = chapterRuntimePackage?.context.openConflicts ?? [];
   const blockingIssues = chapterRuntimePackage?.audit.openIssues ?? [];
   const failureSummary = chapterRuntimePackage?.failureClassification?.summary?.trim() ?? "";

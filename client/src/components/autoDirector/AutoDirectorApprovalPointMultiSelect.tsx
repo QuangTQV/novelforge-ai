@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import {
   DIRECTOR_AUTO_APPROVAL_GROUPS,
   DIRECTOR_AUTO_APPROVAL_POINTS,
@@ -45,7 +46,7 @@ export function summarizeDirectorAutoApprovalPoints(codes: string[], t?: Approva
   const separator = t ? t("approvalPoints.summary.separator") : "、";
   const normalized = normalizeDirectorAutoApprovalPointCodes(codes, []);
   if (normalized.length === 0) {
-    return t ? t("approvalPoints.summary.none") : "不会自动通过审批点";
+    return t ? t("approvalPoints.summary.none") : translateUi("不会自动通过审批点");
   }
   const labels: string[] = normalized
     .map((code) => DIRECTOR_AUTO_APPROVAL_POINTS.find((item) => item.code === code)?.label)
@@ -56,7 +57,7 @@ export function summarizeDirectorAutoApprovalPoints(codes: string[], t?: Approva
   const items = labels.slice(0, 2).join(separator);
   return t
     ? t("approvalPoints.summary.andMore", { items, count: labels.length })
-    : `${items} 等 ${labels.length} 项`;
+    : translateUi("{{v0}} 等 {{v1}} 项", { v0: items, v1: labels.length });
 }
 
 export default function AutoDirectorApprovalPointMultiSelect({

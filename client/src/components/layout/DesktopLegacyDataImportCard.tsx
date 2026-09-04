@@ -75,10 +75,10 @@ export default function DesktopLegacyDataImportCard({
   }
 
   const hasSuggestedSource = Boolean(snapshot?.suggestedSourcePath);
-  const title = hasSuggestedSource ? "检测到旧版本地数据库" : "导入旧版本地数据库";
+  const title = hasSuggestedSource ? translateUi("检测到旧版本地数据库") : translateUi("导入旧版本地数据库");
   const description = hasSuggestedSource
-    ? "桌面版检测到了你之前 web/开发版使用的本地数据库，可以一键导入并接管原有小说、API Key 和知识库数据。"
-    : "桌面版默认使用独立数据目录。如果你之前在 web/开发版里已经有本地数据，可以选择旧的 dev.db 导入到桌面版。";
+    ? translateUi("桌面版检测到了你之前 web/开发版使用的本地数据库，可以一键导入并接管原有小说、API Key 和知识库数据。")
+    : translateUi("桌面版默认使用独立数据目录。如果你之前在 web/开发版里已经有本地数据，可以选择旧的 dev.db 导入到桌面版。");
 
   const importData = async (preferSuggested: boolean) => {
     try {
@@ -88,7 +88,7 @@ export default function DesktopLegacyDataImportCard({
         return;
       }
       if (result?.scheduled) {
-        toast("正在准备导入旧数据，应用会自动重启一次。");
+        toast(translateUi("正在准备导入旧数据，应用会自动重启一次。"));
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : translateUi("导入旧数据失败。"));

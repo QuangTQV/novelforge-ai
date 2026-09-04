@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMutation, type QueryClient } from "@tanstack/react-query";
 import type { Chapter, PipelineRepairMode, PipelineRunMode, VolumePlanDocument } from "@ai-novel/shared/types/novel";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
@@ -104,7 +105,7 @@ export function useNovelEditMutations({
       const platform = basicForm.writingPlatformPreference === "ai_recommend"
         ? (await recommendNovelWritingPlatform(id)).data?.platform
         : basicForm.writingPlatformPreference;
-      if (!platform) throw new Error("AI 未返回可用的平台建议，请重试。");
+      if (!platform) throw new Error(translateUi("AI 未返回可用的平台建议，请重试。"));
       await updateNovelWritingPlatform(id, platform);
       return updated;
     },
@@ -112,7 +113,7 @@ export function useNovelEditMutations({
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "project_setup",
-        itemLabel: "项目设定已保存",
+        itemLabel: translateUi("项目设定已保存"),
         status: "waiting_approval",
       });
       await invalidateNovelDetail();
@@ -128,9 +129,9 @@ export function useNovelEditMutations({
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "volume_strategy",
-        itemLabel: "卷战略 / 卷骨架已保存",
+        itemLabel: translateUi("卷战略 / 卷骨架已保存"),
         checkpointType: "volume_strategy_ready",
-        checkpointSummary: "当前卷战略与卷骨架已保存到工作区。",
+        checkpointSummary: translateUi("当前卷战略与卷骨架已保存到工作区。"),
         status: "waiting_approval",
       });
       await invalidateNovelDetail();
@@ -143,11 +144,11 @@ export function useNovelEditMutations({
       syncToChapterExecution: true,
     }),
     onSuccess: async () => {
-      setStructuredMessage("节奏拆章已保存，章节执行区会直接使用同一批章节。");
+      setStructuredMessage(translateUi("节奏拆章已保存，章节执行区会直接使用同一批章节。"));
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "structured_outline",
-        itemLabel: "节奏 / 拆章已保存",
+        itemLabel: translateUi("节奏 / 拆章已保存"),
         status: "waiting_approval",
       });
       await invalidateNovelDetail();
@@ -199,20 +200,20 @@ export function useNovelEditMutations({
     onSuccess: async (response) => {
       const preview = response.data;
       setStructuredMessage(
-        `连接修复完成：新增 ${preview?.createCount ?? 0}，更新 ${preview?.updateCount ?? 0}，删除 ${preview?.deleteCount ?? 0}。`,
+        translateUi("连接修复完成：新增 {{v0}}，更新 {{v1}}，删除 {{v2}}。", { v0: preview?.createCount ?? 0, v1: preview?.updateCount ?? 0, v2: preview?.deleteCount ?? 0 }),
       );
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "structured_outline",
-        itemLabel: "卷级拆章已连接到章节执行",
+        itemLabel: translateUi("卷级拆章已连接到章节执行"),
         checkpointType: "chapter_batch_ready",
-        checkpointSummary: "章节列表、任务单和执行入口已准备好，可继续进入章节执行。",
+        checkpointSummary: translateUi("章节列表、任务单和执行入口已准备好，可继续进入章节执行。"),
         status: "waiting_approval",
       });
       await invalidateNovelDetail();
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "章节同步失败。";
+      const message = error instanceof Error ? error.message : translateUi("章节同步失败。");
       setStructuredMessage(message);
     },
   });
@@ -231,7 +232,7 @@ export function useNovelEditMutations({
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "chapter_execution",
-        itemLabel: "已创建新的章节执行项",
+        itemLabel: translateUi("已创建新的章节执行项"),
         chapterId: response.data?.id,
         status: "waiting_approval",
       });
@@ -247,11 +248,11 @@ export function useNovelEditMutations({
       if (selectedChapterId === chapterId) {
         setSelectedChapterId(fallbackChapter?.id ?? "");
       }
-      setPipelineMessage("已移除未开始的空白章节。");
+      setPipelineMessage(translateUi("已移除未开始的空白章节。"));
       await invalidateNovelDetail();
     },
     onError: (error) => {
-      setPipelineMessage(error instanceof Error ? error.message : "移除章节失败，请稍后重试。");
+      setPipelineMessage(error instanceof Error ? error.message : translateUi("移除章节失败，请稍后重试。"));
     },
   });
 
@@ -279,7 +280,7 @@ export function useNovelEditMutations({
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "quality_repair",
-        itemLabel: "章节流水线运行中",
+        itemLabel: translateUi("章节流水线运行中"),
         status: "running",
       });
       await queryClient.invalidateQueries({ queryKey: queryKeys.novels.pipelineJob(id, response.data?.id ?? "none") });
@@ -299,7 +300,7 @@ export function useNovelEditMutations({
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "quality_repair",
-        itemLabel: "章节审校已完成",
+        itemLabel: translateUi("章节审校已完成"),
         status: "waiting_approval",
       });
       await queryClient.invalidateQueries({ queryKey: queryKeys.novels.qualityReport(id) });
@@ -319,7 +320,7 @@ export function useNovelEditMutations({
       await syncNovelWorkflowStageSilently({
         novelId: id,
         stage: "chapter_execution",
-        itemLabel: "章节钩子已生成",
+        itemLabel: translateUi("章节钩子已生成"),
         chapterId: selectedChapterId || undefined,
         status: "waiting_approval",
       });

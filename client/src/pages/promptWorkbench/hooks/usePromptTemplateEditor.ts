@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -156,7 +157,7 @@ export function usePromptTemplateEditor(input: {
   const loadVersionToDraft = useCallback((version: PromptTemplateVersionView) => {
     setSystemContent(getMessageContent(version.template, "system"));
     setHumanContent(getMessageContent(version.template, "human"));
-    setNotes(`基于 v${version.versionNo} 调整`);
+    setNotes(translateUi("基于 v{{v0}} 调整", { v0: version.versionNo }));
   }, []);
 
   const insertToken = useCallback((token: string) => {

@@ -29,9 +29,9 @@ interface CharacterDialogueStageProps {
 }
 
 const POLICY_DESCRIPTION: Record<CharacterConversationPolicy, string> = {
-  novel_influence: "角色会按自己的处境、认知和关系回应；谈话不会直接改写小说正史。",
-  read_only: "角色依据角色库中的稳定设定回应；这段交流不会改写角色设定或任何小说。",
-  evidence_interview: "角色只依据当前证据范围回应；证据不足时会明确说明，交流不会改写原文。",
+  novel_influence: translateUi("角色会按自己的处境、认知和关系回应；谈话不会直接改写小说正史。"),
+  read_only: translateUi("角色依据角色库中的稳定设定回应；这段交流不会改写角色设定或任何小说。"),
+  evidence_interview: translateUi("角色只依据当前证据范围回应；证据不足时会明确说明，交流不会改写原文。"),
 };
 
 export default function CharacterDialogueStage(props: CharacterDialogueStageProps) {
@@ -133,12 +133,12 @@ function DialogueInfluenceNotice(props: {
 
 function influenceStatusLabel(status: CharacterDialogueInfluenceStatus) {
   const labels: Record<CharacterDialogueInfluenceStatus, string> = {
-    draft: "等待决定",
-    active: "等待正文承接",
-    applied: "已在正文承接",
-    expired: "已过适用章节",
-    superseded: "已被新的谈话替换",
-    dismissed: "本次不带入",
+    draft: translateUi("等待决定"),
+    active: translateUi("等待正文承接"),
+    applied: translateUi("已在正文承接"),
+    expired: translateUi("已过适用章节"),
+    superseded: translateUi("已被新的谈话替换"),
+    dismissed: translateUi("本次不带入"),
   };
   return labels[status];
 }

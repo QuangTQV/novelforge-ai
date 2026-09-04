@@ -24,13 +24,13 @@ function formatCount(value: number): string {
 
 function formatChapterStatus(status?: ChapterStatus | null): string {
   switch (status) {
-    case "completed": return "正文完成";
-    case "pending_review": return "待审校";
-    case "needs_repair": return "待修复";
-    case "generating": return "生成中";
-    case "pending_generation": return "待生成";
-    case "unplanned": return "未规划";
-    default: return "未标记";
+    case "completed": return translateUi("正文完成");
+    case "pending_review": return translateUi("待审校");
+    case "needs_repair": return translateUi("待修复");
+    case "generating": return translateUi("生成中");
+    case "pending_generation": return translateUi("待生成");
+    case "unplanned": return translateUi("未规划");
+    default: return translateUi("未标记");
   }
 }
 
@@ -65,7 +65,7 @@ function downloadBlob(blob: Blob, fileName: string): void {
 }
 
 function safeFileNamePart(value: string): string {
-  return value.replace(/[\\/:*?"<>|]/g, "-").trim() || "小说";
+  return value.replace(/[\\/:*?"<>|]/g, "-").trim() || translateUi("小说");
 }
 
 export default function NovelPreview() {
@@ -141,11 +141,11 @@ export default function NovelPreview() {
 
   const handleDownloadChapter = () => {
     if (!activeChapter || !activeContent) return toast.error(translateUi("当前章节还没有正文。"));
-    const title = safeFileNamePart(novel?.title ?? "小说");
+    const title = safeFileNamePart(novel?.title ?? translateUi("小说"));
     const chapterTitle = activeChapter.title?.trim() ? safeFileNamePart(activeChapter.title) : "";
     downloadBlob(
       new Blob(["\uFEFF", `第 ${activeChapter.order} 章${chapterTitle ? ` ${chapterTitle}` : ""}\n\n${activeContent}`], { type: "text/plain;charset=utf-8" }),
-      `${title}-第${activeChapter.order}章${chapterTitle ? `-${chapterTitle}` : ""}.txt`,
+      `${title}-C${activeChapter.order}${chapterTitle ? `-${chapterTitle}` : ""}.txt`,
     );
     toast.success(translateUi("本章正文下载已开始。"));
   };

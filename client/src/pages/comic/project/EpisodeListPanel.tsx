@@ -21,17 +21,17 @@ import { toast } from "@/components/ui/toast";
 type DensityMode = NonNullable<GenerateScriptPayload["densityMode"]>;
 
 const DENSITY_OPTIONS: Array<{ value: DensityMode; label: string; desc: string }> = [
-  { value: "relaxed", label: translateUi("舒展"), desc: "情绪和反应更清楚" },
-  { value: "balanced", label: translateUi("均衡"), desc: "默认漫画节奏" },
-  { value: "compact", label: translateUi("紧凑"), desc: "剧情推进更密集" },
+  { value: "relaxed", label: translateUi("舒展"), desc: translateUi("情绪和反应更清楚") },
+  { value: "balanced", label: translateUi("均衡"), desc: translateUi("默认漫画节奏") },
+  { value: "compact", label: translateUi("紧凑"), desc: translateUi("剧情推进更密集") },
 ];
 
-const DENSITY_LABELS: Record<DensityMode, string> = { relaxed: "舒展", balanced: "均衡", compact: "紧凑" };
+const DENSITY_LABELS: Record<DensityMode, string> = { relaxed: translateUi("舒展"), balanced: translateUi("均衡"), compact: translateUi("紧凑") };
 
 const FACT_CATEGORY_ZH: Record<string, string> = {
-  completed: "已发生",
-  revealed: "首次出现",
-  state_changed: "状态变化",
+  completed: translateUi("已发生"),
+  revealed: translateUi("首次出现"),
+  state_changed: translateUi("状态变化"),
 };
 
 function parsePresetFormat(raw: string | null | undefined): string {

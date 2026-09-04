@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
@@ -5,10 +6,10 @@ import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
 export type SettingsSectionStatus = "required" | "enhancement" | "advanced" | "maintenance";
 
 const STATUS_LABELS: Record<SettingsSectionStatus, string> = {
-  required: "开始创作必需",
-  enhancement: "写作质量增强",
-  advanced: "自动导演高级",
-  maintenance: "系统维护",
+  required: translateUi("开始创作必需"),
+  enhancement: translateUi("写作质量增强"),
+  advanced: translateUi("自动导演高级"),
+  maintenance: translateUi("系统维护"),
 };
 
 export default function SettingsSectionGroup(props: {

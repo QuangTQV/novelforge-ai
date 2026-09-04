@@ -30,7 +30,7 @@ export default function VolumePayoffOverviewCard(props: VolumePayoffOverviewCard
     .map((chapter) => ({
       chapterId: chapter.id,
       chapterOrder: chapter.chapterOrder,
-      chapterTitle: chapter.title?.trim() || "未命名章节",
+      chapterTitle: chapter.title?.trim() || translateUi("未命名章节"),
       refs: chapter.payoffRefs.map((item) => item.trim()).filter(Boolean),
     }))
     .filter((chapter) => chapter.refs.length > 0);

@@ -21,11 +21,11 @@ import { AppDialogContent, Dialog } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
 
 const IMAGE_STATUS_TEXT: Record<string, string> = {
-  queued: "排队中",
-  running: "生成中",
-  succeeded: "生成成功",
-  failed: "生成失败",
-  cancelled: "已取消",
+  queued: translateUi("排队中"),
+  running: translateUi("生成中"),
+  succeeded: translateUi("生成成功"),
+  failed: translateUi("生成失败"),
+  cancelled: translateUi("已取消"),
 };
 
 interface BookAnalysisCharacterImagePanelProps {
@@ -103,7 +103,7 @@ export default function BookAnalysisCharacterImagePanel({
       generate: async (overrides) => {
         const response = await generateBookAnalysisCharacterImage(analysisId, character.id, {
           count: 2,
-          stylePreset: "写实角色设定图",
+          stylePreset: translateUi("写实角色设定图"),
           overrides,
         });
         if (response.data?.id) {

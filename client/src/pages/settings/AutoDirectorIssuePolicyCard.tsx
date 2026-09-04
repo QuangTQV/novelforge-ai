@@ -13,17 +13,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ACTION_LABELS: Record<DirectorIssueAction, string> = {
-  auto_retry: "自动重试",
-  continue_with_warning: "记录提醒并继续",
-  pause_for_manual: "暂停等待处理",
-  fail_task: "结束当前任务",
+  auto_retry: translateUi("自动重试"),
+  continue_with_warning: translateUi("记录提醒并继续"),
+  pause_for_manual: translateUi("暂停等待处理"),
+  fail_task: translateUi("结束当前任务"),
 };
 
 const CATEGORY_LABELS: Record<DirectorIssueCategory, string> = {
-  planning: "规划",
-  generation: "生成",
-  quality: "质量",
-  runtime: "运行",
+  planning: translateUi("规划"),
+  generation: translateUi("生成"),
+  quality: translateUi("质量"),
+  runtime: translateUi("运行"),
 };
 
 export function AutoDirectorIssuePolicyCard(props: {
@@ -33,7 +33,7 @@ export function AutoDirectorIssuePolicyCard(props: {
   onSave: (policy: DirectorIssuePolicy) => void;
   saveButtonLabel?: string;
 }) {
-  const { policy, isLoading, isSaving, onSave, saveButtonLabel = "保存问题处理规则" } = props;
+  const { policy, isLoading, isSaving, onSave, saveButtonLabel = translateUi("保存问题处理规则") } = props;
   const [draft, setDraft] = useState<DirectorIssuePolicy | null>(null);
   const [category, setCategory] = useState<DirectorIssueCategory | "all">("all");
   const [action, setAction] = useState<DirectorIssueAction | "all">("all");

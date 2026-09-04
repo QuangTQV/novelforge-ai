@@ -134,12 +134,12 @@ function renderWorkspaceCard(
   const chapterCount = typeof output.chapterCount === "number" ? output.chapterCount : 0;
   const actions = variant === "created"
     ? [
-      { label: i18n.t("creativeHub:toolResult.viewProgress"), prompt: "这本书当前写到哪一章" },
-      { label: i18n.t("creativeHub:toolResult.designFirstChapter"), prompt: "为这本书规划第一章" },
+      { label: i18n.t("creativeHub:toolResult.viewProgress"), prompt: translateUi("这本书当前写到哪一章") },
+      { label: i18n.t("creativeHub:toolResult.designFirstChapter"), prompt: translateUi("为这本书规划第一章") },
     ]
     : [
-      { label: i18n.t("creativeHub:toolResult.viewProgress"), prompt: "这本书当前写到哪一章" },
-      { label: i18n.t("creativeHub:toolResult.viewFirstTwo"), prompt: "前两章都写了什么" },
+      { label: i18n.t("creativeHub:toolResult.viewProgress"), prompt: translateUi("这本书当前写到哪一章") },
+      { label: i18n.t("creativeHub:toolResult.viewFirstTwo"), prompt: translateUi("前两章都写了什么") },
     ];
   return (
     <div className="space-y-2">
@@ -169,8 +169,8 @@ function renderWorldBindingCard(output: Record<string, unknown>, onQuickAction?:
         <div className="mt-1 text-xs text-muted-foreground">{i18n.t("creativeHub:toolResult.worldBound", { world: worldName })}</div>
       </div>
       {renderActionButtons([
-        { label: i18n.t("creativeHub:toolResult.actions.viewWorldRules"), prompt: "查看当前小说的世界观规则" },
-        { label: i18n.t("creativeHub:toolResult.actions.checkWorldConflict"), prompt: "检查当前小说和世界观是否存在冲突" },
+        { label: i18n.t("creativeHub:toolResult.actions.viewWorldRules"), prompt: translateUi("查看当前小说的世界观规则") },
+        { label: i18n.t("creativeHub:toolResult.actions.checkWorldConflict"), prompt: translateUi("检查当前小说和世界观是否存在冲突") },
       ], onQuickAction)}
     </div>
   );
@@ -229,7 +229,7 @@ function renderProductionStatusCard(output: Record<string, unknown>, onQuickActi
         </div>
       ) : null}
       {renderActionButtons([
-        { label: i18n.t("creativeHub:toolResult.actions.viewFullProgress"), prompt: "整本生成到哪一步了" },
+        { label: i18n.t("creativeHub:toolResult.actions.viewFullProgress"), prompt: translateUi("整本生成到哪一步了") },
       ], onQuickAction)}
     </div>
   );
@@ -245,21 +245,21 @@ function renderPipelineRunCard(
   const jobId = typeof output.jobId === "string" && output.jobId.trim() ? output.jobId.trim() : null;
   const scope = startOrder != null && endOrder != null
     ? startOrder === endOrder
-      ? `第 ${startOrder} 章`
-      : `第 ${startOrder} 到第 ${endOrder} 章`
-    : "当前章节范围";
-  const title = toolName === "preview_pipeline_run" ? "整本写作预览" : "整本写作任务";
+      ? translateUi("第 {{v0}} 章", { v0: startOrder })
+      : translateUi("第 {{v0}} 到第 {{v1}} 章", { v0: startOrder, v1: endOrder })
+    : translateUi("当前章节范围");
+  const title = toolName === "preview_pipeline_run" ? translateUi("整本写作预览") : translateUi("整本写作任务");
   const description = toolName === "preview_pipeline_run"
-    ? `${scope} 的整本写作预览已完成，当前可进入审批或继续诊断。`
-    : `${scope} 的整本写作任务已启动${jobId ? `（任务 ${jobId}）` : ""}。`;
+    ? translateUi("{{v0}} 的整本写作预览已完成，当前可进入审批或继续诊断。", { v0: scope })
+    : translateUi("Đã khởi động tác vụ viết cả cuốn của {{scope}}.", { scope }) + (jobId ? ` (${jobId})` : "");
   const actions = toolName === "preview_pipeline_run"
     ? [
-      { label: i18n.t("creativeHub:toolResult.actions.viewFullProgress"), prompt: "整本生成到哪一步了" },
-      { label: i18n.t("creativeHub:toolResult.actions.viewBlockers"), prompt: "为什么整本生成没有启动" },
+      { label: i18n.t("creativeHub:toolResult.actions.viewFullProgress"), prompt: translateUi("整本生成到哪一步了") },
+      { label: i18n.t("creativeHub:toolResult.actions.viewBlockers"), prompt: translateUi("为什么整本生成没有启动") },
     ]
     : [
-      { label: translateUi("查看整本进度"), prompt: "整本生成到哪一步了" },
-      { label: translateUi("查看任务状态"), prompt: "列出当前系统任务状态" },
+      { label: translateUi("查看整本进度"), prompt: translateUi("整本生成到哪一步了") },
+      { label: translateUi("查看任务状态"), prompt: translateUi("列出当前系统任务状态") },
     ];
   return renderProductionAssetCard(title, description, actions, onQuickAction);
 }
@@ -274,8 +274,8 @@ function renderDiagnosticCard(output: Record<string, unknown>, onQuickAction?: (
       {failureDetails ? <div className="text-xs leading-5 text-muted-foreground">{i18n.t("creativeHub:toolResultUi.details", { value: failureDetails })}</div> : null}
       {recoveryHint ? <div className="text-xs leading-5 text-muted-foreground">{i18n.t("creativeHub:toolResultUi.suggestion", { value: recoveryHint })}</div> : null}
       {renderActionButtons([
-        { label: translateUi("继续诊断"), prompt: "继续解释失败原因和恢复建议" },
-        { label: translateUi("查看任务状态"), prompt: "列出当前系统任务状态" },
+        { label: translateUi("继续诊断"), prompt: translateUi("继续解释失败原因和恢复建议") },
+        { label: translateUi("查看任务状态"), prompt: translateUi("列出当前系统任务状态") },
       ], onQuickAction)}
     </div>
   );
@@ -302,7 +302,7 @@ function renderListCard(
           </div>
         ))}
       </div>
-      {renderActionButtons([{ label: translateUi("继续筛选"), prompt: "继续细化这个列表结果" }], onQuickAction)}
+      {renderActionButtons([{ label: translateUi("继续筛选"), prompt: translateUi("继续细化这个列表结果") }], onQuickAction)}
     </div>
   );
 }
@@ -325,8 +325,8 @@ function renderChapterCard(output: Record<string, unknown>, onQuickAction?: (pro
         {content || i18n.t("creativeHub:toolResultUi.chapterContentEmpty")}
       </div>
       {renderActionButtons([
-        { label: translateUi("继续总结"), prompt: "总结这一段内容的关键剧情" },
-        { label: translateUi("检查冲突"), prompt: "检查这一章是否和世界观或前文冲突" },
+        { label: translateUi("继续总结"), prompt: translateUi("总结这一段内容的关键剧情") },
+        { label: translateUi("检查冲突"), prompt: translateUi("检查这一章是否和世界观或前文冲突") },
       ], onQuickAction)}
     </div>
   );
@@ -359,12 +359,12 @@ export default function CreativeHubToolResultCard({
       return renderWorldBindingCard(payload, onQuickAction);
     }
     if (toolName === "generate_world_for_novel") {
-      const worldName = typeof payload.worldName === "string" && payload.worldName.trim() ? payload.worldName.trim() : "未命名世界观";
+      const worldName = typeof payload.worldName === "string" && payload.worldName.trim() ? payload.worldName.trim() : translateUi("未命名世界观");
       return renderProductionAssetCard(
         i18n.t("creativeHub:toolResultUi.worldGenerated"),
         i18n.t("creativeHub:toolResultUi.worldGeneratedDescription", { world: worldName }),
         [
-          { label: i18n.t("creativeHub:toolResultUi.viewProduction"), prompt: "整本生成到哪一步了" },
+          { label: i18n.t("creativeHub:toolResultUi.viewProduction"), prompt: translateUi("整本生成到哪一步了") },
         ],
         onQuickAction,
       );
@@ -375,7 +375,7 @@ export default function CreativeHubToolResultCard({
         i18n.t("creativeHub:toolResultUi.charactersGenerated"),
         i18n.t("creativeHub:toolResultUi.charactersGeneratedDescription", { count: characterCount }),
         [
-          { label: i18n.t("creativeHub:toolResultUi.viewCharacters"), prompt: "查看当前小说角色状态" },
+          { label: i18n.t("creativeHub:toolResultUi.viewCharacters"), prompt: translateUi("查看当前小说角色状态") },
         ],
         onQuickAction,
       );
@@ -387,7 +387,7 @@ export default function CreativeHubToolResultCard({
           ? payload.mainPromise.trim()
           : i18n.t("creativeHub:toolResultUi.bibleGeneratedFallback"),
         [
-          { label: translateUi("查看整本进度"), prompt: "整本生成到哪一步了" },
+          { label: translateUi("查看整本进度"), prompt: translateUi("整本生成到哪一步了") },
         ],
         onQuickAction,
       );
@@ -399,7 +399,7 @@ export default function CreativeHubToolResultCard({
           ? payload.outline.trim()
           : i18n.t("creativeHub:toolResultUi.outlineGeneratedFallback"),
         [
-          { label: translateUi("查看整本进度"), prompt: "整本生成到哪一步了" },
+          { label: translateUi("查看整本进度"), prompt: translateUi("整本生成到哪一步了") },
         ],
         onQuickAction,
       );
@@ -410,7 +410,7 @@ export default function CreativeHubToolResultCard({
         i18n.t("creativeHub:toolResultUi.structuredOutlineGenerated"),
         targetChapterCount > 0 ? i18n.t("creativeHub:toolResultUi.structuredOutlineDescription", { count: targetChapterCount }) : i18n.t("creativeHub:toolResultUi.structuredOutlineFallback"),
         [
-          { label: translateUi("查看整本进度"), prompt: "整本生成到哪一步了" },
+          { label: translateUi("查看整本进度"), prompt: translateUi("整本生成到哪一步了") },
         ],
         onQuickAction,
       );
@@ -421,8 +421,8 @@ export default function CreativeHubToolResultCard({
         i18n.t("creativeHub:toolResultUi.chapterCatalogSynced"),
         chapterCount > 0 ? i18n.t("creativeHub:toolResultUi.chapterCatalogDescription", { count: chapterCount }) : i18n.t("creativeHub:toolResultUi.chapterCatalogFallback"),
         [
-          { label: translateUi("查看整本进度"), prompt: "整本生成到哪一步了" },
-          { label: translateUi("查看任务状态"), prompt: "列出当前系统任务状态" },
+          { label: translateUi("查看整本进度"), prompt: translateUi("整本生成到哪一步了") },
+          { label: translateUi("查看任务状态"), prompt: translateUi("列出当前系统任务状态") },
         ],
         onQuickAction,
       );

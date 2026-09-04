@@ -40,7 +40,7 @@ import {
 import { resolveCreativeHubWorkspacePresentation } from "./presentation/creativeHubWorkspaceViewModel";
 
 const RUNTIME_DETAILS_COLLAPSED_STORAGE_KEY = "creative-hub.runtime-details-collapsed";
-const DEFAULT_THREAD_TITLE = "\u65b0\u5bf9\u8bdd";
+const DEFAULT_THREAD_TITLE = translateUi("新对话");
 const pendingAutoCreateThreadKeys = new Set<string>();
 
 export default function CreativeHubPage() {

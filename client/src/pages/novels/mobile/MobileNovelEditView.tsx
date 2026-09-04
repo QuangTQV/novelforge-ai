@@ -57,7 +57,7 @@ export default function MobileNovelEditView(props: NovelEditViewProps) {
 
   const normalizedActiveTab = normalizeNovelWorkspaceTab(activeTab);
   const normalizedWorkflowTab = normalizeNovelWorkspaceTab(workflowCurrentTab ?? normalizedActiveTab);
-  const novelTitle = basicTab.basicForm.title.trim() || "未命名小说";
+  const novelTitle = basicTab.basicForm.title.trim() || translateUi("未命名小说");
   const statusText = getMobileNovelWorkspaceStatusText({
     activeLabel: getNovelWorkspaceTabLabel(normalizedActiveTab),
     workflowLabel: getNovelWorkspaceTabLabel(normalizedWorkflowTab),
@@ -72,21 +72,21 @@ export default function MobileNovelEditView(props: NovelEditViewProps) {
   ).length;
   const taskAttentionLabel = (() => {
     if (pendingResourceProposalCount > 0) {
-      return `${pendingResourceProposalCount} 条资源`;
+      return translateUi("{{v0}} 条资源", { v0: pendingResourceProposalCount });
     }
     if (!taskDrawer?.task) {
       return null;
     }
     if (taskDrawer.task.status === "failed") {
-      return "异常";
+      return translateUi("异常");
     }
     if (taskDrawer.task.status === "waiting_approval") {
-      return "待确认";
+      return translateUi("待确认");
     }
     if (taskDrawer.task.status === "running" || taskDrawer.task.status === "queued") {
-      return "进行中";
+      return translateUi("进行中");
     }
-    return "最近任务";
+    return translateUi("最近任务");
   })();
 
   const selectTab = (tab: NovelWorkspaceTab) => {

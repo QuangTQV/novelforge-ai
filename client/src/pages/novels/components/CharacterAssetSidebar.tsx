@@ -55,10 +55,10 @@ function CharacterCard(props: {
   const isSelected = selectedCharacterId === character.id;
   const isDeletingThis = isDeletingCharacter && deletingCharacterId === character.id;
   const supportingLine = isProtagonist
-    ? character.currentGoal || character.storyFunction || character.role || "待补全主角目标"
-    : character.relationToProtagonist || character.role || "待补全角色定位";
-  const supportingLabel = character.relationToProtagonist ? "与主角关系" : "定位";
-  const avatarText = character.name.trim().slice(0, 1) || "角";
+    ? character.currentGoal || character.storyFunction || character.role || translateUi("待补全主角目标")
+    : character.relationToProtagonist || character.role || translateUi("待补全角色定位");
+  const supportingLabel = character.relationToProtagonist ? translateUi("与主角关系") : translateUi("定位");
+  const avatarText = character.name.trim().slice(0, 1) || translateUi("角");
 
   return (
     <div className={getCharacterCardClass(isSelected, isProtagonist)}>

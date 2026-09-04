@@ -32,11 +32,11 @@ const WIZARD_STEPS = [
 
 function statusLabel(status: string): string {
   const labels: Record<string, string> = {
-    draft: "素材准备",
-    strategized: "策略已生成",
-    outlined: "分集已生成",
-    scripting: "台本生成中",
-    completed: "已完成",
+    draft: translateUi("素材准备"),
+    strategized: translateUi("策略已生成"),
+    outlined: translateUi("分集已生成"),
+    scripting: translateUi("台本生成中"),
+    completed: translateUi("已完成"),
   };
   return labels[status] ?? status;
 }
@@ -54,7 +54,7 @@ function buildRecommendationDigest(form: {
     return form.rawText.trim().slice(0, 12000);
   }
   if (selectedNovel) {
-    return `已选择小说《${selectedNovel.title || "未命名小说"}》，共 ${selectedNovel._count?.chapters ?? 0} 章。`;
+    return `已选择小说《${selectedNovel.title || translateUi("未命名小说")}》，共 ${selectedNovel._count?.chapters ?? 0} 章。`;
   }
   return "";
 }

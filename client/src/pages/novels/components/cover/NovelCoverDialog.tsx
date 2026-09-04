@@ -35,11 +35,11 @@ import {
 import SelectControl from "@/components/common/SelectControl";
 
 const IMAGE_STATUS_TEXT: Record<string, string> = {
-  queued: "排队中",
-  running: "生成中",
-  succeeded: "生成成功",
-  failed: "生成失败",
-  cancelled: "已取消",
+  queued: translateUi("排队中"),
+  running: translateUi("生成中"),
+  succeeded: translateUi("生成成功"),
+  failed: translateUi("生成失败"),
+  cancelled: translateUi("已取消"),
 };
 
 type DirectPromptSource = "optimized" | "manual";
@@ -188,8 +188,8 @@ export function NovelCoverDialog(props: NovelCoverDialogProps) {
   const hasDirectPrompt = directPrompt.trim().length > 0;
 
   const currentSendModeLabel = promptMode === "direct"
-    ? (directPromptSource === "optimized" ? "AI优化 Prompt" : "手动编辑 Prompt")
-    : "原链路 Prompt";
+    ? (directPromptSource === "optimized" ? translateUi("AI优化 Prompt") : translateUi("手动编辑 Prompt"))
+    : translateUi("原链路 Prompt");
   const currentSendModeClass = promptMode === "direct"
     ? (directPromptSource === "optimized"
       ? "rounded-full bg-emerald-50 px-3 py-1 text-emerald-700"
@@ -265,7 +265,7 @@ export function NovelCoverDialog(props: NovelCoverDialogProps) {
   const generateMutation = useMutation({
     mutationFn: async () => {
       if (!imageForm.provider) {
-        throw new Error("请先在系统设置里配置支持图像生成的厂商和模型。");
+        throw new Error(translateUi("请先在系统设置里配置支持图像生成的厂商和模型。"));
       }
       return generateNovelCover({
         sceneType: "novel_cover",

@@ -51,7 +51,7 @@ export default function GenreEditDialog({
   const updateMutation = useMutation({
     mutationFn: () => {
       if (!genre) {
-        throw new Error("题材基底不存在。");
+        throw new Error(translateUi("题材基底不存在。"));
       }
       return updateGenre(genre.id, {
         name: name.trim(),

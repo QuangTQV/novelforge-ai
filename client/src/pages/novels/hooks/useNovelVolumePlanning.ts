@@ -217,7 +217,7 @@ export function useNovelVolumePlanning({
 
   const startStrategyCritique = () => {
     if (!strategyPlan) {
-      setVolumeGenerationMessage("请先生成卷战略建议。");
+      setVolumeGenerationMessage(translateUi("请先生成卷战略建议。"));
       return;
     }
     startStrategyCritiqueAction({
@@ -266,11 +266,11 @@ export function useNovelVolumePlanning({
     const targetVolume = normalizedVolumeDraft.find((volume) => volume.id === volumeId);
     const targetChapter = targetVolume?.chapters.find((chapter) => chapter.id === chapterId);
     if (!targetVolume || !targetChapter) {
-      setStructuredMessage("当前章节不存在，无法生成细化信息。");
+      setStructuredMessage(translateUi("当前章节不存在，无法生成细化信息。"));
       return;
     }
     if (!findBeatSheet(beatSheets, volumeId)) {
-      setStructuredMessage("请先生成当前卷节奏板，再细化章节。");
+      setStructuredMessage(translateUi("请先生成当前卷节奏板，再细化章节。"));
       return;
     }
     if (!ensureCharacterGuard()) {
@@ -327,15 +327,15 @@ export function useNovelVolumePlanning({
     const targetVolume = normalizedVolumeDraft.find((volume) => volume.id === volumeId);
     const batch = resolveChapterDetailBatch(targetVolume, request);
     if (!targetVolume) {
-      setStructuredMessage("当前卷不存在，无法生成章节细化。");
+      setStructuredMessage(translateUi("当前卷不存在，无法生成章节细化。"));
       return;
     }
     if (batch.targets.length === 0) {
-      setStructuredMessage(typeof request === "string" ? "当前章节不存在，无法整套生成章节细化。" : "当前范围内没有可细化章节。");
+      setStructuredMessage(typeof request === "string" ? translateUi("当前章节不存在，无法整套生成章节细化。") : translateUi("当前范围内没有可细化章节。"));
       return;
     }
     if (!findBeatSheet(beatSheets, volumeId)) {
-      setStructuredMessage(batch.targets.length > 1 ? "请先生成当前卷节奏板，再做批量章节细化。" : "请先生成当前卷节奏板，再做单章整套细化。");
+      setStructuredMessage(batch.targets.length > 1 ? translateUi("请先生成当前卷节奏板，再做批量章节细化。") : translateUi("请先生成当前卷节奏板，再做单章整套细化。"));
       return;
     }
     if (!ensureCharacterGuard()) {
@@ -355,7 +355,7 @@ export function useNovelVolumePlanning({
     }
     runChapterDetailBundleGeneration(
       chapterDetailFailure.targetVolumeId,
-      `从第${chapterDetailFailure.chapterOrder}章继续`,
+      translateUi("从第{{v0}}章继续", { v0: chapterDetailFailure.chapterOrder }),
       chapterDetailFailure.targets,
     );
   };
@@ -449,12 +449,12 @@ export function useNovelVolumePlanning({
   const applyCustomVolumeCount = () => {
     const resolved = resolveCustomVolumeCountInput(customVolumeCountInput, volumeCountGuidance);
     if (!resolved.value) {
-      setVolumeGenerationMessage(resolved.message ?? "请先输入有效的固定卷数。");
+      setVolumeGenerationMessage(resolved.message ?? translateUi("请先输入有效的固定卷数。"));
       return;
     }
     setUserPreferredVolumeCount(resolved.value);
     setForceSystemRecommendedVolumeCount(false);
-    setVolumeGenerationMessage(`当前已固定为 ${resolved.value} 卷。下次生成卷战略时会严格采用这个卷数。`);
+    setVolumeGenerationMessage(translateUi("当前已固定为 {{v0}} 卷。下次生成卷战略时会严格采用这个卷数。", { v0: resolved.value }));
   };
 
   const restoreSystemRecommendedVolumeCount = () => {
@@ -462,7 +462,7 @@ export function useNovelVolumePlanning({
     setCustomVolumeCountEnabled(false);
     setCustomVolumeCountInput(String(volumeCountGuidance.systemRecommendedVolumeCount));
     setForceSystemRecommendedVolumeCount(true);
-    setVolumeGenerationMessage(`已恢复系统建议卷数。下次生成卷战略时会优先采用系统建议 ${volumeCountGuidance.systemRecommendedVolumeCount} 卷。`);
+    setVolumeGenerationMessage(translateUi("已恢复系统建议卷数。下次生成卷战略时会优先采用系统建议 {{v0}} 卷。", { v0: volumeCountGuidance.systemRecommendedVolumeCount }));
   };
 
   const generationNotice = buildGenerationNotice(strategyPlan);

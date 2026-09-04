@@ -1,23 +1,24 @@
+import { translateUi } from "@/i18n/legacy";
 import type { RagJobSummary } from "@/api/knowledge";
 
 export function formatStatus(status: string): string {
   switch (status) {
     case "enabled":
-      return "已启用";
+      return translateUi("已启用");
     case "disabled":
-      return "已停用";
+      return translateUi("已停用");
     case "archived":
-      return "已归档";
+      return translateUi("已归档");
     case "idle":
-      return "空闲";
+      return translateUi("空闲");
     case "queued":
-      return "排队中";
+      return translateUi("排队中");
     case "running":
-      return "执行中";
+      return translateUi("执行中");
     case "succeeded":
-      return "成功";
+      return translateUi("成功");
     case "failed":
-      return "失败";
+      return translateUi("失败");
     default:
       return status;
   }
@@ -37,15 +38,15 @@ export function getRagJobProgressWidth(job: RagJobSummary): string {
 }
 
 export function formatRagJobMeta(job: RagJobSummary): string {
-  const parts = [job.jobType, `尝试 ${job.attempts}/${job.maxAttempts}`];
+  const parts = [job.jobType, translateUi("尝试 {{v0}}/{{v1}}", { v0: job.attempts, v1: job.maxAttempts })];
   if (job.progress?.current !== undefined && job.progress?.total !== undefined && job.progress.total > 0) {
     parts.push(`${job.progress.current}/${job.progress.total}`);
   }
   if (job.progress?.chunks) {
-    parts.push(`${job.progress.chunks} 分块`);
+    parts.push(translateUi("{{v0}} 分块", { v0: job.progress.chunks }));
   }
   if (job.progress?.documents) {
-    parts.push(`${job.progress.documents} 文档`);
+    parts.push(translateUi("{{v0}} 文档", { v0: job.progress.documents }));
   }
   return parts.join(" | ");
 }

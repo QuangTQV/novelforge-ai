@@ -32,16 +32,16 @@ export interface AITakeoverContainerProps {
 function modeLabel(mode: AITakeoverMode): string {
   switch (mode) {
     case "loading":
-      return "加载中";
+      return translateUi("加载中");
     case "running":
-      return "AI 接管中";
+      return translateUi("AI 接管中");
     case "waiting":
-      return "等待确认";
+      return translateUi("等待确认");
     case "action_required":
-      return "待处理";
+      return translateUi("待处理");
     case "failed":
     default:
-      return "执行异常";
+      return translateUi("执行异常");
   }
 }
 
@@ -95,13 +95,13 @@ function progressTone(mode: AITakeoverMode): WorkflowProgressTone {
 function progressStatusLabel(mode: AITakeoverMode): string | null {
   switch (mode) {
     case "running":
-      return "实时推进中";
+      return translateUi("实时推进中");
     case "waiting":
-      return "等待你确认";
+      return translateUi("等待你确认");
     case "action_required":
-      return "需要你处理";
+      return translateUi("需要你处理");
     case "failed":
-      return "已中断";
+      return translateUi("已中断");
     default:
       return null;
   }

@@ -68,13 +68,13 @@ export default function ChapterEditorDirectorPanel(props: ChapterEditorDirectorP
   const isWorkspaceLoading = workspaceStatus === "loading";
   const statusText = isIdle
     ? isWorkspaceLoading
-      ? "AI 正在分析本章宏观定位与优先修正任务。"
-      : "AI 会先结合本章在本卷中的位置，再决定如何修。"
+      ? translateUi("AI 正在分析本章宏观定位与优先修正任务。")
+      : translateUi("AI 会先结合本章在本卷中的位置，再决定如何修。")
     : session.status === "loading"
-      ? session.requestLabel || "正在生成候选版本"
+      ? session.requestLabel || translateUi("正在生成候选版本")
       : session.status === "error"
-        ? session.errorMessage || "生成失败"
-        : session.resolvedIntent?.reasoningSummary || "查看待确认改写";
+        ? session.errorMessage || translateUi("生成失败")
+        : session.resolvedIntent?.reasoningSummary || translateUi("查看待确认改写");
 
   return (
     <div className="flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl border border-border/70 bg-background shadow-sm xl:min-h-0">

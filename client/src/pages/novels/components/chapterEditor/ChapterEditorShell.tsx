@@ -52,20 +52,20 @@ const EMPTY_SESSION: ChapterEditorSessionState = {
 };
 
 function formatQualityDebtSource(source: string | null): string {
-  if (source === "repair_recheck") return "自动修复后的复审";
-  if (source === "pipeline_review") return "AI 自动审校";
-  if (source === "manual_review") return "手动审校";
-  return "历史质量记录";
+  if (source === "repair_recheck") return translateUi("自动修复后的复审");
+  if (source === "pipeline_review") return translateUi("AI 自动审校");
+  if (source === "manual_review") return translateUi("手动审校");
+  return translateUi("历史质量记录");
 }
 
 function formatQualityDebtAttempts(details: ChapterQualityDebtDetails): string {
   if (details.repairAttemptsUsed === null) {
-    return "历史记录未保存自动修复次数";
+    return translateUi("历史记录未保存自动修复次数");
   }
   if (details.repairAttemptsAllowed === 0) {
-    return `${details.repairAttemptsUsed} 次，本次未启用自动修复`;
+    return translateUi("{{v0}} 次，本次未启用自动修复", { v0: details.repairAttemptsUsed });
   }
-  return `${details.repairAttemptsUsed}/${details.repairAttemptsAllowed} 次`;
+  return translateUi("{{v0}}/{{v1}} 次", { v0: details.repairAttemptsUsed, v1: details.repairAttemptsAllowed });
 }
 
 function toSelectionFromRange(
@@ -179,7 +179,7 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
   const saveMutation = useMutation({
     mutationFn: async (nextContent: string) => {
       if (!chapter) {
-        throw new Error("当前未选中章节。");
+        throw new Error(translateUi("当前未选中章节。"));
       }
       return updateNovelChapter(novelId, chapter.id, { content: nextContent });
     },
@@ -201,10 +201,10 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
   const reviewMutation = useMutation({
     mutationFn: async () => {
       if (!chapter) {
-        throw new Error("当前未选中章节。");
+        throw new Error(translateUi("当前未选中章节。"));
       }
       if (isDirty || saveMutation.isPending) {
-        throw new Error("请先保存正文，再重新审校。");
+        throw new Error(translateUi("请先保存正文，再重新审校。"));
       }
       return reviewNovelChapter(novelId, chapter.id, {
         provider: llm.provider,
@@ -228,17 +228,17 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
   const previewMutation = useMutation({
     mutationFn: async (request: ReturnType<typeof buildAiRevisionRequest>) => {
       if (!chapter) {
-        throw new Error("当前未选中章节。");
+        throw new Error(translateUi("当前未选中章节。"));
       }
       return previewChapterAiRevision(novelId, chapter.id, request);
     },
     onMutate: (request) => {
       lastPreviewRequestRef.current = request;
       const label = request.source === "freeform"
-        ? (request.scope === "chapter" ? "正在生成整章自然语言修正方案" : "正在按你的意见改写片段")
+        ? (request.scope === "chapter" ? translateUi("正在生成整章自然语言修正方案") : translateUi("正在按你的意见改写片段"))
         : request.presetOperation
-          ? `正在生成${CHAPTER_EDITOR_OPERATION_LABELS[request.presetOperation]}方案`
-          : "正在生成修正方案";
+          ? translateUi("正在生成{{v0}}方案", { v0: CHAPTER_EDITOR_OPERATION_LABELS[request.presetOperation] })
+          : translateUi("正在生成修正方案");
       setSession((current) => ({
         ...current,
         status: "loading",
@@ -261,7 +261,7 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
         setSession((current) => ({
           ...current,
           status: "error",
-          errorMessage: "AI 未返回改写结果，请重试。",
+          errorMessage: translateUi("AI 未返回改写结果，请重试。"),
         }));
         return;
       }
@@ -279,7 +279,7 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
       setSession((current) => ({
         ...current,
         status: "error",
-        errorMessage: error instanceof Error ? error.message : "AI 修正失败，请重试。",
+        errorMessage: error instanceof Error ? error.message : translateUi("AI 修正失败，请重试。"),
       }));
     },
   });
@@ -287,7 +287,7 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
   const acceptMutation = useMutation({
     mutationFn: async () => {
       if (!chapter || !activeCandidate || !session.targetRange) {
-        throw new Error("当前没有可应用的候选版本。");
+        throw new Error(translateUi("当前没有可应用的候选版本。"));
       }
       const label = `chapter-editor:${chapter.order}:${session.scope}:${Date.now()}`;
       const nextContent = applyCandidateToContent(contentDraft, session.targetRange, activeCandidate.content);
@@ -449,14 +449,14 @@ export default function ChapterEditorShell(props: ChapterEditorShellProps) {
   };
 
   const currentTargetDescription = revisionScope === "chapter"
-    ? "整章正文"
+    ? translateUi("整章正文")
     : selection
-      ? "你手动选中的正文片段"
+      ? translateUi("你手动选中的正文片段")
       : selectedDiagnosticCard?.paragraphLabel
-        ? `${selectedDiagnosticCard.paragraphLabel} 对应片段`
+        ? translateUi("{{v0}} 对应片段", { v0: selectedDiagnosticCard.paragraphLabel })
         : workspace?.recommendedTask?.paragraphLabel
-          ? `${workspace.recommendedTask.paragraphLabel} 对应片段`
-          : "尚未选中片段";
+          ? translateUi("{{v0}} 对应片段", { v0: workspace.recommendedTask.paragraphLabel })
+          : translateUi("尚未选中片段");
   const canRunSelectionRevision = Boolean(getSelectionTarget());
   const headerSaveLabel = getSaveStatusLabel(saveStatus, isDirty);
   const gridClassName = "xl:grid-cols-[320px_minmax(0,1fr)_400px]";

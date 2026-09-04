@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import type { Chapter, ReviewIssue } from "@ai-novel/shared/types/novel";
@@ -63,7 +64,7 @@ export function useChapterExecutionActions({
       await invalidateNovelDetail();
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "章节更新失败。";
+      const message = error instanceof Error ? error.message : translateUi("章节更新失败。");
       onMessage(message);
     },
   });
@@ -75,14 +76,14 @@ export function useChapterExecutionActions({
       await syncNovelWorkflowStageSilently({
         novelId,
         stage: "chapter_execution",
-        itemLabel: "章节摘要已生成",
+        itemLabel: translateUi("章节摘要已生成"),
         chapterId: selectedChapterId || undefined,
         status: "waiting_approval",
       });
-      onMessage("已通过 AI 生成本章摘要。");
+      onMessage(translateUi("已通过 AI 生成本章摘要。"));
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "章节摘要生成失败。";
+      const message = error instanceof Error ? error.message : translateUi("章节摘要生成失败。");
       onMessage(message);
     },
   });
@@ -93,7 +94,7 @@ export function useChapterExecutionActions({
       await invalidateNovelDetail();
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "章节执行合同生成失败。";
+      const message = error instanceof Error ? error.message : translateUi("章节执行合同生成失败。");
       onMessage(message);
     },
     onSettled: () => {
@@ -115,7 +116,7 @@ export function useChapterExecutionActions({
 
   const ensureChapter = (): Chapter | null => {
     if (!selectedChapterId || !selectedChapter) {
-      onMessage("请先选择章节。");
+      onMessage(translateUi("请先选择章节。"));
       return null;
     }
     return selectedChapter;
@@ -137,11 +138,11 @@ export function useChapterExecutionActions({
     void syncNovelWorkflowStageSilently({
       novelId,
       stage: "chapter_execution",
-      itemLabel: "章节执行策略已应用",
+      itemLabel: translateUi("章节执行策略已应用"),
       chapterId: chapter.id,
       status: "waiting_approval",
     });
-    onMessage("生成策略已应用到当前章节。");
+    onMessage(translateUi("生成策略已应用到当前章节。"));
   };
 
   const rewriteChapter = () => {
@@ -158,12 +159,12 @@ export function useChapterExecutionActions({
     void syncNovelWorkflowStageSilently({
       novelId,
       stage: "chapter_execution",
-      itemLabel: "本章已重置并准备重写",
+      itemLabel: translateUi("本章已重置并准备重写"),
       chapterId: chapter.id,
       status: "waiting_approval",
     });
     onGenerateChapter();
-    onMessage("已触发重写流程。");
+    onMessage(translateUi("已触发重写流程。"));
   };
 
   const expandChapter = () => {
@@ -172,9 +173,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("expand");
     onStartRepair([
-      buildRepairIssue("engagement", "在不改动主线事件的前提下扩写场景细节和情绪反应，适度拉长文本。", "用户要求扩写章节"),
+      buildRepairIssue("engagement", translateUi("在不改动主线事件的前提下扩写场景细节和情绪反应，适度拉长文本。"), translateUi("用户要求扩写章节")),
     ]);
-    onMessage("已提交扩写任务。");
+    onMessage(translateUi("已提交扩写任务。"));
   };
 
   const compressChapter = () => {
@@ -183,9 +184,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("compress");
     onStartRepair([
-      buildRepairIssue("repetition", "压缩重复表达，保留关键事件与冲突节点，控制篇幅更紧凑。", "用户要求压缩章节"),
+      buildRepairIssue("repetition", translateUi("压缩重复表达，保留关键事件与冲突节点，控制篇幅更紧凑。"), translateUi("用户要求压缩章节")),
     ]);
-    onMessage("已提交压缩任务。");
+    onMessage(translateUi("已提交压缩任务。"));
   };
 
   const summarizeChapter = () => {
@@ -207,11 +208,11 @@ export function useChapterExecutionActions({
         void syncNovelWorkflowStageSilently({
           novelId,
           stage: "chapter_execution",
-          itemLabel: "章节任务单已刷新",
+          itemLabel: translateUi("章节任务单已刷新"),
           chapterId,
           status: "waiting_approval",
         });
-        onMessage("已通过后端 AI 刷新本章任务单。");
+        onMessage(translateUi("已通过后端 AI 刷新本章任务单。"));
       },
     });
   };
@@ -228,11 +229,11 @@ export function useChapterExecutionActions({
         void syncNovelWorkflowStageSilently({
           novelId,
           stage: "chapter_execution",
-          itemLabel: "场景拆解已生成",
+          itemLabel: translateUi("场景拆解已生成"),
           chapterId,
           status: "waiting_approval",
         });
-        onMessage("已通过后端 AI 生成场景拆解。");
+        onMessage(translateUi("已通过后端 AI 生成场景拆解。"));
       },
     });
   };
@@ -242,7 +243,7 @@ export function useChapterExecutionActions({
       return;
     }
     onReviewChapter("continuity");
-    onMessage("已执行连续性检查。");
+    onMessage(translateUi("已执行连续性检查。"));
   };
 
   const checkCharacterConsistency = () => {
@@ -250,7 +251,7 @@ export function useChapterExecutionActions({
       return;
     }
     onReviewChapter("character_consistency");
-    onMessage("已执行人设一致性检查。");
+    onMessage(translateUi("已执行人设一致性检查。"));
   };
 
   const checkPacing = () => {
@@ -258,7 +259,7 @@ export function useChapterExecutionActions({
       return;
     }
     onReviewChapter("pacing");
-    onMessage("已执行节奏检查。");
+    onMessage(translateUi("已执行节奏检查。"));
   };
 
   const autoRepair = () => {
@@ -268,9 +269,9 @@ export function useChapterExecutionActions({
     setRepairActionKind("autoRepair");
     const issues = reviewIssues.length > 0
       ? reviewIssues
-      : [buildRepairIssue("coherence", "修复章节逻辑与叙事衔接问题，补足关键动机和因果。", "自动修复默认规则")];
+      : [buildRepairIssue("coherence", translateUi("修复章节逻辑与叙事衔接问题，补足关键动机和因果。"), translateUi("自动修复默认规则"))];
     onStartRepair(issues);
-    onMessage("已触发自动修复。");
+    onMessage(translateUi("已触发自动修复。"));
   };
 
   const strengthenConflict = () => {
@@ -279,9 +280,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("strengthenConflict");
     onStartRepair([
-      buildRepairIssue("pacing", "提升对抗密度，让冲突更早出现并持续施压。", "用户要求强化冲突"),
+      buildRepairIssue("pacing", translateUi("提升对抗密度，让冲突更早出现并持续施压。"), translateUi("用户要求强化冲突")),
     ]);
-    onMessage("已触发冲突强化。");
+    onMessage(translateUi("已触发冲突强化。"));
   };
 
   const enhanceEmotion = () => {
@@ -290,9 +291,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("enhanceEmotion");
     onStartRepair([
-      buildRepairIssue("engagement", "增强角色情绪层次与张力，突出内外部情感变化。", "用户要求增强情绪"),
+      buildRepairIssue("engagement", translateUi("增强角色情绪层次与张力，突出内外部情感变化。"), translateUi("用户要求增强情绪")),
     ]);
-    onMessage("已触发情绪增强。");
+    onMessage(translateUi("已触发情绪增强。"));
   };
 
   const unifyStyle = () => {
@@ -301,9 +302,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("unifyStyle");
     onStartRepair([
-      buildRepairIssue("voice", "统一叙事语气与措辞，保持文风稳定。", "用户要求提升文风一致性"),
+      buildRepairIssue("voice", translateUi("统一叙事语气与措辞，保持文风稳定。"), translateUi("用户要求提升文风一致性")),
     ]);
-    onMessage("已触发文风统一。");
+    onMessage(translateUi("已触发文风统一。"));
   };
 
   const addDialogue = () => {
@@ -312,9 +313,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("addDialogue");
     onStartRepair([
-      buildRepairIssue("voice", "增加推动情节的有效对话，减少空泛叙述。", "用户要求增加对话推进"),
+      buildRepairIssue("voice", translateUi("增加推动情节的有效对话，减少空泛叙述。"), translateUi("用户要求增加对话推进")),
     ]);
-    onMessage("已触发对话增强。");
+    onMessage(translateUi("已触发对话增强。"));
   };
 
   const addDescription = () => {
@@ -323,9 +324,9 @@ export function useChapterExecutionActions({
     }
     setRepairActionKind("addDescription");
     onStartRepair([
-      buildRepairIssue("engagement", "补充环境与动作描写，提升画面感与临场感。", "用户要求增加描写"),
+      buildRepairIssue("engagement", translateUi("补充环境与动作描写，提升画面感与临场感。"), translateUi("用户要求增加描写")),
     ]);
-    onMessage("已触发描写增强。");
+    onMessage(translateUi("已触发描写增强。"));
   };
 
   return {

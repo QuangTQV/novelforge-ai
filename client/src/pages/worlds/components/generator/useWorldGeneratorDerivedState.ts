@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { WorldPropertyOption } from "@ai-novel/shared/types/worldWizard";
@@ -65,10 +66,10 @@ export function useWorldGeneratorDerivedState(input: UseWorldGeneratorDerivedSta
       return "";
     }
     return [
-      `主类型：${selectedGenre.name}`,
-      `类型路径：${selectedGenre.path}`,
-      selectedGenre.description?.trim() ? `类型说明：${selectedGenre.description.trim()}` : "",
-      selectedGenre.template?.trim() ? `类型模板：${selectedGenre.template.trim()}` : "",
+      translateUi("主类型：{{v0}}", { v0: selectedGenre.name }),
+      translateUi("类型路径：{{v0}}", { v0: selectedGenre.path }),
+      selectedGenre.description?.trim() ? translateUi("类型说明：{{v0}}", { v0: selectedGenre.description.trim() }) : "",
+      selectedGenre.template?.trim() ? translateUi("类型模板：{{v0}}", { v0: selectedGenre.template.trim() }) : "",
     ]
       .filter(Boolean)
       .join("\n");

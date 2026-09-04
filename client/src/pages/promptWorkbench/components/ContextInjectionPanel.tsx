@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useMemo, useState } from "react";
 import { ArrowDownUp, LockKeyhole, Plus, Search } from "lucide-react";
 import type { PromptPreviewResult, PromptTemplateReferenceCatalog } from "@/api/promptWorkbench";
@@ -67,14 +68,14 @@ function buildContextBlockViewModels(
     const haystack = [
       block.id,
       block.group,
-      CONTEXT_GROUP_LABELS[block.group] ?? "",
+      translateUi(CONTEXT_GROUP_LABELS[block.group] ?? ""),
       block.source ?? "",
       block.content,
     ].join("\n").toLowerCase();
     return {
       id: block.id,
       group: block.group,
-      groupLabel: CONTEXT_GROUP_LABELS[block.group] ?? block.group,
+      groupLabel: translateUi(CONTEXT_GROUP_LABELS[block.group] ?? block.group),
       priority: block.priority,
       required: Boolean(block.required),
       estimatedTokens: block.estimatedTokens ?? 0,
@@ -137,13 +138,13 @@ export function ContextInjectionPanel(props: {
       <div className="shrink-0 border-b border-[#d8e2de] bg-[#fbfdfb] px-4 py-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h3 className="text-sm font-semibold text-[#25443f]">上下文注入</h3>
+            <h3 className="text-sm font-semibold text-[#25443f]">{translateUi("上下文注入")}</h3>
             <p className="mt-1 text-xs text-muted-foreground">
-              查看本次预览使用的资料块、裁剪和摘要状态
+              {translateUi("查看本次预览使用的资料块、裁剪和摘要状态")}
             </p>
           </div>
           <span className="rounded-md bg-[#eaf7f2] px-2 py-1 text-xs font-medium text-[#0f766e]">
-            {visibleBlocks.length} 块
+            {visibleBlocks.length} {translateUi("块")}
           </span>
         </div>
 
@@ -153,7 +154,7 @@ export function ContextInjectionPanel(props: {
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="搜索 group、来源或内容"
+              placeholder={translateUi("搜索 group、来源或内容")}
               className="h-9 border-[#cbdad6] bg-white pl-9 shadow-sm"
             />
           </div>
@@ -164,10 +165,10 @@ export function ContextInjectionPanel(props: {
               onChange={(event) => setSortMode(event.target.value as SortMode)}
               className="h-9 w-full rounded-md border border-[#cbdad6] bg-white pl-9 pr-3 text-sm shadow-sm"
             >
-              <option value="status">按状态</option>
-              <option value="priority">按优先级</option>
-              <option value="tokens">按 Token</option>
-              <option value="group">按分组</option>
+              <option value="status">{translateUi("按状态")}</option>
+              <option value="priority">{translateUi("按优先级")}</option>
+              <option value="tokens">{translateUi("按 Token")}</option>
+              <option value="group">{translateUi("按分组")}</option>
             </SelectControl>
           </div>
         </div>
@@ -175,14 +176,14 @@ export function ContextInjectionPanel(props: {
 
       {!preview ? (
         <div className="m-4 rounded-md border border-dashed border-[#cbdad6] bg-white/70 p-4 text-sm text-muted-foreground">
-          生成预览后，这里会显示已注入、被裁剪和被摘要的上下文块。
+          {translateUi("生成预览后，这里会显示已注入、被裁剪和被摘要的上下文块。")}
         </div>
       ) : (
         <>
           <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto p-3">
             {visibleBlocks.length === 0 ? (
               <div className="rounded-md border border-dashed border-[#cbdad6] bg-white/70 p-4 text-sm text-muted-foreground">
-                没有匹配的上下文块。
+                {translateUi("没有匹配的上下文块。")}
               </div>
             ) : (
               visibleBlocks.map((block) => (
@@ -217,19 +218,19 @@ export function ContextInjectionPanel(props: {
                     </div>
                     <div className="flex shrink-0 flex-col items-end gap-1">
                       <Badge variant="outline" className={cn("px-1.5 py-0 text-[11px]", statusClassName(block.status))}>
-                        {CONTEXT_STATUS_LABELS[block.status]}
+                        {translateUi(CONTEXT_STATUS_LABELS[block.status])}
                       </Badge>
                       <span className="text-[11px] text-muted-foreground">{block.estimatedTokens} tokens</span>
                     </div>
                   </div>
                   <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
-                    <span>{block.required ? "必需" : "可选"}</span>
+                    <span>{block.required ? translateUi("必需") : translateUi("可选")}</span>
                     <span>·</span>
                     <span>P{block.priority}</span>
                     {block.locked ? (
                       <>
                         <span>·</span>
-                        <span>锁定</span>
+                        <span>{translateUi("锁定")}</span>
                       </>
                     ) : null}
                   </div>
@@ -247,7 +248,7 @@ export function ContextInjectionPanel(props: {
                     <div className="truncate font-mono text-[11px] text-muted-foreground">{activeBlock.id}</div>
                   </div>
                   <Badge variant="outline" className={cn("px-1.5 py-0 text-[11px]", statusClassName(activeBlock.status))}>
-                    {CONTEXT_STATUS_LABELS[activeBlock.status]}
+                    {translateUi(CONTEXT_STATUS_LABELS[activeBlock.status])}
                   </Badge>
                 </div>
                 {onInsertToken && activeContextToken ? (
@@ -260,7 +261,7 @@ export function ContextInjectionPanel(props: {
                       className="w-full border-[#b8d9d0] text-[#0f5f59]"
                     >
                       <Plus className="mr-1.5 h-3.5 w-3.5" />
-                      插入到模板
+                      {translateUi("插入到模板")}
                     </Button>
                   </div>
                 ) : null}

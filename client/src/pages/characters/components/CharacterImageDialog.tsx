@@ -20,11 +20,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import SelectControl from "@/components/common/SelectControl";
 
 const IMAGE_STATUS_TEXT: Record<string, string> = {
-  queued: "排队中",
-  running: "生成中",
-  succeeded: "生成成功",
-  failed: "生成失败",
-  cancelled: "已取消",
+  queued: translateUi("排队中"),
+  running: translateUi("生成中"),
+  succeeded: translateUi("生成成功"),
+  failed: translateUi("生成失败"),
+  cancelled: translateUi("已取消"),
 };
 
 type ImagePromptMode = "character_chain" | "direct";
@@ -50,8 +50,8 @@ export function CharacterImageDialog({
   const [directPromptSource, setDirectPromptSource] = useState<DirectPromptSource | null>(null);
   const [optimizedPromptLanguage, setOptimizedPromptLanguage] = useState<ImagePromptOutputLanguage>("zh");
   const [imageForm, setImageForm] = useState({
-    stylePreset: "写实人像",
-    negativePrompt: "低清晰度，畸形，多余肢体，文字水印",
+    stylePreset: translateUi("写实人像"),
+    negativePrompt: translateUi("低清晰度，畸形，多余肢体，文字水印"),
     provider: "" as LLMProvider,
     size: "1024x1024" as "512x512" | "768x768" | "1024x1024" | "1024x1536" | "1536x1024",
     count: 2,
@@ -122,8 +122,8 @@ export function CharacterImageDialog({
   const hasDirectPrompt = directPrompt.trim().length > 0;
 
   const currentSendModeLabel = promptMode === "direct"
-    ? (directPromptSource === "optimized" ? "AI优化 Prompt" : "手动编辑 Prompt")
-    : "原链路 Prompt";
+    ? (directPromptSource === "optimized" ? translateUi("AI优化 Prompt") : translateUi("手动编辑 Prompt"))
+    : translateUi("原链路 Prompt");
   const currentSendModeClass = promptMode === "direct"
     ? (directPromptSource === "optimized"
       ? "rounded-full bg-emerald-50 px-3 py-1 text-emerald-700"
@@ -186,7 +186,7 @@ export function CharacterImageDialog({
   const optimizeMutation = useMutation({
     mutationFn: async () => {
       if (!character) {
-        throw new Error("请先选择角色。");
+        throw new Error(translateUi("请先选择角色。"));
       }
       return optimizeCharacterImagePrompt({
         sceneType: "character",
@@ -204,10 +204,10 @@ export function CharacterImageDialog({
   const generateMutation = useMutation({
     mutationFn: async () => {
       if (!character) {
-        throw new Error("请先选择角色。");
+        throw new Error(translateUi("请先选择角色。"));
       }
       if (!imageForm.provider) {
-        throw new Error("请先在系统设置中为一个厂商填写图像模型。");
+        throw new Error(translateUi("请先在系统设置中为一个厂商填写图像模型。"));
       }
       return generateCharacterImages({
         sceneType: "character",

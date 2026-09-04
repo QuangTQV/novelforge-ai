@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ExternalToast, ToasterProps } from "sonner";
 import { Toaster as SonnerToaster, toast as sonnerToast } from "sonner";
 
@@ -11,7 +12,7 @@ function Toaster(props: ToasterProps) {
       mobileOffset={mobileOffset ?? 12}
       toastOptions={{
         ...toastOptions,
-        closeButtonAriaLabel: toastOptions?.closeButtonAriaLabel ?? "关闭提示",
+        closeButtonAriaLabel: toastOptions?.closeButtonAriaLabel ?? translateUi("关闭提示"),
         classNames: {
           ...toastOptions?.classNames,
           toast: `max-w-[calc(100vw-1.5rem)] overflow-visible ${toastOptions?.classNames?.toast ?? ""}`.trim(),

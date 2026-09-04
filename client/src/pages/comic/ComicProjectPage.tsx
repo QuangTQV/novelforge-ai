@@ -96,12 +96,12 @@ function ExportPanel({ projectId, episodes }: { projectId: string; episodes: Com
 // ─── Style options ─────────────────────────────────────────────────────────────
 
 const STYLE_OPTIONS = [
-  { value: "webtoon_color", label: translateUi("彩色韩漫"), desc: "鲜艳配色，干净线条" },
-  { value: "bl_manga", label: translateUi("彩色少女漫"), desc: "柔和色调，精致五官" },
-  { value: "shounen_bw", label: translateUi("黑白少年漫"), desc: "粗犷线条，动感构图" },
-  { value: "ink_traditional", label: translateUi("水墨国风"), desc: "毛笔笔触，淡彩晕染" },
-  { value: "chibi", label: translateUi("Q版萌漫"), desc: "圆润可爱，夸张表情" },
-  { value: "realistic", label: translateUi("写实风格"), desc: "细腻光影，真实感" },
+  { value: "webtoon_color", label: translateUi("彩色韩漫"), desc: translateUi("鲜艳配色，干净线条") },
+  { value: "bl_manga", label: translateUi("彩色少女漫"), desc: translateUi("柔和色调，精致五官") },
+  { value: "shounen_bw", label: translateUi("黑白少年漫"), desc: translateUi("粗犷线条，动感构图") },
+  { value: "ink_traditional", label: translateUi("水墨国风"), desc: translateUi("毛笔笔触，淡彩晕染") },
+  { value: "chibi", label: translateUi("Q版萌漫"), desc: translateUi("圆润可爱，夸张表情") },
+  { value: "realistic", label: translateUi("写实风格"), desc: translateUi("细腻光影，真实感") },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -172,10 +172,10 @@ export default function ComicProjectPage() {
   const formatDef = COMIC_FORMATS.find((f) => f.value === preset.format) ?? COMIC_FORMATS[0];
   const styleDef = STYLE_OPTIONS.find((s) => s.value === preset.style);
   const statusLabel: Record<string, string> = {
-    draft: "草稿", outlined: "大纲已生成", scripted: "脚本已生成", completed: "已完成",
+    draft: translateUi("草稿"), outlined: translateUi("大纲已生成"), scripted: translateUi("脚本已生成"), completed: translateUi("已完成"),
   };
   const sourceLabel: Record<string, string> = {
-    novel_import: "小说改编", original: "原创", text_import: "文本导入", comic_import: "漫画改编",
+    novel_import: translateUi("小说改编"), original: translateUi("原创"), text_import: translateUi("文本导入"), comic_import: translateUi("漫画改编"),
   };
 
   return (

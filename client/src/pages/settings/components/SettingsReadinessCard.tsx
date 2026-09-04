@@ -36,13 +36,13 @@ function getReadinessIcon(state: SettingsReadinessItem["state"]) {
 function getReadinessBadge(state: SettingsReadinessItem["state"]) {
   switch (state) {
     case "ready":
-      return "可用";
+      return translateUi("可用");
     case "checking":
-      return "检查中";
+      return translateUi("检查中");
     case "optional":
-      return "可选增强";
+      return translateUi("可选增强");
     case "warning":
-      return "需要处理";
+      return translateUi("需要处理");
   }
 }
 

@@ -31,11 +31,11 @@ import { toast } from "@/components/ui/toast";
 import SelectControl from "@/components/common/SelectControl";
 
 const SCENE_TYPE_LABELS: Record<SceneType, string> = {
-  interior: "室内",
-  exterior: "室外",
-  landscape: "风景",
-  abstract: "抽象",
-  other: "其他",
+  interior: translateUi("室内"),
+  exterior: translateUi("室外"),
+  landscape: translateUi("风景"),
+  abstract: translateUi("抽象"),
+  other: translateUi("其他"),
 };
 
 const BIBLE_FIELDS: Array<{ key: keyof SceneBible; label: string; placeholder: string }> = [

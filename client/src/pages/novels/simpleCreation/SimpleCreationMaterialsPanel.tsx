@@ -34,7 +34,7 @@ export default function SimpleCreationMaterialsPanel({
 }: SimpleCreationMaterialsPanelProps) {
   const sellingPoint = materials.story.coreSellingPoint
     || materials.description
-    || "AI 正在沉淀整书方向。";
+    || translateUi("AI 正在沉淀整书方向。");
   const readingPromise = materials.story.readingPromise
     || materials.story.protagonistFantasy;
   const displayedCharacters = materials.characters.slice(0, 6);

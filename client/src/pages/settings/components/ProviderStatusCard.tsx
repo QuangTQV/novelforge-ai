@@ -29,15 +29,15 @@ function getBalanceSummary(input: {
 }) {
   const { provider, balance, isBalanceLoading } = input;
   if (provider.kind === "custom") {
-    return "自定义厂商暂不接入余额查询。";
+    return translateUi("自定义厂商暂不接入余额查询。");
   }
   if (isBalanceLoading) {
-    return "正在查询余额...";
+    return translateUi("正在查询余额...");
   }
   if (balance?.status === "available") {
-    return `余额 ${formatBalanceAmount(balance.availableBalance, balance.currency)}`;
+    return translateUi("余额 {{v0}}", { v0: formatBalanceAmount(balance.availableBalance, balance.currency) });
   }
-  return balance?.error ?? balance?.message ?? (provider.isConfigured ? "当前暂未获取余额信息。" : "请先配置 API Key。");
+  return balance?.error ?? balance?.message ?? (provider.isConfigured ? translateUi("当前暂未获取余额信息。") : translateUi("请先配置 API Key。"));
 }
 
 export default function ProviderStatusCard(props: {
@@ -66,12 +66,12 @@ export default function ProviderStatusCard(props: {
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [modelsOpen, setModelsOpen] = useState(false);
   const imageModelLabel = provider.supportsImageGeneration
-    ? provider.currentImageModel || provider.defaultImageModel || "未设置"
-    : "不支持图像生成";
+    ? provider.currentImageModel || provider.defaultImageModel || translateUi("未设置")
+    : translateUi("不支持图像生成");
   const visibleModels = modelsOpen ? provider.models : provider.models.slice(0, 8);
   const canUseProvider = provider.isConfigured && provider.isActive && Boolean(provider.currentModel);
-  const testDisabledReason = provider.isConfigured ? "" : "配置 API Key 后可以测试连接。";
-  const refreshDisabledReason = provider.isConfigured ? "" : "配置 API Key 后可以刷新模型列表。";
+  const testDisabledReason = provider.isConfigured ? "" : translateUi("配置 API Key 后可以测试连接。");
+  const refreshDisabledReason = provider.isConfigured ? "" : translateUi("配置 API Key 后可以刷新模型列表。");
 
   return (
     <div

@@ -83,26 +83,26 @@ function ReferenceNotice(props: { title: string; description: string }) {
 }
 
 const QUALITY_DEBT_SOURCE_LABELS: Record<ChapterQualityDebtSource, string> = {
-  manual_review: "手动审校",
-  pipeline_review: "AI 正文审校",
-  repair_recheck: "AI 修复后复查",
+  manual_review: translateUi("手动审校"),
+  pipeline_review: translateUi("AI 正文审校"),
+  repair_recheck: translateUi("AI 修复后复查"),
 };
 
 function formatQualityDebtAttempts(details: ChapterQualityDebtDetails): string {
   if (details.repairAttemptsUsed === null) {
-    return `次数未记录 · 当前最多 ${details.repairAttemptsAllowed} 次`;
+    return translateUi("次数未记录 · 当前最多 {{v0}} 次", { v0: details.repairAttemptsAllowed });
   }
   if (details.repairAttemptsAllowed === 0) {
-    return `${details.repairAttemptsUsed} 次 · 本次未启用自动修复`;
+    return translateUi("{{v0}} 次 · 本次未启用自动修复", { v0: details.repairAttemptsUsed });
   }
-  return `${details.repairAttemptsUsed}/${details.repairAttemptsAllowed} 次`;
+  return translateUi("{{v0}}/{{v1}} 次", { v0: details.repairAttemptsUsed, v1: details.repairAttemptsAllowed });
 }
 
 function formatQualityDebtTime(value: string | null): string {
-  if (!value) return "时间未记录";
+  if (!value) return translateUi("时间未记录");
   const date = new Date(value);
   return Number.isNaN(date.getTime())
-    ? "时间未记录"
+    ? translateUi("时间未记录")
     : date.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
@@ -140,7 +140,7 @@ export default function ChapterExecutionReferencePanel(props: ChapterExecutionRe
   }
 
   const runtimePackage = chapterRuntimePackage?.chapterId === selectedChapter.id ? chapterRuntimePackage : null;
-  const chapterObjective = chapterPlan?.objective ?? selectedChapter.expectation ?? "这一章还没有明确目标，建议先补章节计划。";
+  const chapterObjective = chapterPlan?.objective ?? selectedChapter.expectation ?? translateUi("这一章还没有明确目标，建议先补章节计划。");
   const scenePlan = parseChapterScenePlanForDisplay(selectedChapter);
   const isSelectedChapterRepairStreaming = isRepairStreaming && repairStreamingChapterId === selectedChapter.id;
   const isSelectedChapterRepairFinalizing = isSelectedChapterRepairStreaming && repairRunStatus?.phase === "finalizing";

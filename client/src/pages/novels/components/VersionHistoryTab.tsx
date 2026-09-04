@@ -11,15 +11,15 @@ interface VersionHistoryTabProps {
 
 function formatSnapshotTrigger(triggerType: string): string {
   if (triggerType === "manual") {
-    return "手动保存";
+    return translateUi("手动保存");
   }
   if (triggerType === "auto_milestone") {
-    return "自动里程碑";
+    return translateUi("自动里程碑");
   }
   if (triggerType === "before_pipeline") {
-    return "批量处理前";
+    return translateUi("批量处理前");
   }
-  return "版本快照";
+  return translateUi("版本快照");
 }
 
 export default function VersionHistoryTab({ novelId }: VersionHistoryTabProps) {

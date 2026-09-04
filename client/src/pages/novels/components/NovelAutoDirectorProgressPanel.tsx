@@ -66,17 +66,17 @@ const DIRECTOR_CANDIDATE_SETUP_STEP_KEYS = new Set<string>(
 );
 
 const AUTO_DIRECTOR_PLACEHOLDER_TITLES = new Set([
-  "AI 自动导演小说",
-  "小说流程任务",
+  translateUi("AI 自动导演小说"),
+  translateUi("小说流程任务"),
 ]);
 
 function formatDate(value: string | null | undefined): string {
   if (!value) {
-    return "暂无";
+    return translateUi("暂无");
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "暂无";
+    return translateUi("暂无");
   }
   return date.toLocaleString();
 }
@@ -97,7 +97,7 @@ function resolveAutoExecutionScopeLabel(task: UnifiedTaskDetail | null): string 
     return scopeLabel;
   }
   const fallbackCount = Math.max(1, Math.round(seedPayload?.autoExecution?.totalChapterCount ?? 10));
-  return `前 ${fallbackCount} 章`;
+  return translateUi("前 {{v0}} 章", { v0: fallbackCount });
 }
 
 function resolveDirectorStyleSeed(task: UnifiedTaskDetail | null): {
@@ -120,7 +120,7 @@ function resolveDirectorStyleSeed(task: UnifiedTaskDetail | null): {
   }
   return {
     title: fallbackTone,
-    summaryLines: [`文风关键词：${fallbackTone}`],
+    summaryLines: [translateUi("文风关键词：{{v0}}", { v0: fallbackTone })],
   };
 }
 
@@ -129,36 +129,36 @@ function formatCheckpoint(
   task: UnifiedTaskDetail | null,
 ): string {
   if (checkpoint === "rewrite_snapshot_created") {
-    return "重写前备份已创建";
+    return translateUi("重写前备份已创建");
   }
   if (checkpoint === "candidate_selection_required") {
-    return "等待确认书级方向";
+    return translateUi("等待确认书级方向");
   }
   if (checkpoint === "book_contract_ready") {
-    return "Book Contract 已就绪";
+    return translateUi("Book Contract 已就绪");
   }
   if (checkpoint === "character_setup_required") {
-    return "角色准备待审核";
+    return translateUi("角色准备待审核");
   }
   if (checkpoint === "volume_strategy_ready") {
-    return "卷战略已就绪";
+    return translateUi("卷战略已就绪");
   }
   if (checkpoint === "production_experience_required") {
-    return "已可开写，等待选择生产方式";
+    return translateUi("已可开写，等待选择生产方式");
   }
   if (checkpoint === "chapter_batch_ready") {
-    return `${resolveAutoExecutionScopeLabel(task)}自动执行已暂停`;
+    return translateUi("{{v0}}自动执行已暂停", { v0: resolveAutoExecutionScopeLabel(task) });
   }
   if (checkpoint === "step_review_required") {
-    return "当前步骤待检查";
+    return translateUi("当前步骤待检查");
   }
   if (checkpoint === "replan_required") {
-    return "需要重规划";
+    return translateUi("需要重规划");
   }
   if (checkpoint === "workflow_completed") {
-    return "主流程完成";
+    return translateUi("主流程完成");
   }
-  return "暂无";
+  return translateUi("暂无");
 }
 
 function isCandidateSetupFlow(task: UnifiedTaskDetail | null): boolean {
@@ -353,15 +353,15 @@ export default function NovelAutoDirectorProgressPanel({
     || runtimeProjectionForDisplay?.currentLabel?.trim()
     || task?.currentItemLabel?.trim()
     || (visualMode === "execution_failed"
-      ? "导演任务执行中断"
-      : (chapterTitleWarning ? "章节列表已生成，等待修复标题结构" : "正在准备导演任务"));
+      ? translateUi("导演任务执行中断")
+      : (chapterTitleWarning ? translateUi("章节列表已生成，等待修复标题结构") : translateUi("正在准备导演任务")));
   const activityTags = extractWorkflowActivityTags(displayStateForDisplay?.currentFactStepLabel || task?.currentItemLabel);
   const workflowTitle = task?.title?.trim() || "";
   const hintedTitle = titleHint?.trim() || "";
   const taskTitle = (
     hintedTitle && (!workflowTitle || AUTO_DIRECTOR_PLACEHOLDER_TITLES.has(workflowTitle))
       ? hintedTitle
-      : workflowTitle || hintedTitle || "新小说项目"
+      : workflowTitle || hintedTitle || translateUi("新小说项目")
   );
   const milestones = Array.isArray(task?.meta.milestones)
     ? task.meta.milestones as NovelWorkflowMilestone[]
@@ -377,7 +377,7 @@ export default function NovelAutoDirectorProgressPanel({
   const failureMessage = task?.lastError?.trim()
     || task?.checkpointSummary?.trim()
     || fallbackError?.trim()
-    || "导演任务执行失败，但没有记录明确错误。";
+    || translateUi("导演任务执行失败，但没有记录明确错误。");
   const isHighMemoryConflict = /高内存卷规划生成正在处理同一范围|高内存.*同一范围|已有自动导演任务正在处理同一范围/.test(failureMessage);
   const tokenUsage = task?.tokenUsage ?? null;
   const styleSeed = resolveDirectorStyleSeed(task);
@@ -391,19 +391,19 @@ export default function NovelAutoDirectorProgressPanel({
   const description = candidateSetupFlow
     ? (
       visualMode === "execution_failed"
-        ? "候选方向生成链已中断，可以从当前进度重试。"
-        : "系统会先整理项目设定、对齐书级 framing，再生成两套书级方案和对应标题组。"
+        ? translateUi("候选方向生成链已中断，可以从当前进度重试。")
+        : translateUi("系统会先整理项目设定、对齐书级 framing，再生成两套书级方案和对应标题组。")
     )
     : (
       dashboardViewForDisplay?.description
       || displayStateForDisplay?.description
       || (visualMode === "execution_failed"
-        ? "任务已停在最近一步，可以从当前进度恢复。"
+        ? translateUi("任务已停在最近一步，可以从当前进度恢复。")
         : chapterTitleWarning
-          ? "章节列表已经保留，这是一条可直接处理的结构提醒。你可以快速修复标题，再决定是否继续后续导演流程。"
+          ? translateUi("章节列表已经保留，这是一条可直接处理的结构提醒。你可以快速修复标题，再决定是否继续后续导演流程。")
           : task?.status === "waiting_approval"
-            ? "当前导演流程已经停在审核点，你可以先检查产物，再决定是否继续自动推进。"
-            : "可离开当前页面，任务会继续运行；回来后可在 AI 驾驶舱查看进度。")
+            ? translateUi("当前导演流程已经停在审核点，你可以先检查产物，再决定是否继续自动推进。")
+            : translateUi("可离开当前页面，任务会继续运行；回来后可在 AI 驾驶舱查看进度。"))
     );
   const resolveDashboardAction = (dashboardAction: DirectorDashboardAction) => {
     if (dashboardAction.type === "confirm_and_continue" && onConfirmAndContinue) {

@@ -11,12 +11,12 @@ import { cn } from "@/lib/utils";
 
 export function getTimelineCheckLabel(status: TimelineCheckSummary["status"]): string {
   if (status === "failed") {
-    return "需修复";
+    return translateUi("需修复");
   }
   if (status === "warning") {
-    return "需复查";
+    return translateUi("需复查");
   }
-  return "通过";
+  return translateUi("通过");
 }
 
 function getTimelineCheckTone(status: TimelineCheckSummary["status"]): string {
@@ -41,26 +41,26 @@ function getTimelineCheckBadgeVariant(status: TimelineCheckSummary["status"]): N
 
 function formatTimelineTimeLabel(context?: TimelineContextForChapter | null): string {
   if (!context) {
-    return "未设置";
+    return translateUi("未设置");
   }
   const parts = [
-    typeof context.currentTime?.storyDayIndex === "number" ? `第${context.currentTime.storyDayIndex}天` : "",
+    typeof context.currentTime?.storyDayIndex === "number" ? translateUi("第{{v0}}天", { v0: context.currentTime.storyDayIndex }) : "",
     context.currentTime?.label?.trim() ?? "",
   ].filter(Boolean);
-  return parts.join(" · ") || `第${context.currentChapterIndex}章`;
+  return parts.join(" · ") || translateUi("第{{v0}}章", { v0: context.currentChapterIndex });
 }
 
 function formatIssueSeverity(issue: TimelineIssue): string {
   if (issue.severity === "blocking") {
-    return "阻断";
+    return translateUi("阻断");
   }
   if (issue.severity === "error") {
-    return "错误";
+    return translateUi("错误");
   }
   if (issue.severity === "warning") {
-    return "提醒";
+    return translateUi("提醒");
   }
-  return "信息";
+  return translateUi("信息");
 }
 
 function TimelineItemList(props: {
@@ -172,7 +172,7 @@ export default function TimelinePanel(props: {
   const context = chapterTimeline?.context ?? null;
   const timelineCheck = (chapterTimeline?.latestReport ?? chapterRuntimePackage?.timelineCheck ?? null) as TimelineCheckSummary | null;
   const hasChapter = Boolean(selectedChapter);
-  const chapterLabel = selectedChapter ? `第${selectedChapter.order}章` : "未选择章节";
+  const chapterLabel = selectedChapter ? translateUi("第{{v0}}章", { v0: selectedChapter.order }) : translateUi("未选择章节");
   const timeLabel = formatTimelineTimeLabel(context);
 
   return (

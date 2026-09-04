@@ -83,12 +83,12 @@ function hasChapterPlanContent(chapter: VolumePlan["chapters"][number]): boolean
 }
 
 function formatTaskStatus(status: string | null | undefined): string {
-  if (status === "running") return "进行中";
-  if (status === "queued") return "排队中";
-  if (status === "waiting_approval") return "待审核";
-  if (status === "failed") return "异常";
-  if (status === "succeeded") return "已完成";
-  return "空闲";
+  if (status === "running") return translateUi("进行中");
+  if (status === "queued") return translateUi("排队中");
+  if (status === "waiting_approval") return translateUi("待审核");
+  if (status === "failed") return translateUi("异常");
+  if (status === "succeeded") return translateUi("已完成");
+  return translateUi("空闲");
 }
 
 function shouldShowBookAutomationProjectionWithoutActiveTask(input: {
@@ -304,12 +304,12 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
           : stepReadiness[step.key]
       );
       const statusLabel = isWorkflowCurrent
-        ? isSelected ? "当前步骤" : "流程中"
+        ? isSelected ? translateUi("当前步骤") : translateUi("流程中")
         : isSelected
-          ? "查看中"
+          ? translateUi("查看中")
           : isDone
-            ? "已完成"
-            : "待推进";
+            ? translateUi("已完成")
+            : translateUi("待推进");
 
       return {
         ...step,
@@ -323,13 +323,13 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
 
   const completedStepCount = stepStates.filter((item) => item.isDone).length;
   const workflowProgressCount = workflowIndex >= 0 ? workflowIndex + 1 : completedStepCount;
-  const novelTitle = novelDetail?.title?.trim() || "小说创作工作台";
+  const novelTitle = novelDetail?.title?.trim() || translateUi("小说创作工作台");
   const runtimeActionSummary = runtimeProjection?.nextActionLabel
-    ? `下一步：${runtimeProjection.nextActionLabel}`
+    ? translateUi("下一步：{{v0}}", { v0: runtimeProjection.nextActionLabel })
     : null;
   const runtimeSummary = dashboardView?.currentAction?.trim()
     || (dashboardView?.requiresUserAction
-      ? `需要处理：${dashboardView.userActionReason ?? "请先查看当前停留点"}`
+      ? translateUi("Cần xử lý: {{reason}}", { reason: dashboardView.userActionReason ?? translateUi("请先查看当前停留点") })
       : null)
     || runtimeSnapshot?.displayState.currentAction?.trim()
       || runtimeProjection?.headline
@@ -341,11 +341,11 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
   const cockpitSummary = activeTask
     ? runtimeSummary
       || (activeTask.status === "failed"
-      ? activeTask.lastError || "后台任务已中断，可打开执行详情查看原因。"
+      ? activeTask.lastError || translateUi("后台任务已中断，可打开执行详情查看原因。")
       : activeTask.status === "waiting_approval"
-        ? `等待处理：${getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab)}`
-      : activeTask.currentItemLabel || `AI 正在推进 ${getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab)}`)
-    : "当前没有后台导演任务，可以直接继续手动创作。";
+        ? translateUi("等待处理：{{v0}}", { v0: getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab) })
+      : activeTask.currentItemLabel || translateUi("AI 正在推进 {{v0}}", { v0: getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab) }))
+    : translateUi("当前没有后台导演任务，可以直接继续手动创作。");
   const cockpitProjection = useMemo(() => {
     if (!visibleBookAutomationProjection || !runtimeSummary?.trim()) {
       return visibleBookAutomationProjection;
@@ -399,7 +399,7 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
   const continueDirectorMutation = useMutation({
     mutationFn: async () => {
       if (!activeTask?.id) {
-        throw new Error("当前没有可继续的自动导演任务。");
+        throw new Error(translateUi("当前没有可继续的自动导演任务。"));
       }
       return continueNovelWorkflow(activeTask.id, {
         continuationMode: resolveDirectorContinueMode(activeTask),

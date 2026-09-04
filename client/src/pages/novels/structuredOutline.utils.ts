@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 export interface StructuredChapter {
   order: number;
   title: string;
@@ -222,27 +223,27 @@ function compactList(items: string[] | undefined): string {
 
 export function buildTaskSheetFromStructuredChapter(chapter: StructuredChapter): string {
   const lines: string[] = [];
-  lines.push(`章节目标：${chapter.purpose || chapter.summary || "推动主线"}`);
+  lines.push(translateUi("Mục tiêu chương: {{goal}}", { goal: chapter.purpose || chapter.summary || translateUi("推动主线") }));
   if (chapter.keyEvents && chapter.keyEvents.length > 0) {
-    lines.push(`关键事件：${compactList(chapter.keyEvents)}`);
+    lines.push(translateUi("关键事件：{{v0}}", { v0: compactList(chapter.keyEvents) }));
   }
   if (chapter.involvedRoles && chapter.involvedRoles.length > 0) {
-    lines.push(`涉及角色：${compactList(chapter.involvedRoles)}`);
+    lines.push(translateUi("涉及角色：{{v0}}", { v0: compactList(chapter.involvedRoles) }));
   }
   if (typeof chapter.conflictLevel === "number") {
-    lines.push(`冲突等级：${chapter.conflictLevel}`);
+    lines.push(translateUi("冲突等级：{{v0}}", { v0: chapter.conflictLevel }));
   }
   if (typeof chapter.revealLevel === "number") {
-    lines.push(`揭露等级：${chapter.revealLevel}`);
+    lines.push(translateUi("揭露等级：{{v0}}", { v0: chapter.revealLevel }));
   }
   if (chapter.pacing?.trim()) {
-    lines.push(`节奏：${chapter.pacing.trim()}`);
+    lines.push(translateUi("节奏：{{v0}}", { v0: chapter.pacing.trim() }));
   }
   if (chapter.foreshadow?.trim()) {
-    lines.push(`伏笔：${chapter.foreshadow.trim()}`);
+    lines.push(translateUi("伏笔：{{v0}}", { v0: chapter.foreshadow.trim() }));
   }
   if (chapter.mustAvoid?.trim()) {
-    lines.push(`禁止事项：${chapter.mustAvoid.trim()}`);
+    lines.push(translateUi("禁止事项：{{v0}}", { v0: chapter.mustAvoid.trim() }));
   }
   return lines.join("\n");
 }

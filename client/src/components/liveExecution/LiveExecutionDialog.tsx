@@ -10,18 +10,18 @@ import { cn } from "@/lib/utils";
 
 function phaseLabel(phase: string): string {
   const labels: Record<string, string> = {
-    requesting: "正在连接",
-    streaming: "正在生成",
-    assembling: "正在整理",
-    validating: "正在检查",
-    repairing: "正在修复",
-    applying: "正在应用",
-    persisting: "正在保存",
-    completed: "已完成",
-    failed: "生成失败",
-    cancelled: "已取消",
+    requesting: translateUi("正在连接"),
+    streaming: translateUi("正在生成"),
+    assembling: translateUi("正在整理"),
+    validating: translateUi("正在检查"),
+    repairing: translateUi("正在修复"),
+    applying: translateUi("正在应用"),
+    persisting: translateUi("正在保存"),
+    completed: translateUi("已完成"),
+    failed: translateUi("生成失败"),
+    cancelled: translateUi("已取消"),
   };
-  return labels[phase] ?? "正在处理";
+  return labels[phase] ?? translateUi("正在处理");
 }
 
 function isActive(phase: string): boolean {
@@ -65,7 +65,7 @@ export default function LiveExecutionDialog(props: LiveExecutionDialogProps) {
   const latestSessionId = latestSession ? sessionId(latestSession) : null;
   const latestPreview = latestSession?.preview
     ? latestSession.preview.slice(-1200)
-    : "等待模型开始返回内容…";
+    : translateUi("等待模型开始返回内容…");
   const activeCount = sessions.filter((session) => isActive(session.phase)).length;
 
   useEffect(() => {

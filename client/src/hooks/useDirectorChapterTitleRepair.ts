@@ -23,7 +23,7 @@ export function useDirectorChapterTitleRepair(options: DirectorChapterTitleRepai
     mutationFn: async (task: UnifiedTaskDetail) => {
       const warning = resolveChapterTitleWarning(task);
       if (!warning) {
-        throw new Error("当前任务没有可直接 AI 修复的章节标题提醒。");
+        throw new Error(translateUi("当前任务没有可直接 AI 修复的章节标题提醒。"));
       }
       const response = await repairNovelWorkflowChapterTitles(task.id, {
         volumeId: warning.volumeId ?? undefined,
@@ -56,7 +56,7 @@ export function useDirectorChapterTitleRepair(options: DirectorChapterTitleRepai
       toast.success(translateUi("已开始 AI 修复章节标题，系统正在重写当前卷拆章。"));
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "AI 修复章节标题失败。";
+      const message = error instanceof Error ? error.message : translateUi("AI 修复章节标题失败。");
       toast.error(message);
     },
   });

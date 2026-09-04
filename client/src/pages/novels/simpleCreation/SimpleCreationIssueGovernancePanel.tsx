@@ -18,10 +18,10 @@ import {
 import NovelDirectorIssuePolicyCard from "../components/NovelDirectorIssuePolicyCard";
 
 const ACTION_LABELS: Record<DirectorIssueAction, string> = {
-  auto_retry: "自动重试",
-  continue_with_warning: "提醒后继续",
-  pause_for_manual: "暂停处理",
-  fail_task: "结束任务",
+  auto_retry: translateUi("自动重试"),
+  continue_with_warning: translateUi("提醒后继续"),
+  pause_for_manual: translateUi("暂停处理"),
+  fail_task: translateUi("结束任务"),
 };
 
 export default function SimpleCreationIssueGovernancePanel(props: {

@@ -29,13 +29,13 @@ function formatConnectionTestResult(response: Awaited<ReturnType<typeof testLLMC
     ? plain.ok
       ? `普通连通正常${plain.latency != null ? ` (${plain.latency}ms)` : ""}`
       : `普通连通失败${plain.error ? `：${plain.error}` : ""}`
-    : "普通连通未检测";
+    : translateUi("普通连通未检测");
   const structuredText = structured
     ? structured.ok
-      ? `结构化正常${structured.strategy ? `，策略 ${structured.strategy}` : ""}${structured.reasoningForcedOff ? "，已强制关闭 thinking" : ""}`
+      ? `结构化正常${structured.strategy ? `，策略 ${structured.strategy}` : ""}${structured.reasoningForcedOff ? translateUi("，已强制关闭 thinking") : ""}`
       : `结构化失败${structured.errorCategory ? `，分类 ${structured.errorCategory}` : ""}${structured.error ? `：${structured.error}` : ""}`
-    : "结构化未检测";
-  return `连接成功，总耗时 ${latency}ms · ${plainText} · ${structuredText}`;
+    : translateUi("结构化未检测");
+  return translateUi("连接成功，总耗时 {{v0}}ms · {{v1}} · {{v2}}", { v0: latency, v1: plainText, v2: structuredText });
 }
 
 export default function SettingsPage() {
@@ -148,11 +148,11 @@ export default function SettingsPage() {
       }),
     onSuccess: async (response) => {
       resetDialogState();
-      setActionResult(response.message ?? "保存成功。");
+      setActionResult(response.message ?? translateUi("保存成功。"));
       await invalidateProviderQueries();
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "保存失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("保存失败。"));
     },
   });
 
@@ -168,11 +168,11 @@ export default function SettingsPage() {
     }) => createCustomProvider(payload),
     onSuccess: async (response) => {
       resetDialogState();
-      setActionResult(response.message ?? "自定义厂商创建成功。");
+      setActionResult(response.message ?? translateUi("自定义厂商创建成功。"));
       await invalidateProviderQueries();
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "创建自定义厂商失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("创建自定义厂商失败。"));
     },
   });
 
@@ -181,7 +181,7 @@ export default function SettingsPage() {
     onSuccess: (response) => {
       const models = response.data?.models ?? [];
       setPreviewModels(models);
-      setPreviewModelsResult(response.message ?? `已获取 ${models.length} 个模型。`);
+      setPreviewModelsResult(response.message ?? translateUi("已获取 {{v0}} 个模型。", { v0: models.length }));
       setForm((prev) => ({
         ...prev,
         model: prev.model.trim() || models[0] || "",
@@ -189,7 +189,7 @@ export default function SettingsPage() {
     },
     onError: (error) => {
       setPreviewModels([]);
-      setPreviewModelsResult(error instanceof Error ? error.message : "获取模型列表失败。");
+      setPreviewModelsResult(error instanceof Error ? error.message : translateUi("获取模型列表失败。"));
     },
   });
 
@@ -197,11 +197,11 @@ export default function SettingsPage() {
     mutationFn: (provider: LLMProvider) => deleteCustomProvider(provider),
     onSuccess: async (response) => {
       resetDialogState();
-      setActionResult(response.message ?? "自定义厂商已删除。");
+      setActionResult(response.message ?? translateUi("自定义厂商已删除。"));
       await invalidateProviderQueries();
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "删除自定义厂商失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("删除自定义厂商失败。"));
     },
   });
 
@@ -213,11 +213,11 @@ export default function SettingsPage() {
       return saveAPIKeySetting(provider.provider, { isActive: false });
     },
     onSuccess: async (response, provider) => {
-      setActionResult(response.message ?? (provider.kind === "builtin" ? "厂商已从列表移除。" : "自定义厂商已删除。"));
+      setActionResult(response.message ?? (provider.kind === "builtin" ? translateUi("厂商已从列表移除。") : translateUi("自定义厂商已删除。")));
       await invalidateProviderQueries();
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "移除厂商失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("移除厂商失败。"));
     },
   });
 
@@ -233,11 +233,11 @@ export default function SettingsPage() {
       if (response.data) {
         updateProviderModelsInCache(response.data.provider, response.data.models, response.data.currentModel);
       }
-      setActionResult(`${providerName} 模型列表已刷新（${count} 个）。`);
+      setActionResult(translateUi("{{v0}} 模型列表已刷新（{{v1}} 个）。", { v0: providerName, v1: count }));
       await invalidateProviderAuxiliaryQueries();
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "刷新模型列表失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("刷新模型列表失败。"));
     },
   });
 
@@ -248,11 +248,11 @@ export default function SettingsPage() {
       }),
     onSuccess: async (_response, variables) => {
       const providerName = providerConfigs.find((item) => item.provider === variables.provider)?.name ?? variables.provider;
-      setActionResult(`${providerName} 思考功能已${variables.reasoningEnabled ? "开启" : "关闭"}。`);
+      setActionResult(`${providerName} 思考功能已${variables.reasoningEnabled ? translateUi("开启") : translateUi("关闭")}。`);
       await invalidateProviderQueries();
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "更新思考开关失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("更新思考开关失败。"));
     },
   });
 
@@ -260,11 +260,11 @@ export default function SettingsPage() {
     mutationFn: (provider: LLMProvider) => refreshProviderBalance(provider),
     onSuccess: async (response, provider) => {
       const providerName = providerConfigs.find((item) => item.provider === provider)?.name ?? provider;
-      setActionResult(response.message ?? `${providerName} 余额已刷新。`);
+      setActionResult(response.message ?? translateUi("{{v0}} 余额已刷新。", { v0: providerName }));
       await queryClient.invalidateQueries({ queryKey: queryKeys.settings.apiKeyBalances });
     },
     onError: (error) => {
-      setActionResult(error instanceof Error ? error.message : "刷新余额失败。");
+      setActionResult(error instanceof Error ? error.message : translateUi("刷新余额失败。"));
     },
   });
 
@@ -370,7 +370,7 @@ export default function SettingsPage() {
         onError: (error) => {
           setProviderTestResults((prev) => ({
             ...prev,
-            [provider.provider]: error instanceof Error ? error.message : "连接测试失败。",
+            [provider.provider]: error instanceof Error ? error.message : translateUi("连接测试失败。"),
           }));
         },
       },
@@ -391,7 +391,7 @@ export default function SettingsPage() {
           setDialogTestResult(formatConnectionTestResult(response));
         },
         onError: (error) => {
-          setDialogTestResult(error instanceof Error ? error.message : "连接测试失败。");
+          setDialogTestResult(error instanceof Error ? error.message : translateUi("连接测试失败。"));
         },
       },
     );
@@ -408,7 +408,7 @@ export default function SettingsPage() {
   };
 
   const handleRemoveProvider = (provider: APIKeyStatus) => {
-    const label = provider.kind === "builtin" ? "从列表移除" : "删除";
+    const label = provider.kind === "builtin" ? translateUi("从列表移除") : translateUi("删除");
     if (!window.confirm(translateUi("确认{{value0}} {{value1}} 吗？", { value0: label, value1: provider.name }))) {
       return;
     }
@@ -422,7 +422,7 @@ export default function SettingsPage() {
     || (isCustomDialog && !form.displayName.trim())
     || (isCreatingCustomProvider && !form.baseURL.trim())
     || (!isCustomDialog && editingConfig?.requiresApiKey !== false && !form.key.trim() && !editingConfig?.isConfigured);
-  const providerSubmitLabel = isSavingProvider ? "保存中..." : isCreatingCustomProvider ? "创建厂商" : "保存";
+  const providerSubmitLabel = isSavingProvider ? translateUi("保存中...") : isCreatingCustomProvider ? translateUi("创建厂商") : translateUi("保存");
 
   return (
     <div className={AUTO_DIRECTOR_MOBILE_CLASSES.settingsPageRoot}>

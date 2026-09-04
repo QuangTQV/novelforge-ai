@@ -34,21 +34,21 @@ export interface BuildNovelCoverDraftInput {
 }
 
 const NARRATIVE_POV_LABELS: Record<NovelBasicFormState["narrativePov"], string> = {
-  first_person: "第一人称",
-  third_person: "第三人称",
-  mixed: "混合视角",
+  first_person: translateUi("第一人称"),
+  third_person: translateUi("第三人称"),
+  mixed: translateUi("混合视角"),
 };
 
 const PACE_PREFERENCE_LABELS: Record<NovelBasicFormState["pacePreference"], string> = {
-  slow: "慢节奏",
-  balanced: "均衡",
-  fast: "快节奏",
+  slow: translateUi("慢节奏"),
+  balanced: translateUi("均衡"),
+  fast: translateUi("快节奏"),
 };
 
 const EMOTION_INTENSITY_LABELS: Record<NovelBasicFormState["emotionIntensity"], string> = {
-  low: "低情绪浓度",
-  medium: "中情绪浓度",
-  high: "高情绪浓度",
+  low: translateUi("低情绪浓度"),
+  medium: translateUi("中情绪浓度"),
+  high: translateUi("高情绪浓度"),
 };
 
 function normalizeOptionalText(value: string | null | undefined): string | null {

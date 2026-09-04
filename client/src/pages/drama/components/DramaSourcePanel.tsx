@@ -42,22 +42,22 @@ function SourceQualityChecklist(props: {
     {
       label: translateUi("故事梗概"),
       ready: props.synopsisReady,
-      detail: props.synopsisReady ? "已整理为短剧素材" : "缺少故事梗概",
+      detail: props.synopsisReady ? translateUi("已整理为短剧素材") : translateUi("缺少故事梗概"),
     },
     {
       label: translateUi("来源节拍"),
       ready: props.beatCount >= 8,
-      detail: props.beatCount >= 8 ? `${props.beatCount} 个节拍` : `${props.beatCount} 个节拍，可能不足以支撑长集数`,
+      detail: props.beatCount >= 8 ? translateUi("{{v0}} 个节拍", { v0: props.beatCount }) : translateUi("{{v0}} 个节拍，可能不足以支撑长集数", { v0: props.beatCount }),
     },
     {
       label: translateUi("角色资源"),
       ready: props.characterCount >= 2,
-      detail: props.characterCount >= 2 ? `${props.characterCount} 个角色` : "主要角色不足",
+      detail: props.characterCount >= 2 ? translateUi("{{v0}} 个角色", { v0: props.characterCount }) : translateUi("主要角色不足"),
     },
     {
       label: translateUi("硬事实"),
       ready: props.factCount > 0,
-      detail: props.factCount > 0 ? `${props.factCount} 条硬事实` : "缺少可约束后续台本的事实",
+      detail: props.factCount > 0 ? translateUi("{{v0}} 条硬事实", { v0: props.factCount }) : translateUi("缺少可约束后续台本的事实"),
     },
   ];
 
@@ -84,18 +84,18 @@ function SourceQualityChecklist(props: {
 
 function readinessLabel(readiness: DramaSourceSupplementGuidance["readiness"]): string {
   const labels: Record<DramaSourceSupplementGuidance["readiness"], string> = {
-    ready: "可继续",
-    needs_supplement: "建议补充",
-    needs_rebuild: "建议重整素材",
+    ready: translateUi("可继续"),
+    needs_supplement: translateUi("建议补充"),
+    needs_rebuild: translateUi("建议重整素材"),
   };
   return labels[readiness];
 }
 
 function nextActionLabel(nextAction: DramaSourceSupplementGuidance["nextAction"]): string {
   const labels: Record<DramaSourceSupplementGuidance["nextAction"], string> = {
-    continue: "继续生成策略",
-    supplement_notes: "先补充说明",
-    rebuild_source_bundle: "补充后重整素材",
+    continue: translateUi("继续生成策略"),
+    supplement_notes: translateUi("先补充说明"),
+    rebuild_source_bundle: translateUi("补充后重整素材"),
   };
   return labels[nextAction];
 }

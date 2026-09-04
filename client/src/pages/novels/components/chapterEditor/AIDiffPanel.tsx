@@ -28,12 +28,12 @@ export default function AIDiffPanel(props: AIDiffPanelProps) {
 
   const isIdle = session.status === "idle";
   const statusText = isIdle
-    ? "选中正文后可发起局部 AI 改写"
+    ? translateUi("选中正文后可发起局部 AI 改写")
     : session.status === "loading"
-      ? "正在生成候选版本"
+      ? translateUi("正在生成候选版本")
       : session.status === "error"
-        ? session.errorMessage || "生成失败"
-        : session.requestLabel || "查看待确认改写";
+        ? session.errorMessage || translateUi("生成失败")
+        : session.requestLabel || translateUi("查看待确认改写");
 
   return (
     <div className="flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl border border-border/70 bg-background shadow-sm xl:min-h-0">

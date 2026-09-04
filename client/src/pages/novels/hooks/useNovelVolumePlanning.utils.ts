@@ -123,6 +123,6 @@ export function resolveCustomVolumeCountInput(
 
 export function buildGenerationNotice(strategyPlan: VolumeStrategyPlan | null): string {
   return strategyPlan
-    ? "当前工作区已进入二期链路：先审卷战略，再确认卷骨架，之后按卷生成节奏板和章节列表。"
-    : "先生成卷战略建议，让系统帮你决定卷数和硬/软规划，再进入卷骨架。";
+    ? translateUi("当前工作区已进入二期链路：先审卷战略，再确认卷骨架，之后按卷生成节奏板和章节列表。")
+    : translateUi("先生成卷战略建议，让系统帮你决定卷数和硬/软规划，再进入卷骨架。");
 }

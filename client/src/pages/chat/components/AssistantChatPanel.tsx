@@ -54,20 +54,20 @@ function extractMessageText(message: ThreadMessage): string {
         return part.title ? `${part.title} (${part.url})` : part.url;
       }
       if (part.type === "tool-call") {
-        return `[工具:${part.toolName}]`;
+        return translateUi("[工具:{{v0}}]", { v0: part.toolName });
       }
       if (part.type === "data") {
         try {
           return JSON.stringify(part.data);
         } catch {
-          return "[数据]";
+          return translateUi("[数据]");
         }
       }
       if (part.type === "image") {
-        return `[图片:${part.filename ?? "未命名"}]`;
+        return `[图片:${part.filename ?? translateUi("未命名")}]`;
       }
       if (part.type === "file") {
-        return `[文件:${part.filename ?? "未命名"}]`;
+        return `[文件:${part.filename ?? translateUi("未命名")}]`;
       }
       return "";
     })
@@ -193,7 +193,7 @@ export default function AssistantChatPanel({
         let streamError: string | null = null;
         try {
           if (chatMode === "agent" && contextMode === "novel" && !novelId.trim()) {
-            const message = "小说模式下必须先选择小说。";
+            const message = translateUi("小说模式下必须先选择小说。");
             onValidationError(message);
             throw new Error(message);
           }
@@ -207,7 +207,7 @@ export default function AssistantChatPanel({
             .filter((message) => message.content.length > 0)
             .slice(-20);
           if (payloadMessages.length === 0) {
-            payloadMessages.push({ role: "user", content: "继续当前任务。" });
+            payloadMessages.push({ role: "user", content: translateUi("继续当前任务。") });
           }
 
           const response = await fetch(`${API_BASE_URL}/chat`, {
@@ -235,7 +235,7 @@ export default function AssistantChatPanel({
           });
 
           if (!response.ok || !response.body) {
-            throw new Error(`请求失败，状态码 ${response.status}`);
+            throw new Error(translateUi("请求失败，状态码 {{v0}}", { v0: response.status }));
           }
 
           const reader = response.body.getReader();
@@ -330,7 +330,7 @@ export default function AssistantChatPanel({
             {
               id: `msg_${Date.now()}`,
               role: "assistant" as const,
-              content: finalAssistantText || "（空响应）",
+              content: finalAssistantText || translateUi("（空响应）"),
               createdAt: new Date().toISOString(),
             },
           ];
@@ -342,7 +342,7 @@ export default function AssistantChatPanel({
 
           return;
         } catch (error) {
-          streamError = error instanceof Error ? error.message : "消息发送失败。";
+          streamError = error instanceof Error ? error.message : translateUi("消息发送失败。");
           onStreamStateChange({ isStreaming: false, error: streamError });
           throw error;
         } finally {

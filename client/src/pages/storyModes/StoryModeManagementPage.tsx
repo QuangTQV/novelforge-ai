@@ -215,7 +215,7 @@ export default function StoryModeManagementPage() {
   const createSelectedChildrenMutation = useMutation({
     mutationFn: async () => {
       if (!defaultParentId) {
-        throw new Error("父级推进模式不存在。");
+        throw new Error(translateUi("父级推进模式不存在。"));
       }
 
       const drafts = selectedGeneratedChildIndexes
@@ -228,7 +228,7 @@ export default function StoryModeManagementPage() {
         }));
 
       if (drafts.length === 0) {
-        throw new Error("请至少选择一个子类候选。");
+        throw new Error(translateUi("请至少选择一个子类候选。"));
       }
 
       return createStoryModeChildren({
@@ -247,7 +247,7 @@ export default function StoryModeManagementPage() {
   const updateMutation = useMutation({
     mutationFn: () => {
       if (!editingStoryMode) {
-        throw new Error("推进模式不存在。");
+        throw new Error(translateUi("推进模式不存在。"));
       }
       return updateStoryMode(editingStoryMode.id, {
         name: editState.name.trim(),
@@ -297,7 +297,7 @@ export default function StoryModeManagementPage() {
         .map((index) => expansionCandidates[index])
         .filter((draft): draft is StoryModeTreeDraft => Boolean(draft))
         .map((draft) => ({ ...cloneDraft(draft), children: [], profile: normalizeProfileInput(draft.profile) }));
-      if (drafts.length === 0) throw new Error("请至少选择一个推进模式方向。");
+      if (drafts.length === 0) throw new Error(translateUi("请至少选择一个推进模式方向。"));
       if (expansionParentId) {
         return createStoryModeChildren({ parentId: expansionParentId, drafts });
       }
@@ -428,9 +428,9 @@ export default function StoryModeManagementPage() {
 
   const selectedParentLabel = useMemo(() => {
     if (!defaultParentId) {
-      return "作为根推进模式创建";
+      return translateUi("作为根推进模式创建");
     }
-    return parentOptions.find((item) => item.id === defaultParentId)?.path ?? "作为根推进模式创建";
+    return parentOptions.find((item) => item.id === defaultParentId)?.path ?? translateUi("作为根推进模式创建");
   }, [defaultParentId, parentOptions]);
 
   const editParentOptions = useMemo(

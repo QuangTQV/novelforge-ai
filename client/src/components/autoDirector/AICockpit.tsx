@@ -238,15 +238,15 @@ function workerStateDetail(health: NonNullable<DirectorBookAutomationProjection[
     return health.message.trim();
   }
   if (health.queuedCommandCount > 0) {
-    return "任务已排队，后台执行接手后会继续推进。";
+    return translateUi("任务已排队，后台执行接手后会继续推进。");
   }
   if (health.runningCommandCount > 0 || health.leasedCommandCount > 0) {
-    return "后台执行正在处理当前任务。";
+    return translateUi("后台执行正在处理当前任务。");
   }
   if (health.staleCommandCount > 0) {
-    return "后台执行中断后会从最近进度尝试恢复。";
+    return translateUi("后台执行中断后会从最近进度尝试恢复。");
   }
-  return "当前没有正在排队或执行的后台动作。";
+  return translateUi("当前没有正在排队或执行的后台动作。");
 }
 
 function SummaryMetric(props: {
@@ -339,16 +339,16 @@ export default function AICockpit(props: AICockpitProps) {
   const workerHealth = focusProjection.workerHealth ?? null;
   const artifactInsightLines = [
     focusProjection.artifactSummary.affectedChapterCount
-      ? `影响 ${focusProjection.artifactSummary.affectedChapterCount} 个章节`
+      ? translateUi("影响 {{v0}} 个章节", { v0: focusProjection.artifactSummary.affectedChapterCount })
       : null,
     focusProjection.artifactSummary.recentStaleArtifacts?.length
-      ? `${focusProjection.artifactSummary.recentStaleArtifacts.length} 个产物需复核`
+      ? translateUi("{{v0}} 个产物需复核", { v0: focusProjection.artifactSummary.recentStaleArtifacts.length })
       : null,
     focusProjection.artifactSummary.recentRepairArtifacts?.length
-      ? `${focusProjection.artifactSummary.recentRepairArtifacts.length} 条修复记录`
+      ? translateUi("{{v0}} 条修复记录", { v0: focusProjection.artifactSummary.recentRepairArtifacts.length })
       : null,
     focusProjection.artifactSummary.recentVersionedArtifacts?.length
-      ? `${focusProjection.artifactSummary.recentVersionedArtifacts.length} 个产物有新版本`
+      ? translateUi("{{v0}} 个产物有新版本", { v0: focusProjection.artifactSummary.recentVersionedArtifacts.length })
       : null,
   ].filter((line): line is string => Boolean(line));
   const reason = focusProjection.userReason?.trim()
@@ -360,9 +360,9 @@ export default function AICockpit(props: AICockpitProps) {
     || focusProjection.headline?.trim()
     || displayStateLabel(focusProjection.displayState);
   const statusDetail = reason === statusHeadline
-    ? focusProjection.progressSummary?.trim() || "AI 会在这里汇总本书自动推进的最新状态。"
+    ? focusProjection.progressSummary?.trim() || translateUi("AI 会在这里汇总本书自动推进的最新状态。")
     : reason;
-  const latestRecordText = recentItems[0] ? formatDate(recentItems[0].occurredAt) : "暂无";
+  const latestRecordText = recentItems[0] ? formatDate(recentItems[0].occurredAt) : translateUi("暂无");
 
   const handlePrimaryAction = () => {
     if (primaryAction && onAction) {

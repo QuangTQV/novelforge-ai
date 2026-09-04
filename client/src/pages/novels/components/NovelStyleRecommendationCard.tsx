@@ -41,7 +41,7 @@ export default function NovelStyleRecommendationCard({ novelId }: NovelStyleReco
       setMessage("");
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "写法推荐失败，请稍后再试。");
+      setMessage(error instanceof Error ? error.message : translateUi("写法推荐失败，请稍后再试。"));
     },
   });
 
@@ -55,12 +55,12 @@ export default function NovelStyleRecommendationCard({ novelId }: NovelStyleReco
       enabled: true,
     }),
     onSuccess: async () => {
-      setMessage("已将这套写法设为本书默认写法。自动导演前半段会先读取轻量摘要，正文规划与生成阶段再继续使用完整规则。");
+      setMessage(translateUi("已将这套写法设为本书默认写法。自动导演前半段会先读取轻量摘要，正文规划与生成阶段再继续使用完整规则。"));
       await queryClient.invalidateQueries({ queryKey: queryKeys.styleEngine.bindings(`novel-${novelId}`) });
       await queryClient.invalidateQueries({ queryKey: queryKeys.styleEngine.bindings("all") });
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "写法绑定失败，请稍后再试。");
+      setMessage(error instanceof Error ? error.message : translateUi("写法绑定失败，请稍后再试。"));
     },
   });
 

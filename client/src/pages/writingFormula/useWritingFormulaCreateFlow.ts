@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { BookAnalysis } from "@ai-novel/shared/types/bookAnalysis";
@@ -158,7 +159,7 @@ export function useWritingFormulaCreateFlow({
       }
       handledTerminalTaskIdRef.current = pendingExtractionTaskId;
       setPendingExtractionTaskId("");
-      onFlowMessage("写法提取任务不存在或已被清理，请重新提交。");
+      onFlowMessage(translateUi("写法提取任务不存在或已被清理，请重新提交。"));
       return;
     }
 
@@ -174,14 +175,14 @@ export function useWritingFormulaCreateFlow({
 
     if (task.status === "succeeded") {
       const profileId = readCreatedProfileId(task);
-      const profileName = readCreatedProfileName(task) || form.extractName.trim() || "新写法";
+      const profileName = readCreatedProfileName(task) || form.extractName.trim() || translateUi("新写法");
       if (!profileId) {
-        onFlowMessage("写法提取任务已完成，但没有拿到自动保存结果。");
+        onFlowMessage(translateUi("写法提取任务已完成，但没有拿到自动保存结果。"));
         return;
       }
       resetCreateFlow();
       void refreshStyleData().then(() => {
-        onAutoSavedProfileReady(profileId, `写法“${profileName}”已自动保存，已经为你打开当前写法编辑。`);
+        onAutoSavedProfileReady(profileId, translateUi("写法“{{v0}}”已自动保存，已经为你打开当前写法编辑。", { v0: profileName }));
       });
       return;
     }
@@ -189,8 +190,8 @@ export function useWritingFormulaCreateFlow({
     const failureMessage = task.failureSummary
       ?? task.lastError
       ?? (task.status === "cancelled"
-        ? "写法提取任务已取消。"
-        : "写法提取任务失败，请稍后重试。");
+        ? translateUi("写法提取任务已取消。")
+        : translateUi("写法提取任务失败，请稍后重试。"));
     onFlowMessage(failureMessage);
   }, [
     extractionTaskQuery.data,
@@ -211,7 +212,7 @@ export function useWritingFormulaCreateFlow({
       }
       resetCreateFlow();
       await refreshStyleData();
-      onImmediateProfileCreated(profile, `写法“${profile.name}”已经创建，可以继续补规则、试写或绑定到目标。`);
+      onImmediateProfileCreated(profile, translateUi("写法“{{v0}}”已经创建，可以继续补规则、试写或绑定到目标。", { v0: profile.name }));
     },
   });
 
@@ -231,7 +232,7 @@ export function useWritingFormulaCreateFlow({
       }
       resetCreateFlow();
       await refreshStyleData();
-      onImmediateProfileCreated(profile, `写法“${profile.name}”已经生成，可以继续补规则、试写或绑定到目标。`);
+      onImmediateProfileCreated(profile, translateUi("写法“{{v0}}”已经生成，可以继续补规则、试写或绑定到目标。", { v0: profile.name }));
     },
   });
 
@@ -244,7 +245,7 @@ export function useWritingFormulaCreateFlow({
       }
       resetCreateFlow();
       await refreshStyleData();
-      onImmediateProfileCreated(profile, `模板写法“${profile.name}”已经创建，可以继续补规则、试写或绑定到目标。`);
+      onImmediateProfileCreated(profile, translateUi("模板写法“{{v0}}”已经创建，可以继续补规则、试写或绑定到目标。", { v0: profile.name }));
     },
   });
 
@@ -261,7 +262,7 @@ export function useWritingFormulaCreateFlow({
     onSuccess: (response) => {
       const task = response.data;
       if (!task) {
-        onFlowMessage("写法提取任务提交成功，但没有拿到任务详情。");
+        onFlowMessage(translateUi("写法提取任务提交成功，但没有拿到任务详情。"));
         return;
       }
       handledTerminalTaskIdRef.current = "";
@@ -284,7 +285,7 @@ export function useWritingFormulaCreateFlow({
     onSuccess: (response) => {
       const task = response.data;
       if (!task) {
-        onFlowMessage("写法提取任务提交成功，但没有拿到任务详情。");
+        onFlowMessage(translateUi("写法提取任务提交成功，但没有拿到任务详情。"));
         return;
       }
       handledTerminalTaskIdRef.current = "";
@@ -308,7 +309,7 @@ export function useWritingFormulaCreateFlow({
       }
       resetCreateFlow();
       await refreshStyleData();
-      onImmediateProfileCreated(profile, `写法“${profile.name}”来自拆书结果，你可以继续检查规则、试写，或绑定到目标。`);
+      onImmediateProfileCreated(profile, translateUi("写法“{{v0}}”来自拆书结果，你可以继续检查规则、试写，或绑定到目标。", { v0: profile.name }));
     },
   });
 

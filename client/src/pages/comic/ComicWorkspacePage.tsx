@@ -31,10 +31,10 @@ import SelectControl from "@/components/common/SelectControl";
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const SOURCE_LABELS: Record<ComicSourceType, string> = {
-  novel_import: "导入小说",
-  original: "原创灵感",
-  text_import: "文本导入",
-  comic_import: "漫画改编",
+  novel_import: translateUi("导入小说"),
+  original: translateUi("原创灵感"),
+  text_import: translateUi("文本导入"),
+  comic_import: translateUi("漫画改编"),
 };
 
 const STYLE_PRESETS = [
@@ -60,8 +60,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "webtoon",
     label: translateUi("条漫"),
-    desc: "竖向长格，逐格下滑阅读，韩漫/手机主流形态",
-    tag: "最流行",
+    desc: translateUi("竖向长格，逐格下滑阅读，韩漫/手机主流形态"),
+    tag: translateUi("最流行"),
     imageSize: "1024x1536",
     promptKeywords: "webtoon vertical strip panel, tall single frame, mobile scroll comic",
     layoutSvg: (
@@ -77,8 +77,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "4koma",
     label: translateUi("四格漫"),
-    desc: "四格竖排一页，起承转合，适合日常喜剧",
-    tag: "经典",
+    desc: translateUi("四格竖排一页，起承转合，适合日常喜剧"),
+    tag: translateUi("经典"),
     imageSize: "1024x1536",
     promptKeywords: "4-koma manga layout, four equal vertical panels in one image, sequential comic strip",
     layoutSvg: (
@@ -96,8 +96,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "single_page",
     label: translateUi("单页漫"),
-    desc: "一页多格，格子大小自由，传统日漫页面",
-    tag: "传统",
+    desc: translateUi("一页多格，格子大小自由，传统日漫页面"),
+    tag: translateUi("传统"),
     imageSize: "1024x1536",
     promptKeywords: "single page manga layout, multiple panels varied sizes, dynamic panel composition, Japanese manga page",
     layoutSvg: (
@@ -113,8 +113,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "cinematic",
     label: translateUi("电影分镜"),
-    desc: "宽幅横画面，电影感构图，史诗动作场面",
-    tag: "大气",
+    desc: translateUi("宽幅横画面，电影感构图，史诗动作场面"),
+    tag: translateUi("大气"),
     imageSize: "1536x1024",
     promptKeywords: "cinematic widescreen panel, film storyboard style, letterbox 16:9 format, movie scene composition",
     layoutSvg: (
@@ -130,8 +130,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "chat_comic",
     label: translateUi("聊天漫"),
-    desc: "对话气泡主导，轻量日常，社交媒体友好",
-    tag: "轻快",
+    desc: translateUi("对话气泡主导，轻量日常，社交媒体友好"),
+    tag: translateUi("轻快"),
     imageSize: "1024x1536",
     promptKeywords: "chat comic style, messenger conversation bubbles, LINE webtoon chat format, casual slice of life",
     layoutSvg: (
@@ -151,8 +151,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "chibi_comic",
     label: translateUi("Q版萌漫"),
-    desc: "圆润可爱的 Q 版人物，萌系轻松风",
-    tag: "萌系",
+    desc: translateUi("圆润可爱的 Q 版人物，萌系轻松风"),
+    tag: translateUi("萌系"),
     imageSize: "1024x1024",
     promptKeywords: "chibi SD manga style, cute super-deformed proportions, kawaii comic panel, round adorable characters",
     layoutSvg: (
@@ -171,8 +171,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "ink_comic",
     label: translateUi("水墨国风"),
-    desc: "传统水墨笔触，古风意境，留白美学",
-    tag: "国风",
+    desc: translateUi("传统水墨笔触，古风意境，留白美学"),
+    tag: translateUi("国风"),
     imageSize: "1024x1536",
     promptKeywords: "Chinese ink wash painting comic, traditional brush style, xieyi brushwork, classical Chinese aesthetic, negative space",
     layoutSvg: (
@@ -189,8 +189,8 @@ export const COMIC_FORMATS: ComicFormatDef[] = [
   {
     value: "drama_screenshot",
     label: translateUi("短剧截图漫"),
-    desc: "竖版视频帧风格，字幕条 + 场景感",
-    tag: "新兴",
+    desc: translateUi("竖版视频帧风格，字幕条 + 场景感"),
+    tag: translateUi("新兴"),
     imageSize: "1024x1536",
     promptKeywords: "vertical short drama screenshot style, subtitle bar at bottom, TV drama still frame, cinematic vertical video",
     layoutSvg: (
@@ -220,7 +220,7 @@ function statusBadgeVariant(status: string): "default" | "secondary" | "outline"
 }
 function statusLabel(s: string) {
   const m: Record<string, string> = {
-    draft: "草稿", outlined: "大纲已生成", scripted: "脚本已生成", completed: "已完成",
+    draft: translateUi("草稿"), outlined: translateUi("大纲已生成"), scripted: translateUi("脚本已生成"), completed: translateUi("已完成"),
   };
   return m[s] ?? s;
 }

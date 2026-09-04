@@ -58,7 +58,7 @@ const DEFAULT_BOOTSTRAP_SNAPSHOT: DesktopBootstrapSnapshot = {
   state: "launching",
   stage: "launching",
   title: translateUi("正在启动桌面工作区"),
-  detail: "正在准备桌面本地运行时。",
+  detail: translateUi("正在准备桌面本地运行时。"),
   logDir: "",
   logFile: "",
   updatedAt: "",

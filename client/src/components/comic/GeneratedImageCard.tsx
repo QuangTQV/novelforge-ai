@@ -12,9 +12,9 @@ const STATUS_DOT: Record<GeneratedImageCardStatus, string> = {
 };
 
 const STATUS_TITLE: Record<GeneratedImageCardStatus, string> = {
-  idle: "未生成",
-  generating: "生成中",
-  done: "已就绪",
+  idle: translateUi("未生成"),
+  generating: translateUi("生成中"),
+  done: translateUi("已就绪"),
   error: translateUi("生成失败"),
 };
 

@@ -60,7 +60,7 @@ export default function CharacterPreparationHero(props: CharacterPreparationHero
           },
           {
             label: translateUi("当前焦点"),
-            value: selectedCharacter?.name ?? "尚未选择角色",
+            value: selectedCharacter?.name ?? translateUi("尚未选择角色"),
             description: selectedCharacter?.role || translateUi("{{value0}} 个基础角色可导入", { value0: baseCharacterCount }),
             tone: selectedCharacter ? "info" : "neutral",
           },
@@ -98,16 +98,16 @@ function getRecommendedAction(input: {
   pendingCharacterResourceCount: number;
 }): string {
   if (input.characterCount === 0) {
-    return "先建立主角或导入基础角色，让后续世界、卷规划和章节生成有明确行动主体。";
+    return translateUi("先建立主角或导入基础角色，让后续世界、卷规划和章节生成有明确行动主体。");
   }
   if (input.coreCharacterCount === 0) {
-    return "把主角、主要对手或关键同盟标记清楚，避免后续章节缺少稳定压力源。";
+    return translateUi("把主角、主要对手或关键同盟标记清楚，避免后续章节缺少稳定压力源。");
   }
   if (input.pendingCharacterResourceCount > 0) {
-    return `有 ${input.pendingCharacterResourceCount} 条资源变更等待确认，建议到“资源”页核对。`;
+    return translateUi("有 {{v0}} 条资源变更等待确认，建议到“资源”页核对。", { v0: input.pendingCharacterResourceCount });
   }
   if (!input.selectedCharacter) {
-    return "从左侧选择一个角色，进入档案、外显、资源和时间线的切换式维护。";
+    return translateUi("从左侧选择一个角色，进入档案、外显、资源和时间线的切换式维护。");
   }
-  return "优先检查当前目标、最近出场和关键资源，再决定是否让 AI 演进状态。";
+  return translateUi("优先检查当前目标、最近出场和关键资源，再决定是否让 AI 演进状态。");
 }

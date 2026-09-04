@@ -29,22 +29,22 @@ export default function TaskCenterDetailSummary({
   const progressPercent = typeof dashboardView?.progressPercent === "number"
     ? dashboardView.progressPercent
     : Math.round(task.progress * 100);
-  const currentStage = dashboardView?.stageLabel ?? task.currentStage ?? "暂无";
-  const currentItem = dashboardView?.currentAction ?? task.currentItemLabel ?? "暂无";
+  const currentStage = dashboardView?.stageLabel ?? task.currentStage ?? translateUi("暂无");
+  const currentItem = dashboardView?.currentAction ?? task.currentItemLabel ?? translateUi("暂无");
   const tone = getTaskQueueTone(task);
   const technicalRows = [
-    ["最近心跳", formatDate(task.heartbeatAt)],
-    ["开始时间", formatDate(task.startedAt)],
-    ["结束时间", formatDate(task.finishedAt)],
-    ["重试次数", task.retryCountLabel],
-    ...((task.provider || task.model) ? [["调用模型", `${task.provider ?? "暂无"} / ${task.model ?? "暂无"}`]] : []),
-    ...(isAutoDirectorTask ? [["界面模型", currentModelLabel]] : []),
+    [translateUi("最近心跳"), formatDate(task.heartbeatAt)],
+    [translateUi("开始时间"), formatDate(task.startedAt)],
+    [translateUi("结束时间"), formatDate(task.finishedAt)],
+    [translateUi("重试次数"), task.retryCountLabel],
+    ...((task.provider || task.model) ? [[translateUi("调用模型"), `${task.provider ?? translateUi("暂无")} / ${task.model ?? translateUi("暂无")}`]] : []),
+    ...(isAutoDirectorTask ? [[translateUi("界面模型"), currentModelLabel]] : []),
     ...((task.tokenUsage || task.provider || task.model) ? [
-      ["累计调用", formatTokenCount(task.tokenUsage?.llmCallCount ?? 0)],
-      ["输入 Tokens", formatTokenCount(task.tokenUsage?.promptTokens ?? 0)],
-      ["输出 Tokens", formatTokenCount(task.tokenUsage?.completionTokens ?? 0)],
-      ["累计 Tokens", formatTokenCount(task.tokenUsage?.totalTokens ?? 0)],
-      ["最近记录", formatDate(task.tokenUsage?.lastRecordedAt)],
+      [translateUi("累计调用"), formatTokenCount(task.tokenUsage?.llmCallCount ?? 0)],
+      [translateUi("输入 Tokens"), formatTokenCount(task.tokenUsage?.promptTokens ?? 0)],
+      [translateUi("输出 Tokens"), formatTokenCount(task.tokenUsage?.completionTokens ?? 0)],
+      [translateUi("累计 Tokens"), formatTokenCount(task.tokenUsage?.totalTokens ?? 0)],
+      [translateUi("最近记录"), formatDate(task.tokenUsage?.lastRecordedAt)],
     ] : []),
   ];
 

@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { Descendant, Value } from "platejs";
 import type { PromptTemplateReferenceCatalog, PromptTemplateReferenceItem } from "@/api/promptWorkbench";
 import { CONTEXT_GROUP_LABELS } from "./promptWorkbenchLabels.ts";
@@ -67,7 +68,7 @@ export function labelTemplateToken(input: {
 }): string {
   const { key, kind, reference } = input;
   if (kind === "context") {
-    return CONTEXT_GROUP_LABELS[key] ?? reference?.label ?? key;
+    return translateUi(CONTEXT_GROUP_LABELS[key] ?? reference?.label ?? key);
   }
   if (reference?.label) {
     return reference.label;

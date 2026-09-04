@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -131,7 +132,7 @@ export default function WorldGenerator() {
         const defaultPropertySelection = buildDefaultPropertySelectionState(nextPropertyOptions);
 
         if (!nextConcept) {
-          throw new Error("世界分析结果缺少概念卡。");
+          throw new Error(translateUi("世界分析结果缺少概念卡。"));
         }
 
         setConcept(nextConcept);
@@ -147,7 +148,7 @@ export default function WorldGenerator() {
         setSkeleton(null);
         setStep(2);
       } catch (error) {
-        const message = error instanceof Error ? error.message : "世界分析结果解析失败。";
+        const message = error instanceof Error ? error.message : translateUi("世界分析结果解析失败。");
         toast.error(message);
       }
     },
@@ -232,10 +233,10 @@ export default function WorldGenerator() {
       const response = await generateWorldSkeleton({
         idea: [
           inspirationText.trim(),
-          concept?.summary ? `概念卡：${concept.summary}` : "",
-        ].filter(Boolean).join("\n\n") || "生成一个可用于小说创作的世界样本。",
-        worldType: selectedGenre?.path || concept?.worldType || matchedTemplateWorldType || selectedTemplate?.worldType || "自定义",
-        template: selectedTemplate?.name ?? "自定义",
+          concept?.summary ? translateUi("概念卡：{{v0}}", { v0: concept.summary }) : "",
+        ].filter(Boolean).join("\n\n") || translateUi("生成一个可用于小说创作的世界样本。"),
+        worldType: selectedGenre?.path || concept?.worldType || matchedTemplateWorldType || selectedTemplate?.worldType || translateUi("自定义"),
+        template: selectedTemplate?.name ?? translateUi("自定义"),
         referenceContext: buildReferenceContext(),
         blueprint: buildGenerationBlueprint(),
         options: {
@@ -255,13 +256,13 @@ export default function WorldGenerator() {
   const finalizeMutation = useMutation({
     mutationFn: async () => {
       if (!skeleton) {
-        throw new Error("请先生成世界骨架。");
+        throw new Error(translateUi("请先生成世界骨架。"));
       }
       const blueprint = buildGenerationBlueprint();
       return createWorld({
-        name: worldName.trim() || skeleton.concept.name || "未命名世界",
+        name: worldName.trim() || skeleton.concept.name || translateUi("未命名世界"),
         description: skeleton.structuredData.profile.summary || skeleton.concept.oneSentence,
-        worldType: selectedGenre?.path || concept?.worldType || matchedTemplateWorldType || selectedTemplate?.worldType || "自定义",
+        worldType: selectedGenre?.path || concept?.worldType || matchedTemplateWorldType || selectedTemplate?.worldType || translateUi("自定义"),
         templateKey: selectedTemplate?.key ?? "custom",
         selectedDimensions: JSON.stringify(selectedDimensions),
         selectedElements: serializeWorldGenerationBlueprint(blueprint),

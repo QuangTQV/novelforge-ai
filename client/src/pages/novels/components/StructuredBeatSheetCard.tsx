@@ -52,13 +52,13 @@ export default function StructuredBeatSheetCard(props: StructuredBeatSheetCardPr
   } = props;
 
   const hasExistingBeatSheet = Boolean(selectedBeatSheet);
-  const volumeTitle = selectedVolume.title?.trim() || `第${selectedVolume.sortOrder}卷`;
+  const volumeTitle = selectedVolume.title?.trim() || translateUi("第{{v0}}卷", { v0: selectedVolume.sortOrder });
   const volumeSummary = selectedVolume.mainPromise?.trim()
     || selectedVolume.summary?.trim()
-    || "先在下方按节奏分组的章节导航里定位当前节奏，再继续细化对应章节。";
+    || translateUi("先在下方按节奏分组的章节导航里定位当前节奏，再继续细化对应章节。");
   const generateButtonLabel = isGeneratingBeatSheet
-    ? (hasExistingBeatSheet ? "重新生成中..." : "生成中...")
-    : (hasExistingBeatSheet ? "重新生成当前卷节奏板" : "生成当前卷节奏板");
+    ? (hasExistingBeatSheet ? translateUi("重新生成中...") : translateUi("生成中..."))
+    : (hasExistingBeatSheet ? translateUi("重新生成当前卷节奏板") : translateUi("生成当前卷节奏板"));
 
   return (
     <Card>

@@ -25,7 +25,7 @@ export default function NovelProductionExperienceHandoff({
     mutationFn: async (experience: "simple" | "professional") => {
       const response = await selectNovelProductionExperience(taskId, experience);
       if (!response.data) {
-        throw new Error("生产方式选择没有返回跳转位置。");
+        throw new Error(translateUi("生产方式选择没有返回跳转位置。"));
       }
       return response.data;
     },

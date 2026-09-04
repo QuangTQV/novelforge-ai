@@ -48,43 +48,43 @@ interface NovelWorldManagerCardProps {
 function labelSourceType(sourceType: string | null | undefined): string {
   switch (sourceType) {
     case "imported":
-      return "来自世界库";
+      return translateUi("来自世界库");
     case "generated":
-      return "根据本书生成";
+      return translateUi("根据本书生成");
     case "manual":
-      return "自定义世界";
+      return translateUi("自定义世界");
     default:
-      return "未设置";
+      return translateUi("未设置");
   }
 }
 
 function labelSyncDirection(direction: string | null | undefined): string {
   switch (direction) {
     case "push":
-      return "只推送到世界库";
+      return translateUi("只推送到世界库");
     case "pull":
-      return "只从世界库拉取";
+      return translateUi("只从世界库拉取");
     case "bidirectional":
-      return "可双向同步";
+      return translateUi("可双向同步");
     default:
-      return "不同步";
+      return translateUi("不同步");
   }
 }
 
 function sectionLabel(section: string): string {
   switch (section) {
     case "profile":
-      return "世界概要";
+      return translateUi("世界概要");
     case "rules":
-      return "核心规则";
+      return translateUi("核心规则");
     case "factions":
-      return "阵营";
+      return translateUi("阵营");
     case "forces":
-      return "势力";
+      return translateUi("势力");
     case "locations":
-      return "地点";
+      return translateUi("地点");
     case "relations":
-      return "关系网络";
+      return translateUi("关系网络");
     default:
       return section;
   }
@@ -176,18 +176,18 @@ export default function NovelWorldManagerCard(props: NovelWorldManagerCardProps)
 
   const activeWorldName = useMemo(() => {
     const id = novelWorld?.sourceWorldId ?? props.selectedWorldId;
-    return props.worldOptions.find((item) => item.id === id)?.name ?? novelWorld?.title ?? "未选择世界";
+    return props.worldOptions.find((item) => item.id === id)?.name ?? novelWorld?.title ?? translateUi("未选择世界");
   }, [novelWorld?.sourceWorldId, novelWorld?.title, props.selectedWorldId, props.worldOptions]);
   const writingStatus = novelWorld
     ? novelWorld.hasStorySlice
-      ? "写作范围已整理"
-      : "需要整理本书可用范围"
-    : "还未建立本书世界";
+      ? translateUi("写作范围已整理")
+      : translateUi("需要整理本书可用范围")
+    : translateUi("还未建立本书世界");
   const syncStatus = novelWorld?.syncEnabled
     ? labelSyncDirection(novelWorld.syncDirection)
     : novelWorld?.sourceWorldId
-      ? "保留为本书副本"
-      : "本书内部使用";
+      ? translateUi("保留为本书副本")
+      : translateUi("本书内部使用");
   const lastSyncedAtText = formatSyncTime(novelWorld?.lastSyncedAt);
   const pendingSections = syncDiff?.differences.length
     ? syncDiff.differences.map((item) => item.section)
@@ -197,10 +197,10 @@ export default function NovelWorldManagerCard(props: NovelWorldManagerCardProps)
   const forces = handbook?.forces.length ? handbook.forces : handbook?.factions ?? [];
   const summaryText = handbook?.summary
     ?? novelWorld?.coverSummary
-    ?? (novelWorld ? "这本书的世界正在整理中。" : "先创建一份属于这本书的世界副本，后续角色、大纲和章节都会读取这里的设定边界。");
+    ?? (novelWorld ? translateUi("这本书的世界正在整理中。") : translateUi("先创建一份属于这本书的世界副本，后续角色、大纲和章节都会读取这里的设定边界。"));
   const themeLine = inlineText([
-    handbook?.identity ? `身份：${handbook.identity}` : null,
-    handbook?.tone ? `气质：${handbook.tone}` : null,
+    handbook?.identity ? translateUi("身份：{{v0}}", { v0: handbook.identity }) : null,
+    handbook?.tone ? translateUi("气质：{{v0}}", { v0: handbook.tone }) : null,
     ...(handbook?.themes.slice(0, 4) ?? []),
   ]);
 

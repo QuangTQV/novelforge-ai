@@ -19,12 +19,12 @@ interface TitleSuggestionListProps {
 export default function TitleSuggestionList({
   suggestions,
   selectedTitle = "",
-  primaryActionLabel = "复制标题",
+  primaryActionLabel = translateUi("复制标题"),
   onPrimaryAction,
   onCopy,
   onSave,
   savingTitle = "",
-  emptyMessage = "还没有生成任何标题。",
+  emptyMessage = translateUi("还没有生成任何标题。"),
   layout = "list",
 }: TitleSuggestionListProps) {
   if (suggestions.length === 0) {

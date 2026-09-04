@@ -35,8 +35,8 @@ export default function StageModelRun({
 }: StageModelRunProps) {
   const [issuePolicyDialogOpen, setIssuePolicyDialogOpen] = useState(false);
   const issuePolicySummary = issuePolicy
-    ? findDirectorIssuePolicyPreset(issuePolicy)?.name ?? "已调整本次开书规则"
-    : "使用默认规则";
+    ? findDirectorIssuePolicyPreset(issuePolicy)?.name ?? translateUi("已调整本次开书规则")
+    : translateUi("使用默认规则");
 
   return (
     <section className="mx-auto w-full max-w-5xl space-y-7 py-4">

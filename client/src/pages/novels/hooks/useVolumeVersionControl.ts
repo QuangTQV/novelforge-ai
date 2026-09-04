@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, type QueryClient } from "@tanstack/react-query";
 import type {
@@ -82,60 +83,60 @@ export function useVolumeVersionControl({
       if (nextVersionId) {
         setSelectedVersionId(nextVersionId);
       }
-      setMessage(response.message ?? "卷级草稿版本已创建。");
+      setMessage(response.message ?? translateUi("卷级草稿版本已创建。"));
       await invalidateVersionList();
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "创建卷级草稿版本失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("创建卷级草稿版本失败。"));
     },
   });
 
   const activateVersionMutation = useMutation({
     mutationFn: () => {
       if (!selectedVersionId) {
-        throw new Error("请先选择一个卷级版本。");
+        throw new Error(translateUi("请先选择一个卷级版本。"));
       }
       return activateVolumeVersion(novelId, selectedVersionId);
     },
     onSuccess: async (response) => {
-      setMessage(response.message ?? "已设为生效卷级版本。");
+      setMessage(response.message ?? translateUi("已设为生效卷级版本。"));
       await invalidateVersionList();
       await invalidateNovelDetail();
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "设置生效版失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("设置生效版失败。"));
     },
   });
 
   const freezeVersionMutation = useMutation({
     mutationFn: () => {
       if (!selectedVersionId) {
-        throw new Error("请先选择一个卷级版本。");
+        throw new Error(translateUi("请先选择一个卷级版本。"));
       }
       return freezeVolumeVersion(novelId, selectedVersionId);
     },
     onSuccess: async (response) => {
-      setMessage(response.message ?? "卷级版本已冻结。");
+      setMessage(response.message ?? translateUi("卷级版本已冻结。"));
       await invalidateVersionList();
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "冻结卷级版本失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("冻结卷级版本失败。"));
     },
   });
 
   const diffMutation = useMutation({
     mutationFn: () => {
       if (!selectedVersionId) {
-        throw new Error("请先选择一个卷级版本。");
+        throw new Error(translateUi("请先选择一个卷级版本。"));
       }
       return getVolumeDiff(novelId, selectedVersionId);
     },
     onSuccess: (response) => {
       setDiffResult(response.data ?? null);
-      setMessage(response.message ?? "卷级版本差异已更新。");
+      setMessage(response.message ?? translateUi("卷级版本差异已更新。"));
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "加载卷级版本差异失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("加载卷级版本差异失败。"));
     },
   });
 
@@ -143,40 +144,40 @@ export function useVolumeVersionControl({
     mutationFn: () => analyzeVolumeImpact(novelId, { volumes: draftDocument.volumes }),
     onSuccess: (response) => {
       setImpactResult(response.data ?? null);
-      setMessage(response.message ?? "卷级草稿影响分析完成。");
+      setMessage(response.message ?? translateUi("卷级草稿影响分析完成。"));
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "卷级草稿影响分析失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("卷级草稿影响分析失败。"));
     },
   });
 
   const analyzeVersionImpactMutation = useMutation({
     mutationFn: () => {
       if (!selectedVersionId) {
-        throw new Error("请先选择一个卷级版本。");
+        throw new Error(translateUi("请先选择一个卷级版本。"));
       }
       return analyzeVolumeImpact(novelId, { versionId: selectedVersionId });
     },
     onSuccess: (response) => {
       setImpactResult(response.data ?? null);
-      setMessage(response.message ?? "卷级版本影响分析完成。");
+      setMessage(response.message ?? translateUi("卷级版本影响分析完成。"));
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "卷级版本影响分析失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("卷级版本影响分析失败。"));
     },
   });
 
   const loadSelectedVersionMutation = useMutation({
     mutationFn: () => {
       if (!selectedVersionId) {
-        throw new Error("请先选择一个卷级版本。");
+        throw new Error(translateUi("请先选择一个卷级版本。"));
       }
       return getVolumeVersion(novelId, selectedVersionId);
     },
     onSuccess: (response) => {
       const version = response.data;
       if (!version) {
-        setMessage("读取卷级版本内容失败。");
+        setMessage(translateUi("读取卷级版本内容失败。"));
         return;
       }
       try {
@@ -186,13 +187,13 @@ export function useVolumeVersionControl({
         setCritiqueReport(parsed.critiqueReport ?? null);
         setBeatSheets(parsed.beatSheets ?? []);
         setRebalanceDecisions(parsed.rebalanceDecisions ?? []);
-        setMessage(`已加载 V${version.version} 到当前卷级草稿。`);
+        setMessage(translateUi("已加载 V{{v0}} 到当前卷级草稿。", { v0: version.version }));
       } catch {
-        setMessage("读取卷级版本内容失败。");
+        setMessage(translateUi("读取卷级版本内容失败。"));
       }
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "读取卷级版本内容失败。");
+      setMessage(error instanceof Error ? error.message : translateUi("读取卷级版本内容失败。"));
     },
   });
 

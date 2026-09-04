@@ -29,23 +29,23 @@ interface KnowledgeOpsTabProps {
 const FINISHED_RAG_JOB_STATUSES = new Set<RagJobSummary["status"]>(["succeeded", "failed", "cancelled"]);
 
 const OWNER_LABELS: Record<string, string> = {
-  novel: "小说资料",
-  chapter: "章节正文",
-  world: "本书世界",
-  world_library_item: "世界样本",
-  character: "角色资料",
-  character_timeline: "角色经历",
-  bible: "创作设定",
-  chapter_summary: "章节摘要",
-  consistency_fact: "连续性资料",
-  knowledge_document: "知识资料",
-  chat_message: "创作对话",
+  novel: translateUi("小说资料"),
+  chapter: translateUi("章节正文"),
+  world: translateUi("本书世界"),
+  world_library_item: translateUi("世界样本"),
+  character: translateUi("角色资料"),
+  character_timeline: translateUi("角色经历"),
+  bible: translateUi("创作设定"),
+  chapter_summary: translateUi("章节摘要"),
+  consistency_fact: translateUi("连续性资料"),
+  knowledge_document: translateUi("知识资料"),
+  chat_message: translateUi("创作对话"),
 };
 
 const JOB_TYPE_LABELS: Record<string, string> = {
-  upsert: "更新检索内容",
-  rebuild: "重新建立索引",
-  delete: "移除检索内容",
+  upsert: translateUi("更新检索内容"),
+  rebuild: translateUi("重新建立索引"),
+  delete: translateUi("移除检索内容"),
 };
 
 function canDeleteRagJob(job: RagJobSummary): boolean {
@@ -53,11 +53,11 @@ function canDeleteRagJob(job: RagJobSummary): boolean {
 }
 
 function formatOwnerLabel(ownerType: string): string {
-  return OWNER_LABELS[ownerType] ?? "创作资料";
+  return OWNER_LABELS[ownerType] ?? translateUi("创作资料");
 }
 
 function formatJobType(jobType: string): string {
-  return JOB_TYPE_LABELS[jobType] ?? "同步检索内容";
+  return JOB_TYPE_LABELS[jobType] ?? translateUi("同步检索内容");
 }
 
 export default function KnowledgeOpsTab({

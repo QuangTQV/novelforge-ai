@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type {
   APIKeyStatus,
   ModelRouteConnectivityStatus,
@@ -102,24 +103,24 @@ export function isSameRouteDraft(draft: RouteDraft, route: SavedModelRoute | und
 
 export function formatStructuredStatus(status: ModelRouteConnectivityStatus["structured"]): string {
   if (!status) {
-    return "结构化诊断：未执行";
+    return translateUi("结构化诊断：未执行");
   }
   if (status.ok) {
-    return `结构化正常 · ${status.requestProtocol ?? "auto"} · ${status.strategy ?? "prompt_json"}${status.reasoningForcedOff ? " · 会关闭 thinking" : ""}`;
+    return `结构化正常 · ${status.requestProtocol ?? "auto"} · ${status.strategy ?? "prompt_json"}${status.reasoningForcedOff ? translateUi(" · 会关闭 thinking") : ""}`;
   }
-  return `结构化异常 · ${status.errorCategory ?? "unknown"} · ${status.error ?? "未知错误"}`;
+  return translateUi("Structured lỗi · {{cat}} · {{err}}", { cat: status.errorCategory ?? "unknown", err: status.error ?? translateUi("未知错误") });
 }
 
 export function formatConnectivityStatus(status?: ModelRouteConnectivityStatus | null): string {
   if (!status) {
-    return "尚未检测生效路由。";
+    return translateUi("尚未检测生效路由。");
   }
   const parts: string[] = [];
   if (status.plain) {
     parts.push(
       status.plain.ok
-        ? `普通连通正常${status.plain.latency != null ? ` · ${status.plain.latency}ms` : ""}`
-        : `普通连通失败 · ${status.plain.error ?? "未知错误"}`,
+        ? translateUi("Kết nối thường OK") + (status.plain.latency != null ? ` · ${status.plain.latency}ms` : "")
+        : translateUi("Kết nối thường lỗi · {{err}}", { err: status.plain.error ?? translateUi("未知错误") }),
     );
   }
   parts.push(formatStructuredStatus(status.structured));

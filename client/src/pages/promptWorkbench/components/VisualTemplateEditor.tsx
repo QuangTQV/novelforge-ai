@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode, type RefObject } from "react";
 import type { Descendant, Value } from "platejs";
 import { createSlatePlugin } from "platejs";
@@ -31,10 +32,10 @@ const PromptTokenPlugin = createSlatePlugin({
 });
 
 const REFERENCE_GROUP_LABELS: Record<PromptTemplateReferenceItem["group"], string> = {
-  required_context: "必需上下文",
-  optional_context: "可选上下文",
-  input: "运行变量",
-  slot: "槽位",
+  required_context: translateUi("必需上下文"),
+  optional_context: translateUi("可选上下文"),
+  input: translateUi("运行变量"),
+  slot: translateUi("槽位"),
 };
 
 function groupReferences(items: PromptTemplateReferenceItem[], query: string) {
@@ -67,17 +68,17 @@ function TokenMenu(props: {
         <Input
           value={props.query}
           onChange={(event) => props.onQueryChange(event.target.value)}
-          placeholder="搜索上下文、变量或槽位"
+          placeholder={translateUi("搜索上下文、变量或槽位")}
           className="h-8 border-[#cbdad6]"
         />
       </div>
       <div className="max-h-80 overflow-auto p-2">
         {grouped.length === 0 ? (
-          <div className="px-2 py-3 text-sm text-muted-foreground">没有可插入的引用。</div>
+          <div className="px-2 py-3 text-sm text-muted-foreground">{translateUi("没有可插入的引用。")}</div>
         ) : grouped.map((section) => (
           <div key={section.group} className="mb-2 last:mb-0">
             <div className="px-2 pb-1 text-[11px] font-semibold text-[#52606d]">
-              {REFERENCE_GROUP_LABELS[section.group]}
+              {translateUi(REFERENCE_GROUP_LABELS[section.group])}
             </div>
             <div className="space-y-1">
               {section.items.map((item) => {
@@ -93,7 +94,7 @@ function TokenMenu(props: {
                       <span className="text-sm font-medium text-[#25443f]">{displayLabel}</span>
                       {item.required ? (
                         <span className="rounded-md bg-[#eaf7f2] px-1.5 py-0.5 text-[11px] text-[#0f766e]">
-                          必需
+                          {translateUi("必需")}
                         </span>
                       ) : null}
                     </div>
@@ -107,7 +108,7 @@ function TokenMenu(props: {
       </div>
       <div className="border-t border-[#dce8e4] p-2 text-right">
         <Button type="button" variant="ghost" size="sm" onClick={props.onClose}>
-          关闭
+          {translateUi("关闭")}
         </Button>
       </div>
     </div>
@@ -141,8 +142,8 @@ function PromptTokenElement(props: {
     element.label,
     keyText,
     element.description,
-    element.required ? "必需上下文" : "",
-    element.hasPreviewBlock === false ? "当前预览未装配内容" : "",
+    element.required ? translateUi("必需上下文") : "",
+    element.hasPreviewBlock === false ? translateUi("当前预览未装配内容") : "",
   ].filter(Boolean).join("\n");
 
   return (
@@ -218,7 +219,7 @@ function TemplateSourceTextarea(props: {
       <div className="flex items-center justify-between gap-3 border-b border-[#e1ebe8] px-3 py-2">
         <div>
           <div className="text-sm font-semibold text-[#25443f]">{props.label}</div>
-          <div className="text-[11px] text-muted-foreground">源码调试视图会显示原始模板 token</div>
+          <div className="text-[11px] text-muted-foreground">{translateUi("源码调试视图会显示原始模板 token")}</div>
         </div>
         <Button
           type="button"
@@ -229,7 +230,7 @@ function TemplateSourceTextarea(props: {
           disabled={props.disabled}
         >
           <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-          插入引用
+          {translateUi("插入引用")}
         </Button>
       </div>
       <textarea
@@ -397,7 +398,7 @@ export function VisualTemplateEditor(props: {
             className="text-[#0f5f59] hover:bg-[#eef7f4] hover:text-[#0f5f59]"
           >
             <Tags className="mr-1.5 h-3.5 w-3.5" />
-            返回可视化编辑
+            {translateUi("返回可视化编辑")}
           </Button>
         </div>
       </div>
@@ -409,7 +410,7 @@ export function VisualTemplateEditor(props: {
       <div className="flex items-center justify-between gap-3 border-b border-[#e1ebe8] px-3 py-2">
         <div>
           <div className="text-sm font-semibold text-[#25443f]">{props.label}</div>
-          <div className="text-[11px] text-muted-foreground">输入 @ 可插入上下文、变量或槽位标签</div>
+          <div className="text-[11px] text-muted-foreground">{translateUi("输入 @ 可插入上下文、变量或槽位标签")}</div>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -421,7 +422,7 @@ export function VisualTemplateEditor(props: {
             disabled={props.disabled}
           >
             <Code2 className="mr-1.5 h-3.5 w-3.5" />
-            源码视图
+            {translateUi("源码视图")}
           </Button>
           <Button
             type="button"
@@ -435,7 +436,7 @@ export function VisualTemplateEditor(props: {
             disabled={props.disabled}
           >
             <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-            插入引用
+            {translateUi("插入引用")}
           </Button>
         </div>
       </div>
@@ -450,7 +451,7 @@ export function VisualTemplateEditor(props: {
             <Plate editor={editor} onValueChange={handleValueChange}>
               <PlateContent
                 readOnly={props.disabled}
-                placeholder="编排提示词内容，可插入上下文标签"
+                placeholder={translateUi("编排提示词内容，可插入上下文标签")}
                 renderElement={renderTemplateElement}
                 onFocus={() => props.onFocusRole(props.role)}
                 onKeyDown={handleKeyDown}

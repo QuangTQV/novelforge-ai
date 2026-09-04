@@ -24,8 +24,8 @@ export const REFERENCE_CREATE_LINK = "/novels/auto-director?start=reference";
 export const SHORT_STORY_CREATE_LINK = featureFlags.creationStudioEnabled
   ? "/create?form=short_story"
   : null;
-export const PRIMARY_CREATE_LABEL = "AI 自动导演开书";
-export const REFERENCE_CREATE_LABEL = "照着一本书写";
+export const PRIMARY_CREATE_LABEL = translateUi("AI 自动导演开书");
+export const REFERENCE_CREATE_LABEL = translateUi("照着一本书写");
 export const MANUAL_CREATE_LINK = "/novels/create";
 export const NOVEL_LIST_PAGE_SIZE = 24;
 
@@ -84,18 +84,18 @@ export function filterNovelList(input: {
 
 export function formatProgressStatus(status?: ProjectProgressStatus | null): string {
   if (status === "completed") {
-    return "已完成";
+    return translateUi("已完成");
   }
   if (status === "in_progress") {
-    return "进行中";
+    return translateUi("进行中");
   }
   if (status === "rework") {
-    return "待返工";
+    return translateUi("待返工");
   }
   if (status === "blocked") {
-    return "受阻";
+    return translateUi("受阻");
   }
-  return "未开始";
+  return translateUi("未开始");
 }
 
 export function formatTokenCount(value?: number | null): string {
@@ -159,7 +159,7 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
         || novel.description?.trim()
         || translateUi("AI 正在把已确认的方向写成一篇连续作品。"),
       progress: Math.round((task?.progress ?? 0) * 100),
-      currentStage: "连续作品",
+      currentStage: translateUi("连续作品"),
       currentAction: task?.currentItemLabel?.trim() || "",
       lastHealthyStage: "",
       running: task?.status === "queued" || task?.status === "running",
@@ -172,7 +172,7 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
       label: translateUi("资料项目"),
       description: novel.description?.trim() || translateUi("没有自动导演任务，可以进入项目继续完善资料或章节。"),
       progress: 0,
-      currentStage: "未进入自动导演",
+      currentStage: translateUi("未进入自动导演"),
       currentAction: "",
       lastHealthyStage: "",
       running: false,
@@ -184,7 +184,7 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
     label: task.displayStatus?.trim() || task.resumeAction?.trim() || task.nextActionLabel?.trim() || translateUi("自动导演"),
     description: description || translateUi("系统保留推进状态，可以继续查看或恢复。"),
     progress: Math.round(task.progress * 100),
-    currentStage: task.currentStage ?? "自动导演",
+    currentStage: task.currentStage ?? translateUi("自动导演"),
     currentAction,
     lastHealthyStage: task.lastHealthyStage ?? "",
     running: isWorkflowRunningInBackground(task),
@@ -193,25 +193,25 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
 
 export function getPrimaryActionLabel(novel: NovelListItem): string {
   if (novel.narrativeForm === "short_story") {
-    return "打开作品";
+    return translateUi("打开作品");
   }
   const task = getNovelWorkflowTask(novel);
   if (canContinueChapterBatchAutoExecution(task)) {
-    return task?.resumeAction ?? `继续自动执行${task?.executionScopeLabel ?? "当前章节范围"}`;
+    return task?.resumeAction ?? translateUi("Tiếp tục tự động chạy {{scope}}", { scope: task?.executionScopeLabel ?? translateUi("当前章节范围") });
   }
   if (canContinueDirector(task)) {
-    return task?.resumeAction ?? "继续导演";
+    return task?.resumeAction ?? translateUi("继续导演");
   }
   if (requiresCandidateSelection(task)) {
-    return task?.resumeAction ?? "继续确认方向";
+    return task?.resumeAction ?? translateUi("继续确认方向");
   }
   if (canEnterChapterExecution(task)) {
-    return "进入章节执行";
+    return translateUi("进入章节执行");
   }
   if (task) {
-    return "查看推进状态";
+    return translateUi("查看推进状态");
   }
-  return "编辑小说";
+  return translateUi("编辑小说");
 }
 
 export function getProjectAssetRows(novel: NovelListItem): Array<{
@@ -221,10 +221,10 @@ export function getProjectAssetRows(novel: NovelListItem): Array<{
 }> {
   if (novel.narrativeForm === "short_story") {
     return [
-      { label: translateUi("形式"), value: "短篇" },
-      { label: translateUi("目标"), value: `${(novel.targetWordCount ?? 0).toLocaleString()} 字` },
-      { label: translateUi("正文"), value: getNovelWorkflowTask(novel)?.status === "succeeded" ? "已完成" : "生成中", tone: "info" },
-      { label: translateUi("来源"), value: novel.derivedFromNovelId ? "派生作品" : "原创" },
+      { label: translateUi("形式"), value: translateUi("短篇") },
+      { label: translateUi("目标"), value: translateUi("{{v0}} 字", { v0: (novel.targetWordCount ?? 0).toLocaleString() }) },
+      { label: translateUi("正文"), value: getNovelWorkflowTask(novel)?.status === "succeeded" ? translateUi("已完成") : translateUi("生成中"), tone: "info" },
+      { label: translateUi("来源"), value: novel.derivedFromNovelId ? translateUi("派生作品") : translateUi("原创") },
     ];
   }
   return [
@@ -232,7 +232,7 @@ export function getProjectAssetRows(novel: NovelListItem): Array<{
     { label: translateUi("角色"), value: String(novel._count.characters) },
     {
       label: translateUi("世界观"),
-      value: novel.world?.name ?? "未绑定",
+      value: novel.world?.name ?? translateUi("未绑定"),
       tone: novel.world?.name ? "neutral" : "warning",
     },
     {

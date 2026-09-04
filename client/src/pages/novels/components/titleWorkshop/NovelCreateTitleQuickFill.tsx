@@ -56,14 +56,14 @@ function resolveOptionLabel<T extends string>(
 
 function buildGenerationBrief(basicForm: NovelBasicFormState): string {
   const lines = [
-    basicForm.description.trim() ? `作品概述：${basicForm.description.trim()}` : "",
-    basicForm.title.trim() ? `当前草拟标题：${basicForm.title.trim()}` : "",
-    `创作模式：${resolveOptionLabel(WRITING_MODE_OPTIONS, basicForm.writingMode) ?? basicForm.writingMode}`,
-    `叙事视角：${resolveOptionLabel(POV_OPTIONS, basicForm.narrativePov) ?? basicForm.narrativePov}`,
-    `节奏偏好：${resolveOptionLabel(PACE_OPTIONS, basicForm.pacePreference) ?? basicForm.pacePreference}`,
-    `情绪浓度：${resolveOptionLabel(EMOTION_OPTIONS, basicForm.emotionIntensity) ?? basicForm.emotionIntensity}`,
-    `AI 自由度：${resolveOptionLabel(AI_FREEDOM_OPTIONS, basicForm.aiFreedom) ?? basicForm.aiFreedom}`,
-    basicForm.styleTone.trim() ? `文风关键词：${basicForm.styleTone.trim()}` : "",
+    basicForm.description.trim() ? translateUi("作品概述：{{v0}}", { v0: basicForm.description.trim() }) : "",
+    basicForm.title.trim() ? translateUi("当前草拟标题：{{v0}}", { v0: basicForm.title.trim() }) : "",
+    translateUi("创作模式：{{v0}}", { v0: resolveOptionLabel(WRITING_MODE_OPTIONS, basicForm.writingMode) ?? basicForm.writingMode }),
+    translateUi("叙事视角：{{v0}}", { v0: resolveOptionLabel(POV_OPTIONS, basicForm.narrativePov) ?? basicForm.narrativePov }),
+    translateUi("节奏偏好：{{v0}}", { v0: resolveOptionLabel(PACE_OPTIONS, basicForm.pacePreference) ?? basicForm.pacePreference }),
+    translateUi("情绪浓度：{{v0}}", { v0: resolveOptionLabel(EMOTION_OPTIONS, basicForm.emotionIntensity) ?? basicForm.emotionIntensity }),
+    translateUi("AI 自由度：{{v0}}", { v0: resolveOptionLabel(AI_FREEDOM_OPTIONS, basicForm.aiFreedom) ?? basicForm.aiFreedom }),
+    basicForm.styleTone.trim() ? translateUi("文风关键词：{{v0}}", { v0: basicForm.styleTone.trim() }) : "",
   ].filter(Boolean);
   return lines.join("\n");
 }
@@ -73,9 +73,9 @@ function renderLibraryDescription(entry: TitleLibraryEntry): string {
     return truncateText(entry.description, 100);
   }
   if (entry.keywords?.trim()) {
-    return `关键词：${truncateText(entry.keywords, 80)}`;
+    return translateUi("关键词：{{v0}}", { v0: truncateText(entry.keywords, 80) });
   }
-  return "标题库候选，可直接写入当前创建表单。";
+  return translateUi("标题库候选，可直接写入当前创建表单。");
 }
 
 function joinKeywords(...values: Array<string | null | undefined>): string | null {
@@ -103,7 +103,7 @@ export default function NovelCreateTitleQuickFill({
 
   const autoBrief = useMemo(() => buildGenerationBrief(basicForm), [basicForm]);
   const resolvedBrief = useMemo(
-    () => [autoBrief, manualBrief.trim() ? `额外补充：${manualBrief.trim()}` : ""].filter(Boolean).join("\n"),
+    () => [autoBrief, manualBrief.trim() ? translateUi("额外补充：{{v0}}", { v0: manualBrief.trim() }) : ""].filter(Boolean).join("\n"),
     [autoBrief, manualBrief],
   );
   const generationMode = referenceTitle.trim() ? "adapt" : "brief";
@@ -133,7 +133,7 @@ export default function NovelCreateTitleQuickFill({
   const generateMutation = useMutation({
     mutationFn: async () => {
       if (!hasGenerationContext) {
-        throw new Error("请先填写一句标题简报，或补一个参考标题后再生成。");
+        throw new Error(translateUi("请先填写一句标题简报，或补一个参考标题后再生成。"));
       }
       const response = await generateTitleIdeas({
         mode: generationMode,

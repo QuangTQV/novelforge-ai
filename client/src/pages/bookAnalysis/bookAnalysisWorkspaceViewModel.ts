@@ -121,8 +121,8 @@ export function getPreferredBookAnalysisSection(
 
 function describeMissingExpectedSections(sections: BookAnalysisSectionSummary): string {
   return sections.missingExpected > 0
-    ? `仍有 ${sections.missingExpected} 个计划小节缺少可读结果。`
-    : "计划范围内没有缺失小节。";
+    ? translateUi("仍有 {{v0}} 个计划小节缺少可读结果。", { v0: sections.missingExpected })
+    : translateUi("计划范围内没有缺失小节。");
 }
 
 export function resolveBookAnalysisNextAction(input: {

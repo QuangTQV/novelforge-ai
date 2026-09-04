@@ -105,21 +105,21 @@ function formatPolicyMode(mode: DirectorPolicyMode): string {
 
 function formatStatus(status: DirectorRuntimeProjectionStatus): string {
   if (status === "running") {
-    return "推进中";
+    return translateUi("推进中");
   }
   if (status === "waiting_approval") {
-    return "等待确认";
+    return translateUi("等待确认");
   }
   if (status === "blocked") {
-    return "已暂停";
+    return translateUi("已暂停");
   }
   if (status === "failed") {
-    return "失败";
+    return translateUi("失败");
   }
   if (status === "completed") {
-    return "已完成";
+    return translateUi("已完成");
   }
-  return "待开始";
+  return translateUi("待开始");
 }
 
 function statusClassName(status: DirectorRuntimeProjectionStatus): string {
@@ -172,9 +172,9 @@ function formatQualityDebtSummary(summary: DirectorRuntimeProjection["qualityDeb
     return null;
   }
   const orderText = summary.deferredChapterOrders.length > 0
-    ? `：第 ${summary.deferredChapterOrders.join("、")} 章`
+    ? translateUi("：第 {{v0}} 章", { v0: summary.deferredChapterOrders.join("、") })
     : "";
-  return `质量待回收${orderText}。系统会先继续写后续章节，并在质量修复阶段回收这些问题。`;
+  return translateUi("质量待回收{{v0}}。系统会先继续写后续章节，并在质量修复阶段回收这些问题。", { v0: orderText });
 }
 
 function formatQualityBudgetSummary(summary: DirectorRuntimeProjection["qualityBudgetSummary"] | null | undefined): string | null {
@@ -182,10 +182,10 @@ function formatQualityBudgetSummary(summary: DirectorRuntimeProjection["qualityB
     return null;
   }
   const chapterText = typeof summary.currentChapterOrder === "number"
-    ? `第 ${summary.currentChapterOrder} 章`
-    : "当前章节";
+    ? translateUi("第 {{v0}} 章", { v0: summary.currentChapterOrder })
+    : translateUi("当前章节");
   const automaticRepairUsed = Math.min(1, summary.patchRepairUsed + summary.chapterRewriteUsed);
-  return `${chapterText}自动处理：本章修复 ${automaticRepairUsed}/1，窗口重规划 ${Math.min(1, summary.windowReplanUsed)}/1。${summary.nextActionLabel}`;
+  return translateUi("{{v0}}自动处理：本章修复 {{v1}}/1，窗口重规划 {{v2}}/1。{{v3}}", { v0: chapterText, v1: automaticRepairUsed, v2: Math.min(1, summary.windowReplanUsed), v3: summary.nextActionLabel });
 }
 
 function formatRootCauseSummary(projection: DirectorRuntimeProjection): string | null {
@@ -193,28 +193,28 @@ function formatRootCauseSummary(projection: DirectorRuntimeProjection): string |
     return null;
   }
   if (projection.rootCauseCode === "replan_required") {
-    return "当前问题来自章节职责失配，系统需要先调整附近章节安排。";
+    return translateUi("当前问题来自章节职责失配，系统需要先调整附近章节安排。");
   }
   if (projection.rootCauseCode === "draft_obligation_unmet") {
-    return "正文已经生成，但仍有本章必须完成的内容没有兑现。";
+    return translateUi("正文已经生成，但仍有本章必须完成的内容没有兑现。");
   }
   if (projection.rootCauseCode === "draft_repair_exhausted") {
-    return "正文已经生成，但自动修复后仍有阻塞问题需要继续处理。";
+    return translateUi("正文已经生成，但自动修复后仍有阻塞问题需要继续处理。");
   }
-  return "正文没有成功生成，需要重新执行当前章节。";
+  return translateUi("正文没有成功生成，需要重新执行当前章节。");
 }
 
 function formatRiskAction(action: NonNullable<DirectorRuntimeProjection["latestRiskAssessment"]>["action"]): string {
   if (action === "forced_pause" || action === "pause_requested" || action === "paused") {
-    return "将在当前安全节点后暂停";
+    return translateUi("将在当前安全节点后暂停");
   }
   if (action === "quality_debt_recorded") {
-    return "已记录质量债，后续章节会继续推进";
+    return translateUi("已记录质量债，后续章节会继续推进");
   }
   if (action === "notified") {
-    return "已发送风险提醒";
+    return translateUi("已发送风险提醒");
   }
-  return "已记录，自动导演会继续判断下一步";
+  return translateUi("已记录，自动导演会继续判断下一步");
 }
 
 function riskScoreClassName(score: number): string {
@@ -225,20 +225,20 @@ function riskScoreClassName(score: number): string {
 
 function formatRiskCategory(category: NonNullable<DirectorRuntimeProjection["latestRiskAssessment"]>["category"]): string {
   const labels: Record<typeof category, string> = {
-    planning: "规划",
-    candidate_confirmation: "候选确认",
-    chapter_generation: "章节生成",
-    chapter_acceptance: "章节验收",
-    chapter_repair: "章节修复",
-    state_proposal: "状态提案",
-    replan: "重规划",
-    model_failure: "模型故障",
-    worker_failure: "执行器故障",
-    task_recovery: "任务恢复",
-    protected_content: "受保护正文",
-    runtime_safety: "运行时安全",
-    data_integrity: "数据完整性",
-    unknown: "其他",
+    planning: translateUi("规划"),
+    candidate_confirmation: translateUi("候选确认"),
+    chapter_generation: translateUi("章节生成"),
+    chapter_acceptance: translateUi("章节验收"),
+    chapter_repair: translateUi("章节修复"),
+    state_proposal: translateUi("状态提案"),
+    replan: translateUi("重规划"),
+    model_failure: translateUi("模型故障"),
+    worker_failure: translateUi("执行器故障"),
+    task_recovery: translateUi("任务恢复"),
+    protected_content: translateUi("受保护正文"),
+    runtime_safety: translateUi("运行时安全"),
+    data_integrity: translateUi("数据完整性"),
+    unknown: translateUi("其他"),
   };
   return labels[category];
 }
@@ -261,13 +261,13 @@ export default function DirectorRuntimeProjectionCard({
   const primaryText = projection.headline?.trim()
     || projection.currentLabel?.trim()
     || projection.lastEventSummary?.trim()
-    || "等待同步当前推进状态";
+    || translateUi("等待同步当前推进状态");
   const detailText = projection.detail?.trim();
   const attentionText = projection.requiresUserAction
     ? projection.blockingReason?.trim()
       || projection.blockedReason?.trim()
       || projection.lastEventSummary?.trim()
-      || "请先处理当前停留点。"
+      || translateUi("请先处理当前停留点。")
     : projection.blockingReason?.trim() || projection.blockedReason?.trim();
   const progressLine = projection.progressBreakdown?.explanation?.trim()
     || projection.progressSummary?.trim()
@@ -276,7 +276,7 @@ export default function DirectorRuntimeProjectionCard({
   const qualityBudgetLine = formatQualityBudgetSummary(projection.qualityBudgetSummary);
   const rootCauseLine = formatRootCauseSummary(projection);
   const obligationLine = projection.blockingObligations && projection.blockingObligations.length > 0
-    ? `仍需处理：${projection.blockingObligations.slice(0, 3).map((item) => item.summary).join("；")}`
+    ? translateUi("仍需处理：{{v0}}", { v0: projection.blockingObligations.slice(0, 3).map((item) => item.summary).join("；") })
     : null;
   const activeExecutionLine = projection.activeExecution
     ? `后台执行：${getDirectorNodeDisplayLabel({
@@ -284,21 +284,21 @@ export default function DirectorRuntimeProjectionCard({
       fallback: projection.currentAction || translateUi("自动导演任务"),
     })}${projection.activeExecution.resourceClass ? ` · ${projection.activeExecution.resourceClass}` : ""}`
     : null;
-  const waitingLine = projection.waitingReason ? `等待原因：${projection.waitingReason}` : null;
+  const waitingLine = projection.waitingReason ? translateUi("等待原因：{{v0}}", { v0: projection.waitingReason }) : null;
   const workerHealthLine = projection.workerHealth
     ? [
-      `执行队列：${projection.workerHealth.queuedCommandCount} 个等待`,
-      projection.workerHealth.runningCommandCount > 0 ? `${projection.workerHealth.runningCommandCount} 个处理中` : null,
-      projection.workerHealth.currentWorkerId ? `执行器：${projection.workerHealth.currentWorkerId}` : null,
+      translateUi("执行队列：{{v0}} 个等待", { v0: projection.workerHealth.queuedCommandCount }),
+      projection.workerHealth.runningCommandCount > 0 ? translateUi("{{v0}} 个处理中", { v0: projection.workerHealth.runningCommandCount }) : null,
+      projection.workerHealth.currentWorkerId ? translateUi("执行器：{{v0}}", { v0: projection.workerHealth.currentWorkerId }) : null,
     ].filter(Boolean).join(" · ")
     : null;
   const helperLines = [
     activeExecutionLine,
     waitingLine,
     workerHealthLine,
-    projection.nextActionLabel ? `下一步：${projection.nextActionLabel}` : null,
-    projection.recommendedAction?.reason ? `推荐原因：${projection.recommendedAction.reason}` : null,
-    projection.isAutopilotRecoverable ? "AI 可以从当前进度继续处理。" : null,
+    projection.nextActionLabel ? translateUi("下一步：{{v0}}", { v0: projection.nextActionLabel }) : null,
+    projection.recommendedAction?.reason ? translateUi("推荐原因：{{v0}}", { v0: projection.recommendedAction.reason }) : null,
+    projection.isAutopilotRecoverable ? translateUi("AI 可以从当前进度继续处理。") : null,
     rootCauseLine,
     obligationLine,
     qualityBudgetLine,
@@ -316,8 +316,8 @@ export default function DirectorRuntimeProjectionCard({
   const latestRisk = projection.latestRiskAssessment ?? null;
   const riskHistory = projection.riskHistory ?? [];
   const affectedRiskChapters = latestRisk?.affectedChapterOrders.length
-    ? `第 ${latestRisk.affectedChapterOrders.join("、")} 章`
-    : "当前步骤";
+    ? translateUi("第 {{v0}} 章", { v0: latestRisk.affectedChapterOrders.join("、") })
+    : translateUi("当前步骤");
 
   return (
     <div className={cn("rounded-lg border bg-background/80 p-3", statusClassName(projection.status), className)}>

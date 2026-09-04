@@ -65,17 +65,17 @@ export default function ProviderConfigDialog({
   deleteDisabled,
   deleteLabel,
 }: ProviderConfigDialogProps) {
-  const primaryModelLabel = isCreatingCustomProvider ? "默认模型（可选）" : isCustomDialog ? "默认模型" : "模型名称";
+  const primaryModelLabel = isCreatingCustomProvider ? translateUi("默认模型（可选）") : isCustomDialog ? translateUi("默认模型") : translateUi("模型名称");
   const canSelectListedModels = selectableModels.length > 0;
   const imageModelOptions = editingConfig?.imageModels ?? [];
   const canSelectImageModels = imageModelOptions.length > 0;
   const modelGuidance = editingConfig?.provider === "deepseek"
-    ? "推荐使用 DeepSeek V4 Flash，兼顾中文长篇质量与响应速度；也可以选择其他可用模型。"
+    ? translateUi("推荐使用 DeepSeek V4 Flash，兼顾中文长篇质量与响应速度；也可以选择其他可用模型。")
     : isCreatingCustomProvider
-      ? "获取模型列表后会自动填入第一个可用模型；接口不返回列表时，可以手动填写。"
+      ? translateUi("获取模型列表后会自动填入第一个可用模型；接口不返回列表时，可以手动填写。")
       : editingConfig?.kind === "custom" && !canSelectListedModels
-        ? "可点击厂商卡片的“刷新模型”获取列表，也可以手动填写默认模型。"
-        : "如果列表里没有目标模型，可以手动输入。";
+        ? translateUi("可点击厂商卡片的“刷新模型”获取列表，也可以手动填写默认模型。")
+        : translateUi("如果列表里没有目标模型，可以手动输入。");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

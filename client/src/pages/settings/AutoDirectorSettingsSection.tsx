@@ -57,49 +57,49 @@ export default function AutoDirectorSettingsSection(props: {
   const saveAutoDirectorChannelsMutation = useMutation({
     mutationFn: saveAutoDirectorChannelSettings,
     onSuccess: async (response) => {
-      onActionResult(response.message ?? "导演跟进通道配置已保存。");
+      onActionResult(response.message ?? translateUi("导演跟进通道配置已保存。"));
       if (response.data) {
         setAutoDirectorChannelDraft(buildAutoDirectorChannelDraft(response.data));
       }
       await queryClient.invalidateQueries({ queryKey: queryKeys.settings.autoDirectorChannels });
     },
     onError: (error) => {
-      onActionResult(error instanceof Error ? error.message : "保存导演跟进通道配置失败。");
+      onActionResult(error instanceof Error ? error.message : translateUi("保存导演跟进通道配置失败。"));
     },
   });
 
   const saveApprovalPreferenceMutation = useMutation({
     mutationFn: saveAutoDirectorApprovalPreferenceSettings,
     onSuccess: async (response) => {
-      onActionResult(response.message ?? "审批授权偏好已保存。");
+      onActionResult(response.message ?? translateUi("审批授权偏好已保存。"));
       if (response.data) {
         setApprovalPreferenceDraft(response.data.approvalPointCodes);
       }
       await queryClient.invalidateQueries({ queryKey: queryKeys.settings.autoDirectorApprovalPreferences });
     },
     onError: (error) => {
-      onActionResult(error instanceof Error ? error.message : "保存审批授权偏好失败。");
+      onActionResult(error instanceof Error ? error.message : translateUi("保存审批授权偏好失败。"));
     },
   });
 
   const savePendingReviewAutoPromotionMutation = useMutation({
     mutationFn: savePendingReviewAutoPromotionSettings,
     onSuccess: async (response) => {
-      onActionResult(response.message ?? "待确认状态自动放行设置已保存。");
+      onActionResult(response.message ?? translateUi("待确认状态自动放行设置已保存。"));
       await queryClient.invalidateQueries({ queryKey: queryKeys.settings.pendingReviewAutoPromotion });
     },
     onError: (error) => {
-      onActionResult(error instanceof Error ? error.message : "保存待确认状态自动放行设置失败。");
+      onActionResult(error instanceof Error ? error.message : translateUi("保存待确认状态自动放行设置失败。"));
     },
   });
   const saveIssuePolicyMutation = useMutation({
     mutationFn: saveAutoDirectorIssuePolicy,
     onSuccess: async (response) => {
-      onActionResult(response.message ?? "问题处理规则已保存。");
+      onActionResult(response.message ?? translateUi("问题处理规则已保存。"));
       await queryClient.invalidateQueries({ queryKey: queryKeys.settings.autoDirectorIssuePolicy });
     },
     onError: (error) => {
-      onActionResult(error instanceof Error ? error.message : "保存问题处理规则失败。");
+      onActionResult(error instanceof Error ? error.message : translateUi("保存问题处理规则失败。"));
     },
   });
 

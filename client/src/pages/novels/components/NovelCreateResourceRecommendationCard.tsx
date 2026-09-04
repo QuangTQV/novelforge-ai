@@ -112,7 +112,7 @@ export default function NovelCreateResourceRecommendationCard(
       setMessage("");
     },
     onError: (error) => {
-      setMessage(error instanceof Error ? error.message : "AI 推荐资源组合失败，请稍后再试。");
+      setMessage(error instanceof Error ? error.message : translateUi("AI 推荐资源组合失败，请稍后再试。"));
     },
   });
 

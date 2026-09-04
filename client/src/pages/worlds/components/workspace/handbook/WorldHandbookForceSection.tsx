@@ -15,7 +15,7 @@ export default function WorldHandbookForceSection(props: {
   const { draftStructure, setDraftStructure } = props;
   const forceSummary = useMemo(() => {
     const forceNames = draftStructure.forces.map((force) => force.name).filter(Boolean).slice(0, 4);
-    return forceNames.length > 0 ? forceNames.join(" / ") : "补充主要势力后，角色身份、阵营冲突和章节压力会更稳定。";
+    return forceNames.length > 0 ? forceNames.join(" / ") : translateUi("补充主要势力后，角色身份、阵营冲突和章节压力会更稳定。");
   }, [draftStructure.forces]);
 
   const addForce = () => {

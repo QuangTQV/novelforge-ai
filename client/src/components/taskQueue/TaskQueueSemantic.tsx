@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import { WorkspaceStateNotice } from "@/components/workspace";
 import { TaskQueueMetricGrid, TaskQueueStatusBadge, type TaskQueueMetricItem } from "./TaskQueuePrimitives";
@@ -11,9 +12,9 @@ const severityTone = {
 } as const;
 
 const severityLabel = {
-  blocking: "阻塞",
-  quality: "质量提醒",
-  normal: "普通状态",
+  blocking: translateUi("阻塞"),
+  quality: translateUi("质量提醒"),
+  normal: translateUi("普通状态"),
 } as const;
 
 export function TaskQueueSeverityBadge(props: { severity: TaskQueueSeverity; label?: string }) {

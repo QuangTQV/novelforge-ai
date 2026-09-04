@@ -34,7 +34,7 @@ export function summarizeIdea(idea: string, foundation?: {
 }): string {
   const normalized = idea.trim().replace(/\s+/g, " ");
   if (!normalized) {
-    return "等待填写起始想法";
+    return translateUi("等待填写起始想法");
   }
   const ideaSummary = normalized.length > 30 ? `${normalized.slice(0, 30)}...` : normalized;
   const foundationSummary = [foundation?.genre, foundation?.storyMode].filter(Boolean).join(" · ");
@@ -47,7 +47,7 @@ export function summarizeBasicStage(basicForm: NovelBasicFormState): string {
     findLabel(POV_OPTIONS, basicForm.narrativePov),
     findLabel(PACE_OPTIONS, basicForm.pacePreference),
     findLabel(EMOTION_OPTIONS, basicForm.emotionIntensity),
-    `约 ${basicForm.estimatedChapterCount} 章`,
+    translateUi("约 {{v0}} 章", { v0: basicForm.estimatedChapterCount }),
   ].join(" · ");
 }
 
@@ -61,14 +61,14 @@ export function summarizeWorldStyleStage(input: {
 }): string {
   const selectedWorld = input.worldOptions.find((world) => world.id === input.basicForm.worldId);
   const worldLabel = selectedWorld
-    ? `参考世界：${selectedWorld.name}`
+    ? translateUi("参考世界：{{v0}}", { v0: selectedWorld.name })
     : input.worldSetupMode === "skip"
-      ? "暂不使用世界观"
-      : "自动生成本书世界";
+      ? translateUi("暂不使用世界观")
+      : translateUi("自动生成本书世界");
   const styleProfile = input.styleProfiles.find((profile) => profile.id === input.styleProfileId);
   const styleLabel = styleProfile?.name
     ?? input.selectedStyleSummary?.headline
-    ?? (input.basicForm.styleTone.trim() ? `文风：${input.basicForm.styleTone.trim()}` : "默认写法");
+    ?? (input.basicForm.styleTone.trim() ? translateUi("文风：{{v0}}", { v0: input.basicForm.styleTone.trim() }) : translateUi("默认写法"));
   return `${worldLabel} · ${styleLabel}`;
 }
 
@@ -78,5 +78,5 @@ export function summarizeModelRunStage(input: {
   postGenerationStyleReviewEnabled: boolean;
 }): string {
   const runModeLabel = input.runModeOptions.find((option) => option.value === input.runMode)?.label ?? input.runMode;
-  return `${runModeLabel} · ${input.postGenerationStyleReviewEnabled ? "正文后检测 AI 味" : "不做正文后 AI 味检测"}`;
+  return `${runModeLabel} · ${input.postGenerationStyleReviewEnabled ? translateUi("正文后检测 AI 味") : translateUi("不做正文后 AI 味检测")}`;
 }

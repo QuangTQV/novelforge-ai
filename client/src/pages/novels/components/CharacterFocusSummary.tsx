@@ -14,9 +14,9 @@ export default function CharacterFocusSummary(props: CharacterFocusSummaryProps)
   const { selectedCharacter, lastAppearanceChapter } = props;
   const isProtagonist = isProtagonistCharacter(selectedCharacter);
   const primaryLine = isProtagonist
-    ? selectedCharacter.currentGoal || selectedCharacter.storyFunction || "待补全主角目标"
-    : selectedCharacter.relationToProtagonist || selectedCharacter.role || "待补全与主角关系";
-  const avatarText = selectedCharacter.name.trim().slice(0, 2) || "角";
+    ? selectedCharacter.currentGoal || selectedCharacter.storyFunction || translateUi("待补全主角目标")
+    : selectedCharacter.relationToProtagonist || selectedCharacter.role || translateUi("待补全与主角关系");
+  const avatarText = selectedCharacter.name.trim().slice(0, 2) || translateUi("角");
 
   return (
     <section className="overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm">

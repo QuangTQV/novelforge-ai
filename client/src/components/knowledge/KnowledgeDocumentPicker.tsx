@@ -18,7 +18,7 @@ interface KnowledgeDocumentPickerProps {
 }
 
 function formatDocumentKind(kind: "user_upload" | "analysis_published"): string {
-  return kind === "analysis_published" ? "拆书发布" : "上传文档";
+  return kind === "analysis_published" ? translateUi("拆书发布") : translateUi("上传文档");
 }
 
 export default function KnowledgeDocumentPicker(props: KnowledgeDocumentPickerProps) {

@@ -70,7 +70,7 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
     mutationFn: async () => {
       if (mode === "novel") {
         if (!selectedNovelId) {
-          throw new Error("请先选择一个小说项目。");
+          throw new Error(translateUi("请先选择一个小说项目。"));
         }
         const response = await generateNovelTitles(selectedNovelId, {
           provider: llm.provider,
@@ -107,14 +107,14 @@ export default function TitleFactoryPanel({ genreTree, novels }: TitleFactoryPan
     mutationFn: (suggestion: TitleFactorySuggestion) => {
       const resolvedGenreId = mode === "novel" ? selectedNovel?.genre?.id ?? null : genreId || null;
       const description = mode === "novel"
-        ? `来源项目：${selectedNovel?.title ?? "未命名项目"}`
+        ? translateUi("Dự án nguồn: {{title}}", { title: selectedNovel?.title ?? translateUi("未命名项目") })
         : mode === "adapt"
-          ? `参考标题：${referenceTitle.trim()}`
+          ? translateUi("参考标题：{{v0}}", { v0: referenceTitle.trim() })
           : brief.trim().slice(0, 400);
       const keywords = mode === "novel"
         ? selectedNovel?.title ?? null
         : mode === "adapt"
-          ? `改编灵感 / ${referenceTitle.trim()}`
+          ? translateUi("改编灵感 / {{v0}}", { v0: referenceTitle.trim() })
           : brief.trim().slice(0, 160);
       return createTitleLibraryEntry({
         title: suggestion.title,

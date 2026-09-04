@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useEffect, useState } from "react";
 import { BookOpenText, MessageCircleMore, Sparkles, WandSparkles } from "lucide-react";
 import type { BookAnalysis } from "@ai-novel/shared/types/bookAnalysis";
@@ -198,10 +199,10 @@ export default function WritingFormulaCreateDialog(props: WritingFormulaCreateDi
     || (form.materialSource === "knowledge_document" && !knowledgeDocumentReady)
     || (form.materialSource === "book_analysis" && !bookAnalysisReady);
   const materialSubmitLabel = form.materialSource === "book_analysis"
-    ? "从拆书结果创建写法"
+    ? translateUi("从拆书结果创建写法")
     : form.materialSource === "knowledge_document"
-      ? "从知识库原文提取并自动保存"
-      : "提交提取任务并自动保存";
+      ? translateUi("从知识库原文提取并自动保存")
+      : translateUi("提交提取任务并自动保存");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -419,7 +420,7 @@ export default function WritingFormulaCreateDialog(props: WritingFormulaCreateDi
                             onClick={() => onFormChange({
                               knowledgeDocumentId: document.id,
                               knowledgeDocumentTitle: document.title,
-                              extractName: form.extractName.trim() ? form.extractName : `${document.title}写法`,
+                              extractName: form.extractName.trim() ? form.extractName : translateUi("{{v0}}写法", { v0: document.title }),
                             })}
                           >
                             <div className="flex items-start justify-between gap-3">
@@ -539,7 +540,7 @@ export default function WritingFormulaCreateDialog(props: WritingFormulaCreateDi
                             onClick={() => onFormChange({
                               bookAnalysisId: analysis.id,
                               bookAnalysisTitle: analysis.title,
-                              extractName: form.extractName.trim() ? form.extractName : `${analysis.title}写法`,
+                              extractName: form.extractName.trim() ? form.extractName : translateUi("{{v0}}写法", { v0: analysis.title }),
                             })}
                           >
                             <div className="flex items-start justify-between gap-3">

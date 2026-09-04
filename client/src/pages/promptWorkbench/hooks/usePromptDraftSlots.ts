@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getNovelList } from "@/api/novel/core";
@@ -81,20 +82,20 @@ function getSectionSource(input: {
   const { globalOverride, novelOverride, scope } = input;
   if (scope === "novel") {
     if (isOfficialDefaultEntry(novelOverride)) {
-      return { source: "novel_official_default", sourceLabel: "本书使用官方默认" };
+      return { source: "novel_official_default", sourceLabel: translateUi("本书使用官方默认") };
     }
     if (novelOverride) {
-      return { source: "novel", sourceLabel: "本书覆盖" };
+      return { source: "novel", sourceLabel: translateUi("本书覆盖") };
     }
     if (globalOverride && !isOfficialDefaultEntry(globalOverride)) {
-      return { source: "global", sourceLabel: "全局覆盖" };
+      return { source: "global", sourceLabel: translateUi("全局覆盖") };
     }
-    return { source: "official", sourceLabel: "官方默认" };
+    return { source: "official", sourceLabel: translateUi("官方默认") };
   }
   if (globalOverride && !isOfficialDefaultEntry(globalOverride)) {
-    return { source: "global", sourceLabel: "全局覆盖" };
+    return { source: "global", sourceLabel: translateUi("全局覆盖") };
   }
-  return { source: "official", sourceLabel: "官方默认" };
+  return { source: "official", sourceLabel: translateUi("官方默认") };
 }
 
 export function buildPromptEditorSections(input: {
@@ -221,7 +222,7 @@ export function usePromptDraftSlots(prompt: PromptCatalogItem | null) {
   useEffect(() => {
     if (saveMutation.isError) {
       const error = saveMutation.error;
-      setSaveError(error instanceof Error ? error.message : "保存失败，请重试。");
+      setSaveError(error instanceof Error ? error.message : translateUi("保存失败，请重试。"));
     }
   }, [saveMutation.error, saveMutation.isError]);
 

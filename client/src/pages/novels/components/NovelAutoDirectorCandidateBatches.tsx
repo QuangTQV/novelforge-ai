@@ -39,7 +39,7 @@ function buildFallbackTitleOption(candidate: DirectorCandidate): TitleFactorySug
     title: candidate.workingTitle,
     clickRate: 60,
     style: "high_concept",
-    angle: "当前方案书名",
+    angle: translateUi("当前方案书名"),
     reason: translateUi("当前沿用导演候选方案的书名。"),
   };
 }
@@ -65,7 +65,7 @@ function renderSecondaryCandidateDetails(candidate: DirectorCandidate) {
     { label: translateUi("主钩子"), value: candidate.hookStrategy },
     { label: translateUi("推进循环"), value: candidate.progressionLoop },
     { label: translateUi("结局方向"), value: candidate.endingDirection },
-    { label: translateUi("章节规模"), value: `约 ${candidate.targetChapterCount} 章` },
+    { label: translateUi("章节规模"), value: translateUi("约 {{v0}} 章", { v0: candidate.targetChapterCount }) },
   ];
 }
 
@@ -74,10 +74,10 @@ function formatToneKeywords(candidate: DirectorCandidate): string {
 }
 
 function foundationSourceLabel(source: "user_selected" | "ai_recommended" | "market_recommended" | undefined): string {
-  if (source === "user_selected") return "你的选择";
-  if (source === "ai_recommended") return "AI 补充";
-  if (source === "market_recommended") return "雷达推荐";
-  return "创作基础";
+  if (source === "user_selected") return translateUi("你的选择");
+  if (source === "ai_recommended") return translateUi("AI 补充");
+  if (source === "market_recommended") return translateUi("雷达推荐");
+  return translateUi("创作基础");
 }
 
 export default function NovelAutoDirectorCandidateBatches(props: NovelAutoDirectorCandidateBatchesProps) {

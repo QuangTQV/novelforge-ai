@@ -24,61 +24,61 @@ type ApprovalRequiredEvent = Extract<SSEFrame, { type: "approval_required" }>;
 type RunStatusEvent = Extract<SSEFrame, { type: "run_status" }>;
 
 function toRunStatusLabel(status: string): string {
-  if (status === "queued") return "排队中";
-  if (status === "running") return "运行中";
-  if (status === "waiting_approval") return "待审批";
-  if (status === "succeeded") return "已完成";
-  if (status === "failed") return "失败";
-  if (status === "cancelled") return "已取消";
+  if (status === "queued") return translateUi("排队中");
+  if (status === "running") return translateUi("运行中");
+  if (status === "waiting_approval") return translateUi("待审批");
+  if (status === "succeeded") return translateUi("已完成");
+  if (status === "failed") return translateUi("失败");
+  if (status === "cancelled") return translateUi("已取消");
   return status;
 }
 
 function toApprovalActionLabel(action: string): string {
-  if (action === "approved") return "已通过";
-  if (action === "rejected") return "已拒绝";
+  if (action === "approved") return translateUi("已通过");
+  if (action === "rejected") return translateUi("已拒绝");
   return action;
 }
 
 function toStepTypeLabel(stepType: string): string {
-  if (stepType === "planning") return "规划";
-  if (stepType === "tool_call") return "工具调用";
-  if (stepType === "tool_result") return "工具结果";
-  if (stepType === "approval") return "审批";
-  if (stepType === "completion") return "收尾";
-  if (stepType === "analysis") return "分析";
-  if (stepType === "review") return "审校";
-  if (stepType === "repair") return "修复";
-  if (stepType === "writing") return "写作";
-  if (stepType === "context") return "上下文";
+  if (stepType === "planning") return translateUi("规划");
+  if (stepType === "tool_call") return translateUi("工具调用");
+  if (stepType === "tool_result") return translateUi("工具结果");
+  if (stepType === "approval") return translateUi("审批");
+  if (stepType === "completion") return translateUi("收尾");
+  if (stepType === "analysis") return translateUi("分析");
+  if (stepType === "review") return translateUi("审校");
+  if (stepType === "repair") return translateUi("修复");
+  if (stepType === "writing") return translateUi("写作");
+  if (stepType === "context") return translateUi("上下文");
   return stepType;
 }
 
 function toAgentNameLabel(name: string): string {
   const normalized = name.toLowerCase();
-  if (normalized === "planner") return "规划器";
-  if (normalized === "writer") return "写作器";
-  if (normalized === "reviewer") return "审校器";
-  if (normalized === "continuity") return "连续性检查";
-  if (normalized === "repair") return "修复器";
+  if (normalized === "planner") return translateUi("规划器");
+  if (normalized === "writer") return translateUi("写作器");
+  if (normalized === "reviewer") return translateUi("审校器");
+  if (normalized === "continuity") return translateUi("连续性检查");
+  if (normalized === "repair") return translateUi("修复器");
   return name;
 }
 
 function formatEvent(event: RuntimeEvent): string {
   if (event.type === "tool_call") {
-    return `调用工具 ${event.toolName}: ${event.inputSummary}`;
+    return translateUi("调用工具 {{v0}}: {{v1}}", { v0: event.toolName, v1: event.inputSummary });
   }
   if (event.type === "tool_result") {
-    return `${event.toolName} ${event.success ? "成功" : "失败"}: ${event.outputSummary}`;
+    return `${event.toolName} ${event.success ? translateUi("成功") : translateUi("失败")}: ${event.outputSummary}`;
   }
   if (event.type === "approval_required") {
-    return `等待审批: ${event.summary}`;
+    return translateUi("等待审批: {{v0}}", { v0: event.summary });
   }
-  return `审批结果: ${toApprovalActionLabel(event.action)}${event.note ? ` (${event.note})` : ""}`;
+  return translateUi("Kết quả phê duyệt: {{result}}", { result: toApprovalActionLabel(event.action) }) + (event.note ? ` (${event.note})` : "");
 }
 
 function safePreview(json: string | null | undefined): string {
   if (!json?.trim()) {
-    return "无";
+    return translateUi("无");
   }
   try {
     const parsed = JSON.parse(json) as unknown;
@@ -124,7 +124,7 @@ export default function ChatPage() {
     if (!chatStore.hydrated || chatStore.currentSessionId || chatStore.sessions.length > 0) {
       return;
     }
-    void chatStore.createSession("新对话");
+    void chatStore.createSession(translateUi("新对话"));
   }, [chatStore, chatStore.currentSessionId, chatStore.hydrated, chatStore.sessions.length]);
 
   useEffect(() => {
@@ -257,7 +257,7 @@ export default function ChatPage() {
     if (chatStore.currentSessionId) {
       return chatStore.currentSessionId;
     }
-    return chatStore.createSession("新对话");
+    return chatStore.createSession(translateUi("新对话"));
   }, [chatStore]);
 
   const buildPayloadMessages = (
@@ -266,7 +266,7 @@ export default function ChatPage() {
     if (sessionMessages.length > 0) {
       return sessionMessages;
     }
-    return [{ role: "user" as const, content: "继续当前任务。" }];
+    return [{ role: "user" as const, content: translateUi("继续当前任务。") }];
   };
 
   const onRuntimeEvent = useCallback((event: RuntimeEvent) => {
@@ -308,7 +308,7 @@ export default function ChatPage() {
         }
         : null);
     if (!runId || !pending) {
-      setLocalError("当前没有可处理的审批项。");
+      setLocalError(translateUi("当前没有可处理的审批项。"));
       return;
     }
     setLocalError("");
@@ -350,7 +350,7 @@ export default function ChatPage() {
 
   const triggerReplay = async (mode: "continue" | "dry_run") => {
     if (!currentRunId || !effectiveReplayStepId) {
-      setLocalError("当前运行没有可重放的步骤。");
+      setLocalError(translateUi("当前运行没有可重放的步骤。"));
       return;
     }
     setLocalError("");
@@ -361,7 +361,7 @@ export default function ChatPage() {
       });
       const newRunId = response.data?.run.id;
       if (!newRunId) {
-        setLocalError(response.error ?? "重放失败。");
+        setLocalError(response.error ?? translateUi("重放失败。"));
         return;
       }
       if (chatStore.currentSessionId) {
@@ -375,10 +375,10 @@ export default function ChatPage() {
     } catch (error) {
       const message = error instanceof Error
         ? error.message
-        : "重放失败。";
+        : translateUi("重放失败。");
       setLocalError(
         message === "No replayable tool steps after source step."
-          ? "所选步骤之后没有可重放的工具步骤，请选择更早的步骤。"
+          ? translateUi("所选步骤之后没有可重放的工具步骤，请选择更早的步骤。")
           : message,
       );
       return;
@@ -441,15 +441,15 @@ export default function ChatPage() {
     : (persistedRunState ?? scopedLatestRun);
   const headerRunLabel = headerRunState ? toRunStatusLabel(headerRunState.status) : "";
   const headerRunMessage = headerRunState?.status === "waiting_approval"
-    ? "当前运行等待审批"
+    ? translateUi("当前运行等待审批")
     : headerRunState?.status === "running"
-      ? (headerRunState.message?.trim() || "当前运行中")
+      ? (headerRunState.message?.trim() || translateUi("当前运行中"))
       : headerRunState?.status === "succeeded"
-        ? "当前运行已完成"
+        ? translateUi("当前运行已完成")
         : headerRunState?.status === "failed"
-          ? (headerRunState.message?.trim() || "当前运行失败")
+          ? (headerRunState.message?.trim() || translateUi("当前运行失败"))
           : headerRunState?.status === "cancelled"
-            ? "当前运行已取消"
+            ? translateUi("当前运行已取消")
             : "";
 
   const liveEvents = [...runtimeEvents, ...approvalSse.events];

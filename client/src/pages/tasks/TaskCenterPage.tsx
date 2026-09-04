@@ -229,11 +229,11 @@ export default function TaskCenterPage() {
   const selectedDirectorRuntimeProjectionForDisplay = staleActionProjection
     ? null
     : selectedDirectorRuntimeProjection;
-  const listErrorMessage = listQuery.error instanceof Error ? listQuery.error.message : listQuery.isError ? "任务列表读取失败，请重试。" : null;
+  const listErrorMessage = listQuery.error instanceof Error ? listQuery.error.message : listQuery.isError ? translateUi("任务列表读取失败，请重试。") : null;
   const overviewErrorMessage = overviewQuery.error instanceof Error
     ? overviewQuery.error.message
-    : overviewQuery.isError ? "任务概览读取失败，请重试。" : null;
-  const detailErrorMessage = detailQuery.error instanceof Error ? detailQuery.error.message : detailQuery.isError ? "任务详情读取失败，请重试。" : null;
+    : overviewQuery.isError ? translateUi("任务概览读取失败，请重试。") : null;
+  const detailErrorMessage = detailQuery.error instanceof Error ? detailQuery.error.message : detailQuery.isError ? translateUi("任务详情读取失败，请重试。") : null;
   const recommendedBlockingTask = allRows.find(isTaskMustHandle) ?? null;
   const hasMustHandleTask = mustHandleCount > 0 || blockingCount > 0;
   const recommendedRecoveryCandidate = failedTaskCount === 0

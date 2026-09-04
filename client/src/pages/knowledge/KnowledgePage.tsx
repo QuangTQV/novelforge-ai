@@ -297,22 +297,22 @@ export default function KnowledgePage() {
   const clearFinishedRagJobsMutation = useMutation({
     mutationFn: clearFinishedRagJobs,
     onSuccess: async (response) => {
-      setRagJobsActionMessage(response.message ?? "已清理已结束任务。");
+      setRagJobsActionMessage(response.message ?? translateUi("已清理已结束任务。"));
       await queryClient.invalidateQueries({ queryKey: ragJobsQueryKey });
     },
     onError: (error) => {
-      setRagJobsActionMessage(error instanceof Error ? error.message : "清理任务失败。");
+      setRagJobsActionMessage(error instanceof Error ? error.message : translateUi("清理任务失败。"));
     },
   });
 
   const deleteRagJobMutation = useMutation({
     mutationFn: (jobId: string) => deleteRagJob(jobId),
     onSuccess: async (response) => {
-      setRagJobsActionMessage(response.message ?? "任务记录已删除。");
+      setRagJobsActionMessage(response.message ?? translateUi("任务记录已删除。"));
       await queryClient.invalidateQueries({ queryKey: ragJobsQueryKey });
     },
     onError: (error) => {
-      setRagJobsActionMessage(error instanceof Error ? error.message : "删除任务失败。");
+      setRagJobsActionMessage(error instanceof Error ? error.message : translateUi("删除任务失败。"));
     },
   });
 
@@ -359,17 +359,17 @@ export default function KnowledgePage() {
   const failedJobs = (ragJobsQuery.data?.data ?? []).filter((item) => item.status === "failed").slice(0, 5);
   const selectedDocument = detailQuery.data?.data;
   const ragHealthNotice = ragHealthQuery.isError
-    ? (ragHealthQuery.error instanceof Error ? ragHealthQuery.error.message : "加载 RAG 健康状态失败。")
+    ? (ragHealthQuery.error instanceof Error ? ragHealthQuery.error.message : translateUi("加载 RAG 健康状态失败。"))
     : (ragHealthQuery.data?.message && ragHealthQuery.data.message !== "RAG health check passed."
       ? (ragHealthQuery.data.message === "RAG health check failed."
-        ? "资料检索连接检查未通过。"
+        ? translateUi("资料检索连接检查未通过。")
         : ragHealthQuery.data.message)
       : undefined);
   const recallErrorMessage = recallTestMutation.isError
-    ? (recallTestMutation.error instanceof Error ? recallTestMutation.error.message : "召回测试失败。")
+    ? (recallTestMutation.error instanceof Error ? recallTestMutation.error.message : translateUi("召回测试失败。"))
     : null;
   const documentListErrorMessage = documentsQuery.isError
-    ? (documentsQuery.error instanceof Error ? documentsQuery.error.message : "知识资料加载失败。")
+    ? (documentsQuery.error instanceof Error ? documentsQuery.error.message : translateUi("知识资料加载失败。"))
     : undefined;
   const hasDocumentFilters = Boolean(keyword.trim() || status);
 
@@ -397,11 +397,11 @@ export default function KnowledgePage() {
 
   const handleUpload = async (file: File) => {
     if (!isTxtFile(file)) {
-      throw new Error("仅支持 .txt 文件。");
+      throw new Error(translateUi("仅支持 .txt 文件。"));
     }
     const content = await readTextFile(file);
     if (!content) {
-      throw new Error("文件内容为空，或编码格式暂不支持。");
+      throw new Error(translateUi("文件内容为空，或编码格式暂不支持。"));
     }
     await createKnowledgeDocument({
       title: uploadTitle.trim() || undefined,
@@ -415,11 +415,11 @@ export default function KnowledgePage() {
       return;
     }
     if (!isTxtFile(file)) {
-      throw new Error("仅支持 .txt 文件。");
+      throw new Error(translateUi("仅支持 .txt 文件。"));
     }
     const content = await readTextFile(file);
     if (!content) {
-      throw new Error("文件内容为空，或编码格式暂不支持。");
+      throw new Error(translateUi("文件内容为空，或编码格式暂不支持。"));
     }
     await createKnowledgeDocumentVersion(selectedDocumentId, {
       fileName: file.name,

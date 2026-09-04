@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 export interface StorylineStructuredView {
   coreTheme: string;
   mainGoal: string;
@@ -46,27 +47,27 @@ function buildFallbackPhases(lines: string[]): { early: string; middle: string; 
 export function parseStorylineStructuredView(draftText: string): StorylineStructuredView {
   const lines = normalizeLines(draftText);
   const fallbackPhases = buildFallbackPhases(lines);
-  const coreTheme = findByKeywords(lines, ["核心主题", "主题"]);
-  const mainGoal = findByKeywords(lines, ["主线目标", "目标", "核心任务"]);
-  const earlyPhase = findByKeywords(lines, ["前期", "开篇", "第一阶段"]) || fallbackPhases.early;
-  const middlePhase = findByKeywords(lines, ["中期", "第二阶段", "转折"]) || fallbackPhases.middle;
-  const latePhase = findByKeywords(lines, ["后期", "第三阶段", "收束", "结局阶段"]) || fallbackPhases.late;
-  const growthCurve = findByKeywords(lines, ["成长", "成长路径", "成长弧"]);
-  const emotionTrend = findByKeywords(lines, ["情感", "情绪", "情感线"]);
-  const coreConflicts = findByKeywords(lines, ["冲突", "矛盾", "对抗"]);
-  const endingDirection = findByKeywords(lines, ["结局", "终局", "收尾"]);
-  const forbiddenItems = findByKeywords(lines, ["禁止", "避免", "禁忌"]);
+  const coreTheme = findByKeywords(lines, [translateUi("核心主题"), translateUi("主题")]);
+  const mainGoal = findByKeywords(lines, [translateUi("主线目标"), translateUi("目标"), translateUi("核心任务")]);
+  const earlyPhase = findByKeywords(lines, [translateUi("前期"), translateUi("开篇"), translateUi("第一阶段")]) || fallbackPhases.early;
+  const middlePhase = findByKeywords(lines, [translateUi("中期"), translateUi("第二阶段"), translateUi("转折")]) || fallbackPhases.middle;
+  const latePhase = findByKeywords(lines, [translateUi("后期"), translateUi("第三阶段"), translateUi("收束"), translateUi("结局阶段")]) || fallbackPhases.late;
+  const growthCurve = findByKeywords(lines, [translateUi("成长"), translateUi("成长路径"), translateUi("成长弧")]);
+  const emotionTrend = findByKeywords(lines, [translateUi("情感"), translateUi("情绪"), translateUi("情感线")]);
+  const coreConflicts = findByKeywords(lines, [translateUi("冲突"), translateUi("矛盾"), translateUi("对抗")]);
+  const endingDirection = findByKeywords(lines, [translateUi("结局"), translateUi("终局"), translateUi("收尾")]);
+  const forbiddenItems = findByKeywords(lines, [translateUi("禁止"), translateUi("避免"), translateUi("禁忌")]);
 
   return {
-    coreTheme: coreTheme || "未标注",
-    mainGoal: mainGoal || "未标注",
-    earlyPhase: earlyPhase || "未标注",
-    middlePhase: middlePhase || "未标注",
-    latePhase: latePhase || "未标注",
-    growthCurve: growthCurve || "未标注",
-    emotionTrend: emotionTrend || "未标注",
-    coreConflicts: coreConflicts || "未标注",
-    endingDirection: endingDirection || "未标注",
-    forbiddenItems: forbiddenItems || "未标注",
+    coreTheme: coreTheme || translateUi("未标注"),
+    mainGoal: mainGoal || translateUi("未标注"),
+    earlyPhase: earlyPhase || translateUi("未标注"),
+    middlePhase: middlePhase || translateUi("未标注"),
+    latePhase: latePhase || translateUi("未标注"),
+    growthCurve: growthCurve || translateUi("未标注"),
+    emotionTrend: emotionTrend || translateUi("未标注"),
+    coreConflicts: coreConflicts || translateUi("未标注"),
+    endingDirection: endingDirection || translateUi("未标注"),
+    forbiddenItems: forbiddenItems || translateUi("未标注"),
   };
 }

@@ -25,7 +25,7 @@ export function AutoDirectorApprovalPreferenceCard(props: {
     onSave,
     isSaving,
   } = props;
-  const toggleLabel = isOpen ? "收起审批授权偏好" : "展开审批授权偏好";
+  const toggleLabel = isOpen ? translateUi("收起审批授权偏好") : translateUi("展开审批授权偏好");
 
   return (
     <Card className="min-w-0 overflow-hidden">

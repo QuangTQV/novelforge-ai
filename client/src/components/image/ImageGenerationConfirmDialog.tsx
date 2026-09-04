@@ -25,12 +25,12 @@ const SIZE_OPTIONS = [
 ];
 
 const REF_KIND_LABEL: Record<string, string> = {
-  character_sheet: "三视图",
-  character_expression: "表情稿",
-  character_face: "面部裁剪",
-  book_analysis_character_base: "基础形象",
-  asset: "资产",
-  scene: "场景",
+  character_sheet: translateUi("三视图"),
+  character_expression: translateUi("表情稿"),
+  character_face: translateUi("面部裁剪"),
+  book_analysis_character_base: translateUi("基础形象"),
+  asset: translateUi("资产"),
+  scene: translateUi("场景"),
 };
 
 const REF_KIND_COLOR: Record<string, string> = {
@@ -167,14 +167,14 @@ export function ImageGenerationConfirmDialog({
         })),
       });
       if (!response.data) {
-        throw new Error("没有收到 Prompt 处理结果。");
+        throw new Error(translateUi("没有收到 Prompt 处理结果。"));
       }
       if (action === "optimize" && response.data.optimizedPrompt?.trim()) {
         setPrompt(response.data.optimizedPrompt.trim());
       }
       setPromptAssistResult(response.data);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Prompt 处理失败。";
+      const message = error instanceof Error ? error.message : translateUi("Prompt 处理失败。");
       setPromptAssistError(message);
       toast.error(translateUi("Prompt 处理失败"), { description: message });
     } finally {

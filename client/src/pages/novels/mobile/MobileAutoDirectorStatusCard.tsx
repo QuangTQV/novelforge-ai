@@ -15,16 +15,16 @@ interface MobileAutoDirectorStatusCardProps {
 function modeLabel(mode: NovelEditTakeoverState["mode"]): string {
   switch (mode) {
     case "loading":
-      return "加载中";
+      return translateUi("加载中");
     case "running":
-      return "接管中";
+      return translateUi("接管中");
     case "waiting":
-      return "等待确认";
+      return translateUi("等待确认");
     case "action_required":
-      return "待处理";
+      return translateUi("待处理");
     case "failed":
     default:
-      return "异常";
+      return translateUi("异常");
   }
 }
 

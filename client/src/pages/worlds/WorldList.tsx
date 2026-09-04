@@ -61,7 +61,7 @@ function extractStructuredPreview(raw: string): string | null {
       if (parts.length > 0) {
         return parts.join("；");
       }
-      return "包含世界手册内容，进入工作台查看详情。";
+      return translateUi("包含世界手册内容，进入工作台查看详情。");
     }
     if (parsed && typeof parsed === "object") {
       const record = parsed as Record<string, unknown>;
@@ -69,7 +69,7 @@ function extractStructuredPreview(raw: string): string | null {
       if (typeof summary === "string" && summary.trim()) {
         return summary.trim();
       }
-      return "包含世界手册内容，进入工作台查看详情。";
+      return translateUi("包含世界手册内容，进入工作台查看详情。");
     }
   } catch {
     return null;
@@ -123,10 +123,10 @@ function buildWorldLibraryProjection(world: {
   structureJson?: string | null;
 }): WorldLibraryCardProjection {
   const structured = parseStructuredWorldData(world.structureJson);
-  const legacySummary = buildPreview(world.description ?? world.overviewSummary, "等待补充世界概要", 120);
+  const legacySummary = buildPreview(world.description ?? world.overviewSummary, translateUi("等待补充世界概要"), 120);
   const legacyDetail = buildPreview(
     world.conflicts ?? world.geography ?? world.background ?? world.factions,
-    "进入工作台整理核心规则、主要势力和故事舞台。",
+    translateUi("进入工作台整理核心规则、主要势力和故事舞台。"),
     160,
   );
 

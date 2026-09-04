@@ -450,11 +450,11 @@ function isActiveBatch(job: DramaBatchJob | undefined): boolean {
 
 function batchStatusLabel(status: DramaBatchJob["status"]): string {
   const labels: Record<DramaBatchJob["status"], string> = {
-    pending: "等待中",
-    running: "执行中",
-    paused: "已暂停",
-    done: "已完成",
-    failed: "有失败项",
+    pending: translateUi("等待中"),
+    running: translateUi("执行中"),
+    paused: translateUi("已暂停"),
+    done: translateUi("已完成"),
+    failed: translateUi("有失败项"),
   };
   return labels[status] ?? status;
 }
@@ -590,12 +590,12 @@ function formatCost(cost: DramaBatchCostBreakdown, amount: number): string {
 function costUnitLabel(cost: DramaBatchCostBreakdown): string {
   const parts = [];
   if (cost.unit.costPerImage) {
-    parts.push(`图片 ${formatCost(cost, cost.unit.costPerImage)}/张`);
+    parts.push(translateUi("图片 {{v0}}/张", { v0: formatCost(cost, cost.unit.costPerImage) }));
   }
   if (cost.unit.costPerSecond) {
-    parts.push(`时长 ${formatCost(cost, cost.unit.costPerSecond)}/秒`);
+    parts.push(translateUi("时长 {{v0}}/秒", { v0: formatCost(cost, cost.unit.costPerSecond) }));
   }
-  return parts.length ? parts.join("，") : "未配置单价";
+  return parts.length ? parts.join("，") : translateUi("未配置单价");
 }
 
 function CostEstimate(props: { title: string; cost?: DramaBatchCostBreakdown; loading: boolean }) {

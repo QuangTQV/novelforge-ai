@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import { LockKeyhole } from "lucide-react";
 import type { PromptPreviewResult, PromptTestRunResult } from "@/api/promptWorkbench";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +23,7 @@ export function PromptTestRunResultPanel(props: {
   if (isPending) {
     return (
       <div className="rounded-md border border-amber-200 bg-amber-50/75 p-4 text-sm text-amber-900">
-        <div>{streamOutput ? "正在持续显示模型返回内容。" : "正在使用当前草稿调用模型，等待首段内容返回。"}</div>
+        <div>{streamOutput ? translateUi("正在持续显示模型返回内容。") : translateUi("正在使用当前草稿调用模型，等待首段内容返回。")}</div>
         {streamOutput ? (
           <pre className="mt-3 max-h-[420px] overflow-auto whitespace-pre-wrap rounded-md bg-slate-950 p-3 text-xs leading-relaxed text-slate-100">
             {streamOutput}
@@ -48,23 +49,23 @@ export function PromptTestRunResultPanel(props: {
     <div className="space-y-3 rounded-md border border-[#d8e2de] bg-white p-4 shadow-[0_8px_24px_rgba(20,54,48,0.06)]">
       <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-sm font-semibold text-[#25443f]">模型测试产出</div>
+          <div className="text-sm font-semibold text-[#25443f]">{translateUi("模型测试产出")}</div>
           <div className="mt-1 text-xs text-muted-foreground">
-            {result.meta.provider ?? "提示词路由"} / {result.meta.model ?? "默认模型"} · {result.meta.latencyMs}ms
+            {result.meta.provider ?? translateUi("提示词路由")} / {result.meta.model ?? translateUi("默认模型")} · {result.meta.latencyMs}ms
           </div>
         </div>
         <div className="flex flex-wrap gap-2 text-xs">
-          <Badge variant="outline">{result.outputType === "structured" ? "结构化" : "文本"}</Badge>
+          <Badge variant="outline">{result.outputType === "structured" ? translateUi("结构化") : translateUi("文本")}</Badge>
           {usage ? (
             <Badge variant="outline">
               Token {usage.totalTokens ?? "--"}
               {usage.inputTokens != null || usage.outputTokens != null
-                ? `（${usage.inputTokens ?? "--"} / ${usage.outputTokens ?? "--"}）`
+                ? ` (${usage.inputTokens ?? "--"} / ${usage.outputTokens ?? "--"})`
                 : ""}
             </Badge>
           ) : null}
           {result.meta.repairUsed ? (
-            <Badge variant="outline">JSON 修复 {result.meta.repairAttempts ?? 0} 次</Badge>
+            <Badge variant="outline">{translateUi("JSON 修复")} {result.meta.repairAttempts ?? 0} {translateUi("次")}</Badge>
           ) : null}
         </div>
       </div>
@@ -93,7 +94,7 @@ export function PromptPreviewPanel(props: {
       <div className="space-y-3">
         <PromptTestRunResultPanel result={testRun} isPending={testRunPending} error={testRunError} streamOutput={testRunStreamOutput} />
         <div className="rounded-md border border-dashed border-[#cbdad6] bg-white/70 p-5 text-sm text-muted-foreground">
-          点击底部“生成预览”后，可查看最终 messages、上下文选择和诊断结果。
+          {translateUi("点击底部“生成预览”后，可查看最终 messages、上下文选择和诊断结果。")}
         </div>
       </div>
     );
@@ -109,19 +110,19 @@ export function PromptPreviewPanel(props: {
 
       <div className="grid overflow-hidden rounded-md border border-[#d8e2de] bg-white md:grid-cols-4 md:divide-x md:divide-[#d8e2de]">
         <div className="bg-[#f8fbfa] p-3">
-          <div className="text-xs text-muted-foreground">入口</div>
+          <div className="text-xs text-muted-foreground">{translateUi("入口")}</div>
           <div className="mt-1 truncate text-sm font-semibold text-[#25443f]">{preview.diagnostics.entrypoint}</div>
         </div>
         <div className="bg-[#fbfdfb] p-3">
-          <div className="text-xs text-muted-foreground">估算 Token</div>
+          <div className="text-xs text-muted-foreground">{translateUi("估算 Token")}</div>
           <div className="mt-1 text-sm font-semibold text-[#0f766e]">{preview.context.estimatedInputTokens}</div>
         </div>
         <div className="bg-[#f4f7ff] p-3">
-          <div className="text-xs text-muted-foreground">已注入</div>
+          <div className="text-xs text-muted-foreground">{translateUi("已注入")}</div>
           <div className="mt-1 text-sm font-semibold text-[#344d7a]">{preview.context.selectedBlockIds.length}</div>
         </div>
         <div className="bg-[#fff7e8] p-3">
-          <div className="text-xs text-muted-foreground">缺失项</div>
+          <div className="text-xs text-muted-foreground">{translateUi("缺失项")}</div>
           <div className="mt-1 text-sm font-semibold text-[#7a5620]">{preview.diagnostics.missingRequiredGroups.length}</div>
         </div>
       </div>
@@ -136,10 +137,10 @@ export function PromptPreviewPanel(props: {
         <TabsList className="max-w-full overflow-x-auto">
           {preview.messages.map((message, index) => (
             <TabsTrigger key={`${message.role}-${index}`} value={`${message.role}-${index}`}>
-              {MESSAGE_ROLE_LABELS[message.role] ?? message.role}
+              {translateUi(MESSAGE_ROLE_LABELS[message.role] ?? message.role)}
             </TabsTrigger>
           ))}
-          <TabsTrigger value="diagnostics">诊断</TabsTrigger>
+          <TabsTrigger value="diagnostics">{translateUi("诊断")}</TabsTrigger>
         </TabsList>
 
         {preview.messages.map((message, index) => (
@@ -150,7 +151,7 @@ export function PromptPreviewPanel(props: {
                   <LockKeyhole className="h-3.5 w-3.5" />
                   {MESSAGE_ROLE_LABELS[message.role] ?? message.role}
                 </div>
-                <Badge variant="outline" className="border-[#cbdad6] bg-white text-[#52606d]">只读</Badge>
+                <Badge variant="outline" className="border-[#cbdad6] bg-white text-[#52606d]">{translateUi("只读")}</Badge>
               </div>
               <pre className="max-h-[520px] overflow-auto whitespace-pre-wrap p-4 text-xs leading-relaxed text-[#1f2937]">
                 {message.content}

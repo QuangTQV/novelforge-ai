@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { ReactNode } from "react";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { Maximize2, Minimize2 } from "lucide-react";
@@ -84,26 +85,26 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
               ) : null}
               {immersive ? (
                 <span className="rounded-md border border-primary/40 bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                  沉浸编辑
+                  {translateUi("沉浸编辑")}
                 </span>
               ) : null}
             </div>
             {simplified ? (
-              <div className="mt-1 text-sm text-muted-foreground">选择小说和章节，修改本书正文模板并直接查看试写效果。</div>
+              <div className="mt-1 text-sm text-muted-foreground">{translateUi("选择小说和章节，修改本书正文模板并直接查看试写效果。")}</div>
             ) : (
               <>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
                   <span className="font-mono">{prompt.key}</span>
                   <span>·</span>
-                  <span>{TASK_TYPE_LABELS[prompt.taskType] ?? prompt.taskType}</span>
+                  <span>{translateUi(TASK_TYPE_LABELS[prompt.taskType] ?? prompt.taskType)}</span>
                   <span>·</span>
-                  <span>{OUTPUT_TYPE_LABELS[prompt.outputType] ?? prompt.outputType}</span>
+                  <span>{translateUi(OUTPUT_TYPE_LABELS[prompt.outputType] ?? prompt.outputType)}</span>
                   <span>·</span>
-                  <span>{MANAGEMENT_STATUS_LABELS[prompt.managementStatus]}</span>
+                  <span>{translateUi(MANAGEMENT_STATUS_LABELS[prompt.managementStatus])}</span>
                 </div>
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                   <span className="rounded-md bg-[#eef6f4] px-2 py-1 text-[#315f58]">
-                    {prompt.language === "zh" ? "中文" : prompt.language}
+                    {prompt.language === "zh" ? translateUi("中文") : prompt.language}
                   </span>
                   <span className="rounded-md bg-[#eef3fb] px-2 py-1 text-[#385273]">{prompt.family}</span>
                   <span className="rounded-md bg-[#fff3dc] px-2 py-1 text-[#7a5620]">
@@ -113,11 +114,11 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
                     "rounded-md px-2 py-1",
                     prompt.slotSupported ? "bg-[#e8f7f2] text-[#0f766e]" : "bg-muted text-muted-foreground",
                   )}>
-                    {prompt.slotSupported ? `${prompt.slots.length} 个槽位` : "只读提示词"}
+                    {prompt.slotSupported ? translateUi("{{v0}} 个槽位", { v0: prompt.slots.length }) : translateUi("只读提示词")}
                   </span>
                   {capabilities.map((label) => (
                     <span key={label} className="rounded-md bg-white/80 px-2 py-1 text-[#52606d] ring-1 ring-[#dfe7ee]">
-                      {label}
+                      {translateUi(label)}
                     </span>
                   ))}
                 </div>
@@ -145,8 +146,8 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
                   onValueChange={(value) => onScopeChange(value as PromptSlotOverrideScope)}
                 >
                   <TabsList className="h-10">
-                    <TabsTrigger value="global" className="px-4">全局</TabsTrigger>
-                    <TabsTrigger value="novel" className="px-4">本书</TabsTrigger>
+                    <TabsTrigger value="global" className="px-4">{translateUi("全局")}</TabsTrigger>
+                    <TabsTrigger value="novel" className="px-4">{translateUi("本书")}</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </>
@@ -158,7 +159,7 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
                 onChange={(event) => onNovelChange(event.target.value)}
                 className="h-10 min-w-52 rounded-md border border-[#cfdad7] bg-white px-3 text-sm shadow-sm"
               >
-                <option value="">选择小说</option>
+                <option value="">{translateUi("选择小说")}</option>
                 {novels.map((novel) => (
                   <option key={novel.id} value={novel.id}>
                     {novel.title || novel.id}
@@ -173,10 +174,10 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
                 onChange={(event) => onChapterChange(event.target.value)}
                 className="h-10 min-w-52 rounded-md border border-[#cfdad7] bg-white px-3 text-sm shadow-sm"
               >
-                <option value="">选择预览章节</option>
+                <option value="">{translateUi("选择预览章节")}</option>
                 {chapters.map((chapter) => (
                   <option key={chapter.id} value={chapter.id}>
-                    第 {chapter.order ?? "?"} 章 {chapter.title || "未命名章节"}{chapter.hasContent ? "" : "（无正文）"}
+                    {translateUi("第")} {chapter.order ?? "?"} {translateUi("章")} {chapter.title || translateUi("未命名章节")}{chapter.hasContent ? "" : translateUi("（无正文）")}
                   </option>
                 ))}
               </SelectControl>
@@ -193,10 +194,10 @@ export function PromptEditorShell(props: PromptEditorShellProps) {
                     ? "border-success/40 bg-card text-success hover:bg-success/10"
                     : "border-success bg-success text-success-foreground hover:bg-success/90",
                 )}
-                title={immersive ? "退出沉浸编辑" : "进入沉浸编辑"}
+                title={immersive ? translateUi("退出沉浸编辑") : translateUi("进入沉浸编辑")}
               >
                 {immersive ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                {immersive ? "退出沉浸" : "沉浸编辑"}
+                {immersive ? translateUi("退出沉浸") : translateUi("沉浸编辑")}
               </Button>
             ) : null}
           </div>

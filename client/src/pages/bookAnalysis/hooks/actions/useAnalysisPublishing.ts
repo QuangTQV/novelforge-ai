@@ -43,14 +43,14 @@ export function useAnalysisPublishing(input: {
       }
       setLastPublishResult(published);
       setPublishFeedback(
-        `发布完成：文档 ${published.knowledgeDocumentId}，版本 v${published.knowledgeDocumentVersionNumber}，绑定 ${published.bindingCount} 项`,
+        translateUi("发布完成：文档 {{v0}}，版本 v{{v1}}，绑定 {{v2}} 项", { v0: published.knowledgeDocumentId, v1: published.knowledgeDocumentVersionNumber, v2: published.bindingCount }),
       );
       await queryClient.invalidateQueries({ queryKey: queryKeys.knowledge.documents("book-analysis-source") });
       await queryClient.invalidateQueries({ queryKey: queryKeys.novelsKnowledge.bindings(payload.novelId) });
       await refreshAnalysisData(payload.id);
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "发布失败。";
+      const message = error instanceof Error ? error.message : translateUi("发布失败。");
       setLastPublishResult(null);
       setPublishFeedback(message);
     },
@@ -64,7 +64,7 @@ export function useAnalysisPublishing(input: {
       temperature: llmConfig.temperature,
     }),
     onMutate: () => {
-      setStyleProfileFeedback("正在根据拆书里的“文风与技法”生成写法资产，完成后会自动跳转到写法引擎。");
+      setStyleProfileFeedback(translateUi("正在根据拆书里的“文风与技法”生成写法资产，完成后会自动跳转到写法引擎。"));
     },
     onSuccess: async (response) => {
       const createdProfile = response.data;
@@ -77,7 +77,7 @@ export function useAnalysisPublishing(input: {
       navigate(`/style-engine?profileId=${createdProfile.id}&source=book-analysis`);
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "从拆书生成写法失败。";
+      const message = error instanceof Error ? error.message : translateUi("从拆书生成写法失败。");
       setStyleProfileFeedback(message);
     },
   });
@@ -104,7 +104,7 @@ export function useAnalysisPublishing(input: {
     }
     await createStyleProfileMutation.mutateAsync({
       bookAnalysisId: selectedAnalysis.id,
-      name: `${selectedAnalysis.title}-写法资产`,
+      name: translateUi("{{v0}}-写法资产", { v0: selectedAnalysis.title }),
     });
   };
 

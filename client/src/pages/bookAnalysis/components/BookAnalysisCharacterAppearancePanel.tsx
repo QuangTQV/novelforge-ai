@@ -33,16 +33,16 @@ interface BookAnalysisCharacterAppearancePanelProps {
 const COVERAGE_MARKS = [25, 50, 75, 100];
 const SNAPSHOT_PAGE_SIZE = 12;
 const IMAGE_STATUS_TEXT: Record<string, string> = {
-  queued: "排队中",
-  running: "生成中",
-  succeeded: "生成成功",
-  failed: "生成失败",
-  cancelled: "已取消",
+  queued: translateUi("排队中"),
+  running: translateUi("生成中"),
+  succeeded: translateUi("生成成功"),
+  failed: translateUi("生成失败"),
+  cancelled: translateUi("已取消"),
 };
 
 function formatJsonSummary(value: Record<string, unknown> | null | undefined): string {
   if (!value || Object.keys(value).length === 0) {
-    return "暂无稳定特征";
+    return translateUi("暂无稳定特征");
   }
   return Object.entries(value)
     .slice(0, 6)
@@ -214,7 +214,7 @@ export default function BookAnalysisCharacterAppearancePanel({
       generate: async (overrides) => {
         const response = await generateBookAnalysisCharacterAppearanceImage(analysisId, character.id, snapshotId, {
           count: 2,
-          stylePreset: "同一角色章节形象演变图",
+          stylePreset: translateUi("同一角色章节形象演变图"),
           referenceImageAssetIds: selectedReferenceAssetIds,
           overrides,
         });

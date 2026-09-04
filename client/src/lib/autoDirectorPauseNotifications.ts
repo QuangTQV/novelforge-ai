@@ -1,3 +1,4 @@
+import { translateUi } from "@/i18n/legacy";
 import type { AutoDirectorFollowUpItem } from "@ai-novel/shared/types/autoDirectorFollowUp";
 import type { AutoDirectorFollowUpSection } from "@ai-novel/shared/types/autoDirectorValidation";
 
@@ -86,8 +87,8 @@ export function buildAutoDirectorPauseNotificationBody(item: AutoDirectorFollowU
   const scope = item.executionScope?.trim();
   const summary = item.followUpSummary?.trim() || item.reasonLabel;
   const prefix = scope
-    ? `《${item.novelTitle}》${scope}需要处理`
-    : `《${item.novelTitle}》需要处理`;
+    ? translateUi("《{{v0}}》{{v1}}需要处理", { v0: item.novelTitle, v1: scope })
+    : translateUi("《{{v0}}》需要处理", { v0: item.novelTitle });
   return clipNotificationBody(`${prefix}：${summary}`);
 }
 
@@ -99,7 +100,7 @@ export function showAutoDirectorPauseNotification(input: {
     return false;
   }
 
-  const notification = new window.Notification("自动导演需要你处理", {
+  const notification = new window.Notification(translateUi("自动导演需要你处理"), {
     body: buildAutoDirectorPauseNotificationBody(input.item),
     tag: NOTIFICATION_TAG,
   });

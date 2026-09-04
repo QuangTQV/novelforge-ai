@@ -30,12 +30,12 @@ type StructuredChapter = StructuredVolume["chapters"][number];
 type StructuredBeat = StructuredTabViewProps["beatSheets"][number]["beats"][number];
 
 function actionLabel(action: StructuredTabViewProps["syncPreview"]["items"][number]["action"]) {
-  if (action === "create") return "新增";
-  if (action === "update") return "更新";
-  if (action === "move") return "移动";
-  if (action === "keep") return "保留";
-  if (action === "delete") return "删除";
-  return "待删候选";
+  if (action === "create") return translateUi("新增");
+  if (action === "update") return translateUi("更新");
+  if (action === "move") return translateUi("移动");
+  if (action === "keep") return translateUi("保留");
+  if (action === "delete") return translateUi("删除");
+  return translateUi("待删候选");
 }
 
 function getWorkspaceGuidance(params: {
@@ -47,15 +47,15 @@ function getWorkspaceGuidance(params: {
 }): string {
   const { locked, selectedBeat, selectedChapter, visibleChapterCount, totalChapterCount } = params;
   if (locked) {
-    return "先为当前卷生成节奏板，系统才能把卷内推进节奏和章节拆分对齐起来。";
+    return translateUi("先为当前卷生成节奏板，系统才能把卷内推进节奏和章节拆分对齐起来。");
   }
   if (selectedBeat) {
     const beatLabel = formatBeatDisplayLabel(selectedBeat);
     return selectedChapter
-      ? `已聚焦到「${beatLabel}」，当前显示 ${visibleChapterCount} 章，右侧正在细化第 ${selectedChapter.chapterOrder} 章。`
-      : `已聚焦到「${beatLabel}」，当前显示 ${visibleChapterCount} 章，接下来在左侧选择要细化的章节。`;
+      ? translateUi("已聚焦到「{{v0}}」，当前显示 {{v1}} 章，右侧正在细化第 {{v2}} 章。", { v0: beatLabel, v1: visibleChapterCount, v2: selectedChapter.chapterOrder })
+      : translateUi("已聚焦到「{{v0}}」，当前显示 {{v1}} 章，接下来在左侧选择要细化的章节。", { v0: beatLabel, v1: visibleChapterCount });
   }
-  return `当前展示本卷全部 ${totalChapterCount} 章。建议先点一个节奏段，让系统把对应章节收束出来，再开始细化。`;
+  return translateUi("当前展示本卷全部 {{v0}} 章。建议先点一个节奏段，让系统把对应章节收束出来，再开始细化。", { v0: totalChapterCount });
 }
 
 function chapterMatchesSelection(chapter: StructuredChapter, selectedId: string): boolean {

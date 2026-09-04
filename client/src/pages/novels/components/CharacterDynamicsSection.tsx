@@ -127,7 +127,7 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
   const manualStateMutation = useMutation({
     mutationFn: () => {
       if (!selectedCharacterId) {
-        throw new Error("请先选择一个角色。");
+        throw new Error(translateUi("请先选择一个角色。"));
       }
       return updateCharacterDynamicState(novelId, selectedCharacterId, {
         currentState: manualState.currentState.trim() || undefined,
@@ -177,10 +177,10 @@ export default function CharacterDynamicsSection(props: CharacterDynamicsSection
               onClick={() => setActiveView(view)}
             >
               {{
-                overview: "动态总览",
-                candidates: "新角色候选",
-                relations: "关系阶段",
-                duties: "卷级职责与缺席风险",
+                overview: translateUi("动态总览"),
+                candidates: translateUi("新角色候选"),
+                relations: translateUi("关系阶段"),
+                duties: translateUi("卷级职责与缺席风险"),
               }[view]}
             </Button>
           ))}

@@ -18,24 +18,24 @@ export const VISIBLE_PROFILE_FIELDS: Array<{
 
 export function getSecretStatus(selectedCharacter?: Character): string {
   if (!selectedCharacter) {
-    return "暂无";
+    return translateUi("暂无");
   }
   if (selectedCharacter.secret?.trim()) {
-    return "存在明确秘密";
+    return translateUi("存在明确秘密");
   }
   const runtimeSignal = `${selectedCharacter.currentState ?? ""} ${selectedCharacter.currentGoal ?? ""}`;
-  return /秘密|隐瞒|卧底|伪装/.test(runtimeSignal) ? "已隐藏关键信息" : "暂无显性秘密";
+  return /秘密|隐瞒|卧底|伪装/.test(runtimeSignal) ? translateUi("已隐藏关键信息") : translateUi("暂无显性秘密");
 }
 
 export function getEmotionSignal(selectedCharacter?: Character): string {
   const runtimeSignal = `${selectedCharacter?.currentState ?? ""} ${selectedCharacter?.currentGoal ?? ""}`;
   if (/愤|怒|焦虑|崩溃|绝望/.test(runtimeSignal)) {
-    return "高压";
+    return translateUi("高压");
   }
   if (/平静|稳|冷静|从容/.test(runtimeSignal)) {
-    return "平稳";
+    return translateUi("平稳");
   }
-  return "待观察";
+  return translateUi("待观察");
 }
 
 export function getResourceDisplayMode(character?: Character): {
@@ -48,7 +48,7 @@ export function getResourceDisplayMode(character?: Character): {
   if (isProtagonistCharacter(character)) {
     return {
       label: translateUi("主角完整资源"),
-      helper: "主角会完整展示道具、线索、身份凭证、底牌和消耗状态，后续章节会优先参考这些行动边界。",
+      helper: translateUi("主角会完整展示道具、线索、身份凭证、底牌和消耗状态，后续章节会优先参考这些行动边界。"),
       limit: 10,
       shouldShowResource: () => true,
     };
@@ -56,7 +56,7 @@ export function getResourceDisplayMode(character?: Character): {
   if (/临时|路人|客串|一次性/.test(roleText)) {
     return {
       label: translateUi("临时角色资源"),
-      helper: "临时角色只展示会跨章复用、牵动冲突、绑定伏笔或被主角带走的资源。",
+      helper: translateUi("临时角色只展示会跨章复用、牵动冲突、绑定伏笔或被主角带走的资源。"),
       limit: 5,
       shouldShowResource: (item) => (
         item.narrativeFunction === "promise"
@@ -68,7 +68,7 @@ export function getResourceDisplayMode(character?: Character): {
   }
   return {
     label: translateUi("长期角色关键资源"),
-    helper: "长期角色优先展示会改变行动选择、关系筹码、读者知情或伏笔兑现的资源。",
+    helper: translateUi("长期角色优先展示会改变行动选择、关系筹码、读者知情或伏笔兑现的资源。"),
     limit: 6,
     shouldShowResource: (item) => item.status !== "stale",
   };
@@ -76,30 +76,30 @@ export function getResourceDisplayMode(character?: Character): {
 
 export function getResourceStatusLabel(status: CharacterResourceLedgerItem["status"]): string {
   const labels: Record<CharacterResourceLedgerItem["status"], string> = {
-    available: "可用",
-    hidden: "隐藏",
-    borrowed: "借用",
-    transferred: "转交",
-    lost: "丢失",
-    consumed: "已消耗",
-    damaged: "受损",
-    destroyed: "毁坏",
-    stale: "淡出",
+    available: translateUi("可用"),
+    hidden: translateUi("隐藏"),
+    borrowed: translateUi("借用"),
+    transferred: translateUi("转交"),
+    lost: translateUi("丢失"),
+    consumed: translateUi("已消耗"),
+    damaged: translateUi("受损"),
+    destroyed: translateUi("毁坏"),
+    stale: translateUi("淡出"),
   };
   return labels[status] ?? status;
 }
 
 export function getResourceFunctionLabel(value: CharacterResourceLedgerItem["narrativeFunction"]): string {
   const labels: Record<CharacterResourceLedgerItem["narrativeFunction"], string> = {
-    tool: "工具",
-    clue: "线索",
-    weapon: "武器",
-    proof: "证据",
-    key: "钥匙",
-    cost: "代价",
-    promise: "伏笔",
-    hidden_card: "底牌",
-    constraint: "限制",
+    tool: translateUi("工具"),
+    clue: translateUi("线索"),
+    weapon: translateUi("武器"),
+    proof: translateUi("证据"),
+    key: translateUi("钥匙"),
+    cost: translateUi("代价"),
+    promise: translateUi("伏笔"),
+    hidden_card: translateUi("底牌"),
+    constraint: translateUi("限制"),
   };
   return labels[value] ?? value;
 }

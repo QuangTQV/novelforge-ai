@@ -79,7 +79,7 @@ export function AutoDirectorChannelSettingsCard(props: {
     onSave,
     isSaving,
   } = props;
-  const toggleLabel = isOpen ? "收起导演跟进通道配置" : "展开导演跟进通道配置";
+  const toggleLabel = isOpen ? translateUi("收起导演跟进通道配置") : translateUi("展开导演跟进通道配置");
 
   return (
     <Card className="min-w-0 overflow-hidden">

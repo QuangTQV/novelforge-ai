@@ -48,11 +48,11 @@ export type WorldFlowEdge = Edge<WorldGraphEdgeData, "worldEdge">;
 
 const HANDLE_POSITIONS = [Position.Top, Position.Right, Position.Bottom, Position.Left];
 const NODE_TYPE_LABELS: Record<string, string> = {
-  state: "政权",
-  faction: "阵营",
-  race: "种族",
-  organization: "组织",
-  other: "其他势力",
+  state: translateUi("政权"),
+  faction: translateUi("阵营"),
+  race: translateUi("种族"),
+  organization: translateUi("组织"),
+  other: translateUi("其他势力"),
 };
 
 function handleName(position: Position) {
@@ -63,13 +63,13 @@ export function WorldGraphNode(props: NodeProps<WorldFlowNode>) {
   const { graphNode, layout, tone, active, dimmed } = props.data;
   const isMap = layout === "map";
   const metaText = isMap
-    ? graphNode.terrain || graphNode.regionType || "关键地点"
-    : NODE_TYPE_LABELS[graphNode.type ?? "other"] ?? graphNode.type ?? "世界势力";
+    ? graphNode.terrain || graphNode.regionType || translateUi("关键地点")
+    : NODE_TYPE_LABELS[graphNode.type ?? "other"] ?? graphNode.type ?? translateUi("世界势力");
   const detailItems = [
-    `类型：${metaText}`,
+    translateUi("类型：{{v0}}", { v0: metaText }),
     graphNode.summary,
-    graphNode.storyRelevance ? `故事作用：${graphNode.storyRelevance}` : "",
-    graphNode.risk ? `风险：${graphNode.risk}` : "",
+    graphNode.storyRelevance ? translateUi("故事作用：{{v0}}", { v0: graphNode.storyRelevance }) : "",
+    graphNode.risk ? translateUi("风险：{{v0}}", { v0: graphNode.risk }) : "",
   ].filter(Boolean);
 
   return (

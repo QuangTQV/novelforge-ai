@@ -367,7 +367,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
   const ensureWorkflowTask = async () => {
     const nextIdea = requestIdea;
     if (!nextIdea) {
-      throw new Error("请先补充起始想法，再继续生成或确认书级方向。");
+      throw new Error(translateUi("请先补充起始想法，再继续生成或确认书级方向。"));
     }
     if (workflowTaskId) {
       return workflowTaskId;
@@ -417,7 +417,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
 
   const buildCandidateRequestPayload = (currentWorkflowTaskId: string) => {
     if (!requestIdea) {
-      throw new Error("请先补充起始想法，再继续生成或确认书级方向。");
+      throw new Error(translateUi("请先补充起始想法，再继续生成或确认书级方向。"));
     }
     return buildAutoDirectorRequestPayload(
       directorBasicForm,
@@ -458,7 +458,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     mutationFn: async (payload: { candidate: DirectorCandidate; workflowTaskId?: string }) => {
       const currentWorkflowTaskId = payload.workflowTaskId || await ensureWorkflowTask();
       if (!requestIdea) {
-        throw new Error("请先补充起始想法，再继续生成或确认书级方向。");
+        throw new Error(translateUi("请先补充起始想法，再继续生成或确认书级方向。"));
       }
       const autoExecutionPlan = buildAutoExecutionPlanForRunMode();
       const response = await confirmDirectorCandidate({
@@ -486,7 +486,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     onSuccess: async ({ command, workflowTaskId: nextWorkflowTaskId }) => {
       if (!command) {
         setDialogMode("execution_failed");
-        setExecutionError("确认方案失败，未返回导演命令。");
+        setExecutionError(translateUi("确认方案失败，未返回导演命令。"));
         toast.error(translateUi("确认方案失败，未返回导演命令。"));
         return;
       }
@@ -507,7 +507,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     },
     onError: async (error, payload) => {
       setDialogMode("execution_failed");
-      setExecutionError(error instanceof Error ? error.message : "导演任务执行失败。");
+      setExecutionError(error instanceof Error ? error.message : translateUi("导演任务执行失败。"));
       setExecutionRequested(false);
       if (payload.workflowTaskId) {
         await queryClient.invalidateQueries({
@@ -524,7 +524,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     mutationFn: async () => {
       const taskId = directorTask?.id || workflowTaskId;
       if (!taskId) {
-        throw new Error("当前没有可继续的自动导演任务。");
+        throw new Error(translateUi("当前没有可继续的自动导演任务。"));
       }
       return continueNovelWorkflow(taskId, { continuationMode: "resume" });
     },
@@ -659,7 +659,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
       });
     } catch (error) {
       confirmSubmitLockedRef.current = false;
-      const message = error instanceof Error ? error.message : "创建导演主任务失败。";
+      const message = error instanceof Error ? error.message : translateUi("创建导演主任务失败。");
       setDialogMode("candidate_selection");
       setExecutionRequested(false);
       setExecutionError(message);

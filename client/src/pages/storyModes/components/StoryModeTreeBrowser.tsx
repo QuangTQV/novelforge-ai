@@ -34,6 +34,16 @@ function findPath(nodes: StoryModeTreeNode[], targetId: string, parents: string[
   return [];
 }
 
+// Story-mode names come from the seeded system catalog (Chinese source text).
+// The detail pane already runs them through translateUi; do the same for the tree.
+function translateTreeNames(nodes: StoryModeTreeNode[]): StoryModeTreeNode[] {
+  return nodes.map((node) => ({
+    ...node,
+    name: translateUi(node.name),
+    children: translateTreeNames(node.children),
+  }));
+}
+
 function countBindings(node: StoryModeTreeNode): number {
   return node.novelCount + node.children.reduce((total, child) => total + countBindings(child), 0);
 }
@@ -49,6 +59,7 @@ export default function StoryModeTreeBrowser({
   const [selectedId, setSelectedId] = useState(initialSelectedId || nodes[0]?.id || "");
   const selectedNode = useMemo(() => findNode(nodes, selectedId), [nodes, selectedId]);
   const selectedPath = useMemo(() => findPath(nodes, selectedId), [nodes, selectedId]);
+  const treeNodes = useMemo(() => translateTreeNames(nodes), [nodes]);
 
   useEffect(() => {
     if (initialSelectedId && findNode(nodes, initialSelectedId)) {
@@ -67,7 +78,7 @@ export default function StoryModeTreeBrowser({
   return (
     <div className="grid min-h-[560px] overflow-hidden rounded-lg border border-border/80 bg-background lg:grid-cols-[320px_minmax(0,1fr)]">
       <AssetTreeNavigator
-        nodes={nodes}
+        nodes={treeNodes}
         selectedId={selectedId}
         onSelect={setSelectedId}
         title={translateUi("推进模式目录")}
@@ -77,7 +88,7 @@ export default function StoryModeTreeBrowser({
 
       <section className="flex min-w-0 flex-col" aria-labelledby="selected-story-mode-title">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 px-5 py-3">
-          <div className="truncate text-xs text-muted-foreground">{selectedPath.join(" / ")}</div>
+          <div className="truncate text-xs text-muted-foreground">{selectedPath.map((segment) => translateUi(segment)).join(" / ")}</div>
           <div className="flex items-center gap-1">
             {canCreateChild ? (
               <Button type="button" variant="ghost" size="sm" onClick={() => onCreateChild(selectedNode.id)}>

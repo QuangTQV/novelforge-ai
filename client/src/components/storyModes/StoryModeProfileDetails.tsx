@@ -101,7 +101,7 @@ export default function StoryModeProfileDetails({
       {node.template?.trim() ? (
         <div className="mt-7 border-t border-border/70 pt-6">
           <div className="text-sm font-semibold text-foreground">{translateUi("AI 使用补充")}</div>
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">{node.template}</p>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">{translateUi(node.template)}</p>
         </div>
       ) : null}
     </div>

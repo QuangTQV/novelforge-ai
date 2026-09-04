@@ -1,6 +1,5 @@
-import { translateUi } from "@/i18n/legacy";
 const TEXT_FILE_ENCODING_CANDIDATES = ["utf-8", "gb18030", "gbk", "big5", "utf-16le", "utf-16be"] as const;
-const SUSPICIOUS_MOJIBAKE_TOKENS = [translateUi("銆€"), translateUi("锛"), translateUi("鏈功"), translateUi("涓€"), translateUi("鍥犱负")] as const;
+const SUSPICIOUS_MOJIBAKE_TOKENS = ["銆€", "锛", "鏈功", "涓€", "鍥犱负"] as const;
 
 function detectTxtBomEncoding(bytes: Uint8Array): string | null {
   if (bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {

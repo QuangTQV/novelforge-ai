@@ -1,4 +1,5 @@
-import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import type { LLMProvider, LLMReasoningEffort } from "@ai-novel/shared/types/llm";
+import { isLLMReasoningEffort } from "@ai-novel/shared/types/llm";
 import type {
   ModelRouteRequestProtocol,
   ModelRouteStructuredResponseFormat,
@@ -7,6 +8,10 @@ import type {
 import { prisma } from "../db/prisma";
 import { isBuiltInProvider, PROVIDERS } from "./providers";
 import type { StructuredOutputStrategy } from "./structuredOutput";
+
+function normalizeReasoningEffort(value: string | null | undefined): LLMReasoningEffort | undefined {
+  return typeof value === "string" && isLLMReasoningEffort(value) ? value : undefined;
+}
 
 export type TaskType =
   | ModelRouteTaskType
@@ -48,6 +53,8 @@ export interface ResolvedModel {
   maxTokens?: number;
   requestProtocol: ModelRouteRequestProtocol;
   structuredResponseFormat: ModelRouteStructuredResponseFormat;
+  /** Mức độ suy luận riêng cho giai đoạn này. `undefined` = kế thừa mặc định của provider. */
+  reasoningEffort?: LLMReasoningEffort;
   routeKey: ModelRouteTaskType | "default";
   routeDegraded: boolean;
 }
@@ -218,6 +225,7 @@ function applyOverrides(
     maxTokens?: number;
     requestProtocol?: ModelRouteRequestProtocol;
     structuredResponseFormat?: ModelRouteStructuredResponseFormat;
+    reasoningEffort?: LLMReasoningEffort;
   },
 ): ResolvedModel {
   const merged: ResolvedModel = {
@@ -230,6 +238,7 @@ function applyOverrides(
     ...(userOverride?.structuredResponseFormat != null && {
       structuredResponseFormat: userOverride.structuredResponseFormat,
     }),
+    ...(userOverride?.reasoningEffort != null && { reasoningEffort: userOverride.reasoningEffort }),
   };
   const routePreferences = normalizeRoutePreferences({
     requestProtocol: merged.requestProtocol,
@@ -267,6 +276,7 @@ export async function resolveModel(
     maxTokens?: number;
     requestProtocol?: ModelRouteRequestProtocol;
     structuredResponseFormat?: ModelRouteStructuredResponseFormat;
+    reasoningEffort?: LLMReasoningEffort;
   },
 ): Promise<ResolvedModel> {
   const normalizedTaskType = normalizeTaskType(taskType);
@@ -288,6 +298,7 @@ export async function resolveModel(
         temperature: row.temperature,
         maxTokens: normalizeMaxTokens(provider, row.maxTokens ?? undefined),
         ...routePreferences,
+        reasoningEffort: normalizeReasoningEffort("reasoningEffort" in row ? row.reasoningEffort : null),
         routeKey: normalizedTaskType,
         routeDegraded: false,
       };
@@ -313,6 +324,7 @@ export async function listModelRouteConfigs(): Promise<Array<{
   maxTokens: number | null;
   requestProtocol: ModelRouteRequestProtocol;
   structuredResponseFormat: ModelRouteStructuredResponseFormat;
+  reasoningEffort: LLMReasoningEffort | null;
 }>> {
   try {
     const rows = await prisma.modelRouteConfig.findMany({
@@ -331,6 +343,7 @@ export async function listModelRouteConfigs(): Promise<Array<{
         temperature: r.temperature,
         maxTokens: normalizeMaxTokens(provider, r.maxTokens ?? undefined) ?? null,
         ...routePreferences,
+        reasoningEffort: normalizeReasoningEffort("reasoningEffort" in r ? r.reasoningEffort : null) ?? null,
       };
     });
   } catch {
@@ -347,6 +360,7 @@ export async function upsertModelRouteConfig(
     maxTokens?: number | null;
     requestProtocol?: string | null;
     structuredResponseFormat?: string | null;
+    reasoningEffort?: string | null;
   },
 ): Promise<void> {
   const normalizedTaskType = normalizeTaskType(taskType as TaskType);
@@ -359,6 +373,7 @@ export async function upsertModelRouteConfig(
     requestProtocol: data.requestProtocol,
     structuredResponseFormat: data.structuredResponseFormat,
   });
+  const reasoningEffort = normalizeReasoningEffort(data.reasoningEffort) ?? null;
   await prisma.modelRouteConfig.upsert({
     where: { taskType: normalizedTaskType },
     create: {
@@ -369,6 +384,7 @@ export async function upsertModelRouteConfig(
       maxTokens: normalizedMaxTokens,
       requestProtocol,
       structuredResponseFormat,
+      reasoningEffort,
     },
     update: {
       provider,
@@ -377,6 +393,7 @@ export async function upsertModelRouteConfig(
       maxTokens: normalizedMaxTokens,
       requestProtocol,
       structuredResponseFormat,
+      reasoningEffort,
     },
   });
 }

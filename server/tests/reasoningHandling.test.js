@@ -8,6 +8,7 @@ const {
   isDeepSeekThinkingModeProvider,
   isMiniMaxCompatibleProvider,
   resolveProviderReasoningBehavior,
+  supportsGenericReasoningEffort,
 } = require("../dist/llm/reasoning.js");
 
 test("deepseek v4 pro behavior maps reasoning toggle to thinking mode", () => {
@@ -15,7 +16,7 @@ test("deepseek v4 pro behavior maps reasoning toggle to thinking mode", () => {
     provider: "deepseek",
     baseURL: "https://api.deepseek.com/v1",
     model: "deepseek-v4-pro",
-    reasoningEnabled: false,
+    reasoningEffort: "none",
   });
 
   assert.equal(disabled.reasoningEnabled, false);
@@ -25,7 +26,7 @@ test("deepseek v4 pro behavior maps reasoning toggle to thinking mode", () => {
     provider: "custom_gateway",
     baseURL: "https://api.deepseek.com/v1",
     model: "deepseek-reasoner",
-    reasoningEnabled: true,
+    reasoningEffort: "medium",
   });
 
   assert.equal(enabled.reasoningEnabled, true);
@@ -53,7 +54,7 @@ test("deepseek v4 flash can disable thinking for structured generation", () => {
     provider: "deepseek",
     baseURL: "https://api.deepseek.com/v1",
     model: "deepseek-v4-flash",
-    reasoningEnabled: false,
+    reasoningEffort: "none",
   });
 
   assert.equal(disabled.reasoningEnabled, false);
@@ -65,7 +66,7 @@ test("minimax provider behavior enables reasoning_split and raw response parsing
     provider: "minimax",
     baseURL: "https://api.minimax.io/v1",
     model: "MiniMax-M2.7",
-    reasoningEnabled: false,
+    reasoningEffort: "none",
   });
 
   assert.equal(behavior.reasoningEnabled, false);
@@ -144,4 +145,54 @@ test("extractReasoningTextFromChunk supports generic reasoning payloads", () => 
   });
 
   assert.equal(text, "附加字段思考总结思考内容里的思考");
+});
+
+test("supportsGenericReasoningEffort recognizes only known reasoning-effort model families", () => {
+  assert.equal(supportsGenericReasoningEffort("openai", "o1-preview"), true);
+  assert.equal(supportsGenericReasoningEffort("openai", "o3-mini"), true);
+  assert.equal(supportsGenericReasoningEffort("openai", "o4-mini"), true);
+  assert.equal(supportsGenericReasoningEffort("openai", "gpt-5.1"), true);
+  assert.equal(supportsGenericReasoningEffort("openai", "gpt-4o"), false);
+  assert.equal(supportsGenericReasoningEffort("grok", "grok-4-fast"), true);
+  assert.equal(supportsGenericReasoningEffort("grok", "grok-2"), false);
+  assert.equal(supportsGenericReasoningEffort("deepseek", "o1-clone"), false);
+});
+
+test("resolveProviderReasoningBehavior passes reasoning_effort through for recognized OpenAI/xAI reasoning models", () => {
+  const low = resolveProviderReasoningBehavior({
+    provider: "openai",
+    baseURL: "https://api.openai.com/v1",
+    model: "gpt-5.1",
+    reasoningEffort: "low",
+  });
+  assert.equal(low.reasoningEnabled, true);
+  assert.deepEqual(low.modelKwargs, { reasoning_effort: "low" });
+
+  const high = resolveProviderReasoningBehavior({
+    provider: "grok",
+    baseURL: "https://api.x.ai/v1",
+    model: "grok-4-fast",
+    reasoningEffort: "high",
+  });
+  assert.deepEqual(high.modelKwargs, { reasoning_effort: "high" });
+
+  const off = resolveProviderReasoningBehavior({
+    provider: "openai",
+    baseURL: "https://api.openai.com/v1",
+    model: "gpt-5.1",
+    reasoningEffort: "none",
+  });
+  assert.equal(off.reasoningEnabled, false);
+  assert.equal(off.modelKwargs, undefined);
+});
+
+test("resolveProviderReasoningBehavior never sends reasoning_effort for unrecognized providers/models", () => {
+  const behavior = resolveProviderReasoningBehavior({
+    provider: "some_custom_gateway",
+    baseURL: "https://gateway.example.com/v1",
+    model: "some-model-v1",
+    reasoningEffort: "high",
+  });
+  assert.equal(behavior.reasoningEnabled, true);
+  assert.equal(behavior.modelKwargs, undefined);
 });

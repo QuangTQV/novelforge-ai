@@ -3,7 +3,7 @@ import type {
   DirectorAutoApprovalPreferenceSettings,
 } from "@ai-novel/shared/types/autoDirectorApproval";
 import type { DirectorIssuePolicy } from "@ai-novel/shared/types/directorIssue";
-import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import type { LLMBackupApiKey, LLMProvider, LLMReasoningEffort, LLMRotationStrategy } from "@ai-novel/shared/types/llm";
 import type {
   ModelRouteConfig,
   ModelRouteRequestProtocol,
@@ -31,9 +31,15 @@ export interface APIKeyStatus {
   isConfigured: boolean;
   isActive: boolean;
   reasoningEnabled: boolean;
+  reasoningEffort: LLMReasoningEffort;
   concurrencyLimit: number;
   requestIntervalMs: number;
   supportsImageGeneration: boolean;
+  rotationStrategy: LLMRotationStrategy;
+  apiKeyWeight: number;
+  backupKeys: LLMBackupApiKey[];
+  cooldownSeconds: number;
+  fallbackOrder: number | null;
 }
 
 export type ProviderBalanceStatusKind = "available" | "missing_api_key" | "unsupported" | "error";
@@ -131,6 +137,7 @@ export interface ModelRoutesResponse {
     maxTokens: number | null;
     requestProtocol: ModelRouteRequestProtocol;
     structuredResponseFormat: ModelRouteStructuredResponseFormat;
+    reasoningEffort: LLMReasoningEffort | null;
   }>;
 }
 
@@ -329,8 +336,14 @@ export async function saveAPIKeySetting(
     baseURL?: string;
     isActive?: boolean;
     reasoningEnabled?: boolean;
+    reasoningEffort?: "low" | "medium" | "high";
     concurrencyLimit?: number;
     requestIntervalMs?: number;
+    rotationStrategy?: LLMRotationStrategy;
+    apiKeyWeight?: number;
+    backupKeys?: LLMBackupApiKey[];
+    cooldownSeconds?: number;
+    fallbackOrder?: number | null;
   },
 ) {
   const { data } = await apiClient.put<
@@ -342,11 +355,17 @@ export async function saveAPIKeySetting(
       baseURL: string | null;
       isActive: boolean;
       reasoningEnabled: boolean;
+      reasoningEffort: LLMReasoningEffort;
       concurrencyLimit: number;
       requestIntervalMs: number;
       models: string[];
       imageModels: string[];
       supportsImageGeneration: boolean;
+      rotationStrategy: LLMRotationStrategy;
+      apiKeyWeight: number;
+      backupKeys: LLMBackupApiKey[];
+      cooldownSeconds: number;
+      fallbackOrder: number | null;
     }>
   >(`/settings/api-keys/${provider}`, payload);
   return data;

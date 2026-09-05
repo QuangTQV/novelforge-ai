@@ -9,6 +9,10 @@ import type {
   ModelRouteStructuredResponseFormat,
   ModelRouteTaskType,
 } from "@ai-novel/shared/types/novel";
+import type { LLMReasoningEffort } from "@ai-novel/shared/types/llm";
+
+/** "inherit" = không set (kế thừa mặc định của provider) — chỉ có ý nghĩa cho draft trên UI. */
+export type ReasoningEffortDraftValue = LLMReasoningEffort | "inherit";
 
 export interface RouteDraft {
   provider: string;
@@ -17,6 +21,7 @@ export interface RouteDraft {
   maxTokens: string;
   requestProtocol: ModelRouteRequestProtocol;
   structuredResponseFormat: ModelRouteStructuredResponseFormat;
+  reasoningEffort: ReasoningEffortDraftValue;
 }
 
 export interface StructuredFallbackDraft extends RouteDraft {
@@ -34,6 +39,7 @@ export interface RouteSavePayload {
   maxTokens?: number | null;
   requestProtocol: ModelRouteRequestProtocol;
   structuredResponseFormat: ModelRouteStructuredResponseFormat;
+  reasoningEffort: LLMReasoningEffort | null;
 }
 
 export function getProviderConfig(providerConfigs: APIKeyStatus[], provider: string) {
@@ -86,6 +92,7 @@ export function buildRouteSavePayload(taskType: ModelRouteTaskType, draft: Route
     maxTokens: parseMaxTokens(draft.maxTokens),
     requestProtocol: draft.requestProtocol,
     structuredResponseFormat: draft.structuredResponseFormat,
+    reasoningEffort: draft.reasoningEffort === "inherit" ? null : draft.reasoningEffort,
   };
 }
 
@@ -98,7 +105,8 @@ export function isSameRouteDraft(draft: RouteDraft, route: SavedModelRoute | und
     && parseTemperature(draft.temperature, 0.7) === route.temperature
     && parseMaxTokens(draft.maxTokens) === route.maxTokens
     && draft.requestProtocol === route.requestProtocol
-    && draft.structuredResponseFormat === route.structuredResponseFormat;
+    && draft.structuredResponseFormat === route.structuredResponseFormat
+    && (draft.reasoningEffort === "inherit" ? null : draft.reasoningEffort) === (route.reasoningEffort ?? null);
 }
 
 export function formatStructuredStatus(status: ModelRouteConnectivityStatus["structured"]): string {

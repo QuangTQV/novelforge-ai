@@ -173,6 +173,7 @@ export default function ModelRoutesPage() {
       maxTokens: route?.maxTokens != null ? String(route.maxTokens) : "",
       requestProtocol: route?.requestProtocol ?? "auto",
       structuredResponseFormat: route?.structuredResponseFormat ?? "auto",
+      reasoningEffort: route?.reasoningEffort ?? "inherit",
     };
   }
 
@@ -187,6 +188,7 @@ export default function ModelRoutesPage() {
       maxTokens: "",
       requestProtocol: "auto",
       structuredResponseFormat: "auto",
+      reasoningEffort: "inherit",
     };
   }
 
@@ -237,6 +239,7 @@ export default function ModelRoutesPage() {
       maxTokens: structuredFallback?.maxTokens != null ? String(structuredFallback.maxTokens) : "",
       requestProtocol: "auto",
       structuredResponseFormat: "auto",
+      reasoningEffort: "inherit",
     };
   }
 

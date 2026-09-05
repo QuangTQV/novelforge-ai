@@ -1,4 +1,5 @@
 import type { BookAnalysisSectionKey } from "./bookAnalysis";
+import type { LLMReasoningEffort } from "./llm";
 import type { BookContract } from "./novelWorkflow";
 import type { NovelWorkflowCheckpoint } from "./novelWorkflow";
 import type { NovelStoryMode } from "./storyMode";
@@ -1135,6 +1136,8 @@ export interface ModelRouteConfig {
   maxTokens?: number | null;
   requestProtocol?: ModelRouteRequestProtocol;
   structuredResponseFormat?: ModelRouteStructuredResponseFormat;
+  /** "none" | "low" | "medium" | "high"; null/undefined = kế thừa mặc định của provider. */
+  reasoningEffort?: LLMReasoningEffort | null;
 }
 
 export const MODEL_ROUTE_REQUEST_PROTOCOLS = [

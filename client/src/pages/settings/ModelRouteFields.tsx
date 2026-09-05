@@ -152,6 +152,25 @@ export default function ModelRouteFields({
           </Select>
         </div>
       ) : null}
+
+      <div className="space-y-1">
+        <div className="text-xs text-muted-foreground">{translateUi("Mức độ suy luận cho giai đoạn này")}</div>
+        <Select
+          value={draft.reasoningEffort}
+          onValueChange={(value) => onPatch({ reasoningEffort: value as RouteDraft["reasoningEffort"] })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={translateUi("Kế thừa mặc định của provider")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="inherit">{translateUi("Kế thừa mặc định của provider")}</SelectItem>
+            <SelectItem value="none">{translateUi("Tắt suy luận")}</SelectItem>
+            <SelectItem value="low">{translateUi("Thấp")}</SelectItem>
+            <SelectItem value="medium">{translateUi("Trung bình")}</SelectItem>
+            <SelectItem value="high">{translateUi("Cao")}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }

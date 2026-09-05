@@ -41,10 +41,14 @@ export function findCreationFoundationNode<Node extends CreationFoundationTreeNo
 }
 
 export function hasCreationFoundationChanged(
-  current: { genreId: string; primaryStoryModeId: string },
-  next: Partial<{ genreId: string; primaryStoryModeId: string }>,
+  current: { genreId: string; genreIds?: string[]; primaryStoryModeId: string },
+  next: Partial<{ genreId: string; genreIds: string[]; primaryStoryModeId: string }>,
 ): boolean {
+  const currentGenreIds = current.genreIds?.length ? current.genreIds : current.genreId ? [current.genreId] : [];
+  const nextGenreIds = next.genreIds ?? currentGenreIds;
   return (next.genreId !== undefined && next.genreId !== current.genreId)
+    || (next.genreIds !== undefined && (nextGenreIds.length !== currentGenreIds.length
+      || nextGenreIds.some((id, index) => id !== currentGenreIds[index])))
     || (
       next.primaryStoryModeId !== undefined
       && next.primaryStoryModeId !== current.primaryStoryModeId

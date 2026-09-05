@@ -279,6 +279,7 @@ export interface Novel {
   activeVolumeVersionId?: string | null;
   bookContract?: BookContract | null;
   genreId?: string | null;
+  genreIds?: string[] | null;
   primaryStoryModeId?: string | null;
   secondaryStoryModeId?: string | null;
   worldId?: string | null;

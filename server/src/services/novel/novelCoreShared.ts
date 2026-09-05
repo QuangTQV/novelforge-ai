@@ -24,6 +24,7 @@ export interface CreateNovelInput {
   first30ChapterPromise?: string;
   commercialTags?: string[];
   genreId?: string;
+  genreIds?: string[];
   primaryStoryModeId?: string;
   secondaryStoryModeId?: string;
   worldId?: string;
@@ -89,6 +90,7 @@ export interface UpdateNovelInput {
   referenceBookAnalysisId?: string | null;
   referenceBookAnalysisSections?: BookAnalysisSectionKey[] | null;
   genreId?: string | null;
+  genreIds?: string[] | null;
   primaryStoryModeId?: string | null;
   secondaryStoryModeId?: string | null;
   worldId?: string | null;
@@ -294,6 +296,7 @@ export function normalizeNovelOutput<T extends {
   continuationBookAnalysisSections?: string | null;
   referenceBookAnalysisSections?: string | null;
   commercialTagsJson?: string | null;
+  genreIdsJson?: string | null;
   bookContract?: {
     id: string;
     novelId: string;
@@ -331,15 +334,17 @@ export function normalizeNovelOutput<T extends {
   } | null;
 }>(
   novel: T,
-): Omit<T, "continuationBookAnalysisSections" | "referenceBookAnalysisSections" | "commercialTagsJson"> & {
+): Omit<T, "continuationBookAnalysisSections" | "referenceBookAnalysisSections" | "commercialTagsJson" | "genreIdsJson"> & {
   continuationBookAnalysisSections: BookAnalysisSectionKey[] | null;
   referenceBookAnalysisSections: BookAnalysisSectionKey[] | null;
   commercialTags: string[];
+  genreIds: string[];
 } {
   const {
     continuationBookAnalysisSections,
     referenceBookAnalysisSections,
     commercialTagsJson,
+    genreIdsJson,
     ...rest
   } = novel;
   return {
@@ -347,6 +352,14 @@ export function normalizeNovelOutput<T extends {
     continuationBookAnalysisSections: parseContinuationBookAnalysisSections(continuationBookAnalysisSections),
     referenceBookAnalysisSections: parseContinuationBookAnalysisSections(referenceBookAnalysisSections),
     commercialTags: parseCommercialTagsJson(commercialTagsJson),
+    genreIds: (() => {
+      try {
+        const parsed = genreIdsJson ? JSON.parse(genreIdsJson) : [];
+        return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [];
+      } catch {
+        return [];
+      }
+    })(),
     ...(rest.bookContract !== undefined
       ? {
         bookContract: rest.bookContract

@@ -450,7 +450,7 @@ export class CreationStudioService {
         bookSellingPoint: direction.coreExperience,
         styleTone: direction.styleKeywords.join("、"),
         estimatedChapterCount: targetChapterCount(input.targetWordCount),
-        defaultChapterLength: 2500,
+        defaultChapterLength: 1800,
         projectMode: "auto_pipeline",
         writingMode: "original",
         writingPlatformPreference: input.writingPlatform,

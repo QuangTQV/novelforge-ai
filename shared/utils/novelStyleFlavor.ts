@@ -33,6 +33,9 @@ export function buildStyleFlavorDirective(flavor: NovelStyleFlavor, promptLangua
         "Đoạn văn ngắn, nhịp nhanh; ưu tiên độc thoại nội tâm sát nhân vật, có thể xen hài hước nhẹ nếu hợp giọng truyện.",
         "Mô tả hành động như những lát cắt cảnh liên tiếp (đổi góc nhìn/khoảnh khắc nhanh), thoại ngắn và sắc.",
         "Mỗi chương kết bằng một chi tiết gây tò mò hoặc một twist nhỏ; tránh đoạn diễn giải dài dòng.",
+        "Ưu tiên cảm giác đọc như đang xem storyboard manga: cảnh rõ, biểu cảm dễ hình dung, hành động nhìn thấy được, chuyển cảnh gọn.",
+        "Không dùng công thức tiên hiệp/cung đấu/web novel Trung Quốc; không lạm dụng Hán-Việt, độc thoại tính toán kéo dài hoặc lời thoại giảng giải.",
+        "Không biến ‘manga’ thành mô tả hình ảnh đơn thuần: vẫn phải là văn xuôi có cảnh, cảm xúc, mục tiêu và xung đột cụ thể.",
       ],
       manhwa: [
         "【PHONG CÁCH VĂN PHONG: MANHWA / WEB NOVEL HÀN】",

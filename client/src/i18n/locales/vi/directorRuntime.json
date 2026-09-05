@@ -4,5 +4,5 @@
   "policySource": { "global": "Quy tắc toàn cục", "novel": "Quy tắc tiểu thuyết", "taskSnapshot": "Quy tắc lúc khởi động tác vụ", "safety": "Giới hạn an toàn" },
   "duration": { "lessThanSecond": "<1 giây", "seconds": "{{count}} giây", "minutes": "{{minutes}} phút", "minutesSeconds": "{{minutes}} phút {{seconds}} giây" },
   "usage": { "calls": "{{count}} lượt gọi", "input": "Đầu vào {{count}}", "output": "Đầu ra {{count}}", "total": "Tổng {{count}} Tokens", "duration": "Tổng thời gian gọi {{value}}" },
-  "policy": { "suggestOnly": "Chỉ đưa đề xuất", "runNextStep": "Tiến hành bước tiếp theo", "autoSafeScope": "Tự động tiến hành trong phạm vi an toàn", "toCheckpoint": "Tiến hành đến checkpoint" }
+  "policy": { "suggestOnly": "Chỉ đưa đề xuất", "runNextStep": "Chạy bước tiếp theo", "autoSafeScope": "Tự động chạy trong phạm vi an toàn", "toCheckpoint": "Chạy đến điểm lưu" }
 }

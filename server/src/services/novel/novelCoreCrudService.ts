@@ -105,6 +105,7 @@ export class NovelCoreCrudService {
           continuationBookAnalysisId: true,
           continuationBookAnalysisSections: true,
           genreId: true,
+          genreIdsJson: true,
           primaryStoryModeId: true,
           secondaryStoryModeId: true,
           worldId: true,
@@ -376,6 +377,7 @@ export class NovelCoreCrudService {
         first30ChapterPromise: normalizeOptionalTextForCreate(input.first30ChapterPromise),
         commercialTagsJson,
         genreId: input.genreId,
+        genreIdsJson: input.genreIds?.length ? JSON.stringify(Array.from(new Set(input.genreIds))) : null,
         primaryStoryModeId: input.primaryStoryModeId ?? null,
         secondaryStoryModeId: input.secondaryStoryModeId ?? null,
         worldId: input.worldId,
@@ -511,6 +513,7 @@ export class NovelCoreCrudService {
       competingFeel: _ignoreCompetingFeel,
       first30ChapterPromise: _ignoreFirst30ChapterPromise,
       commercialTags: _ignoreCommercialTags,
+      genreIds: _ignoreGenreIds,
       ...restInput
     } = input;
 
@@ -536,6 +539,9 @@ export class NovelCoreCrudService {
         competingFeel: normalizeOptionalTextForUpdate(input.competingFeel),
         first30ChapterPromise: normalizeOptionalTextForUpdate(input.first30ChapterPromise),
         commercialTagsJson,
+        ...(input.genreIds !== undefined
+          ? { genreIdsJson: input.genreIds === null ? null : JSON.stringify(Array.from(new Set(input.genreIds))) }
+          : {}),
         continuationBookAnalysisSections:
           nextWritingMode === "continuation"
           && (nextSourceNovelId || nextSourceKnowledgeDocumentId)

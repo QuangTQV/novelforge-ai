@@ -7,7 +7,7 @@
   },
   "queueCard": {
     "title": "Hàng đợi chương",
-    "subtitle": "Theo dõi tiến độ sản xuất chương",
+    "subtitle": "Theo dõi tiến độ viết chương",
     "visibleCount": "Hiển thị {{count}} chương",
     "filterLabel": "Lọc trạng thái",
     "emptyFiltered": "Không có chương phù hợp",
@@ -33,7 +33,7 @@
       "review": "Kiểm tra",
       "repair": "Sửa chữa",
       "stateSync": "Đồng bộ trạng thái",
-      "payoffSync": "Đồng bộ nút thắt",
+      "payoffSync": "Đồng bộ các mốc câu chuyện",
       "ready": "Sẵn sàng"
     },
     "notes": {

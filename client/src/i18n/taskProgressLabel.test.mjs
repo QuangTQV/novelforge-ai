@@ -48,6 +48,26 @@ test("persisted runtime messages translate stable Chinese fragments", () => {
   assert.match(out, /Bước tiếp theo/);
 });
 
+test("persisted follow-up summaries translate dynamic Chinese messages", () => {
+  assert.equal(
+    translateTaskProgressLabel("任务已取消，如仍需继续，可从最近检查点恢复。"),
+    "Tác vụ đã bị hủy. Nếu vẫn muốn tiếp tục, hãy khôi phục từ điểm kiểm tra gần nhất.",
+  );
+  assert.equal(
+    translateTaskProgressLabel("第 1 轮已生成 2 套书级方向，并完成每套书名组。"),
+    "Vòng 1 đã tạo 2 hướng cấp sách và hoàn tất nhóm tên sách cho từng hướng.",
+  );
+  assert.equal(
+    translateTaskProgressLabel("《炮臺最後在地球》已完成前期准备，请选择创作界面。"),
+    "“炮臺最後在地球” đã hoàn tất khâu chuẩn bị ban đầu. Hãy chọn giao diện sáng tác.",
+  );
+  assert.equal(translateTaskProgressLabel("第 1-10 章已可进入章节执行"), "Chương 1-10 đã sẵn sàng để thực thi.");
+  assert.equal(
+    translateTaskProgressLabel("AI 已自动通过「章节执行」，并继续推进。"),
+    "AI đã tự động thông qua “chương执行” và tiếp tục triển khai.",
+  );
+});
+
 test("unknown / dynamic strings pass through unchanged", () => {
   assert.equal(translateTaskProgressLabel("Error: connection reset by peer"), "Error: connection reset by peer");
   assert.equal(translateTaskProgressLabel(null), "");

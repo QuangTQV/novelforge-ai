@@ -95,8 +95,10 @@ export async function appendOutputLanguageDirective(
   return [
     ...messages,
     new SystemMessage(promptDirective),
-    ...(directive ? [new SystemMessage(directive)] : []),
     ...(styleDirective ? [new SystemMessage(styleDirective)] : []),
+    // Đặt chỉ thị ngôn ngữ sau style/context để nó có độ ưu tiên thực tế cao
+    // hơn các profile hoặc ví dụ viết bằng tiếng Trung được đưa vào trước đó.
+    ...(directive ? [new SystemMessage(directive)] : []),
   ];
 }
 

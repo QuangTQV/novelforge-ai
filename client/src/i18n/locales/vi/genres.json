@@ -3,7 +3,7 @@
     "header": {
       "context": "Tài sản sáng tác / Định vị tiểu thuyết",
       "title": "Thư viện nền đề tài",
-      "description": "Duy trì định vị đề tài và phân cấp thể loại có thể tái sử dụng cho tiểu thuyết. Khi mở sách, hãy chọn nền đề tài phù hợp để AI hiểu được thể loại tác phẩm, kỳ vọng của độc giả và hướng sáng tác chính.",
+      "description": "Duy trì định vị đề tài và phân cấp thể loại có thể tái sử dụng cho tiểu thuyết. Khi tạo tiểu thuyết mới, hãy chọn nền đề tài phù hợp để AI hiểu thể loại, kỳ vọng của độc giả và hướng sáng tác chính.",
       "createRootTree": "Tạo cây nền đề tài mới"
     },
     "status": {
@@ -40,9 +40,9 @@
       "emptyDescription": "Mô tả hướng sáng tác bạn muốn bao phủ; bạn có thể tự dựng phân cấp, hoặc để AI tạo bản nháp rồi tinh chỉnh.",
       "emptyAction": "Tạo nền đề tài",
       "describeTitle": "Bổ sung mô tả đề tài cho “{{name}}”",
-      "describeDescription": "Làm rõ định vị tác phẩm, kỳ vọng độc giả và xung đột cốt lõi sẽ giúp AI hiểu chính xác hơn về đề tài này khi mở sách và lập kế hoạch.",
+      "describeDescription": "Làm rõ định vị tác phẩm, kỳ vọng độc giả và xung đột cốt lõi sẽ giúp AI hiểu chính xác hơn về đề tài khi tạo tiểu thuyết và lập kế hoạch.",
       "describeAction": "Bổ sung mô tả",
-      "readyTitle": "Nền đề tài đã đủ để hỗ trợ chọn khi mở sách",
+      "readyTitle": "Nền đề tài đã sẵn sàng để chọn khi tạo tiểu thuyết",
       "readyDescription": "Mọi đề tài hiện có đều đã có mô tả rõ ràng. Khi cần bao phủ hướng sáng tác mới, hãy thêm đề tài gốc hoặc phân loại con.",
       "readyAction": "Mở rộng đề tài"
     },
@@ -53,7 +53,7 @@
       "loadingDescription": "Vui lòng chờ, liên kết giữa đề tài và tiểu thuyết đang được đồng bộ.",
       "errorTitle": "Tạm thời không tải được nền đề tài",
       "errorDescription": "Vui lòng kiểm tra kết nối dịch vụ rồi tải lại. Các đề tài hiện có không bị ảnh hưởng.",
-      "emptyTitle": "Chưa có nền đề tài nào để chọn khi mở sách",
+      "emptyTitle": "Chưa có nền đề tài nào để chọn khi tạo tiểu thuyết",
       "emptyDescription": "Hãy tạo một đề tài chính trước. Bạn có thể tự điền, hoặc mô tả hướng sáng tác để AI tạo bản nháp cây đề tài kèm phân loại con.",
       "emptyAction": "Tạo cây đề tài đầu tiên"
     }

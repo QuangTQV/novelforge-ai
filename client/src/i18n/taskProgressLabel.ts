@@ -65,6 +65,11 @@ const RULES: Rule[] = [
   { test: /^(.+?)正文已完成，等待续拆下一段$/, key: "{{scope}}正文已完成，等待续拆下一段", params: (m) => ({ scope: translateScopePrefix(m[1]) }) },
   { test: /^(.+?)已可开写，等待选择创作界面$/, key: "{{scope}}已可开写，等待选择创作界面", params: (m) => ({ scope: translateScopePrefix(m[1]) }) },
   { test: /^(.+?)细化已完成，正在同步章节执行资源$/, key: "{{scope}}细化已完成，正在同步章节执行资源", params: (m) => ({ scope: translateScopePrefix(m[1]) }) },
+  { test: /^第\s*(\d+)\s*轮已生成\s*(\d+)\s*套书级方向，并完成每套书名组。?$/, key: "第 {{round}} 轮已生成 {{count}} 套书级方向，并完成每套书名组。", params: (m) => ({ round: m[1], count: m[2] }) },
+  { test: /^第\s*(\d+)\s*轮已根据修正意见生成\s*(\d+)\s*套新方向，并完成标题组增强。?$/, key: "第 {{round}} 轮已根据修正意见生成 {{count}} 套新方向，并完成标题组增强。", params: (m) => ({ round: m[1], count: m[2] }) },
+  { test: /^《(.+?)》已完成前期准备，请选择创作界面。?$/, key: "《{{title}}》已完成前期准备，请选择创作界面。", params: (m) => ({ title: m[1] }) },
+  { test: /^第\s*(\d+)-(\d+)\s*章已可进入章节执行。?$/, key: "第 {{start}}-{{end}} 章已可进入章节执行", params: (m) => ({ start: m[1], end: m[2] }) },
+  { test: /^AI 已自动通过「(.+?)」，并继续推进。(?:([\s\S]+))?$/, key: "AI 已自动通过「{{label}}」，并继续推进。{{summary}}", params: (m) => ({ label: m[1], summary: m[2] ? translateTaskProgressLabel(m[2]) : "" }) },
   // bare scope labels
   { test: /^第\s*(\d+)\s*卷(?:\s*·\s*(.+))?$/, key: "第 {{n}} 卷", params: (m) => ({ n: m[1] }) },
   { test: /^第\s*(\d+)-(\d+)\s*章$/, key: "第 {{a}}-{{b}} 章", params: (m) => ({ a: m[1], b: m[2] }) },

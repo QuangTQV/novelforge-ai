@@ -25,6 +25,7 @@ export interface NovelBasicFormState {
   first30ChapterPromise: string;
   commercialTagsText: string;
   genreId: string;
+  genreIds: string[];
   primaryStoryModeId: string;
   secondaryStoryModeId: string;
   worldId: string;
@@ -189,9 +190,9 @@ export const NOVEL_STYLE_FLAVOR_OPTIONS: BasicInfoOption<NovelStyleFlavor>[] = [
 
 export const PACE_OPTIONS: BasicInfoOption<NovelBasicFormState["pacePreference"]>[] = [
   {
-    value: "balanced",
-    label: translateUi("均衡"),
-    summary: translateUi("推进和铺垫兼顾，适合作为默认选择。"),
+    value: "fast",
+    label: translateUi("快 nhịp"),
+    summary: translateUi("Vào xung đột sớm, ưu tiên cảnh có hành động, tương tác và điểm móc câu; phù hợp với manga."),
     recommended: true,
   },
   {
@@ -200,9 +201,9 @@ export const PACE_OPTIONS: BasicInfoOption<NovelBasicFormState["pacePreference"]
     summary: translateUi("更重铺垫、氛围和情绪发酵。"),
   },
   {
-    value: "fast",
-    label: translateUi("快节奏"),
-    summary: translateUi("更重事件驱动、钩子和连续推进。"),
+    value: "balanced",
+    label: translateUi("Nhịp cân bằng"),
+    summary: translateUi("Cân bằng cảnh hành động, tương tác nhân vật và phần chuẩn bị cần thiết."),
   },
 ];
 
@@ -305,6 +306,7 @@ export function createDefaultNovelBasicFormState(): NovelBasicFormState {
     first30ChapterPromise: "",
     commercialTagsText: "",
     genreId: "",
+    genreIds: [],
     primaryStoryModeId: "",
     secondaryStoryModeId: "",
     worldId: "",
@@ -314,14 +316,14 @@ export function createDefaultNovelBasicFormState(): NovelBasicFormState {
     readerChannelPreference: "ai_judge",
     writingPlatformPreference: "ai_recommend",
     narrativePov: "third_person",
-    pacePreference: "balanced",
+    pacePreference: "fast",
     styleTone: "",
-    emotionIntensity: "medium",
+    emotionIntensity: "high",
     aiFreedom: "medium",
     novelLanguage: defaultNovelLanguageFromUi(),
     styleFlavor: DEFAULT_NOVEL_STYLE_FLAVOR,
     postGenerationStyleReviewEnabled: true,
-    defaultChapterLength: 2800,
+    defaultChapterLength: 1800,
     estimatedChapterCount: DEFAULT_ESTIMATED_CHAPTER_COUNT,
     projectStatus: "not_started",
     storylineStatus: "not_started",
@@ -406,6 +408,7 @@ export function buildNovelCreatePayload(basicForm: NovelBasicFormState) {
     first30ChapterPromise: basicForm.first30ChapterPromise.trim() || undefined,
     commercialTags: commercialTags.length > 0 ? commercialTags : undefined,
     genreId: basicForm.genreId || undefined,
+    genreIds: basicForm.genreIds.length > 0 ? basicForm.genreIds : undefined,
     primaryStoryModeId: basicForm.primaryStoryModeId || undefined,
     secondaryStoryModeId: basicForm.secondaryStoryModeId || undefined,
     worldId: basicForm.worldId || undefined,
@@ -467,6 +470,7 @@ export function buildNovelUpdatePayload(basicForm: NovelBasicFormState) {
     first30ChapterPromise: basicForm.first30ChapterPromise.trim() || null,
     commercialTags: commercialTags.length > 0 ? commercialTags : null,
     genreId: basicForm.genreId || null,
+    genreIds: basicForm.genreIds.length > 0 ? basicForm.genreIds : null,
     primaryStoryModeId: basicForm.primaryStoryModeId || null,
     secondaryStoryModeId: basicForm.secondaryStoryModeId || null,
     worldId: basicForm.worldId || null,

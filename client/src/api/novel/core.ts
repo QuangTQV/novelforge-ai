@@ -67,6 +67,7 @@ export async function createNovel(payload: {
   first30ChapterPromise?: string;
   commercialTags?: string[];
   genreId?: string;
+  genreIds?: string[];
   primaryStoryModeId?: string;
   secondaryStoryModeId?: string;
   worldId?: string;

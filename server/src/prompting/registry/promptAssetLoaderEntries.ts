@@ -414,7 +414,7 @@ export const promptAssetLoaderEntries: PromptAssetLoaderEntry[] = [
     load: () => require("../prompts/novel/review.prompts").chapterSummaryPrompt as UnknownPromptAsset,
   },
   {
-    key: "novel.chapter.writer@v6",
+    key: "novel.chapter.writer@v7",
     load: () => require("../prompts/novel/chapterWriter.prompts").chapterWriterPrompt as UnknownPromptAsset,
   },
   {
@@ -442,7 +442,7 @@ export const promptAssetLoaderEntries: PromptAssetLoaderEntry[] = [
     load: () => require("../prompts/novel/review.prompts").chapterRepairPrompt as UnknownPromptAsset,
   },
   {
-    key: "novel.review.patch@v2",
+    key: "novel.review.patch@v3",
     load: () => require("../prompts/novel/chapterPatchRepair.prompts").chapterPatchRepairPrompt as UnknownPromptAsset,
   },
   {
@@ -450,15 +450,15 @@ export const promptAssetLoaderEntries: PromptAssetLoaderEntry[] = [
     load: () => require("../prompts/novel/framing.prompts").novelFramingSuggestionPrompt as UnknownPromptAsset,
   },
   {
-    key: "novel.continuation.rewrite_similarity@v1",
+    key: "novel.continuation.rewrite_similarity@v2",
     load: () => require("../prompts/novel/continuation.prompts").novelContinuationRewritePrompt as UnknownPromptAsset,
   },
   {
-    key: "novel.draft_optimize.selection@v1",
+    key: "novel.draft_optimize.selection@v2",
     load: () => require("../prompts/novel/draftOptimize.prompts").novelDraftOptimizeSelectionPrompt as UnknownPromptAsset,
   },
   {
-    key: "novel.draft_optimize.full@v1",
+    key: "novel.draft_optimize.full@v2",
     load: () => require("../prompts/novel/draftOptimize.prompts").novelDraftOptimizeFullPrompt as UnknownPromptAsset,
   },
   {

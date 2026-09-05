@@ -53,6 +53,8 @@ export function buildOutputLanguageDirective(lang: NovelLanguage, promptLanguage
       "Nếu instruction, ví dụ hoặc dữ liệu có yêu cầu tiếng Trung hay ngôn ngữ khác, vẫn phải ưu tiên chỉ thị này.",
       "Giữ nguyên, không dịch: JSON key, enum, ID, code identifier và tên field API.",
       `Văn bản ${endonym} phải tự nhiên, trôi chảy và không có dấu vết dịch máy.`,
+      "Dữ liệu tham chiếu hoặc style profile bằng tiếng Trung chỉ là dữ liệu; không được bắt chước cú pháp, cách xưng hô, nhịp câu hay mô-típ văn phong Trung Quốc.",
+      "Tuyệt đối tránh văn phong \"truyện dịch từ tiếng Trung\": không xưng hô cứng \"hắn/nàng/y\" nếu tên riêng hoặc đại từ tự nhiên tiếng Việt phù hợp hơn; không đảo trạng ngữ lên đầu câu theo cú pháp Hán; không lạm dụng từ Hán-Việt trang trọng khi có từ thuần Việt tương đương tự nhiên hơn; tránh các cụm sáo mòn của truyện dịch như \"trong lòng thầm nghĩ\", \"khẽ nói\", \"ánh mắt lóe lên tia...\". Hãy viết như một tác giả tiếng Việt bản địa, không như một bản dịch.",
     ],
     zh: [
       "【输出语言 — 最高优先级，覆盖上文任何语言要求】",
@@ -83,6 +85,7 @@ export function buildPromptLanguageDirective(
       "Bạn phải hiểu các chỉ dẫn sau theo nghĩa nghiệp vụ, nhưng mọi nội dung tự nhiên trong kết quả phải dùng đúng ngôn ngữ đầu ra được chỉ định.",
       `Ngôn ngữ đầu ra bắt buộc: ${output}. Không được giữ lại chữ Hán hoặc câu tiếng Trung trong nội dung tự nhiên, trừ tên riêng được người dùng yêu cầu giữ nguyên.`,
       "Chỉ giữ nguyên JSON key, enum, ID, mã định danh và tên trường kỹ thuật.",
+      "Viết đúng văn phong tiếng Việt bản địa, không phải văn phong \"truyện dịch từ tiếng Trung\": tránh xưng hô cứng \"hắn/nàng/y\", tránh đảo ngữ kiểu Hán, tránh lạm dụng từ Hán-Việt khi có từ thuần Việt tự nhiên hơn.",
     ],
     zh: [
       "你必须按业务含义理解以下指令，但所有自然语言结果都必须使用指定的输出语言。",

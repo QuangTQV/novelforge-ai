@@ -60,6 +60,13 @@ test("detectProseQuality keeps common false positives out of blocking findings",
   assert.equal(report.hasBlockingFindings, false);
 });
 
+test("detectProseQuality does not flag Vietnamese/English prose ending in an ASCII period as truncated", () => {
+  const viParagraph = "Gió đêm lùa qua khe cửa gỗ mục, mang theo mùi ẩm mốc của con hẻm cũ, còn cô vẫn đứng lặng nhìn ánh đèn cuối phố tắt dần từng ngọn một.";
+  const report = detectProseQuality(viParagraph);
+
+  assert.equal(codes(report).includes("prose_truncation"), false);
+});
+
 test("buildProseQualityAuditReport maps findings into mode_fit runtime audit issues", () => {
   const report = detectProseQuality("作为AI语言模型，我无法继续生成这一章。后来他只能望着未完成的门");
   const auditReport = buildProseQualityAuditReport({

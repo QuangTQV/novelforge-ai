@@ -25,7 +25,24 @@ export function countNarrativeLength(text: string, lang: NovelLanguage): number 
   return text.replace(/\s+/g, "").trim().length;
 }
 
-/** Nhãn đơn vị độ dài ("字" cho CJK, "词" cho ngôn ngữ tách từ). Dùng khi render prompt. */
+/**
+ * Nhãn đơn vị độ dài dùng khi render prompt, theo đúng ngôn ngữ đầu ra:
+ * - CJK (zh, ja): "字" (đếm theo ký tự).
+ * - Ngôn ngữ tách từ: nhãn "từ" bản địa (vi/en/fr/es/ko).
+ */
 export function narrativeLengthUnitLabel(lang: NovelLanguage): string {
-  return isSpaceDelimitedLanguage(lang) ? "词" : "字";
+  switch (lang) {
+    case "vi":
+      return "từ";
+    case "en":
+      return "words";
+    case "fr":
+      return "mots";
+    case "es":
+      return "palabras";
+    case "ko":
+      return "단어";
+    default:
+      return "字";
+  }
 }

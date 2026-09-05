@@ -7,6 +7,7 @@ import {
   type ChapterPatchRepairPlan,
 } from "@ai-novel/shared/types/chapterPatchRepair";
 import { runStructuredPrompt } from "../../prompting/core/promptRunner";
+import { resolveNovelOutputLanguage } from "../../prompting/core/novelOutputLanguage";
 import { buildChapterRepairContextBlocks } from "../../prompting/prompts/novel/chapterLayeredContext";
 import { chapterPatchRepairPrompt } from "../../prompting/prompts/novel/chapterPatchRepair.prompts";
 
@@ -68,6 +69,7 @@ export class ChapterPatchRepairService {
     const contextBlocks = repairContext
       ? buildChapterRepairContextBlocks(repairContext)
       : undefined;
+    const outputLanguage = await resolveNovelOutputLanguage(input.novelId);
     let generated: { output: ChapterPatchRepairPlan };
     try {
       generated = await runStructuredPrompt({
@@ -78,6 +80,7 @@ export class ChapterPatchRepairService {
           chapterContent: input.content,
           issuesJson: input.issuesJson ?? JSON.stringify(input.issues, null, 2),
           modeHint: input.modeHint,
+          outputLanguage,
         },
         contextBlocks,
         options: {

@@ -1,4 +1,5 @@
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import { resolveNovelLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { prisma } from "../../db/prisma";
 import { runTextPrompt } from "../../prompting/core/promptRunner";
 import {
@@ -149,6 +150,8 @@ export class NovelDraftOptimizeService {
           .join("\n")
       : "暂无";
 
+    const outputLanguage = resolveNovelLanguage(novel.novelLanguage);
+
     if (input.mode === "selection") {
       const selectedText = input.selectedText?.trim();
       if (!selectedText) {
@@ -165,6 +168,7 @@ export class NovelDraftOptimizeService {
           before: selectionContext.before,
           after: selectionContext.after,
           selectedText,
+          outputLanguage,
         },
         options: {
           novelId: novelId,
@@ -189,6 +193,7 @@ export class NovelDraftOptimizeService {
         charactersText,
         worldContext,
         currentDraft,
+        outputLanguage,
       },
       options: {
         novelId: novelId,

@@ -55,6 +55,8 @@ test("isSpaceDelimitedLanguage / unit label", () => {
   assert.equal(isSpaceDelimitedLanguage("en"), true);
   assert.equal(isSpaceDelimitedLanguage("zh"), false);
   assert.equal(isSpaceDelimitedLanguage("ja"), false);
-  assert.equal(narrativeLengthUnitLabel("vi"), "词");
+  assert.equal(narrativeLengthUnitLabel("vi"), "từ");
+  assert.equal(narrativeLengthUnitLabel("en"), "words");
   assert.equal(narrativeLengthUnitLabel("zh"), "字");
+  assert.equal(narrativeLengthUnitLabel("ja"), "字");
 });

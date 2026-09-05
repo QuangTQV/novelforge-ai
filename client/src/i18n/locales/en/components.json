@@ -48,6 +48,7 @@
     "selectModel": "Select a model",
     "noModels": "No models available yet",
     "searchModel": "Search models",
+    "customModel": "Enter a custom model",
     "temperatureHint": "Higher temperature means more varied output; use 0.3-0.7 for planning",
     "temperature": "Temperature",
     "modelTemperature": "Model temperature",

@@ -48,6 +48,7 @@
     "selectModel": "选择模型",
     "noModels": "还没有可用模型",
     "searchModel": "搜索模型",
+    "customModel": "输入自定义模型",
     "temperatureHint": "温度越高结果越发散；规划建议用 0.3-0.7",
     "temperature": "温度",
     "modelTemperature": "模型温度",

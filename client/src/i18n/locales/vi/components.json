@@ -41,6 +41,7 @@
     "selectModel": "Chọn mô hình",
     "noModels": "Chưa có mô hình khả dụng",
     "searchModel": "Tìm mô hình",
+    "customModel": "Nhập model tùy chỉnh",
     "temperatureHint": "Nhiệt độ càng cao thì kết quả càng đa dạng; lập kế hoạch nên dùng 0,3–0,7",
     "temperature": "Nhiệt độ",
     "modelTemperature": "Nhiệt độ mô hình",

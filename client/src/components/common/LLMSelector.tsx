@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -72,9 +72,14 @@ export default function LLMSelector({
     temperature: store.temperature,
     maxTokens: store.maxTokens,
   };
+  const [customModel, setCustomModel] = useState(currentValue.model);
 
   const resolvedTemperature = currentValue.temperature ?? store.temperature;
   const resolvedMaxTokens = currentValue.maxTokens ?? store.maxTokens;
+
+  useEffect(() => {
+    setCustomModel(currentValue.model);
+  }, [currentValue.model]);
 
   const apiKeySettingsQuery = useQuery({
     queryKey: queryKeys.settings.apiKeys,
@@ -261,12 +266,21 @@ export default function LLMSelector({
   };
 
   const onModelChange = (model: string) => {
+    setCustomModel(model);
     updateValue({
       provider: effectiveProvider,
       model,
       temperature: resolvedTemperature,
       maxTokens: resolvedMaxTokens,
     });
+  };
+
+  const commitCustomModel = () => {
+    const model = customModel.trim();
+    if (!model || model === currentValue.model) {
+      return;
+    }
+    onModelChange(model);
   };
 
   return (
@@ -296,17 +310,34 @@ export default function LLMSelector({
         </Select>
 
         {showModel ? (
-          <SearchableSelect
-            value={resolvedModel}
-            onValueChange={onModelChange}
-            options={models.map((model) => ({ value: model }))}
-            placeholder={hasRunnableProviders ? t("llmSelector.selectModel") : t("llmSelector.noModels")}
-            searchPlaceholder={t("llmSelector.searchModel")}
-            emptyText={t("llmSelector.noModels")}
-            className={cn(compact ? "w-[184px] lg:w-[220px]" : "w-full sm:w-[240px]")}
-            triggerClassName={compact ? "h-9 px-2.5" : undefined}
-            disabled={!hasRunnableProviders}
-          />
+          <>
+            <SearchableSelect
+              value={resolvedModel}
+              onValueChange={onModelChange}
+              options={models.map((model) => ({ value: model }))}
+              placeholder={hasRunnableProviders ? t("llmSelector.selectModel") : t("llmSelector.noModels")}
+              searchPlaceholder={t("llmSelector.searchModel")}
+              emptyText={t("llmSelector.noModels")}
+              className={cn(compact ? "w-[184px] lg:w-[220px]" : "w-full sm:w-[240px]")}
+              triggerClassName={compact ? "h-9 px-2.5" : undefined}
+              disabled={!hasRunnableProviders}
+            />
+            <Input
+              value={customModel}
+              placeholder={t("llmSelector.customModel")}
+              aria-label={t("llmSelector.customModel")}
+              className={cn(compact ? "h-9 basis-full w-[184px] lg:w-[220px]" : "w-full sm:w-[240px]")}
+              disabled={!hasRunnableProviders}
+              onChange={(event) => setCustomModel(event.target.value)}
+              onBlur={commitCustomModel}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  commitCustomModel();
+                }
+              }}
+            />
+          </>
         ) : null}
 
         {showCompactTemperature ? (

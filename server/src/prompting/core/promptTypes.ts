@@ -1,5 +1,5 @@
 import type { BaseMessage, BaseMessageChunk } from "@langchain/core/messages";
-import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import type { LLMProvider, LLMReasoningEffort } from "@ai-novel/shared/types/llm";
 import type { NovelLanguage, NovelStyleFlavor } from "@ai-novel/shared/types/novel";
 import type { ZodType } from "zod";
 import type { TaskType } from "../../llm/modelRouter";
@@ -128,6 +128,8 @@ export interface PromptExecutionOptions {
   model?: string;
   temperature?: number;
   reasoningEnabled?: boolean;
+  /** Override mức suy luận cho đúng lần gọi; nếu bỏ trống sẽ dùng cấu hình model route theo taskType. */
+  reasoningEffort?: LLMReasoningEffort;
   maxTokens?: number;
   timeoutMs?: number;
   signal?: AbortSignal;

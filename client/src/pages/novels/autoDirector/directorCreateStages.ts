@@ -76,7 +76,11 @@ export function summarizeModelRunStage(input: {
   runMode: DirectorRunMode;
   runModeOptions: DirectorRunModeOption[];
   postGenerationStyleReviewEnabled: boolean;
+  trialChapterCount?: number | null;
 }): string {
   const runModeLabel = input.runModeOptions.find((option) => option.value === input.runMode)?.label ?? input.runMode;
-  return `${runModeLabel} · ${input.postGenerationStyleReviewEnabled ? translateUi("正文后检测 AI 味") : translateUi("不做正文后 AI 味检测")}`;
+  const scopeLabel = input.runMode === "auto_to_execution" && input.trialChapterCount && input.trialChapterCount > 0
+    ? translateUi("先写前 {{v0}} 章", { v0: input.trialChapterCount })
+    : runModeLabel;
+  return `${scopeLabel} · ${input.postGenerationStyleReviewEnabled ? translateUi("正文后检测 AI 味") : translateUi("不做正文后 AI 味检测")}`;
 }

@@ -422,6 +422,7 @@ function AutoDirectorCreatePage() {
       runMode: controller.runMode,
       runModeOptions: controller.runModeOptions,
       postGenerationStyleReviewEnabled: controller.directorBasicForm.postGenerationStyleReviewEnabled,
+      trialChapterCount: Number.parseInt(controller.autoExecutionDraft.endOrder, 10) || null,
     }),
     candidates: controller.batches.length > 0
       ? translateUi("已生成 {{v0}} 批方向候选", { v0: controller.batches.length })
@@ -429,6 +430,7 @@ function AutoDirectorCreatePage() {
         ? translateUi("导演任务进行中")
         : translateUi("等待生成方向候选"),
   }), [
+    controller.autoExecutionDraft.endOrder,
     controller.batches.length,
     controller.directorBasicForm,
     controller.hasActiveDirectorTask,
@@ -549,6 +551,12 @@ function AutoDirectorCreatePage() {
           issuePolicy={controller.issuePolicy}
           issuePolicyLoading={controller.issuePolicyLoading}
           onIssuePolicyChange={controller.setIssuePolicy}
+          runMode={controller.runMode}
+          runModeOptions={controller.runModeOptions}
+          onRunModeChange={controller.setRunMode}
+          autoExecutionDraft={controller.autoExecutionDraft}
+          onAutoExecutionDraftChange={(patch) => controller.setAutoExecutionDraft((prev) => ({ ...prev, ...patch }))}
+          estimatedChapterCount={controller.directorBasicForm.estimatedChapterCount}
         />
       );
     }

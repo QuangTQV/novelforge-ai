@@ -42,7 +42,7 @@ const NEW_BOOK_SCOPE_OPTIONS: Array<{
   {
     value: "chapter_range",
     label: translateUi("第 1-N 章"),
-    description: translateUi("适合先跑出开局样章，默认第 1-10 章，可按整书章节数调整。"),
+    description: translateUi("适合先跑出开局样章，默认前 3 章，可按整书章节数调整。"),
   },
   {
     value: "volume",
@@ -91,10 +91,11 @@ function clampChapterOrder(value: number, maxChapterCount?: number | null): numb
 export function createDefaultDirectorAutoExecutionDraftState(
   usage: DirectorAutoExecutionPlanUsage = "new_book",
 ): DirectorAutoExecutionDraftState {
-  return {
-    ...DEFAULT_DIRECTOR_AUTO_EXECUTION_DRAFT,
-    mode: usage === "takeover" ? "book" : DEFAULT_DIRECTOR_AUTO_EXECUTION_DRAFT.mode,
-  };
+  if (usage === "takeover") {
+    return { ...DEFAULT_DIRECTOR_AUTO_EXECUTION_DRAFT, mode: "book" };
+  }
+  // Tạo novel: mặc định chạy thử 3 chương đầu để kiểm tra chất lượng.
+  return { ...DEFAULT_DIRECTOR_AUTO_EXECUTION_DRAFT, mode: "chapter_range", endOrder: "3" };
 }
 
 export function normalizeDirectorAutoExecutionDraftState(

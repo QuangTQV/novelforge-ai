@@ -9,6 +9,12 @@ import { AUTO_DIRECTOR_MOBILE_CLASSES } from "@/mobile/autoDirector";
 import type { NovelBasicFormState } from "../novelBasicInfo.shared";
 import { findDirectorIssuePolicyPreset, type DirectorIssuePolicy } from "@ai-novel/shared/types/directorIssue";
 import { AutoDirectorIssuePolicyCard } from "@/pages/settings/AutoDirectorIssuePolicyCard";
+import type { DirectorRunMode } from "@ai-novel/shared/types/novelDirector";
+import type { DirectorRunModeOption } from "../components/NovelAutoDirectorDialog.shared";
+import {
+  DirectorAutoExecutionPlanFields,
+  type DirectorAutoExecutionDraftState,
+} from "../components/directorAutoExecutionPlan.shared";
 
 interface StageModelRunProps {
   basicForm: NovelBasicFormState;
@@ -20,6 +26,12 @@ interface StageModelRunProps {
   issuePolicy?: DirectorIssuePolicy | null;
   issuePolicyLoading: boolean;
   onIssuePolicyChange: (policy: DirectorIssuePolicy) => void;
+  runMode: DirectorRunMode;
+  runModeOptions: DirectorRunModeOption[];
+  onRunModeChange: (mode: DirectorRunMode) => void;
+  autoExecutionDraft: DirectorAutoExecutionDraftState;
+  onAutoExecutionDraftChange: (patch: Partial<DirectorAutoExecutionDraftState>) => void;
+  estimatedChapterCount: number;
 }
 
 export default function StageModelRun({
@@ -32,6 +44,12 @@ export default function StageModelRun({
   issuePolicy,
   issuePolicyLoading,
   onIssuePolicyChange,
+  runMode,
+  runModeOptions,
+  onRunModeChange,
+  autoExecutionDraft,
+  onAutoExecutionDraftChange,
+  estimatedChapterCount,
 }: StageModelRunProps) {
   const [issuePolicyDialogOpen, setIssuePolicyDialogOpen] = useState(false);
   const issuePolicySummary = issuePolicy
@@ -81,9 +99,52 @@ export default function StageModelRun({
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-primary/10 bg-primary/[0.05] px-5 py-3 text-xs">
-            <span className="font-medium text-foreground">{translateUi("正文会停在开写前等待你的选择")}</span>
-            <span className="text-muted-foreground">{translateUi("不会提前生成章节正文")}</span>
+            {runMode === "auto_to_execution" ? (
+              <span className="font-medium text-foreground">{translateUi("规划完成后，只写你设定的前几章就停下")}</span>
+            ) : runMode === "full_book_autopilot" ? (
+              <span className="font-medium text-foreground">{translateUi("规划完成后，AI 会自动写完整本书")}</span>
+            ) : (
+              <>
+                <span className="font-medium text-foreground">{translateUi("正文会停在开写前等待你的选择")}</span>
+                <span className="text-muted-foreground">{translateUi("不会提前生成章节正文")}</span>
+              </>
+            )}
           </div>
+        </section>
+
+        <section className="space-y-3 rounded-2xl border border-border/70 bg-background px-5 py-4">
+          <div>
+            <div className="text-sm font-semibold text-foreground">{translateUi("这次开书要写多少")}</div>
+            <div className={`mt-1 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
+              {translateUi("建议先试写前几章检查质量，满意后再继续往下写。")}
+            </div>
+          </div>
+          <div className="grid min-w-0 gap-3 sm:grid-cols-3">
+            {runModeOptions.map((option) => {
+              const active = option.value === runMode;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`rounded-xl border px-3 py-3 text-left transition ${
+                    active ? "border-primary bg-primary/10 shadow-sm" : "border-border bg-background hover:border-primary/40"
+                  }`}
+                  onClick={() => onRunModeChange(option.value)}
+                >
+                  <div className="text-sm font-medium text-foreground">{option.label}</div>
+                  <div className={`mt-1 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>{option.description}</div>
+                </button>
+              );
+            })}
+          </div>
+          {runMode === "auto_to_execution" ? (
+            <DirectorAutoExecutionPlanFields
+              draft={autoExecutionDraft}
+              onChange={onAutoExecutionDraftChange}
+              usage="new_book"
+              maxChapterCount={estimatedChapterCount}
+            />
+          ) : null}
         </section>
 
         <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-start sm:justify-between">

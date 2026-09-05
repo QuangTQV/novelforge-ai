@@ -14,15 +14,25 @@ export interface DirectorRunModeOption {
 
 export const RUN_MODE_OPTIONS: DirectorRunModeOption[] = [
   {
-    value: "auto_to_ready",
-    label: translateUi("先完成导演准备"),
-    description: translateUi("AI 会准备书级规划、角色、卷章安排和章节执行资源，再由你选择简易生产或专业生产。"),
+    value: "auto_to_execution",
+    label: translateUi("先试写前几章"),
+    description: translateUi("AI 完成书级规划后，只生成开头设定的前几章正文就停下，方便你先检查质量。"),
     recommended: true,
-    recommendation: translateUi("正文不会提前生成，准备完成后再决定如何生产整本书。"),
+    recommendation: translateUi("质量满意后，可在小说页用「继续」或流水线功能接着往下写。"),
+  },
+  {
+    value: "full_book_autopilot",
+    label: translateUi("直接写完整本书"),
+    description: translateUi("AI 完成规划后自动连续生成全书章节，直到写完或遇到需要人工处理的问题。"),
+  },
+  {
+    value: "auto_to_ready",
+    label: translateUi("只做规划，不写章节"),
+    description: translateUi("AI 只准备书级规划、角色、卷章安排和章节执行资源，正文一章都不生成，之后由你决定如何生产。"),
   },
 ];
 
-export const DEFAULT_VISIBLE_RUN_MODE: DirectorRunMode = "auto_to_ready";
+export const DEFAULT_VISIBLE_RUN_MODE: DirectorRunMode = "auto_to_execution";
 
 export interface AutoDirectorRequestLlmOptions {
   provider: LLMProvider;

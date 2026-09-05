@@ -1,12 +1,13 @@
 import {
   DEFAULT_DIRECTOR_STARTUP_PREPARATION,
-  isFullBookAutopilotRunMode,
+  isDirectorAutoExecutionRunMode,
 } from "@ai-novel/shared/types/novelDirector";
 import type {
   BookSpec,
   DirectorConfirmApiResponse,
   DirectorConfirmRequest,
 } from "@ai-novel/shared/types/novelDirector";
+import { buildFullDirectorAutoApprovalConfig } from "@ai-novel/shared/types/autoDirectorApproval";
 import { buildDirectorCompletionProfile } from "@ai-novel/shared/types/directorCompletion";
 import type { NovelContextService } from "../../NovelContextService";
 import type { NovelWorkflowService } from "../../workflow/NovelWorkflowService";
@@ -64,14 +65,37 @@ export class NovelDirectorConfirmRuntime {
   }) {}
 
   async confirmCandidate(input: DirectorConfirmRequest): Promise<DirectorConfirmApiResponse> {
+    // Ngầm định `full_book_autopilot` khi client không gửi `runMode` (client cũ) để giữ
+    // hành vi cũ; ngược lại tôn trọng lựa chọn của người dùng ở bước "Model & sản xuất".
+    const requestedRunMode = input.runMode == null
+      ? "full_book_autopilot" as const
+      : normalizeDirectorRunMode(input.runMode);
     const resolvedInput = applyDirectorRunModeContract({
       ...await this.deps.enrichDirectorStyleContext(input),
-      runMode: "full_book_autopilot" as const,
+      runMode: requestedRunMode,
       startupPreparation: input.startupPreparation ?? DEFAULT_DIRECTOR_STARTUP_PREPARATION,
       completionProfile: input.completionProfile
         ?? buildDirectorCompletionProfile(input.estimatedChapterCount ?? input.candidate.targetChapterCount),
     });
-    const runMode = "full_book_autopilot" as const;
+    const runMode = resolvedInput.runMode;
+    if (runMode === "auto_to_execution") {
+      // "Viết thử N chương đầu": đảm bảo có kế hoạch chạy theo dải chương + tự duyệt các
+      // gate lập kế hoạch để không bị treo chờ người dùng.
+      if (resolvedInput.autoExecutionPlan?.mode !== "chapter_range") {
+        const fallbackEnd = Math.max(1, Math.min(
+          3,
+          resolvedInput.estimatedChapterCount ?? resolvedInput.candidate.targetChapterCount ?? 3,
+        ));
+        resolvedInput.autoExecutionPlan = {
+          mode: "chapter_range",
+          startOrder: 1,
+          endOrder: fallbackEnd,
+          autoReview: true,
+          autoRepair: true,
+        };
+      }
+      resolvedInput.autoApproval = resolvedInput.autoApproval ?? buildFullDirectorAutoApprovalConfig();
+    }
     const title = resolvedInput.candidate.workingTitle.trim() || resolvedInput.title?.trim() || "未命名项目";
     const description = resolvedInput.description?.trim() || resolvedInput.candidate.logline.trim();
     const bookSpec = toBookSpec(
@@ -335,8 +359,10 @@ export class NovelDirectorConfirmRuntime {
             input: executionDirectorInput,
             startPhase: "story_macro",
             scope: "book",
-            approveCurrentGate: isFullBookAutopilotRunMode(runMode),
-            approveAutoExecutionScope: isFullBookAutopilotRunMode(runMode),
+            // `auto_to_execution` (viết thử N chương) + `full_book_autopilot` đều chạy hết
+            // planning rồi vào chapter execution; `auto_to_ready` dừng trước khi viết chương.
+            approveCurrentGate: isDirectorAutoExecutionRunMode(runMode),
+            approveAutoExecutionScope: isDirectorAutoExecutionRunMode(runMode),
           });
         });
         const novel = await this.deps.novelContextService.getNovelById(createdNovel.id) as unknown as DirectorConfirmApiResponse["novel"];
@@ -374,7 +400,7 @@ export class NovelDirectorConfirmRuntime {
     if (runMode === "stage_review") {
       return "run_next_step" as const;
     }
-    if (isFullBookAutopilotRunMode(runMode)) {
+    if (isDirectorAutoExecutionRunMode(runMode)) {
       return "auto_safe_scope" as const;
     }
     return "run_until_gate" as const;

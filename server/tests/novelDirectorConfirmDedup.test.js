@@ -180,17 +180,11 @@ test("confirmCandidate returns the in-flight novel instead of creating a second 
   }
 });
 
-test("confirm runtime creates the novel through the standard runtime node", async () => {
+function buildConfirmRuntimeHarness() {
   const calls = [];
   const backgroundRuns = [];
   const builtSeeds = [];
-  const input = buildDirectorInput({
-    targetAudience: "新手作者",
-    bookSellingPoint: "低门槛完成整本书",
-    competingFeel: "稳定推进",
-    first30ChapterPromise: "前 30 章持续兑现成长",
-    commercialTags: ["AI 写作", "长篇完成"],
-  });
+  const runPipelineArgs = [];
   const runtime = new NovelDirectorConfirmRuntime({
     workflowService: {
       bootstrapTask: async ({ novelId }) => {
@@ -247,8 +241,9 @@ test("confirm runtime creates the novel through the standard runtime node", asyn
       },
     },
     pipelineRuntime: {
-      runPipeline: async () => {
+      runPipeline: async (args) => {
         calls.push(["runPipeline"]);
+        runPipelineArgs.push(args);
       },
     },
     buildDirectorSeedPayload: (directorInput, novelId, extra) => {
@@ -267,22 +262,38 @@ test("confirm runtime creates the novel through the standard runtime node", asyn
       backgroundRuns.push(runner);
     },
   });
+  return { runtime, calls, backgroundRuns, builtSeeds, runPipelineArgs };
+}
+
+async function runConfirm(harness, input) {
   const originalNovelUpdate = prisma.novel.update;
   prisma.novel.update = async ({ where, data }) => {
-    calls.push(["updateNovel", where.id, data.creationExperience]);
+    harness.calls.push(["updateNovel", where.id, data.creationExperience]);
     return buildNovel(where.id);
   };
-  let result;
   try {
-    result = await runtime.confirmCandidate(input);
+    return await harness.runtime.confirmCandidate(input);
   } finally {
     prisma.novel.update = originalNovelUpdate;
   }
+}
+
+test("confirm runtime creates the novel through the standard runtime node", async () => {
+  const harness = buildConfirmRuntimeHarness();
+  const { calls, backgroundRuns, builtSeeds } = harness;
+  const input = buildDirectorInput({
+    targetAudience: "新手作者",
+    bookSellingPoint: "低门槛完成整本书",
+    competingFeel: "稳定推进",
+    first30ChapterPromise: "前 30 章持续兑现成长",
+    commercialTags: ["AI 写作", "长篇完成"],
+  });
+  const result = await runConfirm(harness, input);
 
   assert.equal(result.novel.id, "novel_created_demo");
   assert.equal(backgroundRuns.length, 1);
   assert.ok(calls.some((call) => call[0] === "updateNovel" && call[2] === undefined));
-  assert.equal(builtSeeds[0].directorInput.runMode, "full_book_autopilot");
+  assert.equal(builtSeeds[0].directorInput.runMode, "auto_to_ready");
   assert.equal(builtSeeds[0].extra.productionExperience, undefined);
   assert.deepEqual(builtSeeds[0].extra.startupPreparation, {
     strategy: "fast_start",
@@ -301,4 +312,44 @@ test("confirm runtime creates the novel through the standard runtime node", asyn
   )));
   assert.ok(calls.some((call) => call[0] === "analyzeWorkspace" && call[1] === "novel_created_demo"));
   assert.ok(calls.some((call) => call[0] === "attachNovelToTask" && call[1] === "novel_created_demo"));
+});
+
+test("confirm runtime honors auto_to_execution with a chapter-range trial plan", async () => {
+  const harness = buildConfirmRuntimeHarness();
+  const input = buildDirectorInput({
+    runMode: "auto_to_execution",
+    autoExecutionPlan: { mode: "chapter_range", startOrder: 1, endOrder: 3, autoReview: true, autoRepair: true },
+  });
+  await runConfirm(harness, input);
+
+  const seed = harness.builtSeeds.find((entry) => entry.novelId)?.directorInput
+    ?? harness.builtSeeds[0].directorInput;
+  assert.equal(seed.runMode, "auto_to_execution");
+  assert.equal(seed.autoExecutionPlan?.mode, "chapter_range");
+  assert.equal(seed.autoExecutionPlan?.endOrder, 3);
+  assert.ok(seed.autoApproval, "auto_to_execution should carry an auto-approval config");
+
+  await harness.backgroundRuns[0]();
+  const pipelineArgs = harness.runPipelineArgs.at(-1);
+  assert.equal(pipelineArgs.approveCurrentGate, true);
+  assert.equal(pipelineArgs.approveAutoExecutionScope, true);
+});
+
+test("confirm runtime falls back to full_book_autopilot when runMode is absent", async () => {
+  const harness = buildConfirmRuntimeHarness();
+  const input = buildDirectorInput({ runMode: undefined });
+  await runConfirm(harness, input);
+
+  assert.equal(harness.builtSeeds[0].directorInput.runMode, "full_book_autopilot");
+  await harness.backgroundRuns[0]();
+  assert.equal(harness.runPipelineArgs.at(-1).approveAutoExecutionScope, true);
+});
+
+test("confirm runtime with auto_to_ready parks before writing chapters", async () => {
+  const harness = buildConfirmRuntimeHarness();
+  await runConfirm(harness, buildDirectorInput({ runMode: "auto_to_ready" }));
+
+  assert.equal(harness.builtSeeds[0].directorInput.runMode, "auto_to_ready");
+  await harness.backgroundRuns[0]();
+  assert.equal(harness.runPipelineArgs.at(-1).approveAutoExecutionScope, false);
 });

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import type { BaseCharacter, Character, VolumePlan } from "@ai-novel/shared/types/novel";
+import { DEFAULT_NOVEL_STYLE_FLAVOR } from "@ai-novel/shared/utils/novelStyleFlavor";
 import type { NovelDetailResponse } from "@/api/novel";
 import {
   DEFAULT_ESTIMATED_CHAPTER_COUNT,
@@ -112,6 +113,7 @@ export function useNovelEditInitialization({
       first30ChapterPromise: detail.first30ChapterPromise ?? "",
       commercialTagsText: formatCommercialTagsInput(detail.commercialTags ?? []),
       genreId: detail.genreId ?? "",
+      genreIds: detail.genreIds ?? (detail.genreId ? [detail.genreId] : []),
       primaryStoryModeId: detail.primaryStoryModeId ?? "",
       secondaryStoryModeId: detail.secondaryStoryModeId ?? "",
       worldId: detail.worldId ?? "",
@@ -121,12 +123,14 @@ export function useNovelEditInitialization({
       readerChannelPreference: "ai_judge",
       writingPlatformPreference: detail.writingPlatform ?? "ai_recommend",
       narrativePov: detail.narrativePov ?? "third_person",
-      pacePreference: detail.pacePreference ?? "balanced",
+      pacePreference: detail.pacePreference ?? "fast",
       styleTone: detail.styleTone ?? "",
-      emotionIntensity: detail.emotionIntensity ?? "medium",
+      emotionIntensity: detail.emotionIntensity ?? "high",
       aiFreedom: detail.aiFreedom ?? "medium",
+      novelLanguage: detail.novelLanguage ?? "zh",
+      styleFlavor: detail.styleFlavor ?? DEFAULT_NOVEL_STYLE_FLAVOR,
       postGenerationStyleReviewEnabled: detail.postGenerationStyleReviewEnabled ?? true,
-      defaultChapterLength: detail.defaultChapterLength ?? 2800,
+      defaultChapterLength: detail.defaultChapterLength ?? 1800,
       estimatedChapterCount: detail.estimatedChapterCount ?? DEFAULT_ESTIMATED_CHAPTER_COUNT,
       projectStatus: detail.projectStatus ?? "not_started",
       storylineStatus: detail.storylineStatus ?? "not_started",

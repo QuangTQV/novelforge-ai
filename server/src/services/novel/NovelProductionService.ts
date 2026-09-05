@@ -151,6 +151,7 @@ export class NovelProductionService {
           : "暂无已绑定世界观",
       },
       options: {
+        novelId: novel.id,
         provider: input.provider ?? "deepseek",
         model: input.model,
         temperature: input.temperature ?? 0.6,

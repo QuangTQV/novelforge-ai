@@ -180,6 +180,7 @@ export class StoryMacroPlanService {
   }
 
   private async invokeDecompositionModel(
+    novelId: string,
     storyInput: string,
     projectContext: string,
     options: LLMOptions,
@@ -198,6 +199,7 @@ export class StoryMacroPlanService {
         provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.3,
+        novelId,
         taskId: options.workflowTaskId,
         stage: "story_macro",
         itemKey: "story_macro",
@@ -215,6 +217,7 @@ export class StoryMacroPlanService {
   }
 
   private async invokeSingleFieldRegeneration(
+    novelId: string,
     field: StoryMacroField,
     storyInput: string,
     plan: StoryMacroEditablePlan,
@@ -248,6 +251,7 @@ export class StoryMacroPlanService {
         provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.3,
+        novelId,
       },
     });
 
@@ -290,6 +294,7 @@ export class StoryMacroPlanService {
       worldContext,
     );
     const generated = await this.invokeDecompositionModel(
+      novelId,
       normalizedInput,
       projectContext,
       options,
@@ -323,6 +328,7 @@ export class StoryMacroPlanService {
     const worldContext = await this.getWorldProjectContext(novelId, plan.storyInput ?? undefined, options);
     const editablePlan = toEditablePlan(plan);
     const nextFieldValue = await this.invokeSingleFieldRegeneration(
+      novelId,
       field,
       plan.storyInput,
       editablePlan,

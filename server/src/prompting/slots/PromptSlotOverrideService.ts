@@ -394,9 +394,11 @@ function emptySlots() {
   return {
     text: () => "",
     choiceCopy: () => "",
+    choiceValue: () => "",
     enabled: () => false,
     token: () => "",
     append: () => "",
+    isDefault: () => true,
   };
 }
 

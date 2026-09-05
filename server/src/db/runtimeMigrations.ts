@@ -20,6 +20,15 @@ const KNOWN_APPLICATION_TABLES = [
 ];
 
 const REQUIRED_COLUMN_BACKFILLS = [
+  { tableName: "Novel", columnName: "novelLanguage", columnDefinition: `"novelLanguage" TEXT` },
+  { tableName: "Novel", columnName: "styleFlavor", columnDefinition: `"styleFlavor" TEXT` },
+  { tableName: "APIKey", columnName: "rotationStrategy", columnDefinition: `"rotationStrategy" TEXT NOT NULL DEFAULT 'round_robin'` },
+  { tableName: "APIKey", columnName: "apiKeyWeight", columnDefinition: `"apiKeyWeight" REAL NOT NULL DEFAULT 1` },
+  { tableName: "APIKey", columnName: "backupKeysJson", columnDefinition: `"backupKeysJson" TEXT` },
+  { tableName: "APIKey", columnName: "cooldownSeconds", columnDefinition: `"cooldownSeconds" INTEGER NOT NULL DEFAULT 60` },
+  { tableName: "APIKey", columnName: "fallbackOrder", columnDefinition: `"fallbackOrder" INTEGER` },
+  { tableName: "APIKey", columnName: "reasoningEffort", columnDefinition: `"reasoningEffort" TEXT NOT NULL DEFAULT 'medium'` },
+  { tableName: "ModelRouteConfig", columnName: "reasoningEffort", columnDefinition: `"reasoningEffort" TEXT` },
   { tableName: "Character", columnName: "arcClimax", columnDefinition: `"arcClimax" TEXT` },
   { tableName: "Character", columnName: "arcEnd", columnDefinition: `"arcEnd" TEXT` },
   { tableName: "Character", columnName: "arcMidpoint", columnDefinition: `"arcMidpoint" TEXT` },

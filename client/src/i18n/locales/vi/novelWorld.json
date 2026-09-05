@@ -8,7 +8,7 @@
   "worldSetupTab": {
     "directorTakeover": {
       "title": "Để AI hoàn thiện thế giới quan của sách",
-      "description": "Trước tiên xác định quy tắc thế giới, các thế lực và ràng buộc then chốt, rồi để nhân vật, kế hoạch tập và sản xuất chương tiếp tục xoay quanh cùng một thế giới quan."
+      "description": "Trước tiên xác định quy tắc thế giới, các thế lực và ràng buộc then chốt, rồi để nhân vật, kế hoạch tập và các chương được xây dựng nhất quán trong cùng thế giới."
     },
     "section": {
       "title": "Chuẩn bị thế giới quan",

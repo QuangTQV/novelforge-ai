@@ -6,8 +6,14 @@ export interface SecretStoreRecord {
   baseURL: string | null;
   isActive: boolean;
   reasoningEnabled: boolean | null;
+  reasoningEffort: string;
   concurrencyLimit: number | null;
   requestIntervalMs: number | null;
+  rotationStrategy: string;
+  apiKeyWeight: number;
+  backupKeysJson: string | null;
+  cooldownSeconds: number;
+  fallbackOrder: number | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,8 +25,14 @@ export interface SecretStoreWriteInput {
   baseURL?: string | null;
   isActive?: boolean;
   reasoningEnabled?: boolean;
+  reasoningEffort?: string;
   concurrencyLimit?: number | null;
   requestIntervalMs?: number | null;
+  rotationStrategy?: string;
+  apiKeyWeight?: number;
+  backupKeysJson?: string | null;
+  cooldownSeconds?: number;
+  fallbackOrder?: number | null;
 }
 
 export interface SecretStoreListOptions {

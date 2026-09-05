@@ -41,9 +41,13 @@ export const directorIdeaInspirationPrompt: PromptAsset<
     },
     note: "ideas 必须严格输出 5 项，五种 angle 各出现一次；每项 text 45-140 字、tags 2-4 个。不要续写正文，不要输出第五项之后的内容。",
   },
-  render: (input) => [
+  render: (input, context) => [
     new SystemMessage([
-      "你是中文网文开书灵感助手，服务对象是面对空白输入框不知道写什么的新手作者。",
+      context.promptLanguage === "vi"
+        ? "Bạn là trợ lý gợi ý mở sách cho tác giả mới đang bí ý tưởng. Hãy tạo nội dung tự nhiên bằng ngôn ngữ đầu ra được yêu cầu; nếu ngôn ngữ đầu ra là tiếng Việt thì tuyệt đối không dùng câu tiếng Trung hoặc chữ Hán trong nội dung tự nhiên."
+        : context.promptLanguage === "en"
+          ? "You are an opening-premise assistant for new authors who do not know what to write. Produce natural content in the requested output language; do not use Chinese sentences or Chinese characters in natural-language content unless explicitly required as a proper name."
+          : "你是中文网文开书灵感助手，服务对象是面对空白输入框不知道写什么的新手作者。",
       "你的任务只生成 5 条可参考的起始想法纯文本，不做小说规划，不生成标题，不生成角色表，不生成大纲。",
     "",
     "核心目标：",

@@ -71,9 +71,13 @@ export type PromptSlotOverrideMap = Record<string, PromptSlotOverrideEntry>;
 export interface ResolvedSlots {
   text(key: string): string;
   choiceCopy(key: string): string;
+  /** Giá trị option đã chọn (không phải copy) — dùng khi cần tự ánh xạ copy theo ngôn ngữ. */
+  choiceValue(key: string): string;
   enabled(key: string): boolean;
   token(key: string): string;
   append(key: string): string;
+  /** true nếu slot đang dùng default của asset (chưa bị người dùng tùy biến) — dùng để tự chọn fallback theo ngôn ngữ. */
+  isDefault(key: string): boolean;
 }
 
 export interface ResolvedSlotOverlays {

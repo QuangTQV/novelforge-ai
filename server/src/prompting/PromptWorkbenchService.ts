@@ -3,6 +3,7 @@ import type { LLMProvider } from "@ai-novel/shared/types/llm";
 import { prisma } from "../db/prisma";
 import { getLLM, getResolvedLLMClientOptionsFromInstance } from "../llm/factory";
 import type { TaskType } from "../llm/modelRouter";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 import { invokeStructuredLlmDetailed } from "../llm/structuredInvoke";
 import type { LlmTokenUsageSnapshot } from "../llm/usageTracking";
 import { extractLlmTokenUsage } from "../llm/usageTracking";
@@ -40,6 +41,7 @@ import {
   prepareWorkbenchPreviewExecutionContext,
   type PromptWorkbenchPreviewDb,
 } from "./workbench/previewContextBuilder";
+import { appendOutputLanguageDirective } from "./core/novelOutputLanguage";
 
 type UnknownPromptAsset = PromptAsset<unknown, unknown, unknown>;
 type PromptWorkbenchDb = PromptWorkbenchPreviewDb;
@@ -91,6 +93,7 @@ export interface PromptPreviewInput {
   contextMode?: "snapshot" | "fresh" | "hybrid";
   slotOverrides?: Record<string, unknown>;
   templateDraft?: PromptTemplateJson;
+  outputLanguage?: NovelLanguage;
 }
 
 export interface PromptPreviewMessage {
@@ -606,6 +609,11 @@ export class PromptWorkbenchService {
           diagnostics: compiled.diagnostics,
         };
       }
+      previewMessages = await appendOutputLanguageDirective(
+        previewMessages,
+        previewContext.executionContext.novelId,
+        input.outputLanguage,
+      );
     } catch (error) {
       throw formatPreviewRenderError(error, asset);
     }

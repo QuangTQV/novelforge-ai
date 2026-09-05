@@ -259,6 +259,7 @@ export class NovelCoreReviewService {
           ragContext: ragContext || "",
         },
         options: {
+          novelId: novelId,
           provider: options.provider,
           model: options.model,
           temperature: options.temperature ?? 0.1,

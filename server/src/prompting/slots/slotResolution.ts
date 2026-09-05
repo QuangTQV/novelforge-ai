@@ -85,6 +85,7 @@ export function resolvePromptOverlays(input: {
 
   const drift: string[] = [];
   const resolvedValues: Record<string, string | boolean> = {};
+  const defaultKeys = new Set<string>();
   const appendBlocks = [];
   let appendIdx = 0;
 
@@ -101,10 +102,12 @@ export function resolvePromptOverlays(input: {
       drift.push(def.key);
     }
 
-    const raw: string | boolean = override && effective.mode !== "official_default"
-      ? override.value
-      : getSlotDefaultValue(def);
+    const usesDefault = !(override && effective.mode !== "official_default");
+    const raw: string | boolean = usesDefault ? getSlotDefaultValue(def) : override!.value;
     resolvedValues[def.key] = raw;
+    if (usesDefault) {
+      defaultKeys.add(def.key);
+    }
 
     if (def.kind === "append") {
       const text = typeof raw === "string" ? raw.trim() : "";
@@ -151,6 +154,11 @@ export function resolvePromptOverlays(input: {
         ?? ""
       );
     },
+    choiceValue(key: string): string {
+      const def = slotDefs.find((d) => d.key === key && d.kind === "choice");
+      if (!def || def.kind !== "choice") return "";
+      return String(resolvedValues[key] ?? def.default);
+    },
     enabled(key: string): boolean {
       const val = resolvedValues[key];
       if (typeof val === "boolean") return val;
@@ -166,6 +174,9 @@ export function resolvePromptOverlays(input: {
     append(key: string): string {
       const val = resolvedValues[key];
       return typeof val === "string" ? val : "";
+    },
+    isDefault(key: string): boolean {
+      return !slotDefs.some((d) => d.key === key) || defaultKeys.has(key);
     },
   };
 

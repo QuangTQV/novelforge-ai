@@ -1,4 +1,5 @@
 import type { BookAnalysisSectionKey } from "./bookAnalysis";
+import type { LLMReasoningEffort } from "./llm";
 import type { BookContract } from "./novelWorkflow";
 import type { NovelWorkflowCheckpoint } from "./novelWorkflow";
 import type { NovelStoryMode } from "./storyMode";
@@ -56,6 +57,16 @@ export type NarrativePov = "first_person" | "third_person" | "mixed";
 export type PacePreference = "slow" | "balanced" | "fast";
 export type EmotionIntensity = "low" | "medium" | "high";
 export type AIFreedom = "low" | "medium" | "high";
+/**
+ * Ngôn ngữ đầu ra cho nội dung tiểu thuyết do AI sinh (chính văn, tên, mô tả...).
+ * Độc lập với ngôn ngữ giao diện. `null`/rỗng trên bản ghi cũ ⇒ coi như "zh".
+ */
+export type NovelLanguage = "zh" | "vi" | "en" | "ja" | "ko" | "fr" | "es";
+/**
+ * Phong cách văn phong (kỹ thuật kể chuyện) áp cho nội dung AI sinh, độc lập với
+ * ngôn ngữ đầu ra. `null`/rỗng trên bản ghi cũ ⇒ coi như "manga" (mặc định).
+ */
+export type NovelStyleFlavor = "manga" | "manhwa" | "manhua" | "none";
 export type ProjectProgressStatus = "not_started" | "in_progress" | "completed" | "rework" | "blocked";
 
 export type StorylineVersionStatus = "draft" | "active" | "frozen";
@@ -246,6 +257,8 @@ export interface Novel {
   styleTone?: string | null;
   emotionIntensity?: EmotionIntensity | null;
   aiFreedom?: AIFreedom | null;
+  novelLanguage?: NovelLanguage | null;
+  styleFlavor?: NovelStyleFlavor | null;
   postGenerationStyleReviewEnabled: boolean;
   defaultChapterLength?: number | null;
   estimatedChapterCount?: number | null;
@@ -266,6 +279,7 @@ export interface Novel {
   activeVolumeVersionId?: string | null;
   bookContract?: BookContract | null;
   genreId?: string | null;
+  genreIds?: string[] | null;
   primaryStoryModeId?: string | null;
   secondaryStoryModeId?: string | null;
   worldId?: string | null;
@@ -1123,6 +1137,8 @@ export interface ModelRouteConfig {
   maxTokens?: number | null;
   requestProtocol?: ModelRouteRequestProtocol;
   structuredResponseFormat?: ModelRouteStructuredResponseFormat;
+  /** "none" | "low" | "medium" | "high"; null/undefined = kế thừa mặc định của provider. */
+  reasoningEffort?: LLMReasoningEffort | null;
 }
 
 export const MODEL_ROUTE_REQUEST_PROTOCOLS = [

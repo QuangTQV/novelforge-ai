@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type NextFunction, type Request, type Response } from "express";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
 import { z } from "zod";
 import { authMiddleware } from "../../../../middleware/auth";
@@ -52,6 +52,11 @@ const continueParamsSchema = z.object({
 
 const continueBodySchema = z.object({
   continuationMode: z.enum(["resume", "auto_execute_range", "skip_quality_repair"]).optional(),
+});
+
+const candidateDeleteParamsSchema = z.object({
+  id: z.string().trim().min(1),
+  candidateId: z.string().trim().min(1).optional(),
 });
 
 const repairChapterTitlesBodySchema = z.object({
@@ -131,6 +136,19 @@ router.post("/:id/continue", validate({ params: continueParamsSchema, body: cont
     next(error);
   }
 });
+
+const removeCandidates = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id, candidateId } = req.params as z.infer<typeof candidateDeleteParamsSchema>;
+    const data = await workflowService.removeAutoDirectorCandidates(id, candidateId);
+    res.status(200).json({ success: true, data, message: "Candidates removed." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+router.delete("/:id/candidates", validate({ params: candidateDeleteParamsSchema }), removeCandidates);
+router.delete("/:id/candidates/:candidateId", validate({ params: candidateDeleteParamsSchema }), removeCandidates);
 
 router.post(
   "/:id/production-experience",

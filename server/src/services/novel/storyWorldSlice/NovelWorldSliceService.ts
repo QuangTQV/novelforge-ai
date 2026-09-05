@@ -202,6 +202,7 @@ export class NovelWorldSliceService {
         builderMode: input.builderMode,
       },
       options: {
+        novelId: input.novel.id,
         provider: input.provider,
         model: input.model,
         temperature: input.temperature ?? 0.25,

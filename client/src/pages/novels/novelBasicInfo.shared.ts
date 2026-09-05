@@ -1,7 +1,20 @@
 import { translateUi } from "../../i18n/legacy.ts";
+import i18n from "../../i18n";
 import type { BookAnalysisSectionKey } from "@ai-novel/shared/types/bookAnalysis";
 import { formatCommercialTagsInput, normalizeCommercialTags } from "@ai-novel/shared/types/novelFraming";
 import type { WritingPlatformPreference } from "@ai-novel/shared/types/writingPlatform";
+import { NOVEL_LANGUAGE_VALUES } from "@ai-novel/shared/utils/novelLanguage";
+import { DEFAULT_NOVEL_STYLE_FLAVOR } from "@ai-novel/shared/utils/novelStyleFlavor";
+import type { NovelLanguage, NovelStyleFlavor } from "@ai-novel/shared/types/novel";
+
+/** Ngôn ngữ novel mặc định khi tạo mới = ngôn ngữ giao diện đang chọn (fallback tiếng Việt). */
+export function defaultNovelLanguageFromUi(): NovelLanguage {
+  const uiLang = i18n.language?.split("-")[0] ?? "vi";
+  if ((NOVEL_LANGUAGE_VALUES as readonly string[]).includes(uiLang)) {
+    return uiLang as NovelLanguage;
+  }
+  return "vi";
+}
 
 export interface NovelBasicFormState {
   title: string;
@@ -12,6 +25,7 @@ export interface NovelBasicFormState {
   first30ChapterPromise: string;
   commercialTagsText: string;
   genreId: string;
+  genreIds: string[];
   primaryStoryModeId: string;
   secondaryStoryModeId: string;
   worldId: string;
@@ -25,6 +39,8 @@ export interface NovelBasicFormState {
   styleTone: string;
   emotionIntensity: "low" | "medium" | "high";
   aiFreedom: "low" | "medium" | "high";
+  novelLanguage: NovelLanguage;
+  styleFlavor: NovelStyleFlavor;
   postGenerationStyleReviewEnabled: boolean;
   defaultChapterLength: number;
   estimatedChapterCount: number;
@@ -138,11 +154,45 @@ export const POV_OPTIONS: BasicInfoOption<NovelBasicFormState["narrativePov"]>[]
   },
 ];
 
+export const NOVEL_LANGUAGE_OPTIONS: BasicInfoOption<NovelLanguage>[] = [
+  { value: "vi", label: translateUi("Tiếng Việt"), summary: translateUi("AI sẽ viết chính văn, tên và mô tả bằng tiếng Việt.") },
+  { value: "zh", label: translateUi("Tiếng Trung (giản thể)"), summary: translateUi("Ngôn ngữ gốc của hệ thống prompt.") },
+  { value: "en", label: translateUi("Tiếng Anh"), summary: translateUi("AI sẽ viết nội dung bằng tiếng Anh.") },
+  { value: "ja", label: translateUi("Tiếng Nhật"), summary: translateUi("AI sẽ viết nội dung bằng tiếng Nhật.") },
+  { value: "ko", label: translateUi("Tiếng Hàn"), summary: translateUi("AI sẽ viết nội dung bằng tiếng Hàn.") },
+  { value: "fr", label: translateUi("Tiếng Pháp"), summary: translateUi("AI sẽ viết nội dung bằng tiếng Pháp.") },
+  { value: "es", label: translateUi("Tiếng Tây Ban Nha"), summary: translateUi("AI sẽ viết nội dung bằng tiếng Tây Ban Nha.") },
+];
+
+export const NOVEL_STYLE_FLAVOR_OPTIONS: BasicInfoOption<NovelStyleFlavor>[] = [
+  {
+    value: "manga",
+    label: translateUi("Manga (Nhật)"),
+    summary: translateUi("Nhịp nhanh, đoạn ngắn, đậm nội tâm nhân vật, kết chương bằng chi tiết gây tò mò."),
+    recommended: true,
+  },
+  {
+    value: "manhwa",
+    label: translateUi("Manhwa (Hàn)"),
+    summary: translateUi("Nhịp rất nhanh, vào thẳng xung đột, kết chương bằng cao trào hoặc cliffhanger."),
+  },
+  {
+    value: "manhua",
+    label: translateUi("Manhua (Trung)"),
+    summary: translateUi("Nhịp ổn định, giàu bối cảnh và tính toán nội tâm, văn phong trau chuốt vừa phải."),
+  },
+  {
+    value: "none",
+    label: translateUi("Không áp dụng"),
+    summary: translateUi("Không ép theo phong cách nào, giữ nguyên văn phong mặc định của prompt."),
+  },
+];
+
 export const PACE_OPTIONS: BasicInfoOption<NovelBasicFormState["pacePreference"]>[] = [
   {
-    value: "balanced",
-    label: translateUi("均衡"),
-    summary: translateUi("推进和铺垫兼顾，适合作为默认选择。"),
+    value: "fast",
+    label: translateUi("快 nhịp"),
+    summary: translateUi("Vào xung đột sớm, ưu tiên cảnh có hành động, tương tác và điểm móc câu; phù hợp với manga."),
     recommended: true,
   },
   {
@@ -151,9 +201,9 @@ export const PACE_OPTIONS: BasicInfoOption<NovelBasicFormState["pacePreference"]
     summary: translateUi("更重铺垫、氛围和情绪发酵。"),
   },
   {
-    value: "fast",
-    label: translateUi("快节奏"),
-    summary: translateUi("更重事件驱动、钩子和连续推进。"),
+    value: "balanced",
+    label: translateUi("Nhịp cân bằng"),
+    summary: translateUi("Cân bằng cảnh hành động, tương tác nhân vật và phần chuẩn bị cần thiết."),
   },
 ];
 
@@ -227,6 +277,8 @@ export const BASIC_INFO_FIELD_HINTS = {
   projectMode: translateUi("决定你和 AI 的协作方式。会影响后续哪些步骤自动推进、哪些步骤更依赖人工确认。"),
   readerChannelPreference: translateUi("帮助 AI 判断默认爽点、情绪重心和关系线权重。不确定时保持 AI 判断。"),
   narrativePov: translateUi("决定章节生成默认采用哪种叙述视角，也会影响信息分发方式。"),
+  novelLanguage: translateUi("Ngôn ngữ AI dùng để viết nội dung tiểu thuyết (chính văn, tên, mô tả). Độc lập với ngôn ngữ giao diện; mặc định lấy theo ngôn ngữ giao diện. Đổi về sau chỉ áp dụng cho nội dung sinh mới."),
+  styleFlavor: translateUi("Phong cách kỹ thuật kể chuyện (nhịp độ, cách mở/kết chương) mà AI áp dụng khi viết. Độc lập với ngôn ngữ; đổi về sau chỉ áp dụng cho nội dung sinh mới."),
   pacePreference: translateUi("决定章节规划时是偏铺垫还是偏推进，会影响场景密度和钩子强度。"),
   emotionIntensity: translateUi("决定后续生成时情绪爆发和冲突的频率，不是越高越好。"),
   aiFreedom: translateUi("决定 AI 可以偏离既有规划和设定的程度。前期建议保持低或中。"),
@@ -254,6 +306,7 @@ export function createDefaultNovelBasicFormState(): NovelBasicFormState {
     first30ChapterPromise: "",
     commercialTagsText: "",
     genreId: "",
+    genreIds: [],
     primaryStoryModeId: "",
     secondaryStoryModeId: "",
     worldId: "",
@@ -263,12 +316,14 @@ export function createDefaultNovelBasicFormState(): NovelBasicFormState {
     readerChannelPreference: "ai_judge",
     writingPlatformPreference: "ai_recommend",
     narrativePov: "third_person",
-    pacePreference: "balanced",
+    pacePreference: "fast",
     styleTone: "",
-    emotionIntensity: "medium",
+    emotionIntensity: "high",
     aiFreedom: "medium",
+    novelLanguage: defaultNovelLanguageFromUi(),
+    styleFlavor: DEFAULT_NOVEL_STYLE_FLAVOR,
     postGenerationStyleReviewEnabled: true,
-    defaultChapterLength: 2800,
+    defaultChapterLength: 1800,
     estimatedChapterCount: DEFAULT_ESTIMATED_CHAPTER_COUNT,
     projectStatus: "not_started",
     storylineStatus: "not_started",
@@ -353,6 +408,7 @@ export function buildNovelCreatePayload(basicForm: NovelBasicFormState) {
     first30ChapterPromise: basicForm.first30ChapterPromise.trim() || undefined,
     commercialTags: commercialTags.length > 0 ? commercialTags : undefined,
     genreId: basicForm.genreId || undefined,
+    genreIds: basicForm.genreIds.length > 0 ? basicForm.genreIds : undefined,
     primaryStoryModeId: basicForm.primaryStoryModeId || undefined,
     secondaryStoryModeId: basicForm.secondaryStoryModeId || undefined,
     worldId: basicForm.worldId || undefined,
@@ -363,6 +419,8 @@ export function buildNovelCreatePayload(basicForm: NovelBasicFormState) {
     styleTone: basicForm.styleTone.trim() || undefined,
     emotionIntensity: basicForm.emotionIntensity,
     aiFreedom: basicForm.aiFreedom,
+    novelLanguage: basicForm.novelLanguage,
+    styleFlavor: basicForm.styleFlavor,
     postGenerationStyleReviewEnabled: basicForm.postGenerationStyleReviewEnabled,
     defaultChapterLength: basicForm.defaultChapterLength,
     estimatedChapterCount: basicForm.estimatedChapterCount,
@@ -412,6 +470,7 @@ export function buildNovelUpdatePayload(basicForm: NovelBasicFormState) {
     first30ChapterPromise: basicForm.first30ChapterPromise.trim() || null,
     commercialTags: commercialTags.length > 0 ? commercialTags : null,
     genreId: basicForm.genreId || null,
+    genreIds: basicForm.genreIds.length > 0 ? basicForm.genreIds : null,
     primaryStoryModeId: basicForm.primaryStoryModeId || null,
     secondaryStoryModeId: basicForm.secondaryStoryModeId || null,
     worldId: basicForm.worldId || null,
@@ -423,6 +482,8 @@ export function buildNovelUpdatePayload(basicForm: NovelBasicFormState) {
     styleTone: basicForm.styleTone || null,
     emotionIntensity: basicForm.emotionIntensity,
     aiFreedom: basicForm.aiFreedom,
+    novelLanguage: basicForm.novelLanguage,
+    styleFlavor: basicForm.styleFlavor,
     postGenerationStyleReviewEnabled: basicForm.postGenerationStyleReviewEnabled,
     defaultChapterLength: basicForm.defaultChapterLength,
     estimatedChapterCount: basicForm.estimatedChapterCount,

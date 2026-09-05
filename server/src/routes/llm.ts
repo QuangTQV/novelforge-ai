@@ -1,5 +1,6 @@
 import { Router } from "express";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
+import { LLM_REASONING_EFFORT_LEVELS } from "@ai-novel/shared/types/llm";
 import { z } from "zod";
 import { prisma } from "../db/prisma";
 import { llmConnectivityService } from "../llm/connectivity";
@@ -161,6 +162,8 @@ const modelRouteUpsertSchema = z.object({
   maxTokens: z.union([z.number().int().min(64).max(16384), z.null()]).optional(),
   requestProtocol: z.enum(["auto", "openai_compatible", "anthropic"]).optional(),
   structuredResponseFormat: z.enum(["auto", "json_schema", "json_object", "prompt_json"]).optional(),
+  // null = kế thừa mặc định của provider cho giai đoạn này.
+  reasoningEffort: z.union([z.enum(LLM_REASONING_EFFORT_LEVELS), z.null()]).optional(),
 });
 
 router.put(
@@ -176,6 +179,7 @@ router.put(
         maxTokens: body.maxTokens ?? null,
         requestProtocol: body.requestProtocol,
         structuredResponseFormat: body.structuredResponseFormat,
+        reasoningEffort: body.reasoningEffort,
       });
       res.status(200).json({
         success: true,

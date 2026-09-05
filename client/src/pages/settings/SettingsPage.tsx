@@ -50,6 +50,13 @@ export default function SettingsPage() {
     baseURL: "",
     concurrencyLimit: "0",
     requestIntervalMs: "0",
+    reasoningEffort: "medium",
+    rotationStrategy: "round_robin",
+    apiKeyWeight: "1",
+    backupKeys: [],
+    cooldownSeconds: "60",
+    fallbackEnabled: false,
+    fallbackOrder: "0",
   });
   const [dialogTestResult, setDialogTestResult] = useState("");
   const [providerTestResults, setProviderTestResults] = useState<Record<string, string>>({});
@@ -87,6 +94,13 @@ export default function SettingsPage() {
       baseURL: "",
       concurrencyLimit: "0",
       requestIntervalMs: "0",
+      reasoningEffort: "medium",
+      rotationStrategy: "round_robin",
+      apiKeyWeight: "1",
+      backupKeys: [],
+      cooldownSeconds: "60",
+      fallbackEnabled: false,
+      fallbackOrder: "0",
     });
     setDialogTestResult("");
     setPreviewModels([]);
@@ -136,6 +150,12 @@ export default function SettingsPage() {
       baseURL?: string;
       concurrencyLimit?: number;
       requestIntervalMs?: number;
+      reasoningEffort?: ProviderFormState["reasoningEffort"];
+      rotationStrategy?: ProviderFormState["rotationStrategy"];
+      apiKeyWeight?: number;
+      backupKeys?: ProviderFormState["backupKeys"];
+      cooldownSeconds?: number;
+      fallbackOrder?: number | null;
     }) =>
       saveAPIKeySetting(payload.provider, {
         displayName: payload.displayName,
@@ -145,6 +165,12 @@ export default function SettingsPage() {
         baseURL: payload.baseURL,
         concurrencyLimit: payload.concurrencyLimit,
         requestIntervalMs: payload.requestIntervalMs,
+        reasoningEffort: payload.reasoningEffort,
+        rotationStrategy: payload.rotationStrategy,
+        apiKeyWeight: payload.apiKeyWeight,
+        backupKeys: payload.backupKeys,
+        cooldownSeconds: payload.cooldownSeconds,
+        fallbackOrder: payload.fallbackOrder,
       }),
     onSuccess: async (response) => {
       resetDialogState();
@@ -283,6 +309,13 @@ export default function SettingsPage() {
       baseURL: config.currentBaseURL,
       concurrencyLimit: String(config.concurrencyLimit ?? 0),
       requestIntervalMs: String(config.requestIntervalMs ?? 0),
+      reasoningEffort: config.reasoningEffort === "low" || config.reasoningEffort === "high" ? config.reasoningEffort : "medium",
+      rotationStrategy: config.rotationStrategy ?? "round_robin",
+      apiKeyWeight: String(config.apiKeyWeight ?? 1),
+      backupKeys: config.backupKeys ?? [],
+      cooldownSeconds: String(config.cooldownSeconds ?? 60),
+      fallbackEnabled: config.fallbackOrder != null,
+      fallbackOrder: String(config.fallbackOrder ?? 0),
     });
     setDialogTestResult("");
     setActionResult("");
@@ -301,6 +334,13 @@ export default function SettingsPage() {
       baseURL: "",
       concurrencyLimit: "0",
       requestIntervalMs: "0",
+      reasoningEffort: "medium",
+      rotationStrategy: "round_robin",
+      apiKeyWeight: "1",
+      backupKeys: [],
+      cooldownSeconds: "60",
+      fallbackEnabled: false,
+      fallbackOrder: "0",
     });
     setDialogTestResult("");
     setActionResult("");
@@ -346,6 +386,12 @@ export default function SettingsPage() {
       baseURL: form.baseURL,
       concurrencyLimit: Number.parseInt(form.concurrencyLimit, 10) || 0,
       requestIntervalMs: Number.parseInt(form.requestIntervalMs, 10) || 0,
+      reasoningEffort: form.reasoningEffort,
+      rotationStrategy: form.rotationStrategy,
+      apiKeyWeight: Number.parseFloat(form.apiKeyWeight) || 1,
+      backupKeys: form.backupKeys.filter((item) => item.key.trim()),
+      cooldownSeconds: Number.parseInt(form.cooldownSeconds, 10) || 60,
+      fallbackOrder: form.fallbackEnabled ? Number.parseInt(form.fallbackOrder, 10) || 0 : null,
     });
   };
 

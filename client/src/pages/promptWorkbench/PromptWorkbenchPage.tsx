@@ -9,6 +9,8 @@ import type { LLMSelectorValue } from "@/components/common/LLMSelector";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useLLMStore } from "@/store/llmStore";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 import { AdvancedPromptTemplateEditor } from "./components/AdvancedPromptTemplateEditor";
 import { PromptBodyEditor } from "./components/PromptBodyEditor";
 import { PromptCatalogSidebar } from "./components/PromptCatalogSidebar";
@@ -25,6 +27,7 @@ import { WritingPlatformProfileManager } from "./components/WritingPlatformProfi
 type PromptEditMode = "slots" | "advanced";
 
 export default function PromptWorkbenchPage() {
+  const { language } = useLanguage();
   const [searchParams] = useSearchParams();
   const writingLab = searchParams.get("experience") === "writing";
   const requestedNovelId = searchParams.get("novelId")?.trim() ?? "";
@@ -38,6 +41,7 @@ export default function PromptWorkbenchPage() {
   const [selectedChapterId, setSelectedChapterId] = useState("");
   const [editMode, setEditMode] = useState<PromptEditMode>(() => writingLab ? "advanced" : "slots");
   const [platformManagerOpen, setPlatformManagerOpen] = useState(false);
+  const [promptOutputLanguage, setPromptOutputLanguage] = useState<NovelLanguage>(language);
   const globalLlmProvider = useLLMStore((state) => state.provider);
   const globalLlmModel = useLLMStore((state) => state.model);
   const globalLlmTemperature = useLLMStore((state) => state.temperature);
@@ -100,6 +104,7 @@ export default function PromptWorkbenchPage() {
     previewChapter: selectedChapter,
     slotOverrides: slotState.drafts,
     templateDraft: activeEditMode === "advanced" && advancedTemplateEnabled ? templateState.draftTemplate : undefined,
+    outputLanguage: promptOutputLanguage,
   });
   const preview = previewState.preview;
   const testRunError = previewState.testRunError;
@@ -257,6 +262,8 @@ export default function PromptWorkbenchPage() {
             onImmersiveChange={setImmersiveMode}
             entrypoint={entrypoint}
             onEntrypointChange={setEntrypoint}
+            outputLanguage={promptOutputLanguage}
+            onOutputLanguageChange={setPromptOutputLanguage}
             scope={slotState.scope}
             onScopeChange={slotState.setScope}
             selectedNovelId={slotState.selectedNovelId}

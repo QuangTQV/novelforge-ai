@@ -7,7 +7,7 @@
   },
   "queueCard": {
     "title": "Hàng đợi chương",
-    "subtitle": "Theo dõi tiến độ sản xuất chương",
+    "subtitle": "Theo dõi tiến độ viết chương",
     "visibleCount": "Hiển thị {{count}} chương",
     "filterLabel": "Lọc trạng thái",
     "emptyFiltered": "Không có chương phù hợp",
@@ -17,7 +17,8 @@
     "nextStep": "Bước tiếp theo",
     "currentWordCount": "{{count}} từ",
     "removing": "Đang xóa…",
-    "removeEmptyChapter": "Xóa chương trống"
+    "removeEmptyChapter": "Xóa chương trống",
+    "currentWordCountLabel": "Số từ hiện tại"
   },
   "chapter": {
     "labelWithTitle": "Chương {{number}}: {{title}}",
@@ -32,7 +33,7 @@
       "review": "Kiểm tra",
       "repair": "Sửa chữa",
       "stateSync": "Đồng bộ trạng thái",
-      "payoffSync": "Đồng bộ nút thắt",
+      "payoffSync": "Đồng bộ các mốc câu chuyện",
       "ready": "Sẵn sàng"
     },
     "notes": {

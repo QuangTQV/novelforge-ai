@@ -1,9 +1,11 @@
 import { Router } from "express";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
-import type { BuiltinLLMProvider, LLMProvider } from "@ai-novel/shared/types/llm";
+import type { BuiltinLLMProvider, LLMBackupApiKey, LLMProvider, LLMReasoningEffort, LLMRotationStrategy } from "@ai-novel/shared/types/llm";
+import { LLM_ROTATION_STRATEGIES } from "@ai-novel/shared/types/llm";
 import { z } from "zod";
 import { prisma } from "../db/prisma";
 import { setProviderSecretCache } from "../llm/factory";
+import { parseBackupKeys, serializeBackupKeys } from "../llm/providerRotation";
 import { evictSharedLimiters } from "../llm/requestLimiter";
 import { refreshProviderModels } from "../llm/modelCatalog";
 import { llmProviderSchema } from "../llm/providerSchema";
@@ -56,6 +58,16 @@ const providerSchema = z.object({
   provider: llmProviderSchema,
 });
 
+const MAX_BACKUP_API_KEYS = 20;
+const MAX_COOLDOWN_SECONDS = 3600;
+
+const backupApiKeySchema = z.object({
+  key: z.string().trim().min(1),
+  weight: z.coerce.number().positive().max(1000).optional(),
+  isActive: z.boolean().optional(),
+  label: z.string().trim().max(60).optional(),
+});
+
 const upsertApiKeySchema = z.object({
   displayName: z.string().trim().min(1).optional(),
   key: z.string().trim().optional(),
@@ -64,8 +76,15 @@ const upsertApiKeySchema = z.object({
   baseURL: z.union([z.string().trim().url("API URL 格式不正确。"), z.literal("")]).optional(),
   isActive: z.boolean().optional(),
   reasoningEnabled: z.boolean().optional(),
+  // Mức độ khi reasoningEnabled=true — "none" không hợp lệ ở đây, dùng reasoningEnabled=false để tắt hẳn.
+  reasoningEffort: z.enum(["low", "medium", "high"]).optional(),
   concurrencyLimit: z.coerce.number().int().min(0).max(MAX_PROVIDER_CONCURRENCY_LIMIT).optional(),
   requestIntervalMs: z.coerce.number().int().min(0).max(MAX_PROVIDER_REQUEST_INTERVAL_MS).optional(),
+  rotationStrategy: z.enum(LLM_ROTATION_STRATEGIES).optional(),
+  apiKeyWeight: z.coerce.number().positive().max(1000).optional(),
+  backupKeys: z.array(backupApiKeySchema).max(MAX_BACKUP_API_KEYS).optional(),
+  cooldownSeconds: z.coerce.number().int().min(1).max(MAX_COOLDOWN_SECONDS).optional(),
+  fallbackOrder: z.union([z.coerce.number().int().min(0).max(1000), z.null()]).optional(),
 });
 
 const ragEmbeddingProviderSchema = z.object({
@@ -120,8 +139,14 @@ type APIKeyRecordLike = {
   baseURL: string | null;
   isActive: boolean;
   reasoningEnabled?: boolean | null;
+  reasoningEffort?: string | null;
   concurrencyLimit?: number | null;
   requestIntervalMs?: number | null;
+  rotationStrategy?: string | null;
+  apiKeyWeight?: number | null;
+  backupKeysJson?: string | null;
+  cooldownSeconds?: number | null;
+  fallbackOrder?: number | null;
 };
 
 type BuiltInProviderStatus = {
@@ -141,9 +166,15 @@ type BuiltInProviderStatus = {
   isConfigured: boolean;
   isActive: boolean;
   reasoningEnabled: boolean;
+  reasoningEffort: LLMReasoningEffort;
   concurrencyLimit: number;
   requestIntervalMs: number;
   supportsImageGeneration: boolean;
+  rotationStrategy: LLMRotationStrategy;
+  apiKeyWeight: number;
+  backupKeys: LLMBackupApiKey[];
+  cooldownSeconds: number;
+  fallbackOrder: number | null;
 };
 
 type CustomProviderStatus = {
@@ -163,9 +194,15 @@ type CustomProviderStatus = {
   isConfigured: boolean;
   isActive: boolean;
   reasoningEnabled: boolean;
+  reasoningEffort: LLMReasoningEffort;
   concurrencyLimit: number;
   requestIntervalMs: number;
   supportsImageGeneration: boolean;
+  rotationStrategy: LLMRotationStrategy;
+  apiKeyWeight: number;
+  backupKeys: LLMBackupApiKey[];
+  cooldownSeconds: number;
+  fallbackOrder: number | null;
 };
 
 function normalizeOptionalText(value: string | null | undefined): string | undefined {
@@ -188,6 +225,26 @@ function getFallbackModels(provider: LLMProvider, currentModel?: string): string
   return Array.from(new Set([...models, currentModel ?? ""].filter(Boolean)));
 }
 
+function normalizeRotationStrategy(value: string | null | undefined): LLMRotationStrategy {
+  return value === "random" || value === "sequential" ? value : "round_robin";
+}
+
+/** Chuẩn hóa mức suy luận lưu trong DB — chỉ low/medium/high, "none" biểu diễn qua reasoningEnabled=false riêng. */
+function normalizeStoredReasoningEffort(value: string | null | undefined): "low" | "medium" | "high" {
+  return value === "low" || value === "high" ? value : "medium";
+}
+
+/** Gộp `reasoningEnabled` (bật/tắt) + `reasoningEffort` (mức khi bật) lưu trong DB thành 1 giá trị cho client. */
+function combineReasoningEffort(
+  reasoningEnabled: boolean | null | undefined,
+  reasoningEffort: string | null | undefined,
+): LLMReasoningEffort {
+  if (reasoningEnabled === false) {
+    return "none";
+  }
+  return reasoningEffort === "low" || reasoningEffort === "high" ? reasoningEffort : "medium";
+}
+
 function buildBuiltInProviderStatus(
   provider: BuiltinLLMProvider,
   item: {
@@ -197,8 +254,14 @@ function buildBuiltInProviderStatus(
     baseURL?: string | null;
     isActive?: boolean;
     reasoningEnabled?: boolean | null;
+    reasoningEffort?: string | null;
     concurrencyLimit?: number | null;
     requestIntervalMs?: number | null;
+    rotationStrategy?: string | null;
+    apiKeyWeight?: number | null;
+    backupKeysJson?: string | null;
+    cooldownSeconds?: number | null;
+    fallbackOrder?: number | null;
   } | undefined,
   imageModel: string | undefined,
 ): BuiltInProviderStatus {
@@ -233,9 +296,15 @@ function buildBuiltInProviderStatus(
     isConfigured,
     isActive: item?.isActive ?? isConfigured,
     reasoningEnabled: item?.reasoningEnabled ?? true,
+    reasoningEffort: combineReasoningEffort(item?.reasoningEnabled, item?.reasoningEffort),
     concurrencyLimit: normalizeProviderLimit(item?.concurrencyLimit),
     requestIntervalMs: normalizeProviderLimit(item?.requestIntervalMs),
     supportsImageGeneration: Boolean(currentImageModel),
+    rotationStrategy: normalizeRotationStrategy(item?.rotationStrategy),
+    apiKeyWeight: item?.apiKeyWeight && item.apiKeyWeight > 0 ? item.apiKeyWeight : 1,
+    backupKeys: parseBackupKeys(item?.backupKeysJson),
+    cooldownSeconds: item?.cooldownSeconds && item.cooldownSeconds > 0 ? item.cooldownSeconds : 60,
+    fallbackOrder: typeof item?.fallbackOrder === "number" ? item.fallbackOrder : null,
   };
 }
 
@@ -247,8 +316,14 @@ function buildCustomProviderStatus(item: {
   baseURL: string | null;
   isActive: boolean;
   reasoningEnabled?: boolean | null;
+  reasoningEffort?: string | null;
   concurrencyLimit?: number | null;
   requestIntervalMs?: number | null;
+  rotationStrategy?: string | null;
+  apiKeyWeight?: number | null;
+  backupKeysJson?: string | null;
+  cooldownSeconds?: number | null;
+  fallbackOrder?: number | null;
 }, imageModel: string | undefined): CustomProviderStatus {
   const currentModel = normalizeOptionalText(item.model) ?? "";
   const currentBaseURL = normalizeOptionalText(item.baseURL) ?? "";
@@ -270,9 +345,15 @@ function buildCustomProviderStatus(item: {
     isConfigured: Boolean(currentModel && currentBaseURL),
     isActive: item.isActive,
     reasoningEnabled: item.reasoningEnabled ?? true,
+    reasoningEffort: combineReasoningEffort(item.reasoningEnabled, item.reasoningEffort),
     concurrencyLimit: normalizeProviderLimit(item.concurrencyLimit),
     requestIntervalMs: normalizeProviderLimit(item.requestIntervalMs),
     supportsImageGeneration: Boolean(imageModel),
+    rotationStrategy: normalizeRotationStrategy(item.rotationStrategy),
+    apiKeyWeight: item.apiKeyWeight && item.apiKeyWeight > 0 ? item.apiKeyWeight : 1,
+    backupKeys: parseBackupKeys(item.backupKeysJson),
+    cooldownSeconds: item.cooldownSeconds && item.cooldownSeconds > 0 ? item.cooldownSeconds : 60,
+    fallbackOrder: typeof item.fallbackOrder === "number" ? item.fallbackOrder : null,
   };
 }
 
@@ -518,8 +599,21 @@ router.put(
         ? normalizeOptionalText(body.displayName) ?? normalizeOptionalText(existingRecord?.displayName) ?? provider
         : undefined;
       const nextReasoningEnabled = body.reasoningEnabled ?? existingRecord?.reasoningEnabled ?? true;
+      const nextReasoningEffort = body.reasoningEffort ?? normalizeStoredReasoningEffort(existingRecord?.reasoningEffort);
       const nextConcurrencyLimit = body.concurrencyLimit ?? normalizeProviderLimit(existingRecord?.concurrencyLimit);
       const nextRequestIntervalMs = body.requestIntervalMs ?? normalizeProviderLimit(existingRecord?.requestIntervalMs);
+      const nextRotationStrategy = body.rotationStrategy ?? normalizeRotationStrategy(existingRecord?.rotationStrategy);
+      const nextApiKeyWeight = body.apiKeyWeight ?? (existingRecord?.apiKeyWeight && existingRecord.apiKeyWeight > 0 ? existingRecord.apiKeyWeight : 1);
+      const nextBackupKeysJson = body.backupKeys !== undefined
+        ? serializeBackupKeys(body.backupKeys.map((item) => ({
+          key: item.key,
+          weight: item.weight ?? 1,
+          isActive: item.isActive ?? true,
+          ...(item.label ? { label: item.label } : {}),
+        })))
+        : existingRecord?.backupKeysJson ?? null;
+      const nextCooldownSeconds = body.cooldownSeconds ?? (existingRecord?.cooldownSeconds && existingRecord.cooldownSeconds > 0 ? existingRecord.cooldownSeconds : 60);
+      const nextFallbackOrder = body.fallbackOrder !== undefined ? body.fallbackOrder : existingRecord?.fallbackOrder ?? null;
       const requiresApiKey = providerRequiresApiKey(provider);
 
       if (body.isActive === false) {
@@ -557,8 +651,14 @@ router.put(
           baseURL: nextBaseURL ?? null,
           isActive: body.isActive ?? true,
           reasoningEnabled: nextReasoningEnabled,
+          reasoningEffort: nextReasoningEffort,
           concurrencyLimit: nextConcurrencyLimit,
           requestIntervalMs: nextRequestIntervalMs,
+          rotationStrategy: nextRotationStrategy,
+          apiKeyWeight: nextApiKeyWeight,
+          backupKeysJson: nextBackupKeysJson,
+          cooldownSeconds: nextCooldownSeconds,
+          fallbackOrder: nextFallbackOrder,
         })
         : await secretStore.updateProvider(provider, {
           displayName: nextDisplayName,
@@ -567,8 +667,14 @@ router.put(
           baseURL: nextBaseURL ?? null,
           isActive: body.isActive ?? existingRecord?.isActive ?? true,
           reasoningEnabled: nextReasoningEnabled,
+          reasoningEffort: nextReasoningEffort,
           concurrencyLimit: nextConcurrencyLimit,
           requestIntervalMs: nextRequestIntervalMs,
+          rotationStrategy: nextRotationStrategy,
+          apiKeyWeight: nextApiKeyWeight,
+          backupKeysJson: nextBackupKeysJson,
+          cooldownSeconds: nextCooldownSeconds,
+          fallbackOrder: nextFallbackOrder,
         })) as APIKeyRecordLike;
 
       const currentImageModel = body.imageModel !== undefined
@@ -585,8 +691,14 @@ router.put(
         model: data.model ?? undefined,
         baseURL: data.baseURL ?? undefined,
         reasoningEnabled: data.reasoningEnabled ?? true,
+        reasoningEffort: normalizeStoredReasoningEffort(data.reasoningEffort),
         concurrencyLimit: data.concurrencyLimit ?? 0,
         requestIntervalMs: data.requestIntervalMs ?? 0,
+        rotationStrategy: normalizeRotationStrategy(data.rotationStrategy),
+        apiKeyWeight: data.apiKeyWeight ?? 1,
+        backupKeysJson: data.backupKeysJson ?? null,
+        cooldownSeconds: data.cooldownSeconds ?? 60,
+        fallbackOrder: data.fallbackOrder ?? null,
       } : null);
       evictSharedLimiters(provider);
 
@@ -608,11 +720,17 @@ router.put(
           baseURL: data.baseURL,
           isActive: data.isActive,
           reasoningEnabled: data.reasoningEnabled ?? true,
+          reasoningEffort: combineReasoningEffort(data.reasoningEnabled, data.reasoningEffort),
           concurrencyLimit: normalizeProviderLimit(data.concurrencyLimit),
           requestIntervalMs: normalizeProviderLimit(data.requestIntervalMs),
           models,
           imageModels,
           supportsImageGeneration: Boolean(currentImageModel),
+          rotationStrategy: normalizeRotationStrategy(data.rotationStrategy),
+          apiKeyWeight: data.apiKeyWeight && data.apiKeyWeight > 0 ? data.apiKeyWeight : 1,
+          backupKeys: parseBackupKeys(data.backupKeysJson),
+          cooldownSeconds: data.cooldownSeconds && data.cooldownSeconds > 0 ? data.cooldownSeconds : 60,
+          fallbackOrder: data.fallbackOrder ?? null,
         },
         message,
       } satisfies ApiResponse<{
@@ -623,11 +741,17 @@ router.put(
         baseURL: string | null;
         isActive: boolean;
         reasoningEnabled: boolean;
+        reasoningEffort: LLMReasoningEffort;
         concurrencyLimit: number;
         requestIntervalMs: number;
         models: string[];
         imageModels: string[];
         supportsImageGeneration: boolean;
+        rotationStrategy: LLMRotationStrategy;
+        apiKeyWeight: number;
+        backupKeys: LLMBackupApiKey[];
+        cooldownSeconds: number;
+        fallbackOrder: number | null;
       }>);
     } catch (error) {
       next(error);

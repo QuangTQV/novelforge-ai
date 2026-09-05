@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -341,10 +342,10 @@ export default function NovelWorkspaceRail(props: NovelWorkspaceRailProps) {
   const cockpitSummary = activeTask
     ? runtimeSummary
       || (activeTask.status === "failed"
-      ? activeTask.lastError || translateUi("后台任务已中断，可打开执行详情查看原因。")
+      ? translateTaskProgressLabel(activeTask.lastError) || translateUi("后台任务已中断，可打开执行详情查看原因。")
       : activeTask.status === "waiting_approval"
         ? translateUi("等待处理：{{v0}}", { v0: getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab) })
-      : activeTask.currentItemLabel || translateUi("AI 正在推进 {{v0}}", { v0: getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab) }))
+      : translateTaskProgressLabel(activeTask.currentItemLabel) || translateUi("AI 正在推进 {{v0}}", { v0: getNovelWorkspaceTabLabel(workflowCurrentTab ?? activeTab) }))
     : translateUi("当前没有后台导演任务，可以直接继续手动创作。");
   const cockpitProjection = useMemo(() => {
     if (!visibleBookAutomationProjection || !runtimeSummary?.trim()) {

@@ -86,7 +86,7 @@ export const stateSnapshotPrompt: PromptAsset<
       "顶层只能包含：summary、characterStates、relationStates、informationStates、foreshadowStates。",
       "",
       "全局硬规则：",
-      "1. 所有内容必须使用简体中文。",
+      "1. 所有内容必须使用目标语言（默认简体中文，以末尾“输出语言指令”为准）。",
       "2. 只能依据提供的材料提取，不得补写正文里没有出现或无法稳定推出的新事实。",
       "3. 输出的是“章节结束后的状态”，不是剧情复述，也不是摘要扩写。",
       "4. 信息不足时宁可省略该条，也不要把猜测写成事实。",

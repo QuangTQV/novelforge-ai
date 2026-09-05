@@ -5,6 +5,7 @@ import {
   type BaseMessage,
   type MessageContent,
 } from "@langchain/core/messages";
+import type { LLMReasoningEffort } from "@ai-novel/shared/types/llm";
 
 interface AnthropicLLMOptions {
   apiKey?: string;
@@ -13,7 +14,14 @@ interface AnthropicLLMOptions {
   temperature: number;
   maxTokens?: number;
   timeoutMs?: number;
+  reasoningEffort?: LLMReasoningEffort;
 }
+
+const THINKING_BUDGET_TOKENS: Record<Exclude<LLMReasoningEffort, "none">, number> = {
+  low: 4_000,
+  medium: 10_000,
+  high: 24_000,
+};
 
 type AnthropicRole = "user" | "assistant";
 
@@ -143,6 +151,14 @@ export function createAnthropicLLM(options: AnthropicLLMOptions): {
       ? setTimeout(() => controller.abort(new Error("Anthropic request timed out.")), options.timeoutMs)
       : null;
     callOptions?.signal?.addEventListener("abort", () => controller.abort(callOptions.signal?.reason), { once: true });
+    const thinkingEffort = options.reasoningEffort && options.reasoningEffort !== "none"
+      ? options.reasoningEffort
+      : undefined;
+    const budgetTokens = thinkingEffort ? THINKING_BUDGET_TOKENS[thinkingEffort] : undefined;
+    // Anthropic yêu cầu max_tokens > thinking.budget_tokens, và temperature phải bằng 1 khi bật thinking.
+    const maxTokens = budgetTokens
+      ? Math.max(options.maxTokens ?? 0, budgetTokens + 1024)
+      : options.maxTokens ?? 4096;
     try {
       const response = await fetch(`${normalizeBaseURL(options.baseURL)}/messages`, {
         method: "POST",
@@ -154,9 +170,10 @@ export function createAnthropicLLM(options: AnthropicLLMOptions): {
         },
         body: JSON.stringify({
           model: options.model,
-          max_tokens: options.maxTokens ?? 4096,
-          temperature: options.temperature,
+          max_tokens: maxTokens,
+          temperature: budgetTokens ? 1 : options.temperature,
           stream,
+          ...(budgetTokens ? { thinking: { type: "enabled", budget_tokens: budgetTokens } } : {}),
           ...(converted.system ? { system: converted.system } : {}),
           messages: converted.messages,
         }),

@@ -1,4 +1,5 @@
 import { translateUi } from "../../../../i18n/legacy.ts";
+import { translateTaskProgressLabel } from "../../../../i18n/taskProgressLabel.ts";
 import type {
   NovelAutoDirectorTaskSummary,
   ProjectProgressStatus,
@@ -155,12 +156,12 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
       tone: task?.status === "failed" ? "danger" : task?.status === "succeeded" ? "success" : "info",
       label: task?.status === "succeeded" ? translateUi("完整短篇") : translateUi("短篇创作中"),
       description: task?.checkpointSummary?.trim()
-        || task?.currentItemLabel?.trim()
+        || translateTaskProgressLabel(task?.currentItemLabel?.trim())
         || novel.description?.trim()
         || translateUi("AI 正在把已确认的方向写成一篇连续作品。"),
       progress: Math.round((task?.progress ?? 0) * 100),
       currentStage: translateUi("连续作品"),
-      currentAction: task?.currentItemLabel?.trim() || "",
+      currentAction: translateTaskProgressLabel(task?.currentItemLabel?.trim()) || "",
       lastHealthyStage: "",
       running: task?.status === "queued" || task?.status === "running",
     };
@@ -178,15 +179,16 @@ export function buildWorkflowDisplay(novel: NovelListItem): WorkflowDisplay {
       running: false,
     };
   }
-  const currentAction = task.currentItemLabel?.trim() || "";
+  const currentAction = translateTaskProgressLabel(task.currentItemLabel?.trim()) || "";
+  const currentStage = translateTaskProgressLabel(task.currentStage?.trim()) || translateUi("自动导演");
   return {
     tone: getWorkflowTone(task),
-    label: task.displayStatus?.trim() || task.resumeAction?.trim() || task.nextActionLabel?.trim() || translateUi("自动导演"),
+    label: translateTaskProgressLabel(task.displayStatus?.trim()) || translateTaskProgressLabel(task.resumeAction?.trim()) || translateTaskProgressLabel(task.nextActionLabel?.trim()) || translateUi("自动导演"),
     description: description || translateUi("系统保留推进状态，可以继续查看或恢复。"),
     progress: Math.round(task.progress * 100),
-    currentStage: task.currentStage ?? translateUi("自动导演"),
+    currentStage,
     currentAction,
-    lastHealthyStage: task.lastHealthyStage ?? "",
+    lastHealthyStage: translateTaskProgressLabel(task.lastHealthyStage?.trim()) || "",
     running: isWorkflowRunningInBackground(task),
   };
 }
@@ -197,13 +199,13 @@ export function getPrimaryActionLabel(novel: NovelListItem): string {
   }
   const task = getNovelWorkflowTask(novel);
   if (canContinueChapterBatchAutoExecution(task)) {
-    return task?.resumeAction ?? translateUi("Tiếp tục tự động chạy {{scope}}", { scope: task?.executionScopeLabel ?? translateUi("当前章节范围") });
+    return translateTaskProgressLabel(task?.resumeAction?.trim()) || translateUi("Tiếp tục tự động chạy {{scope}}", { scope: task?.executionScopeLabel ?? translateUi("当前章节范围") });
   }
   if (canContinueDirector(task)) {
-    return task?.resumeAction ?? translateUi("继续导演");
+    return translateTaskProgressLabel(task?.resumeAction?.trim()) || translateUi("继续导演");
   }
   if (requiresCandidateSelection(task)) {
-    return task?.resumeAction ?? translateUi("继续确认方向");
+    return translateTaskProgressLabel(task?.resumeAction?.trim()) || translateUi("继续确认方向");
   }
   if (canEnterChapterExecution(task)) {
     return translateUi("进入章节执行");

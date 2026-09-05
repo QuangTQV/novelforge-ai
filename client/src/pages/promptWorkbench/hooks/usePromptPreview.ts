@@ -10,11 +10,13 @@ import {
   type PromptTemplateJson,
 } from "@/api/promptWorkbench";
 import { useSSE } from "@/hooks/useSSE";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 import type { PromptSlotDrafts } from "../promptWorkbenchTypes";
 
 interface PreviewNovel {
   id: string;
   title?: string | null;
+  novelLanguage?: NovelLanguage | null;
 }
 
 interface PreviewChapter {
@@ -310,6 +312,7 @@ interface UsePromptPreviewInput {
   previewChapter?: PreviewChapter | null;
   slotOverrides: PromptSlotDrafts;
   templateDraft?: PromptTemplateJson;
+  outputLanguage: NovelLanguage;
 }
 
 export function usePromptPreview(input: UsePromptPreviewInput) {
@@ -322,6 +325,7 @@ export function usePromptPreview(input: UsePromptPreviewInput) {
     prompt,
     slotOverrides,
     templateDraft,
+    outputLanguage,
   } = input;
   const [streamedTestRun, setStreamedTestRun] = useState<PromptTestRunResult | null>(null);
   const streamedTestRunRef = useRef<{
@@ -383,6 +387,7 @@ export function usePromptPreview(input: UsePromptPreviewInput) {
         },
         metadata: buildPreviewExecutionMetadata(prompt, hasRealChapterContext),
       },
+      outputLanguage,
       maxContextTokens: prompt.contextPolicy.maxTokensBudget,
       slotOverrides,
       templateDraft,
@@ -396,6 +401,7 @@ export function usePromptPreview(input: UsePromptPreviewInput) {
     prompt,
     slotOverrides,
     templateDraft,
+    outputLanguage,
   ]);
 
   const previewMutation = useMutation({

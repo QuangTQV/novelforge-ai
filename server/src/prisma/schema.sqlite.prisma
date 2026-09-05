@@ -346,6 +346,9 @@ model Novel {
   styleTone         String?
   emotionIntensity  EmotionIntensity?
   aiFreedom         AIFreedom?
+  novelLanguage     String?
+  styleFlavor       String?
+
   postGenerationStyleReviewEnabled Boolean @default(true)
   defaultChapterLength Int?
   estimatedChapterCount Int?
@@ -365,6 +368,7 @@ model Novel {
   storyWorldSliceOverridesJson String?
   storyWorldSliceSchemaVersion Int @default(1)
   genreId           String?
+  genreIdsJson       String?
   primaryStoryModeId String?
   secondaryStoryModeId String?
   worldId           String?
@@ -1798,10 +1802,20 @@ model APIKey {
   baseURL   String?
   isActive  Boolean  @default(true)
   reasoningEnabled Boolean @default(true)
+  // Mức độ suy luận khi reasoningEnabled=true: "low" | "medium" | "high".
+  reasoningEffort String @default("medium")
   concurrencyLimit Int @default(0)
   requestIntervalMs Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Xoay tua nhiều API key trong cùng provider này.
+  rotationStrategy String  @default("round_robin")
+  apiKeyWeight     Float   @default(1)
+  backupKeysJson   String?
+  cooldownSeconds  Int     @default(60)
+  // Vị trí trong chuỗi fallback liên-provider (null = không tham gia). Số nhỏ hơn được thử trước.
+  fallbackOrder    Int?
 
   @@unique([provider])
 }
@@ -1822,6 +1836,8 @@ model ModelRouteConfig {
   maxTokens                Int?
   requestProtocol          String  @default("auto")
   structuredResponseFormat String  @default("auto")
+  // "none" | "low" | "medium" | "high"; null = kế thừa mặc định của provider.
+  reasoningEffort          String?
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
 

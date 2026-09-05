@@ -365,6 +365,7 @@ model Novel {
   storyWorldSliceOverridesJson String?
   storyWorldSliceSchemaVersion Int @default(1)
   genreId           String?
+  genreIdsJson       String?
   primaryStoryModeId String?
   secondaryStoryModeId String?
   worldId           String?

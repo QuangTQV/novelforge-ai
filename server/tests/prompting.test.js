@@ -52,6 +52,16 @@ const {
   chapterWriterPrompt,
 } = require("../dist/prompting/prompts/novel/chapterWriter.prompts.js");
 const {
+  chapterPatchRepairPrompt,
+} = require("../dist/prompting/prompts/novel/chapterPatchRepair.prompts.js");
+const {
+  novelContinuationRewritePrompt,
+} = require("../dist/prompting/prompts/novel/continuation.prompts.js");
+const {
+  novelDraftOptimizeSelectionPrompt,
+  novelDraftOptimizeFullPrompt,
+} = require("../dist/prompting/prompts/novel/draftOptimize.prompts.js");
+const {
   compilePromptTemplate,
 } = require("../dist/prompting/templates/templateCompiler.js");
 const {
@@ -171,9 +181,9 @@ test("prompt registry exposes versioned planning assets", () => {
     "audit.chapter.full@v2",
     "bookAnalysis.source.note@v1",
     "character.base.skeleton@v1",
-    "novel.continuation.rewrite_similarity@v1",
-    "novel.draft_optimize.selection@v1",
-    "novel.draft_optimize.full@v1",
+    "novel.continuation.rewrite_similarity@v2",
+    "novel.draft_optimize.selection@v2",
+    "novel.draft_optimize.full@v2",
     "novel.framing.suggest@v1",
     "novel.production.characters@v1",
     "state.snapshot.extract@v4",
@@ -640,6 +650,7 @@ test("chapter writer prompt does not expose scene contract controls", () => {
     targetWordCount: 3000,
     minWordCount: 2550,
     maxWordCount: 3450,
+    outputLanguage: "zh",
   }, {
     blocks: [
       createContextBlock({
@@ -665,6 +676,95 @@ test("chapter writer prompt does not expose scene contract controls", () => {
   assert.doesNotMatch(systemContent, /控字数模式/);
   assert.doesNotMatch(systemContent, /本轮硬上限/);
   assert.doesNotMatch(humanContent, /只写当前场景/);
+});
+
+const HAN_CHAR = /[一-鿿]/;
+
+test("chapter writer prompt renders native Vietnamese instructions when outputLanguage is vi", () => {
+  const messages = chapterWriterPrompt.render({
+    novelTitle: "Tiểu thuyết thử",
+    chapterOrder: 1,
+    chapterTitle: "Khởi thế",
+    mode: "draft",
+    targetWordCount: 3000,
+    minWordCount: 2550,
+    maxWordCount: 3450,
+    outputLanguage: "vi",
+  }, {
+    blocks: [],
+    selectedBlockIds: [],
+    droppedBlockIds: [],
+    summarizedBlockIds: [],
+    estimatedInputTokens: 0,
+  });
+  const systemContent = String(messages[0].content);
+  assert.doesNotMatch(systemContent, HAN_CHAR);
+  assert.match(systemContent, /Viết bằng Tiếng Việt/);
+  assert.match(systemContent, /Độ dài mục tiêu của chương: khoảng 3000 từ/);
+  // Technical identifiers stay verbatim even in the vi branch.
+  assert.match(systemContent, /reader_experience/);
+  assert.match(systemContent, /character_hard_facts/);
+});
+
+test("chapter patch repair prompt renders native Vietnamese instructions when outputLanguage is vi", () => {
+  const messages = chapterPatchRepairPrompt.render({
+    novelTitle: "Tiểu thuyết thử",
+    chapterTitle: "Chương 1",
+    chapterContent: "Nội dung chương.",
+    issuesJson: "[]",
+    outputLanguage: "vi",
+  }, {
+    blocks: [],
+    selectedBlockIds: [],
+    droppedBlockIds: [],
+    summarizedBlockIds: [],
+    estimatedInputTokens: 0,
+  });
+  const systemContent = String(messages[0].content);
+  assert.doesNotMatch(systemContent, HAN_CHAR);
+  assert.match(systemContent, /NGUYÊN TẮC VÁ/);
+  assert.match(systemContent, /strategy mặc định bắt buộc là patch_first/);
+});
+
+test("continuation rewrite prompt drops the hardcoded Chinese-output rule for non-zh novels", () => {
+  const viMessages = novelContinuationRewritePrompt.render({
+    chapterTitle: "Chương 1",
+    mostSimilarSnippet: "đoạn tương tự",
+    targetText: "chính văn hiện tại",
+    outputLanguage: "vi",
+  });
+  const viSystem = String(viMessages[0].content);
+  assert.doesNotMatch(viSystem, HAN_CHAR);
+  assert.doesNotMatch(viSystem, /简体中文|中文正文/);
+  assert.match(viSystem, /Tiếng Việt/);
+
+  const zhMessages = novelContinuationRewritePrompt.render({
+    chapterTitle: "第一章",
+    mostSimilarSnippet: "相似片段",
+    targetText: "当前正文",
+    outputLanguage: "zh",
+  });
+  // zh behavior unchanged.
+  assert.match(String(zhMessages[0].content), /简体中文完整章节正文/);
+});
+
+test("draft optimize prompts render native Vietnamese instructions when outputLanguage is vi", () => {
+  for (const asset of [novelDraftOptimizeSelectionPrompt, novelDraftOptimizeFullPrompt]) {
+    for (const target of ["outline", "structured_outline"]) {
+      const messages = asset.render({
+        target,
+        instruction: "làm rõ hơn",
+        charactersText: "nhân vật",
+        worldContext: "thế giới",
+        before: "",
+        after: "",
+        selectedText: "đoạn",
+        currentDraft: "bản nháp",
+        outputLanguage: "vi",
+      });
+      assert.doesNotMatch(String(messages[0].content), HAN_CHAR);
+    }
+  }
 });
 
 test("novel main-chain prompt assets declare explicit non-zero context budgets", () => {
@@ -737,6 +837,7 @@ test("chapter writer prompt carries explicit target length and continuation inst
     targetWordCount: 3000,
     minWordCount: 2550,
     maxWordCount: 3450,
+    outputLanguage: "zh",
   }, {
     blocks: [],
     selectedBlockIds: [],
@@ -756,6 +857,7 @@ test("chapter writer prompt carries explicit target length and continuation inst
     minWordCount: 2550,
     maxWordCount: 3450,
     missingWordGap: 900,
+    outputLanguage: "zh",
   }, {
     blocks: [],
     selectedBlockIds: [],
@@ -1717,9 +1819,11 @@ test("prompt runner injects enabled custom slot blocks for supported prompts", a
       inlineSlots: {
         text: () => "",
         choiceCopy: () => "",
+        choiceValue: () => "",
         enabled: () => false,
         token: () => "",
         append: () => "",
+        isDefault: () => true,
       },
       appendBlocks: [
         createContextBlock({
@@ -1786,9 +1890,11 @@ test("prompt runner skips custom slot overlays for prompts without editable slot
       inlineSlots: {
         text: () => "",
         choiceCopy: () => "",
+        choiceValue: () => "",
         enabled: () => false,
         token: () => "",
         append: () => "",
+        isDefault: () => true,
       },
       appendBlocks: [
         createContextBlock({

@@ -25,6 +25,7 @@ import {
   confirmDirectorCandidate,
   generateDirectorIdeaInspirations,
   generateDirectorIdeaConstellationOptions,
+  removeDirectorCandidates,
 } from "@/api/novelDirector";
 import { queryKeys } from "@/api/queryKeys";
 import { getStyleProfiles } from "@/api/styleEngine";
@@ -239,6 +240,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
 
   const buildIdeaContextPayload = () => {
     const genre = genreOptions.find((item) => item.id === directorBasicForm.genreId);
+    const genres = genreOptions.filter((item) => directorBasicForm.genreIds.includes(item.id));
     const primaryStoryMode = storyModeOptions.find(
       (item) => item.id === directorBasicForm.primaryStoryModeId,
     );
@@ -253,7 +255,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
         marketBriefId,
       }),
       currentIdea: idea.trim() || undefined,
-      genreLabel: genre?.path || genre?.label,
+      genreLabel: genres.length > 0 ? genres.map((item) => item.path || item.label).join(" + ") : genre?.path || genre?.label,
       genreDescription: genre?.description || undefined,
       primaryStoryModeLabel: primaryStoryMode?.path || primaryStoryMode?.label,
       primaryStoryModeDescription: primaryStoryMode?.description || undefined,
@@ -433,6 +435,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     generateMutation,
     patchCandidateMutation,
     refineTitleMutation,
+    deleteCandidateMutation,
   } = useNovelAutoDirectorCandidateMutations({
     batches,
     selectedPresets,
@@ -572,6 +575,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
 
   const updateProductionFoundation = async (patch: Partial<{
     genreId: string;
+    genreIds: string[];
     primaryStoryModeId: string;
   }>): Promise<boolean> => {
     if (!hasCreationFoundationChanged(directorBasicForm, patch)) {
@@ -602,6 +606,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
           seedPayload: {
             basicForm: nextForm,
             genreId: nextForm.genreId || null,
+            genreIds: nextForm.genreIds,
             primaryStoryModeId: nextForm.primaryStoryModeId || null,
             secondaryStoryModeId: null,
             productionFoundation: null,
@@ -719,6 +724,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     generateMutation,
     patchCandidateMutation,
     refineTitleMutation,
+    deleteCandidateMutation,
     confirmMutation,
     continueMutation,
     onBasicFormChange,

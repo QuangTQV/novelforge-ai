@@ -37,9 +37,13 @@ export const directorIdeaConstellationOptionsPrompt: PromptAsset<
     },
     note: "options 必须严格输出 35 项，七个 category 各 5 项；字段齐全，不输出额外说明。",
   },
-  render: (input) => [
+  render: (input, context) => [
     new SystemMessage([
-      "你是面向中文网文新手的开书素材设计师。你的任务是根据当前题材、推进方式和用户想法，生成能直接拼成开书构想的具体网文素材，不是抽象主题词或编剧命题。",
+      context.promptLanguage === "vi"
+        ? "Bạn là người thiết kế chất liệu mở sách cho tác giả mới. Hãy tạo chất liệu cụ thể, có thể dùng ngay để ghép thành ý tưởng mở sách; toàn bộ nội dung tự nhiên phải dùng tiếng Việt."
+        : context.promptLanguage === "en"
+          ? "You design opening-book materials for new authors. Create concrete materials that can be assembled into a usable story premise; all natural-language content must use the requested output language."
+          : "你是面向中文网文新手的开书素材设计师。你的任务是生成可以直接用于开书构想的具体素材。",
       "必须严格输出七类、每类五项，共 35 项：protagonist 主角开局身份与困境、setting 题材舞台与利益规则、advantage 金手指或核心优势、opening_crisis 第一章爆点、core_goal 前期目标与阶段回报、story_variable 核心对手或主要阻力、relationship 能持续推进的关键关系。",
       "每项 label 必须具体、适合点击选择，控制在2到48个字符；需要表达完整设定时可以使用短句，不要为了凑短而丢失关键机制。hint 说明它会怎样落到开局行动、连续升级或读者回报。",
       "同一类别的五项必须有明显差异，不能只是同义改写；35 个 label 不能重复。",
@@ -88,9 +92,13 @@ export const directorIdeaConstellationComposePrompt: PromptAsset<
     },
     note: "idea 是 45-220 字的单段开书想法，不输出标题、Markdown 或额外说明。",
   },
-  render: (input) => [
+  render: (input, context) => [
     new SystemMessage([
-      "你是中文网文开书灵感助手，负责把用户亲自选择的故事元素收束成一段可以直接开始创作的起始想法。",
+      context.promptLanguage === "vi"
+        ? "Bạn là trợ lý chắt lọc ý tưởng mở sách. Hãy viết bằng ngôn ngữ đầu ra được yêu cầu, ưu tiên nội dung tự nhiên, cụ thể và có thể bắt đầu sáng tác ngay."
+        : context.promptLanguage === "en"
+          ? "You are an opening-premise assistant. Write in the requested output language, keeping the result natural, concrete, and immediately usable for starting a novel."
+          : "你是中文网文开书灵感助手，负责把用户选择的故事元素收束成可直接创作的起始想法。",
       "必须保留每个已选元素的核心含义，并让它们形成因果关系，不能只把标签机械串联。",
       "优先写清主角的具体身份、金手指或核心优势、第一章发生的事件，以及前期必须完成的目标；不要重新抽象成主题句。",
       "已有题材和推进模式是固定基础，不得擅自更换。即使用户只选择一个元素，也要结合固定基础轻量补足主角、开局行动和长期牵引，让结果可以直接用于开书。",

@@ -265,6 +265,7 @@ export class CharacterVisibleProfileService {
         userGuidance: compactText(options.userGuidance, 800),
       },
       options: {
+        novelId: novelId,
         provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.45,

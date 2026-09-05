@@ -387,6 +387,7 @@ function AutoDirectorCreatePage() {
   const latestProductionFoundation = controller.batches.at(-1)?.candidates[0]?.productionFoundation ?? null;
   const marketProductionFoundation = marketBriefQuery.data?.data?.productionFoundation ?? null;
   const selectedGenre = genreOptions.find((option) => option.id === controller.directorBasicForm.genreId) ?? null;
+  const selectedGenres = genreOptions.filter((option) => controller.directorBasicForm.genreIds.includes(option.id));
   const selectedStoryMode = storyModeOptions.find(
     (option) => option.id === controller.directorBasicForm.primaryStoryModeId,
   ) ?? null;
@@ -480,8 +481,11 @@ function AutoDirectorCreatePage() {
           genreTree={genreTree}
           storyModeTree={storyModeTree}
           selectedGenreId={controller.directorBasicForm.genreId}
-          selectedGenreLabel={selectedGenre
-            ? translateUi("故事类型：{{value0}}", { value0: selectedGenre.path })
+          selectedGenreIds={controller.directorBasicForm.genreIds}
+          selectedGenreLabel={selectedGenres.length > 0
+            ? translateUi("Thể loại: {{value0}}", { value0: selectedGenres.map((genre) => genre.path).join(" + ") })
+            : selectedGenre
+              ? translateUi("故事类型：{{value0}}", { value0: selectedGenre.path })
             : controller.directorBasicForm.genreId ? translateUi("故事类型：选择已失效") : ""}
           selectedGenreSource={selectedGenreSource}
           selectedStoryModeId={controller.directorBasicForm.primaryStoryModeId}

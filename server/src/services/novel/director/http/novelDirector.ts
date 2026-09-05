@@ -38,6 +38,8 @@ import {
   BOOK_FRAMING_MAX_COMMERCIAL_TAGS,
 } from "@ai-novel/shared/types/novelFraming";
 import { DIRECTOR_AUTO_APPROVAL_POINTS } from "@ai-novel/shared/types/autoDirectorApproval";
+import { NOVEL_LANGUAGE_VALUES } from "@ai-novel/shared/utils/novelLanguage";
+import { NOVEL_STYLE_FLAVOR_VALUES } from "@ai-novel/shared/utils/novelStyleFlavor";
 import { validate } from "../../../../middleware/validate";
 import { llmProviderSchema } from "../../../../llm/providerSchema";
 import { DirectorBookAutomationProjectionService } from "../projections/DirectorBookAutomationProjectionService";
@@ -111,6 +113,8 @@ const projectContextSchema = z.object({
   styleProfileId: z.string().trim().optional(),
   emotionIntensity: z.enum(["low", "medium", "high"]).optional(),
   aiFreedom: z.enum(["low", "medium", "high"]).optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).optional(),
+  styleFlavor: z.enum(NOVEL_STYLE_FLAVOR_VALUES).optional(),
   postGenerationStyleReviewEnabled: z.boolean().optional(),
   defaultChapterLength: z.number().int().min(500).max(10000).optional(),
   estimatedChapterCount: z.number().int().min(1).max(2000).optional(),

@@ -1,9 +1,9 @@
 {
   "appearance": {
-    "title": "Giao diện & Chủ đề",
+    "title": "Giao diện & chủ đề",
     "description": "Chọn màu giao diện và mật độ hiển thị phù hợp để sáng tác lâu dài.",
     "cardTitle": "Giao diện ứng dụng",
-    "cardDescription": "Chủ đề chỉ lưu trên thiết bị hiện tại, không ảnh hưởng nội dung tiểu thuyết và trạng thái tác vụ.",
+    "cardDescription": "Chủ đề chỉ được lưu trên thiết bị này; không ảnh hưởng đến nội dung tiểu thuyết hay trạng thái tác vụ.",
     "mode": {
       "label": "Chế độ hiển thị",
       "system": "Theo hệ thống",
@@ -36,28 +36,28 @@
     "entries": {
       "models": {
         "title": "Mô hình & nhà cung cấp",
-        "description": "Chọn mô hình sáng tác, kiểm tra định tuyến tác vụ và quản lý kết nối.",
+        "description": "Chọn mô hình sáng tác, kiểm tra tuyến xử lý và quản lý kết nối.",
         "summaryConfigured": "{{provider}} · {{model}} · {{routeCount}} tuyến tác vụ",
         "summaryEmpty": "Chưa cấu hình mô hình văn bản khả dụng",
         "noModel": "Chưa chọn mô hình"
       },
       "director": {
         "title": "Đạo diễn tự động",
-        "description": "Sắp xếp cách xử lý vấn đề, tùy chọn xác nhận và cách nhắc.",
-        "summary": "Thiết lập tùy chọn xác nhận, xử lý vấn đề và cách thông báo"
+        "description": "Thiết lập cách xử lý sự cố, các bước cần xác nhận và thông báo.",
+        "summary": "Thiết lập xác nhận, xử lý sự cố và thông báo"
       },
       "knowledge": {
-        "title": "Tri thức & lối viết",
-        "description": "Cho tài liệu và tùy chọn lối viết tham gia vào các bước sáng tác sau.",
-        "summaryEnabled": "Đã bật truy xuất tài liệu · {{model}}",
-        "summaryDisabled": "Tăng cường tùy chọn, chưa ảnh hưởng tới việc bắt đầu",
+        "title": "Kho tri thức & phong cách viết",
+        "description": "Cho phép AI sử dụng tư liệu và phong cách viết trong các bước sáng tác tiếp theo.",
+        "summaryEnabled": "Đã bật truy xuất tư liệu · {{model}}",
+        "summaryDisabled": "Chưa bật phần nâng cao; không ảnh hưởng đến việc bắt đầu sáng tác",
         "noModel": "Chưa chọn mô hình vector"
       },
       "maintenance": {
-        "title": "Máy tính & bảo trì",
-        "description": "Xem cập nhật và bảo trì dữ liệu áp dụng cho thiết bị hiện tại.",
-        "summaryDesktop": "Có thể kiểm tra cập nhật ứng dụng và dữ liệu cũ trên máy",
-        "summaryWeb": "Bản web không cần bảo trì ứng dụng máy tính"
+        "title": "Ứng dụng & bảo trì",
+        "description": "Kiểm tra cập nhật và các thao tác bảo trì dữ liệu trên thiết bị hiện tại.",
+        "summaryDesktop": "Có thể kiểm tra cập nhật ứng dụng và nhập dữ liệu cũ",
+        "summaryWeb": "Bản web không cần bảo trì ứng dụng desktop"
       }
     }
   }

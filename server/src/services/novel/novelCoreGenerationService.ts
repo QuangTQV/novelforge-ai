@@ -120,6 +120,7 @@ export class NovelCoreGenerationService {
         initialPrompt: initialPrompt || undefined,
       },
       options: {
+        novelId: novelId,
         provider: options.provider ?? "deepseek",
         model: options.model,
         temperature: options.temperature ?? 0.7,
@@ -183,6 +184,7 @@ export class NovelCoreGenerationService {
         totalChapters,
       },
       options: {
+        novelId: novelId,
         provider: options.provider ?? "deepseek",
         model: options.model,
         temperature: options.temperature ?? 0.2,
@@ -199,6 +201,7 @@ export class NovelCoreGenerationService {
           normalized = parseStrictStructuredOutline(rawOutput, totalChapters);
         } catch (error) {
           const repaired = await this.repairStructuredOutlineOutput(
+            novelId,
             rawOutput,
             totalChapters,
             options,
@@ -219,6 +222,7 @@ export class NovelCoreGenerationService {
   }
 
   private async repairStructuredOutlineOutput(
+    novelId: string,
     rawContent: string,
     totalChapters: number,
     options: StructuredOutlineGenerateOptions,
@@ -232,6 +236,7 @@ export class NovelCoreGenerationService {
         reason,
       },
       options: {
+        novelId,
         provider: options.provider ?? "deepseek",
         model: options.model,
         temperature: 0.1,
@@ -313,6 +318,7 @@ export class NovelCoreGenerationService {
         referenceContext: referenceContext.trim() || undefined,
       },
       options: {
+        novelId: novelId,
         provider: options.provider ?? "deepseek",
         model: options.model,
         temperature: options.temperature ?? 0.6,
@@ -388,6 +394,7 @@ export class NovelCoreGenerationService {
         referenceContext: referenceContext.trim() || undefined,
       },
       options: {
+        novelId: novelId,
         provider: options.provider ?? "deepseek",
         model: options.model,
         temperature: options.temperature ?? 0.7,
@@ -432,6 +439,7 @@ export class NovelCoreGenerationService {
         content: (chapter.content ?? "").slice(-1800),
       },
       options: {
+        novelId: novelId,
         provider: options.provider ?? "deepseek",
         model: options.model,
         temperature: options.temperature ?? 0.8,

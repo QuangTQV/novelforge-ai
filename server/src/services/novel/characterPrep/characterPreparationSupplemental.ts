@@ -308,6 +308,7 @@ export class CharacterPreparationSupplementalService {
       promptInput: {},
       contextBlocks,
       options: {
+        novelId,
         provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.55,

@@ -1,4 +1,5 @@
 import type { ApiResponse } from "@ai-novel/shared/types/api";
+import type { NovelLanguage } from "@ai-novel/shared/types/novel";
 import type { WritingPlatform, WritingPlatformProfileDefinition, WritingPlatformProfileVersionView } from "@ai-novel/shared/types/writingPlatform";
 import { apiClient } from "@/api/client";
 
@@ -442,6 +443,7 @@ export interface PromptPreviewPayload {
   contextMode?: "snapshot" | "fresh" | "hybrid";
   slotOverrides?: Record<string, unknown>;
   templateDraft?: PromptTemplateJson;
+  outputLanguage?: NovelLanguage;
 }
 
 export interface PromptTestRunPayload extends PromptPreviewPayload {

@@ -1,12 +1,13 @@
 import type { BaseMessage, BaseMessageChunk } from "@langchain/core/messages";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import type { NovelLanguage, NovelStyleFlavor } from "@ai-novel/shared/types/novel";
 import type { ZodType } from "zod";
 import type { TaskType } from "../../llm/modelRouter";
 import type { LlmTokenUsageSnapshot } from "../../llm/usageTracking";
 import type { PromptSlotDef, ResolvedSlots } from "../slots/slotTypes";
 
 export type PromptMode = "structured" | "text";
-export type PromptLanguage = "zh" | "en";
+export type PromptLanguage = "vi" | "zh" | "en";
 
 export interface PromptContextBlock {
   id: string;
@@ -62,6 +63,8 @@ export interface PromptOverrideDraft {
 }
 
 export interface PromptRenderContext {
+  /** Ngôn ngữ của instruction được chọn theo ngôn ngữ nội dung novel. */
+  promptLanguage: PromptLanguage;
   blocks: PromptContextBlock[];
   selectedBlockIds: string[];
   droppedBlockIds: string[];
@@ -139,6 +142,16 @@ export interface PromptExecutionOptions {
   sceneIndex?: number;
   roundIndex?: number;
   triggerReason?: string;
+  /**
+   * Ngôn ngữ đầu ra mong muốn, ưu tiên hơn việc suy ra từ `novelId`. Dùng cho các
+   * luồng sinh nội dung TRƯỚC khi novel tồn tại (VD ứng viên hướng truyện của đạo diễn).
+   */
+  outputLanguage?: NovelLanguage;
+  /**
+   * Phong cách văn phong mong muốn, ưu tiên hơn việc suy ra từ `novelId`. Cùng mục
+   * đích với `outputLanguage` — dùng cho luồng sinh nội dung TRƯỚC khi novel tồn tại.
+   */
+  styleFlavor?: NovelStyleFlavor;
 }
 
 export interface PromptExecutionMeta {

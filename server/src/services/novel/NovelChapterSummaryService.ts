@@ -82,6 +82,7 @@ export class NovelChapterSummaryService {
             content: content.slice(0, 7000),
           },
           options: {
+            novelId: novelId,
             provider: options.provider,
             model: options.model,
             temperature: options.temperature ?? 0.3,

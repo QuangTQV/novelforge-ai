@@ -1,5 +1,5 @@
 import type { BaseMessageChunk } from "@langchain/core/messages";
-import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import type { LLMProvider, LLMReasoningEffort } from "@ai-novel/shared/types/llm";
 import { isBuiltInProvider } from "./providers";
 
 const THINK_OPEN_TAG = "<think>";
@@ -7,6 +7,11 @@ const THINK_CLOSE_TAG = "</think>";
 const DEEPSEEK_HOST_PATTERN = /(?:^|:\/\/)(?:api\.)?deepseek\.com(?:\/|$)/i;
 const MINIMAX_HOST_PATTERN = /(?:^|:\/\/)(?:api\.)?minimax(?:i)?\.(?:io|com)(?:\/|$)/i;
 const MINIMAX_MODEL_PATTERN = /^minimax-m2(?:[.-]|$)/i;
+// Model gia đình có tham số "reasoning_effort" (low/medium/high) theo đúng chuẩn OpenAI —
+// chỉ áp cho các model/hãng đã xác nhận hỗ trợ, để tránh gửi field lạ làm hỏng request
+// của những hãng nghiêm ngặt không bỏ qua field không biết.
+const OPENAI_REASONING_EFFORT_MODEL_PATTERN = /^(o1|o3|o4-mini|gpt-5)/i;
+const GROK_REASONING_EFFORT_MODEL_PATTERN = /^grok-(3|4)/i;
 
 export interface ProviderReasoningBehavior {
   reasoningEnabled: boolean;
@@ -109,18 +114,33 @@ export function isDeepSeekThinkingModeProvider(
   return Boolean(normalizedBaseURL && DEEPSEEK_HOST_PATTERN.test(normalizedBaseURL));
 }
 
+/** Model/hãng đã xác nhận hỗ trợ tham số "reasoning_effort" kiểu OpenAI (low/medium/high). */
+export function supportsGenericReasoningEffort(provider: LLMProvider, model: string): boolean {
+  const normalizedModel = normalizeOptionalText(model)?.toLowerCase() ?? "";
+  if (provider === "openai" && OPENAI_REASONING_EFFORT_MODEL_PATTERN.test(normalizedModel)) {
+    return true;
+  }
+  if (provider === "grok" && GROK_REASONING_EFFORT_MODEL_PATTERN.test(normalizedModel)) {
+    return true;
+  }
+  return false;
+}
+
 export function resolveProviderReasoningBehavior(input: {
   provider: LLMProvider;
   baseURL: string;
   model: string;
-  reasoningEnabled: boolean;
+  reasoningEffort: LLMReasoningEffort;
 }): ProviderReasoningBehavior {
+  const reasoningEnabled = input.reasoningEffort !== "none";
+
   if (isDeepSeekThinkingModeProvider(input.provider, input.baseURL, input.model)) {
+    // Model chỉ hỗ trợ bật/tắt — không có mức độ chi tiết hơn.
     return {
-      reasoningEnabled: input.reasoningEnabled,
+      reasoningEnabled,
       modelKwargs: {
         thinking: {
-          type: input.reasoningEnabled ? "enabled" : "disabled",
+          type: reasoningEnabled ? "enabled" : "disabled",
         },
       },
       includeRawResponse: false,
@@ -130,8 +150,9 @@ export function resolveProviderReasoningBehavior(input: {
 
   const isMiniMax = isMiniMaxCompatibleProvider(input.provider, input.baseURL, input.model);
   if (isMiniMax) {
+    // Model chỉ hỗ trợ bật/tắt — không có mức độ chi tiết hơn.
     return {
-      reasoningEnabled: input.reasoningEnabled,
+      reasoningEnabled,
       modelKwargs: {
         reasoning_split: true,
       },
@@ -140,8 +161,19 @@ export function resolveProviderReasoningBehavior(input: {
     };
   }
 
+  if (reasoningEnabled && supportsGenericReasoningEffort(input.provider, input.model)) {
+    return {
+      reasoningEnabled,
+      modelKwargs: {
+        reasoning_effort: input.reasoningEffort,
+      },
+      includeRawResponse: false,
+      usesAccumulatedStreamDeltas: false,
+    };
+  }
+
   return {
-    reasoningEnabled: input.reasoningEnabled,
+    reasoningEnabled,
     includeRawResponse: false,
     usesAccumulatedStreamDeltas: false,
   };

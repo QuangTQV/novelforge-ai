@@ -8,6 +8,7 @@ import {
   MANAGEMENT_STATUS_LABELS,
   OUTPUT_TYPE_LABELS,
   TASK_TYPE_LABELS,
+  getPromptDisplayLabel,
 } from "../promptWorkbenchLabels";
 
 interface PromptCatalogSidebarProps {
@@ -60,7 +61,7 @@ function PromptListItem(props: {
             </div>
           ) : null}
           <div className="truncate text-[13px] font-semibold leading-5 text-foreground" title={prompt.description || prompt.shortDescription || prompt.id}>
-            {prompt.shortDescription || prompt.description || prompt.id}
+            {getPromptDisplayLabel(prompt)}
           </div>
           <div className="mt-0.5 truncate font-mono text-[11px] leading-4 text-muted-foreground/75" title={prompt.id}>
             {prompt.id}

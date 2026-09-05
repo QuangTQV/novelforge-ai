@@ -107,8 +107,18 @@ export default function StageCandidates({
         })}
         onConfirmCandidate={controller.handleConfirmCandidate}
         onGenerateNext={() => controller.generateMutation.mutate()}
+        isDeletingCandidate={controller.deleteCandidateMutation.isPending}
+        onDeleteCandidate={(candidateId) => {
+          if (window.confirm(translateUi("Xoá candidate này? Thao tác không thể hoàn tác."))) {
+            controller.deleteCandidateMutation.mutate(candidateId);
+          }
+        }}
+        onDeleteAllCandidates={() => {
+          if (window.confirm(translateUi("Xoá toàn bộ candidate cũ? Ý tưởng và thiết lập sẽ được giữ nguyên."))) {
+            controller.deleteCandidateMutation.mutate(undefined);
+          }
+        }}
       />
     </section>
   );
 }
-

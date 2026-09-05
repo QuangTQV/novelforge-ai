@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
 import type { UnifiedTaskSummary } from "@ai-novel/shared/types/task";
 import { Button } from "@/components/ui/button";
 import {
@@ -90,11 +91,11 @@ export default function TaskCenterListPanel({
                 <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{progressPercent}%</span>
               </div>
               <div className="mt-3 text-sm leading-5 text-foreground/85">
-                {task.currentItemLabel ?? task.displayStatus ?? task.currentStage ?? translateUi("等待任务更新")}
+                {translateTaskProgressLabel(task.currentItemLabel) || translateTaskProgressLabel(task.displayStatus) || translateTaskProgressLabel(task.currentStage) || translateUi("等待任务更新")}
               </div>
               {task.blockingReason ? (
                 <div className="mt-2 line-clamp-2 rounded-lg bg-destructive/[0.055] px-3 py-2 text-xs leading-5 text-destructive">
-                  {task.blockingReason}
+                  {translateTaskProgressLabel(task.blockingReason)}
                 </div>
               ) : null}
               <div className="mt-3 text-[11px] text-muted-foreground">

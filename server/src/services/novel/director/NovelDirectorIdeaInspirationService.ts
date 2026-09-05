@@ -25,6 +25,8 @@ async function runIdeaInspirationPrompt(input: DirectorIdeaInspirationRequest, t
       contextSummary: buildDirectorIdeaContextSummary(input, marketBriefPrompt),
     },
     options: {
+      outputLanguage: input.novelLanguage,
+      styleFlavor: input.styleFlavor,
       provider: input.provider,
       model: input.model,
       temperature,

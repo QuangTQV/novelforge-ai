@@ -3,6 +3,9 @@ import {
   type DirectorCandidateBatch,
   type DirectorCandidatesRequest,
 } from "@ai-novel/shared/types/novelDirector";
+import { NOVEL_LANGUAGE_VALUES } from "@ai-novel/shared/utils/novelLanguage";
+import { NOVEL_STYLE_FLAVOR_VALUES } from "@ai-novel/shared/utils/novelStyleFlavor";
+import type { NovelLanguage, NovelStyleFlavor } from "@ai-novel/shared/types/novel";
 import type { NovelWorkflowService } from "../../workflow/NovelWorkflowService";
 import {
   getDirectorLlmOptionsFromSeedPayload,
@@ -255,6 +258,14 @@ export class NovelDirectorCandidateRuntime {
         || seedPayload.aiFreedom === "medium"
         || seedPayload.aiFreedom === "high"
         ? seedPayload.aiFreedom
+        : undefined,
+      novelLanguage: typeof seedPayload.novelLanguage === "string"
+        && (NOVEL_LANGUAGE_VALUES as readonly string[]).includes(seedPayload.novelLanguage)
+        ? seedPayload.novelLanguage as NovelLanguage
+        : undefined,
+      styleFlavor: typeof seedPayload.styleFlavor === "string"
+        && (NOVEL_STYLE_FLAVOR_VALUES as readonly string[]).includes(seedPayload.styleFlavor)
+        ? seedPayload.styleFlavor as NovelStyleFlavor
         : undefined,
       postGenerationStyleReviewEnabled: typeof seedPayload.postGenerationStyleReviewEnabled === "boolean"
         ? seedPayload.postGenerationStyleReviewEnabled

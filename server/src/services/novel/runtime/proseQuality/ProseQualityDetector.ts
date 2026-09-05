@@ -44,7 +44,7 @@ interface TextSegment {
 const MAX_FINDINGS_PER_CODE = 8;
 const MAX_TOTAL_FINDINGS = 40;
 
-const TERMINAL_PUNCTUATION = /[。！？!?”"」』）)】》…]$/u;
+const TERMINAL_PUNCTUATION = /[。！？!?.…”"'」』）)】》]$/u;
 const NEGATIVE_FLIP_PATTERN = /(?:不是|并非|并不是|不算|不能说是|没有|不再是)[^。！？；;\n]{1,36}?[，,、]?\s*(?:而是|却是|反而是|更像是|只是)[^。！？；;\n]{1,36}/gu;
 const DASH_OR_ELLIPSIS_PATTERN = /——|—|--|……|…{2,}|\.{3,}/u;
 const AI_SELF_REFERENCE_PATTERN = /作为(?:一名|一个)?(?:AI|人工智能|语言模型)|我是(?:AI|人工智能|语言模型)|我无法(?:继续)?(?:创作|生成|提供|完成)|我不能(?:继续)?(?:创作|生成|提供|完成)|无法满足(?:该|这个)?请求|不能协助|as an AI|I (?:am|cannot|can't)[^。！？.!?\n]{0,40}AI/iu;

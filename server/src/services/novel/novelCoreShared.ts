@@ -1,7 +1,7 @@
 import type { BookAnalysisSectionKey } from "@ai-novel/shared/types/bookAnalysis";
 import type { DirectorIssuePolicy } from "@ai-novel/shared/types/directorIssue";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
-import type { QualityScore, ReviewIssue } from "@ai-novel/shared/types/novel";
+import type { NovelLanguage, NovelStyleFlavor, QualityScore, ReviewIssue } from "@ai-novel/shared/types/novel";
 import { parseCommercialTagsJson } from "@ai-novel/shared/types/novelFraming";
 import { normalizeStoryModeOutput } from "../storyMode/storyModeProfile";
 
@@ -24,6 +24,7 @@ export interface CreateNovelInput {
   first30ChapterPromise?: string;
   commercialTags?: string[];
   genreId?: string;
+  genreIds?: string[];
   primaryStoryModeId?: string;
   secondaryStoryModeId?: string;
   worldId?: string;
@@ -38,6 +39,8 @@ export interface CreateNovelInput {
   styleTone?: string;
   emotionIntensity?: "low" | "medium" | "high";
   aiFreedom?: "low" | "medium" | "high";
+  novelLanguage?: NovelLanguage;
+  styleFlavor?: NovelStyleFlavor;
   postGenerationStyleReviewEnabled?: boolean;
   defaultChapterLength?: number;
   estimatedChapterCount?: number;
@@ -71,6 +74,8 @@ export interface UpdateNovelInput {
   styleTone?: string | null;
   emotionIntensity?: "low" | "medium" | "high" | null;
   aiFreedom?: "low" | "medium" | "high" | null;
+  novelLanguage?: NovelLanguage | null;
+  styleFlavor?: NovelStyleFlavor | null;
   postGenerationStyleReviewEnabled?: boolean;
   defaultChapterLength?: number | null;
   estimatedChapterCount?: number | null;
@@ -85,6 +90,7 @@ export interface UpdateNovelInput {
   referenceBookAnalysisId?: string | null;
   referenceBookAnalysisSections?: BookAnalysisSectionKey[] | null;
   genreId?: string | null;
+  genreIds?: string[] | null;
   primaryStoryModeId?: string | null;
   secondaryStoryModeId?: string | null;
   worldId?: string | null;
@@ -290,6 +296,7 @@ export function normalizeNovelOutput<T extends {
   continuationBookAnalysisSections?: string | null;
   referenceBookAnalysisSections?: string | null;
   commercialTagsJson?: string | null;
+  genreIdsJson?: string | null;
   bookContract?: {
     id: string;
     novelId: string;
@@ -327,15 +334,17 @@ export function normalizeNovelOutput<T extends {
   } | null;
 }>(
   novel: T,
-): Omit<T, "continuationBookAnalysisSections" | "referenceBookAnalysisSections" | "commercialTagsJson"> & {
+): Omit<T, "continuationBookAnalysisSections" | "referenceBookAnalysisSections" | "commercialTagsJson" | "genreIdsJson"> & {
   continuationBookAnalysisSections: BookAnalysisSectionKey[] | null;
   referenceBookAnalysisSections: BookAnalysisSectionKey[] | null;
   commercialTags: string[];
+  genreIds: string[];
 } {
   const {
     continuationBookAnalysisSections,
     referenceBookAnalysisSections,
     commercialTagsJson,
+    genreIdsJson,
     ...rest
   } = novel;
   return {
@@ -343,6 +352,14 @@ export function normalizeNovelOutput<T extends {
     continuationBookAnalysisSections: parseContinuationBookAnalysisSections(continuationBookAnalysisSections),
     referenceBookAnalysisSections: parseContinuationBookAnalysisSections(referenceBookAnalysisSections),
     commercialTags: parseCommercialTagsJson(commercialTagsJson),
+    genreIds: (() => {
+      try {
+        const parsed = genreIdsJson ? JSON.parse(genreIdsJson) : [];
+        return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [];
+      } catch {
+        return [];
+      }
+    })(),
     ...(rest.bookContract !== undefined
       ? {
         bookContract: rest.bookContract

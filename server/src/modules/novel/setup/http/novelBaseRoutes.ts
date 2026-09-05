@@ -5,6 +5,8 @@ import {
   readChapterQualityDebtDetails,
 } from "@ai-novel/shared/types/chapterQualityLoop";
 import { NOVEL_LIST_PAGE_LIMIT_DEFAULT, NOVEL_LIST_PAGE_LIMIT_MAX } from "@ai-novel/shared/types/pagination";
+import { NOVEL_LANGUAGE_VALUES } from "@ai-novel/shared/utils/novelLanguage";
+import { NOVEL_STYLE_FLAVOR_VALUES } from "@ai-novel/shared/utils/novelStyleFlavor";
 import { z } from "zod";
 import type { SimpleCreationShelfProjection } from "@ai-novel/shared/types/novel";
 import { parsePersistedDirectorRiskAssessment } from "@ai-novel/shared/types/directorRisk";
@@ -64,6 +66,7 @@ const createNovelSchema = z.object({
   first30ChapterPromise: z.string().trim().optional(),
   commercialTags: z.array(z.string().trim().min(1).max(20)).max(6).optional(),
   genreId: z.string().trim().optional(),
+  genreIds: z.array(z.string().trim().min(1)).max(12).optional(),
   primaryStoryModeId: z.string().trim().optional(),
   secondaryStoryModeId: z.string().trim().optional(),
   worldId: z.string().trim().optional(),
@@ -81,6 +84,8 @@ const createNovelSchema = z.object({
   styleTone: z.string().trim().optional(),
   emotionIntensity: z.enum(["low", "medium", "high"]).optional(),
   aiFreedom: z.enum(["low", "medium", "high"]).optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).optional(),
+  styleFlavor: z.enum(NOVEL_STYLE_FLAVOR_VALUES).optional(),
   postGenerationStyleReviewEnabled: z.boolean().optional(),
   defaultChapterLength: z.number().int().min(500).max(10000).optional(),
   estimatedChapterCount: z.number().int().min(1).max(2000).optional(),
@@ -107,6 +112,7 @@ const updateNovelSchema = z.object({
   referenceBookAnalysisId: z.string().trim().nullable().optional(),
   referenceBookAnalysisSections: z.array(bookAnalysisSectionKeySchema).min(1).max(8).nullable().optional(),
   genreId: z.string().trim().nullable().optional(),
+  genreIds: z.array(z.string().trim().min(1)).max(12).nullable().optional(),
   primaryStoryModeId: z.string().trim().nullable().optional(),
   secondaryStoryModeId: z.string().trim().nullable().optional(),
   worldId: z.string().trim().nullable().optional(),
@@ -118,6 +124,8 @@ const updateNovelSchema = z.object({
   styleTone: z.string().trim().nullable().optional(),
   emotionIntensity: z.enum(["low", "medium", "high"]).nullable().optional(),
   aiFreedom: z.enum(["low", "medium", "high"]).nullable().optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).nullable().optional(),
+  styleFlavor: z.enum(NOVEL_STYLE_FLAVOR_VALUES).nullable().optional(),
   postGenerationStyleReviewEnabled: z.boolean().optional(),
   defaultChapterLength: z.number().int().min(500).max(10000).nullable().optional(),
   estimatedChapterCount: z.number().int().min(1).max(2000).nullable().optional(),

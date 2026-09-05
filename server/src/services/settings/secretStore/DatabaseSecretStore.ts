@@ -9,8 +9,14 @@ function toPrismaWriteInput(input: SecretStoreWriteInput): Record<string, unknow
     ...(input.baseURL !== undefined ? { baseURL: input.baseURL } : {}),
     ...(input.isActive !== undefined ? { isActive: input.isActive } : {}),
     ...(input.reasoningEnabled !== undefined ? { reasoningEnabled: input.reasoningEnabled } : {}),
+    ...(input.reasoningEffort !== undefined ? { reasoningEffort: input.reasoningEffort } : {}),
     ...(input.concurrencyLimit !== undefined ? { concurrencyLimit: input.concurrencyLimit } : {}),
     ...(input.requestIntervalMs !== undefined ? { requestIntervalMs: input.requestIntervalMs } : {}),
+    ...(input.rotationStrategy !== undefined ? { rotationStrategy: input.rotationStrategy } : {}),
+    ...(input.apiKeyWeight !== undefined ? { apiKeyWeight: input.apiKeyWeight } : {}),
+    ...(input.backupKeysJson !== undefined ? { backupKeysJson: input.backupKeysJson } : {}),
+    ...(input.cooldownSeconds !== undefined ? { cooldownSeconds: input.cooldownSeconds } : {}),
+    ...(input.fallbackOrder !== undefined ? { fallbackOrder: input.fallbackOrder } : {}),
   };
 }
 

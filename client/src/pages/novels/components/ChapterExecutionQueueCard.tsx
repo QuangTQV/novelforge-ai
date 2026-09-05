@@ -108,7 +108,7 @@ export default function ChapterExecutionQueueCard(props: ChapterExecutionQueueCa
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0 space-y-2">
                         <div className="text-sm font-semibold leading-6 text-foreground">
-                          {t("chapter.labelWithTitle", { order: chapter.order, title: chapter.title || t("chapter.untitled") })}
+                          {t("chapter.labelWithTitle", { number: chapter.order, title: chapter.title || t("chapter.untitled") })}
                         </div>
                         <div className="line-clamp-2 text-xs leading-6 text-muted-foreground">
                           {resolveChapterQueuePreview(chapter)}
@@ -137,7 +137,7 @@ export default function ChapterExecutionQueueCard(props: ChapterExecutionQueueCa
                       ) : null}
                       {chapterRisks.slice(0, 2).map((risk) => (
                         <Badge key={`${chapter.id}-${risk}`} variant="secondary" className="rounded-full px-2 py-1 text-[11px]">
-                          {risk}
+                          {t(risk)}
                         </Badge>
                       ))}
                     </div>
@@ -148,8 +148,10 @@ export default function ChapterExecutionQueueCard(props: ChapterExecutionQueueCa
                         <div className="mt-1 font-medium text-foreground">{t(chapterSuggestedActionLabel(chapter))}</div>
                       </div>
                       <div>
-                        <div>{t("queueCard.currentWordCount")}</div>
-                        <div className="mt-1 font-medium text-foreground">{chapter.content?.length ?? 0}</div>
+                        <div>{t("queueCard.currentWordCountLabel")}</div>
+                        <div className="mt-1 font-medium text-foreground">
+                          {t("queueCard.currentWordCount", { count: chapter.content?.length ?? 0 })}
+                        </div>
                       </div>
                     </div>
                   </button>

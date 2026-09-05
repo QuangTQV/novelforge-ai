@@ -105,7 +105,7 @@ export function TaskQueueActionRow(props: {
     <div className={cn("flex flex-col gap-3 rounded-md border px-3 py-3 sm:flex-row sm:items-center sm:justify-between", workspaceToneSurfaceClass[tone])}>
       <div className="min-w-0">
         <div className="text-sm font-medium text-foreground">{props.title}</div>
-        <div className="mt-1 text-xs leading-5 text-muted-foreground">{translateUi("执行后：")}{props.consequence}</div>
+        <div className="mt-1 text-xs leading-5 text-muted-foreground">{translateUi("执行后：")} {props.consequence}</div>
       </div>
       <div className="mobile-full-actions shrink-0">{props.action}</div>
     </div>

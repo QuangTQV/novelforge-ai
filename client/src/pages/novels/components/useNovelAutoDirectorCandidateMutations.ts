@@ -13,6 +13,7 @@ import {
   patchDirectorCandidate,
   refineDirectorCandidateTitles,
   refineDirectorCandidates,
+  removeDirectorCandidates,
 } from "@/api/novelDirector";
 import { toast } from "@/components/ui/toast";
 import type { buildAutoDirectorRequestPayload } from "./NovelAutoDirectorDialog.shared";
@@ -220,9 +221,27 @@ export function useNovelAutoDirectorCandidateMutations({
     },
   });
 
+  const deleteCandidateMutation = useMutation({
+    mutationFn: async (candidateId?: string) => removeDirectorCandidates(workflowTaskId, candidateId),
+    onSuccess: (response, candidateId) => {
+      setBatches((previous) => candidateId
+        ? previous
+          .map((batch) => ({ ...batch, candidates: batch.candidates.filter((candidate) => candidate.id !== candidateId) }))
+          .filter((batch) => batch.candidates.length > 0)
+        : []);
+      setCandidatePatchFeedbacks({});
+      setTitlePatchFeedbacks({});
+      toast.success(translateUi("Đã xoá {{value0}} candidate.", { value0: response.data?.removedCandidates ?? 0 }));
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : translateUi("Xoá candidate thất bại."));
+    },
+  });
+
   return {
     generateMutation,
     patchCandidateMutation,
     refineTitleMutation,
+    deleteCandidateMutation,
   };
 }

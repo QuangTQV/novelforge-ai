@@ -3,6 +3,7 @@ import type { BookAnalysisSectionKey } from "@ai-novel/shared/types/bookAnalysis
 import { BOOK_ANALYSIS_STRUCTURED_FIELD_LABELS } from "@ai-novel/shared/types/bookAnalysis";
 import { prisma } from "../../db/prisma";
 import { runTextPrompt } from "../../prompting/core/promptRunner";
+import { resolveNovelOutputLanguage } from "../../prompting/core/novelOutputLanguage";
 import { novelContinuationRewritePrompt } from "../../prompting/prompts/novel/continuation.prompts";
 
 const CONTINUATION_SIMILARITY_THRESHOLD = 0.3;
@@ -606,6 +607,7 @@ ${summaryBlock || "暂无"}`;
 
   async rewriteIfTooSimilar(
     input: {
+      novelId?: string;
       chapterTitle: string;
       content: string;
       continuationPack: ContinuationContextPack;
@@ -640,14 +642,17 @@ ${summaryBlock || "暂无"}`;
     }
 
     try {
+      const outputLanguage = await resolveNovelOutputLanguage(input.novelId);
       const rewritten = await runTextPrompt({
         asset: novelContinuationRewritePrompt,
         promptInput: {
           chapterTitle,
           mostSimilarSnippet,
           targetText,
+          outputLanguage,
         },
         options: {
+          novelId: input.novelId,
           provider: input.provider ?? "deepseek",
           model: input.model,
           temperature: input.temperature ?? 0.7,

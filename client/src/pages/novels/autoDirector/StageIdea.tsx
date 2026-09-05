@@ -37,6 +37,7 @@ interface StageIdeaProps {
   genreTree: GenreTreeNode[];
   storyModeTree: StoryModeTreeNode[];
   selectedGenreId: string;
+  selectedGenreIds: string[];
   selectedGenreLabel: string;
   selectedGenreSource?: NovelResourceRecommendationSource;
   selectedStoryModeId: string;
@@ -51,6 +52,7 @@ interface StageIdeaProps {
   onRetryStoryModes: () => void;
   onFoundationChange: (patch: Partial<{
     genreId: string;
+    genreIds: string[];
     primaryStoryModeId: string;
   }>) => Promise<boolean>;
 }
@@ -98,6 +100,7 @@ export default function StageIdea({
   genreTree,
   storyModeTree,
   selectedGenreId,
+  selectedGenreIds,
   selectedGenreLabel,
   selectedGenreSource,
   selectedStoryModeId,
@@ -264,7 +267,7 @@ export default function StageIdea({
                   className="mr-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
                   aria-label={translateUi("清除故事类型")}
                   disabled={isGenerating || isUpdatingFoundation}
-                  onClick={() => void onFoundationChange({ genreId: "" })}
+                  onClick={() => void onFoundationChange({ genreId: "", genreIds: [] })}
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -298,6 +301,31 @@ export default function StageIdea({
                 </button>
               ) : null}
             </div>
+          </div>
+          <div className="mt-3 rounded-md bg-background/65 p-3 ring-1 ring-border/70">
+            <div className="mb-1 text-xs font-medium text-muted-foreground">{translateUi("Thể loại (có thể chọn nhiều)")}</div>
+            <div className="flex max-h-32 flex-wrap gap-2 overflow-y-auto">
+              {flattenGenreTreeOptions(genreTree).map((option) => {
+                const activeIds = selectedGenreIds.length > 0 ? selectedGenreIds : selectedGenreId ? [selectedGenreId] : [];
+                const checked = activeIds.includes(option.id);
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    aria-pressed={checked}
+                    disabled={isGenerating || isUpdatingFoundation}
+                    className={`rounded-full px-3 py-1.5 text-xs ring-1 transition ${checked ? "bg-primary text-primary-foreground ring-primary" : "bg-background text-foreground ring-border hover:bg-muted"}`}
+                    onClick={() => {
+                      const nextIds = checked ? activeIds.filter((id) => id !== option.id) : [...activeIds, option.id];
+                      void onFoundationChange({ genreIds: nextIds, genreId: nextIds[0] ?? "" });
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-1 text-xs text-muted-foreground">{translateUi("Có thể chọn nhiều thể loại. Thể loại đầu tiên được dùng làm thể loại chính.")}</div>
           </div>
           {(genreError || storyModeError) ? (
             <div className="mt-2 text-xs text-muted-foreground">

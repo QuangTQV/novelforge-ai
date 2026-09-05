@@ -195,7 +195,7 @@ export const imageCharacterPromptOptimizePrompt: PromptAsset<
       "语言要求：",
       input.outputLanguage === "en"
         ? "本次最终 prompt 必须主要使用英文输出，但角色专有名词可保留原名。"
-        : "本次最终 prompt 必须使用简体中文输出。",
+        : "本次最终 prompt 必须使用目标语言输出（默认简体中文，以末尾“输出语言指令”为准）。",
       "",
       "质量要求：",
       "1. 让模型能直接抓到人物外观、气质和画面重点。",
@@ -335,7 +335,7 @@ export const imageNovelCoverPromptOptimizePrompt: PromptAsset<
       "语言要求：",
       input.outputLanguage === "en"
         ? "本次最终 prompt 必须主要使用英文输出，但中文书名和专有名词可以保留原名。"
-        : "本次最终 prompt 必须使用简体中文输出。",
+        : "本次最终 prompt 必须使用目标语言输出（默认简体中文，以末尾“输出语言指令”为准）。",
       "",
       "质量要求：",
       "1. 表达具体、紧凑、可视化。",

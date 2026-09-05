@@ -23,6 +23,7 @@ import {
   UpdateNovelInput,
 } from "./novelCoreShared";
 import { queueRagDelete, queueRagUpsert } from "./novelCoreSupport";
+import { invalidateNovelOutputLanguage } from "../../prompting/core/novelOutputLanguage";
 
 export class NovelCoreCrudService {
   private readonly novelContinuationService = new NovelContinuationService();
@@ -90,6 +91,8 @@ export class NovelCoreCrudService {
           styleTone: true,
           emotionIntensity: true,
           aiFreedom: true,
+          novelLanguage: true,
+          styleFlavor: true,
           postGenerationStyleReviewEnabled: true,
           defaultChapterLength: true,
           estimatedChapterCount: true,
@@ -102,6 +105,7 @@ export class NovelCoreCrudService {
           continuationBookAnalysisId: true,
           continuationBookAnalysisSections: true,
           genreId: true,
+          genreIdsJson: true,
           primaryStoryModeId: true,
           secondaryStoryModeId: true,
           worldId: true,
@@ -373,6 +377,7 @@ export class NovelCoreCrudService {
         first30ChapterPromise: normalizeOptionalTextForCreate(input.first30ChapterPromise),
         commercialTagsJson,
         genreId: input.genreId,
+        genreIdsJson: input.genreIds?.length ? JSON.stringify(Array.from(new Set(input.genreIds))) : null,
         primaryStoryModeId: input.primaryStoryModeId ?? null,
         secondaryStoryModeId: input.secondaryStoryModeId ?? null,
         worldId: input.worldId,
@@ -387,6 +392,8 @@ export class NovelCoreCrudService {
         styleTone: input.styleTone,
         emotionIntensity: input.emotionIntensity,
         aiFreedom: input.aiFreedom,
+        novelLanguage: input.novelLanguage ?? null,
+        styleFlavor: input.styleFlavor ?? null,
         postGenerationStyleReviewEnabled: input.postGenerationStyleReviewEnabled,
         defaultChapterLength: input.defaultChapterLength,
         estimatedChapterCount: input.estimatedChapterCount,
@@ -506,6 +513,7 @@ export class NovelCoreCrudService {
       competingFeel: _ignoreCompetingFeel,
       first30ChapterPromise: _ignoreFirst30ChapterPromise,
       commercialTags: _ignoreCommercialTags,
+      genreIds: _ignoreGenreIds,
       ...restInput
     } = input;
 
@@ -531,6 +539,9 @@ export class NovelCoreCrudService {
         competingFeel: normalizeOptionalTextForUpdate(input.competingFeel),
         first30ChapterPromise: normalizeOptionalTextForUpdate(input.first30ChapterPromise),
         commercialTagsJson,
+        ...(input.genreIds !== undefined
+          ? { genreIdsJson: input.genreIds === null ? null : JSON.stringify(Array.from(new Set(input.genreIds))) }
+          : {}),
         continuationBookAnalysisSections:
           nextWritingMode === "continuation"
           && (nextSourceNovelId || nextSourceKnowledgeDocumentId)
@@ -556,6 +567,9 @@ export class NovelCoreCrudService {
     queueRagUpsert("novel", id);
     if (updated.worldId) {
       queueRagUpsert("world", updated.worldId);
+    }
+    if (input.novelLanguage !== undefined || input.styleFlavor !== undefined) {
+      invalidateNovelOutputLanguage(id);
     }
     return normalizeNovelOutput(updated);
   }

@@ -88,5 +88,6 @@ test("idea constellation generates seven concrete web-novel material categories 
   assert.match(controller, /generateDirectorIdeaConstellationOptions\(buildIdeaContextPayload\(\)\)/);
   assert.doesNotMatch(controller, /buildStaticIdeaConstellationOptions/);
   assert.match(dialog, /const plotOptions = orderedOptions/);
-  assert.match(dialog, /selected\.length}\/7 类开书素材/);
+  assert.match(dialog, /已选 \{\{v0\}\}\/7 类开书素材/);
+  assert.match(dialog, /v0: selected\.length/);
 });

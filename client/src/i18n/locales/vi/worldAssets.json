@@ -43,7 +43,7 @@
     "compare": "So sánh khác biệt"
   },
   "export": {
-    "title": "Xuất bản sao lưu",
+    "title": "Xuất bản dự phòng",
     "markdown": "Xuất Markdown (sao chép vào clipboard)",
     "json": "Xuất JSON (sao chép vào clipboard)"
   },

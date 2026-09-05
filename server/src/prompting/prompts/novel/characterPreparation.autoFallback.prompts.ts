@@ -65,7 +65,7 @@ export const characterCastAutoMembersPrompt: PromptAsset<
       "8. 不要输出 relations，也不要在字段里假装塞关系数组。",
       "",
       "表达要求：",
-      "1. 所有字段值使用简体中文。",
+      "1. 所有字段值使用目标语言（默认简体中文，以末尾“输出语言指令”为准）。",
       "2. 除 summary、whyItWorks、recommendedReason 外，其余文本尽量控制在短句或短词组。",
       "3. storyFunction 要写职责，name 不承载功能说明。",
       "4. 角色硬事实优先承接身份、阵营、境界/战力、当前地点和可出场状态；拿不准填空字符串或空数组。",
@@ -138,7 +138,7 @@ export const characterCastAutoRelationsPrompt: PromptAsset<
       "6. 主角必须进入至少一条关系。",
       "",
       "表达要求：",
-      "1. 所有字段值使用简体中文。",
+      "1. 所有字段值使用目标语言（默认简体中文，以末尾“输出语言指令”为准）。",
       "2. 每条关系都要服务长篇推进，而不是一次性事件说明。",
     ].join("\n")),
     new HumanMessage([

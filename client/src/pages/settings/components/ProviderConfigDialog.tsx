@@ -1,14 +1,16 @@
 import { translateUi } from "@/i18n/legacy";
 import type { Dispatch, SetStateAction } from "react";
-import { Bot, Image, KeyRound, Link2, SlidersHorizontal } from "lucide-react";
+import { Bot, BrainCircuit, Image, KeyRound, Link2, Repeat, SlidersHorizontal } from "lucide-react";
 import type { APIKeyStatus } from "@/api/settings";
 import SearchableSelect from "@/components/common/SearchableSelect";
 import { Button } from "@/components/ui/button";
 import { AppDialogContent, Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import SelectControl from "@/components/common/SelectControl";
 import ProviderRequestLimitFields from "./ProviderRequestLimitFields";
+import ProviderRotationFields, { type ProviderRotationFormState } from "./ProviderRotationFields";
 
-export interface ProviderFormState {
+export interface ProviderFormState extends ProviderRotationFormState {
   displayName: string;
   key: string;
   model: string;
@@ -16,6 +18,8 @@ export interface ProviderFormState {
   baseURL: string;
   concurrencyLimit: string;
   requestIntervalMs: string;
+  /** Mức độ suy luận mặc định khi provider này bật suy luận (công tắc bật/tắt nằm ở thẻ provider). */
+  reasoningEffort: "low" | "medium" | "high";
 }
 
 interface ProviderConfigDialogProps {
@@ -248,6 +252,29 @@ export default function ProviderConfigDialog({
             <ProviderRequestLimitFields
               concurrencyLimit={form.concurrencyLimit}
               requestIntervalMs={form.requestIntervalMs}
+              onChange={(value) => setForm((prev) => ({ ...prev, ...value }))}
+            />
+          </div>
+
+          <div className="rounded-xl border border-dashed bg-muted/10 p-4">
+            <div className="mb-3 flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><BrainCircuit className="h-3.5 w-3.5" />  {translateUi("Mức độ suy luận mặc định")}</div>
+            <SelectControl
+              value={form.reasoningEffort}
+              onChange={(event) => setForm((prev) => ({ ...prev, reasoningEffort: event.target.value as ProviderFormState["reasoningEffort"] }))}
+            >
+              <option value="low">{translateUi("Thấp")}</option>
+              <option value="medium">{translateUi("Trung bình")}</option>
+              <option value="high">{translateUi("Cao")}</option>
+            </SelectControl>
+            <div className="mt-1 text-xs text-muted-foreground">
+              {translateUi("Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.")}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-dashed bg-muted/10 p-4">
+            <div className="mb-3 flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><Repeat className="h-3.5 w-3.5" />  {translateUi("Xoay tua API key")}</div>
+            <ProviderRotationFields
+              value={form}
               onChange={(value) => setForm((prev) => ({ ...prev, ...value }))}
             />
           </div>

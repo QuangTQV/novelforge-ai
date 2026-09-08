@@ -34,7 +34,8 @@
     "empty": "没有匹配的 Embedding 模型",
     "availableCount": "厂商有 {{count}} 个可用模型。",
     "remoteHint": "可以先用推荐模型；连接可用后，厂商的模型列表会显示在这里。",
-    "example": "例如：text-embedding-3-small"
+    "example": "例如：text-embedding-3-small",
+    "customHint": "可以从上方选择模型，也可以手动输入自定义模型名称。"
   },
   "placeholders": {
     "keepKey": "留空以保留已存 Key",

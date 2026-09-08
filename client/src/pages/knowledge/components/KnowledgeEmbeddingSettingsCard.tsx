@@ -182,11 +182,13 @@ export default function KnowledgeEmbeddingSettingsCard({
                 />
               ) : null}
               <Input
-                className={modelQuery.isLoading || modelOptions.length > 0 ? "hidden" : undefined}
                 value={form.embeddingModel}
                 onChange={(event) => setForm((prev) => ({ ...prev, embeddingModel: event.target.value }))}
                 placeholder={t("model.example")}
               />
+              <div className="text-xs text-muted-foreground">
+                {t("model.customHint")}
+              </div>
               {modelQuery.data ? (
                 <div className="text-xs text-muted-foreground">
                   {modelQuery.data.source === "remote"

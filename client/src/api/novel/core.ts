@@ -129,6 +129,7 @@ export async function recommendNovelCreateResources(payload: {
   styleTone?: string;
   emotionIntensity?: EmotionIntensity;
   aiFreedom?: AIFreedom;
+  novelLanguage?: NovelLanguage;
   provider?: LLMProvider;
   model?: string;
   temperature?: number;

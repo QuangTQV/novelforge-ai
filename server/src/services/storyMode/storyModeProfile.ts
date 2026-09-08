@@ -1,5 +1,17 @@
 import { z } from "zod";
-import type { NovelStoryMode, StoryModeConflictCeiling, StoryModeProfile } from "@ai-novel/shared/types/storyMode";
+import {
+  STORY_MODE_ENDING_HOOK_STYLES,
+  STORY_MODE_FORESHADOW_HOLDS,
+  STORY_MODE_MOMENTUM_SOURCES,
+  STORY_MODE_TWIST_CADENCES,
+  type NovelStoryMode,
+  type StoryModeConflictCeiling,
+  type StoryModeEndingHookStyle,
+  type StoryModeForeshadowHold,
+  type StoryModeMomentumSource,
+  type StoryModeProfile,
+  type StoryModeTwistCadence,
+} from "@ai-novel/shared/types/storyMode";
 import type { PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 
 export const storyModeConflictCeilingSchema = z.enum(["low", "medium", "high"]);
@@ -16,6 +28,18 @@ export const storyModeProfileSchema = z.object({
   volumeReward: z.string().trim().min(1).max(300),
   mandatorySignals: z.array(z.string().trim().min(1).max(120)).min(1).max(8),
   antiSignals: z.array(z.string().trim().min(1).max(120)).min(1).max(8),
+  // Các field động cơ tự sự có default: consumer cũ (marketRadar, user input,
+  // profileJson cũ) không cần nêu — sẽ được điền mặc định / suy ra ở sanitize.
+  momentumSource: z.enum(STORY_MODE_MOMENTUM_SOURCES as unknown as [string, ...string[]]).default("goal_pursuit"),
+  perChapterChangeMenu: z.array(z.string().trim().min(1).max(120)).min(1).max(10).default([
+    "推进一个明确的阶段目标",
+    "关系或立场发生可见变化",
+    "获得新信息或修正误判",
+    "风险等级或代价上升",
+  ]),
+  twistCadence: z.enum(STORY_MODE_TWIST_CADENCES as unknown as [string, ...string[]]).default("periodic"),
+  foreshadowHold: z.enum(STORY_MODE_FORESHADOW_HOLDS as unknown as [string, ...string[]]).default("arc"),
+  endingHookStyle: z.enum(STORY_MODE_ENDING_HOOK_STYLES as unknown as [string, ...string[]]).default("cliffhanger"),
 }).strict();
 
 const DEFAULT_STORY_MODE_PROFILE: StoryModeProfile = {
@@ -30,7 +54,41 @@ const DEFAULT_STORY_MODE_PROFILE: StoryModeProfile = {
   volumeReward: "卷末给出与模式一致的阶段性兑现。",
   mandatorySignals: ["主驱动持续出现", "读者期待被重复确认"],
   antiSignals: ["长期偏离主驱动", "冲突烈度失控"],
+  momentumSource: "goal_pursuit",
+  perChapterChangeMenu: [
+    "推进一个明确的阶段目标",
+    "关系或立场发生可见变化",
+    "获得新信息或修正误判",
+    "风险等级或代价上升",
+  ],
+  twistCadence: "periodic",
+  foreshadowHold: "arc",
+  endingHookStyle: "cliffhanger",
 };
+
+/**
+ * Suy ra 5 field động cơ tự sự từ `conflictCeiling` khi profile cũ (đã persist
+ * trong DB trước khi có các field này) không có chúng.
+ */
+function inferEngineFieldsFromCeiling(ceiling: StoryModeConflictCeiling): {
+  twistCadence: StoryModeTwistCadence;
+  foreshadowHold: StoryModeForeshadowHold;
+  endingHookStyle: StoryModeEndingHookStyle;
+} {
+  if (ceiling === "low") {
+    return { twistCadence: "rare", foreshadowHold: "short", endingHookStyle: "emotional_pull" };
+  }
+  if (ceiling === "high") {
+    return { twistCadence: "periodic", foreshadowHold: "arc", endingHookStyle: "escalation" };
+  }
+  return { twistCadence: "periodic", foreshadowHold: "arc", endingHookStyle: "cliffhanger" };
+}
+
+function normalizeEnum<T extends string>(value: unknown, allowed: readonly T[], fallback: T): T {
+  return typeof value === "string" && (allowed as readonly string[]).includes(value)
+    ? (value as T)
+    : fallback;
+}
 
 function normalizeText(value: unknown, fallback: string): string {
   const trimmed = typeof value === "string" ? value.trim() : "";
@@ -59,19 +117,26 @@ export function sanitizeStoryModeProfile(value: unknown): StoryModeProfile {
     return DEFAULT_STORY_MODE_PROFILE;
   }
   const record = value as Partial<StoryModeProfile>;
+  const ceiling = normalizeConflictCeiling(record.conflictCeiling);
+  const inferred = inferEngineFieldsFromCeiling(ceiling);
   return storyModeProfileSchema.parse({
     coreDrive: normalizeText(record.coreDrive, DEFAULT_STORY_MODE_PROFILE.coreDrive),
     readerReward: normalizeText(record.readerReward, DEFAULT_STORY_MODE_PROFILE.readerReward),
     progressionUnits: normalizeList(record.progressionUnits, DEFAULT_STORY_MODE_PROFILE.progressionUnits),
     allowedConflictForms: normalizeList(record.allowedConflictForms, DEFAULT_STORY_MODE_PROFILE.allowedConflictForms),
     forbiddenConflictForms: normalizeList(record.forbiddenConflictForms, DEFAULT_STORY_MODE_PROFILE.forbiddenConflictForms),
-    conflictCeiling: normalizeConflictCeiling(record.conflictCeiling),
+    conflictCeiling: ceiling,
     resolutionStyle: normalizeText(record.resolutionStyle, DEFAULT_STORY_MODE_PROFILE.resolutionStyle),
     chapterUnit: normalizeText(record.chapterUnit, DEFAULT_STORY_MODE_PROFILE.chapterUnit),
     volumeReward: normalizeText(record.volumeReward, DEFAULT_STORY_MODE_PROFILE.volumeReward),
     mandatorySignals: normalizeList(record.mandatorySignals, DEFAULT_STORY_MODE_PROFILE.mandatorySignals),
     antiSignals: normalizeList(record.antiSignals, DEFAULT_STORY_MODE_PROFILE.antiSignals),
-  });
+    momentumSource: normalizeEnum(record.momentumSource, STORY_MODE_MOMENTUM_SOURCES, DEFAULT_STORY_MODE_PROFILE.momentumSource),
+    perChapterChangeMenu: normalizeList(record.perChapterChangeMenu, DEFAULT_STORY_MODE_PROFILE.perChapterChangeMenu).slice(0, 10),
+    twistCadence: normalizeEnum(record.twistCadence, STORY_MODE_TWIST_CADENCES, inferred.twistCadence),
+    foreshadowHold: normalizeEnum(record.foreshadowHold, STORY_MODE_FORESHADOW_HOLDS, inferred.foreshadowHold),
+    endingHookStyle: normalizeEnum(record.endingHookStyle, STORY_MODE_ENDING_HOOK_STYLES, inferred.endingHookStyle),
+  }) as StoryModeProfile;
 }
 
 export function parseStoryModeProfileJson(profileJson: string | null | undefined): StoryModeProfile {
@@ -129,11 +194,21 @@ interface StoryModeBlockLabels {
   mandatorySignals: string;
   antiSignals: string;
   progressionUnits: string;
+  momentumSource: string;
+  perChapterChangeMenu: string;
+  twistCadence: string;
+  foreshadowHold: string;
+  endingHookStyle: string;
+  engineNote: string;
   primaryUsage: string;
   secondaryUsage: string;
   listSeparator: string;
   colon: string;
   ceiling: Record<StoryModeConflictCeiling, string>;
+  momentum: Record<StoryModeMomentumSource, string>;
+  cadence: Record<StoryModeTwistCadence, string>;
+  hold: Record<StoryModeForeshadowHold, string>;
+  hook: Record<StoryModeEndingHookStyle, string>;
 }
 
 const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
@@ -154,11 +229,45 @@ const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
     mandatorySignals: "必须反复出现的信号",
     antiSignals: "必须避免的跑偏信号",
     progressionUnits: "剧情主要推进单位",
+    momentumSource: "章节推进动力来源",
+    perChapterChangeMenu: "每章可选的状态变化清单",
+    twistCadence: "反转/揭示密度",
+    foreshadowHold: "伏笔保留时长",
+    endingHookStyle: "章末钩子类型",
+    engineNote: "叙事引擎要求：每章至少完成「每章可选状态变化清单」中的一种变化；章末钩子按「章末钩子类型」处理；反转/揭示的频率必须匹配「反转/揭示密度」——dense 表示读者应频繁获得真相分层与认知反转，rare 表示主要靠关系、情绪与低烈度变化推进，不要制造惊吓式反转；伏笔按「伏笔保留时长」决定何时兑现。",
     primaryUsage: "使用要求：后续规划与生成必须优先服从这一模式。",
     secondaryUsage: "使用要求：只能作为补充风味，不得破坏主模式的边界。",
     listSeparator: "、",
     colon: "：",
     ceiling: { low: "低（low）", medium: "中（medium）", high: "高（high）" },
+    momentum: {
+      relationship_emotion: "关系与情绪",
+      information_revelation: "信息揭示节奏",
+      power_escalation: "实力/优势升级",
+      survival_pressure: "生存压力",
+      worldbuilding_expansion: "世界与格局扩展",
+      goal_pursuit: "目标追逐",
+      comedic_situation: "喜剧情境",
+      management_growth: "经营与建设成长",
+    },
+    cadence: {
+      none: "none（几乎无反转）",
+      rare: "rare（每 arc 至多一次，主要靠情绪推进）",
+      periodic: "periodic（每 arc 数次阶段性转折）",
+      dense: "dense（高频真相分层与认知反转，至少一次重构旧信息）",
+    },
+    hold: {
+      short: "short（数章内兑现）",
+      arc: "arc（本 arc 末兑现）",
+      cross_arc: "cross_arc（跨多个 arc 长期保留）",
+    },
+    hook: {
+      emotional_pull: "emotional_pull（情绪牵引 / 未完成的心动或抉择）",
+      cliffhanger: "cliffhanger（悬置的危机或未解局面）",
+      revelation: "revelation（结尾一句揭示 / 认知反转）",
+      escalation: "escalation（压力或威胁升级）",
+      decision: "decision（角色被迫做出关键选择）",
+    },
   },
   vi: {
     header: "Ràng buộc Story Mode: mode chính là ràng buộc cứng; mode phụ chỉ bổ sung phong vị, không được ghi đè trần xung đột và các tín hiệu cấm của mode chính.",
@@ -177,11 +286,45 @@ const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
     mandatorySignals: "Tín hiệu bắt buộc lặp lại",
     antiSignals: "Tín hiệu lạc đề phải tránh",
     progressionUnits: "Đơn vị đẩy cốt truyện chính",
+    momentumSource: "Nguồn lực đẩy truyện mỗi chương",
+    perChapterChangeMenu: "Danh sách state change hợp lệ mỗi chương",
+    twistCadence: "Mật độ đảo chiều / hé lộ",
+    foreshadowHold: "Thời gian giữ foreshadow",
+    endingHookStyle: "Kiểu móc câu cuối chương",
+    engineNote: "Yêu cầu động cơ tự sự: mỗi chương phải hoàn thành ít nhất một thay đổi trong \"Danh sách state change hợp lệ mỗi chương\"; móc câu cuối chương xử lý theo \"Kiểu móc câu cuối chương\"; tần suất đảo chiều/hé lộ phải khớp \"Mật độ đảo chiều/hé lộ\" — dense nghĩa là người đọc nên liên tục nhận sự thật phân tầng và đảo nhận thức; rare nghĩa là chủ yếu đẩy bằng quan hệ, cảm xúc và biến chuyển nhẹ, KHÔNG tạo cú lật kiểu gây sốc; foreshadow trả đúng theo \"Thời gian giữ foreshadow\".",
     primaryUsage: "Yêu cầu sử dụng: mọi bước lập kế hoạch và tạo sinh về sau phải ưu tiên tuân theo mode này.",
     secondaryUsage: "Yêu cầu sử dụng: chỉ dùng như phong vị bổ sung, không được phá vỡ ranh giới của mode chính.",
     listSeparator: ", ",
     colon: ": ",
     ceiling: { low: "thấp (low)", medium: "trung bình (medium)", high: "cao (high)" },
+    momentum: {
+      relationship_emotion: "quan hệ & cảm xúc",
+      information_revelation: "nhịp hé lộ thông tin",
+      power_escalation: "nâng cấp sức mạnh/ưu thế",
+      survival_pressure: "áp lực sinh tồn",
+      worldbuilding_expansion: "mở rộng thế giới & cục diện",
+      goal_pursuit: "đuổi theo mục tiêu",
+      comedic_situation: "tình huống hài",
+      management_growth: "kinh doanh & xây dựng phát triển",
+    },
+    cadence: {
+      none: "none (gần như không đảo chiều)",
+      rare: "rare (tối đa 1 lần mỗi arc, chủ yếu đẩy bằng cảm xúc)",
+      periodic: "periodic (vài lần chuyển hướng theo giai đoạn mỗi arc)",
+      dense: "dense (hé lộ phân tầng & đảo nhận thức tần suất cao, ít nhất một lần tái cấu trúc thông tin cũ)",
+    },
+    hold: {
+      short: "short (trả trong vài chương)",
+      arc: "arc (trả ở cuối arc này)",
+      cross_arc: "cross_arc (giữ lâu qua nhiều arc)",
+    },
+    hook: {
+      emotional_pull: "emotional_pull (níu cảm xúc / khoảnh khắc rung động hoặc lựa chọn dang dở)",
+      cliffhanger: "cliffhanger (nguy cơ treo lơ lửng / cục diện chưa giải)",
+      revelation: "revelation (câu chốt hé lộ / đảo nhận thức)",
+      escalation: "escalation (áp lực hoặc đe dọa leo thang)",
+      decision: "decision (nhân vật buộc phải ra quyết định then chốt)",
+    },
   },
   en: {
     header: "Story-mode constraints: the primary mode is a hard constraint; the secondary mode only adds flavor and must not override the primary mode's conflict ceiling or forbidden signals.",
@@ -200,11 +343,45 @@ const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
     mandatorySignals: "Mandatory recurring signals",
     antiSignals: "Drift signals to avoid",
     progressionUnits: "Primary plot progression units",
+    momentumSource: "Per-chapter momentum source",
+    perChapterChangeMenu: "Valid per-chapter state-change menu",
+    twistCadence: "Reversal / reveal density",
+    foreshadowHold: "Foreshadow hold duration",
+    endingHookStyle: "Chapter-ending hook style",
+    engineNote: "Narrative-engine requirement: every chapter must complete at least one change from the \"Valid per-chapter state-change menu\"; the chapter-ending hook follows the \"Chapter-ending hook style\"; the reversal/reveal frequency must match the \"Reversal / reveal density\" — dense means the reader should frequently get layered truth and perception reversals; rare means advance mainly through relationship, emotion, and low-intensity change, NOT shock twists; foreshadowing pays off per the \"Foreshadow hold duration\".",
     primaryUsage: "Usage requirement: all downstream planning and generation must obey this mode first.",
     secondaryUsage: "Usage requirement: use only as supplementary flavor — do not break the primary mode's boundaries.",
     listSeparator: ", ",
     colon: ": ",
     ceiling: { low: "low", medium: "medium", high: "high" },
+    momentum: {
+      relationship_emotion: "relationship & emotion",
+      information_revelation: "information-revelation cadence",
+      power_escalation: "power/advantage escalation",
+      survival_pressure: "survival pressure",
+      worldbuilding_expansion: "world & scale expansion",
+      goal_pursuit: "goal pursuit",
+      comedic_situation: "comedic situation",
+      management_growth: "management & building growth",
+    },
+    cadence: {
+      none: "none (almost no reversals)",
+      rare: "rare (at most once per arc, mostly emotional progression)",
+      periodic: "periodic (several phased turns per arc)",
+      dense: "dense (high-frequency layered reveals & perception reversals, at least one that recontextualizes earlier info)",
+    },
+    hold: {
+      short: "short (paid off within a few chapters)",
+      arc: "arc (paid off at this arc's end)",
+      cross_arc: "cross_arc (held long across multiple arcs)",
+    },
+    hook: {
+      emotional_pull: "emotional_pull (an unresolved feeling or choice)",
+      cliffhanger: "cliffhanger (a suspended crisis or unresolved situation)",
+      revelation: "revelation (a last-line reveal / perception reversal)",
+      escalation: "escalation (rising pressure or threat)",
+      decision: "decision (the character is forced into a key choice)",
+    },
   },
 };
 
@@ -252,6 +429,12 @@ function formatSingleStoryModeBlock(
     `${labels.mandatorySignals}${c}${profile.mandatorySignals.join(sep)}`,
     `${labels.antiSignals}${c}${profile.antiSignals.join(sep)}`,
     `${labels.progressionUnits}${c}${profile.progressionUnits.join(sep)}`,
+    `${labels.momentumSource}${c}${labels.momentum[profile.momentumSource]}`,
+    `${labels.perChapterChangeMenu}${c}${profile.perChapterChangeMenu.join(sep)}`,
+    `${labels.twistCadence}${c}${labels.cadence[profile.twistCadence]}`,
+    `${labels.foreshadowHold}${c}${labels.hold[profile.foreshadowHold]}`,
+    `${labels.endingHookStyle}${c}${labels.hook[profile.endingHookStyle]}`,
+    isPrimary ? labels.engineNote : "",
     isPrimary ? labels.primaryUsage : labels.secondaryUsage,
   ].filter(Boolean).join("\n");
 }

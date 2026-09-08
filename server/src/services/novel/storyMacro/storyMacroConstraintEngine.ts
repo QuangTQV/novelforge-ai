@@ -96,6 +96,19 @@ function buildTurningPoints(payoffs: string[]): StoryMacroTurningPoint[] {
   }));
 }
 
+function buildMysteryLayerConstraints(expansion: StoryExpansion): string[] {
+  const layers = expansion.mystery_layers ?? [];
+  if (layers.length === 0) {
+    return [];
+  }
+  return [
+    `悬念分层树必须按层兑现，不允许一次性揭穿或无铺垫反转：${layers
+      .map((layer, index) => `第${index + 1}层「${summarizeText(layer.question, layer.hidden_truth)}」于${layer.activates_arc}显形、${layer.pays_off_arc}揭示`)
+      .join("；")}`,
+    "每一次分层揭示都必须改写读者此前已知的信息，且为下一层制造更大的疑问。",
+  ];
+}
+
 function buildHardConstraints(plan: StoryMacroEditablePlan): string[] {
   const growthSteps = toGrowthSteps(plan.decomposition.growth_path).map((item) => `主角认知推进必须经过：${item}`);
   return mergeUnique([
@@ -104,8 +117,9 @@ function buildHardConstraints(plan: StoryMacroEditablePlan): string[] {
     `每轮推进都必须持续回应核心未知：${plan.expansion.mystery_box || plan.decomposition.main_hook}`,
     `剧情升级必须由冲突引擎驱动：${summarizeText(plan.expansion.conflict_engine, plan.decomposition.core_conflict)}`,
     `高张力场面必须服务于主线，而不是单独炫技：${plan.expansion.setpiece_seeds.join(" / ")}`,
+    ...buildMysteryLayerConstraints(plan.expansion),
     ...growthSteps,
-  ], 10);
+  ], 12);
 }
 
 export function buildConstraintEngine(plan: StoryMacroEditablePlan): StoryConstraintEngine {

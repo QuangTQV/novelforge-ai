@@ -6,6 +6,7 @@ import type {
   StoryMacroIssue,
   StoryMacroLocks,
   StoryMacroState,
+  StoryMysteryLayer,
 } from "@ai-novel/shared/types/storyMacro";
 import { z } from "zod";
 
@@ -66,6 +67,7 @@ export const EMPTY_EXPANSION: StoryExpansion = {
   conflict_engine: "",
   conflict_layers: EMPTY_CONFLICT_LAYERS,
   mystery_box: "",
+  mystery_layers: [],
   emotional_line: "",
   setpiece_seeds: [],
   tone_reference: "",
@@ -87,6 +89,14 @@ const conflictLayersSchema = z.object({
   relational: z.string().trim().min(1).max(280),
 });
 
+const mysteryLayerSchema = z.object({
+  question: z.string().trim().min(1).max(240),
+  hidden_truth: z.string().trim().min(1).max(320),
+  activates_arc: z.string().trim().min(1).max(120),
+  pays_off_arc: z.string().trim().min(1).max(120),
+  reframes: z.string().trim().max(240).optional(),
+});
+
 export const STORY_MACRO_RESPONSE_SCHEMA = z.object({
   expansion: z.object({
     expanded_premise: z.string().trim().min(1).max(900),
@@ -94,6 +104,7 @@ export const STORY_MACRO_RESPONSE_SCHEMA = z.object({
     conflict_engine: z.string().trim().min(1).max(500),
     conflict_layers: conflictLayersSchema,
     mystery_box: z.string().trim().min(1).max(320),
+    mystery_layers: z.array(mysteryLayerSchema).max(6).optional().default([]),
     emotional_line: z.string().trim().min(1).max(400),
     setpiece_seeds: z.array(z.string().trim().min(1).max(260)).min(2).max(3),
     tone_reference: z.string().trim().min(1).max(320),
@@ -171,8 +182,37 @@ export function normalizeConflictLayers(value: unknown): StoryConflictLayers {
   };
 }
 
+export function normalizeMysteryLayers(value: unknown): StoryMysteryLayer[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .filter(isRecord)
+    .map((item) => {
+      const layer: StoryMysteryLayer = {
+        question: normalizeText(item.question),
+        hidden_truth: normalizeText(item.hidden_truth),
+        activates_arc: normalizeText(item.activates_arc),
+        pays_off_arc: normalizeText(item.pays_off_arc),
+      };
+      const reframes = normalizeText(item.reframes);
+      if (reframes) {
+        layer.reframes = reframes;
+      }
+      return layer;
+    })
+    .filter((layer) => layer.question && layer.hidden_truth)
+    .slice(0, 6);
+}
+
 export function normalizeExpansion(
-  value: (Partial<Omit<StoryExpansion, "conflict_layers">> & { conflict_layers?: unknown }) | null | undefined,
+  value:
+    | (Partial<Omit<StoryExpansion, "conflict_layers" | "mystery_layers">> & {
+      conflict_layers?: unknown;
+      mystery_layers?: unknown;
+    })
+    | null
+    | undefined,
 ): StoryExpansion {
   const nextValue = value;
   return {
@@ -181,6 +221,7 @@ export function normalizeExpansion(
     conflict_engine: normalizeText(nextValue?.conflict_engine),
     conflict_layers: normalizeConflictLayers(nextValue?.conflict_layers),
     mystery_box: normalizeText(nextValue?.mystery_box),
+    mystery_layers: normalizeMysteryLayers(nextValue?.mystery_layers),
     emotional_line: normalizeText(nextValue?.emotional_line),
     setpiece_seeds: normalizeStringArray(nextValue?.setpiece_seeds, 3),
     tone_reference: normalizeText(nextValue?.tone_reference),

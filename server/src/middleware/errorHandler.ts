@@ -38,6 +38,7 @@ const VALIDATION_FIELD_LABELS: Record<string, string> = {
   internal: "内部崩塌",
   relational: "关系压力",
   mystery_box: "核心未知",
+  mystery_layers: "悬念分层树",
   emotional_line: "情绪线",
   setpiece_seeds: "高张力场面种子",
   tone_reference: "氛围参考",

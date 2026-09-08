@@ -25,6 +25,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { resolveMarketFoundationLibraryState } from "./marketFoundationLibraryState";
+import { translateUi } from "@/i18n/legacy";
+import { translateGenrePath } from "@/api/genre";
 
 const PLATFORM_ORDER: MarketRadarPlatform[] = ["fanqie", "qidian", "jinjiang"];
 const INFLUENCE_MODE_ORDER: MarketInfluenceMode[] = ["follow_hot", "differentiate", "light"];
@@ -282,7 +284,7 @@ export default function MarketRadarPage() {
                 <div className="mt-4 rounded-lg bg-muted/45 px-4 py-3">
                   <div className="space-y-2 text-sm">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span><span className="text-muted-foreground">{t("report.genreFoundation")}</span>{report.productionFoundationSync?.genre?.path ?? foundationCandidate.genre.name}</span>
+                      <span><span className="text-muted-foreground">{t("report.genreFoundation")}</span>{report.productionFoundationSync?.genre?.path ? translateGenrePath(report.productionFoundationSync.genre.path) : translateUi(foundationCandidate.genre.name)}</span>
                       {genreLibraryId ? (
                         <Button type="button" variant="ghost" size="sm" asChild>
                           <Link to={`/genres?selectedId=${encodeURIComponent(genreLibraryId)}`}><Check className="h-3.5 w-3.5" />{t("report.inLibrary")}</Link>

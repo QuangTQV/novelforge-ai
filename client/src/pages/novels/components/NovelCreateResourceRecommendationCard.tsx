@@ -1,4 +1,5 @@
 import { translateUi } from "@/i18n/legacy";
+import { translateGenrePath } from "@/api/genre";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import type { NovelCreateResourceRecommendation } from "@ai-novel/shared/types/novelResourceRecommendation";
@@ -165,7 +166,7 @@ export default function NovelCreateResourceRecommendationCard(
           <div className="grid gap-3 lg:grid-cols-3">
             <div className="rounded-lg bg-muted/15 p-3">
               <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{translateUi("推荐题材基底")}</div>
-              <div className="mt-1 text-sm font-semibold text-foreground">{recommendation.genre.path}</div>
+              <div className="mt-1 text-sm font-semibold text-foreground">{translateGenrePath(recommendation.genre.path)}</div>
               <div className="mt-2 text-xs leading-5 text-muted-foreground">{recommendation.genre.reason}</div>
             </div>
 

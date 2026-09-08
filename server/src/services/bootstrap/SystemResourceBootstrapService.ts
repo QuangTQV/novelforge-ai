@@ -24,6 +24,12 @@ interface GenreSeedNode {
   children?: GenreSeedNode[];
 }
 
+const CJK_TEXT_PATTERN = /[\u3400-\u4dbf\u4e00-\u9fff]/u;
+
+function containsCjkText(value: string | null | undefined): boolean {
+  return Boolean(value && CJK_TEXT_PATTERN.test(value));
+}
+
 export interface StyleEngineSeedReport {
   styleTemplatesCreated: number;
   styleTemplatesUpdated: number;
@@ -439,11 +445,17 @@ async function seedGenreNode(
   let report = { genresCreated: 0, genresUpdated: 0 };
   const existing = await tx.novelGenre.findUnique({
     where: { id: node.id },
-    select: { id: true },
+    select: { id: true, name: true, description: true, template: true },
   });
 
   if (existing) {
-    if (mode === "sync_existing") {
+    // Legacy installations contained the built-in catalog in Chinese. Repair
+    // only those records during normal startup; preserve user-edited records
+    // written in another language.
+    const isLegacyChineseRecord = containsCjkText(existing.name)
+      || containsCjkText(existing.description)
+      || containsCjkText(existing.template);
+    if (mode === "sync_existing" || isLegacyChineseRecord) {
       await tx.novelGenre.update({
         where: { id: node.id },
         data: {

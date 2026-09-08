@@ -1,4 +1,4 @@
-import { translateUi } from "@/i18n/legacy";
+import { translateResourceText, translateUi } from "@/i18n/legacy";
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
 import type { StoryModeTreeNode } from "@/api/storyMode";
@@ -67,11 +67,11 @@ export default function StoryModeTreeCard({
               </span>
             </div>
             <div className="text-sm leading-6 text-muted-foreground">
-              {node.description?.trim() ? translateUi(node.description.trim()) : translateUi(node.profile.coreDrive)}
+              {node.description?.trim() ? translateResourceText(node.description) : translateResourceText(node.profile.coreDrive)}
             </div>
             <div className="text-xs leading-5 text-muted-foreground">
 
-              {translateUi("核心驱动：")}{translateUi(node.profile.coreDrive)}
+              {translateUi("核心驱动：")}{translateResourceText(node.profile.coreDrive)}
             </div>
           </div>
 

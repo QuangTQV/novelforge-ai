@@ -13,7 +13,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { UnifiedTaskDetail } from "@ai-novel/shared/types/task";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { flattenGenreTreeOptions, getGenreTree } from "@/api/genre";
+import { flattenGenreTreeOptions, getGenreTree, translateGenrePath } from "@/api/genre";
 import { flattenStoryModeTreeOptions, getStoryModeTree } from "@/api/storyMode";
 import { bootstrapNovelWorkflow } from "@/api/novelWorkflow";
 import { setNovelCreationExperience } from "@/api/novel";
@@ -736,7 +736,7 @@ function AutoDirectorCreatePage() {
 
           {marketProductionFoundation ? (
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
-              <span><span className="text-foreground">{translateUi("题材基底")}</span> {marketProductionFoundation.genre.path}</span>
+              <span><span className="text-foreground">{translateUi("题材基底")}</span> {translateGenrePath(marketProductionFoundation.genre.path)}</span>
               <span><span className="text-foreground">{translateUi("主要推进")}</span> {marketProductionFoundation.primaryStoryMode.path}</span>
               {marketProductionFoundation.secondaryStoryMode ? (
                 <span><span className="text-foreground">{translateUi("辅助推进")}</span> {marketProductionFoundation.secondaryStoryMode.path}</span>

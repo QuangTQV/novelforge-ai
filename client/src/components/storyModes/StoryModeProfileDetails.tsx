@@ -1,4 +1,4 @@
-import { translateUi } from "@/i18n/legacy";
+import { translateResourceText, translateUi } from "@/i18n/legacy";
 import { BookOpen, CircleGauge, Workflow } from "lucide-react";
 import type { NovelStoryMode } from "@ai-novel/shared/types/storyMode";
 import { cn } from "@/lib/utils";
@@ -56,44 +56,44 @@ export default function StoryModeProfileDetails({
       </div>
 
       <p className="mt-4 text-sm leading-7 text-muted-foreground">
-        {node.description?.trim() ? translateUi(node.description.trim()) : translateUi(profile.coreDrive)}
+        {node.description?.trim() ? translateResourceText(node.description) : translateResourceText(profile.coreDrive)}
       </p>
 
       <div className="mt-6 grid gap-px overflow-hidden rounded-md border border-border/70 bg-border/70 md:grid-cols-2">
         <div className="bg-background p-4">
           <Workflow className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
           <div className="mt-3 text-xs font-medium text-muted-foreground">{translateUi("核心驱动")}</div>
-          <div className="mt-1 text-sm leading-6 text-foreground">{translateUi(profile.coreDrive)}</div>
+          <div className="mt-1 text-sm leading-6 text-foreground">{translateResourceText(profile.coreDrive)}</div>
         </div>
         <div className="bg-background p-4">
           <BookOpen className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
           <div className="mt-3 text-xs font-medium text-muted-foreground">{translateUi("读者回报")}</div>
-          <div className="mt-1 text-sm leading-6 text-foreground">{translateUi(profile.readerReward)}</div>
+          <div className="mt-1 text-sm leading-6 text-foreground">{translateResourceText(profile.readerReward)}</div>
         </div>
         <div className="bg-background p-4">
           <div className="text-xs font-medium text-muted-foreground">{translateUi("章节推进单位")}</div>
-          <div className="mt-1 text-sm leading-6 text-foreground">{translateUi(profile.chapterUnit)}</div>
+          <div className="mt-1 text-sm leading-6 text-foreground">{translateResourceText(profile.chapterUnit)}</div>
         </div>
         <div className="bg-background p-4">
           <div className="text-xs font-medium text-muted-foreground">{translateUi("阶段回报")}</div>
-          <div className="mt-1 text-sm leading-6 text-foreground">{translateUi(profile.volumeReward)}</div>
+          <div className="mt-1 text-sm leading-6 text-foreground">{translateResourceText(profile.volumeReward)}</div>
         </div>
       </div>
 
       <div className="mt-7 grid gap-6 md:grid-cols-2">
-        <ContractList title={translateUi("推进单元")} items={profile.progressionUnits.map((item) => translateUi(item))} emptyText={translateUi("尚未定义推进单元")} />
-        <ContractList title={translateUi("适合的冲突")} items={profile.allowedConflictForms.map((item) => translateUi(item))} emptyText={translateUi("尚未定义适合的冲突")} />
-        <ContractList title={translateUi("必须出现的信号")} items={profile.mandatorySignals.map((item) => translateUi(item))} emptyText={translateUi("尚未定义必须信号")} />
-        <ContractList title={translateUi("需要避免的信号")} items={profile.antiSignals.map((item) => translateUi(item))} emptyText={translateUi("尚未定义规避信号")} />
+        <ContractList title={translateUi("推进单元")} items={profile.progressionUnits.map((item) => translateResourceText(item)).filter(Boolean)} emptyText={translateUi("尚未定义推进单元")} />
+        <ContractList title={translateUi("适合的冲突")} items={profile.allowedConflictForms.map((item) => translateResourceText(item)).filter(Boolean)} emptyText={translateUi("尚未定义适合的冲突")} />
+        <ContractList title={translateUi("必须出现的信号")} items={profile.mandatorySignals.map((item) => translateResourceText(item)).filter(Boolean)} emptyText={translateUi("尚未定义必须信号")} />
+        <ContractList title={translateUi("需要避免的信号")} items={profile.antiSignals.map((item) => translateResourceText(item)).filter(Boolean)} emptyText={translateUi("尚未定义规避信号")} />
       </div>
 
       <div className="mt-7 border-l-2 border-foreground/20 pl-4">
         <div className="text-sm font-semibold text-foreground">{translateUi("解决方式")}</div>
-        <p className="mt-2 text-sm leading-7 text-muted-foreground">{translateUi(profile.resolutionStyle)}</p>
+        <p className="mt-2 text-sm leading-7 text-muted-foreground">{translateResourceText(profile.resolutionStyle)}</p>
         {profile.forbiddenConflictForms.length > 0 ? (
           <p className="mt-3 text-xs leading-6 text-muted-foreground">
 
-            {translateUi("不适合：")}{profile.forbiddenConflictForms.map((item) => translateUi(item)).join(translateUi("、"))}
+            {translateUi("不适合：")}{profile.forbiddenConflictForms.map((item) => translateResourceText(item)).filter(Boolean).join(translateUi("、"))}
           </p>
         ) : null}
       </div>
@@ -101,7 +101,7 @@ export default function StoryModeProfileDetails({
       {node.template?.trim() ? (
         <div className="mt-7 border-t border-border/70 pt-6">
           <div className="text-sm font-semibold text-foreground">{translateUi("AI 使用补充")}</div>
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">{translateUi(node.template)}</p>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">{translateResourceText(node.template)}</p>
         </div>
       ) : null}
     </div>

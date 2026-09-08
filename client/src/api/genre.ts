@@ -1,4 +1,4 @@
-import { translateUi } from "@/i18n/legacy";
+import { translateResourceText, translateUi } from "@/i18n/legacy";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
 import type { NovelGenre } from "@ai-novel/shared/types/novel";
@@ -24,6 +24,14 @@ export interface GenreOption {
   level: number;
   description?: string | null;
   template?: string | null;
+}
+
+export function translateGenreName(name: string): string {
+  return translateUi(name);
+}
+
+export function translateGenrePath(path: string): string {
+  return path.split("/").map((segment) => translateUi(segment.trim())).join(" / ");
 }
 
 export async function getGenreTree() {
@@ -83,8 +91,8 @@ export function flattenGenreTreeOptions(
       label: `${level > 0 ? `${"— ".repeat(level)}` : ""}${translateUi(node.name)}`,
       path: translatedPath.join(" / "),
       level,
-      description: node.description?.trim() ? translateUi(node.description.trim()) : null,
-      template: node.template?.trim() ? translateUi(node.template.trim()) : null,
+      description: node.description?.trim() ? translateResourceText(node.description) : null,
+      template: node.template?.trim() ? translateResourceText(node.template) : null,
     };
     return [current, ...flattenGenreTreeOptions(node.children, level + 1, nextPath)];
   });

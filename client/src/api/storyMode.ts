@@ -1,4 +1,4 @@
-import { translateUi } from "@/i18n/legacy";
+import { translateResourceText, translateUi } from "@/i18n/legacy";
 import type { ApiResponse } from "@ai-novel/shared/types/api";
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
 import type { NovelStoryMode, StoryModeProfile } from "@ai-novel/shared/types/storyMode";
@@ -124,8 +124,8 @@ export function flattenStoryModeTreeOptions(
       label: `${level > 0 ? `${"· ".repeat(level)}` : ""}${translateUi(node.name)}`,
       path: translatedPath.join(" / "),
       level,
-      description: node.description ?? null,
-      template: node.template ?? null,
+      description: node.description?.trim() ? translateResourceText(node.description) : null,
+      template: node.template?.trim() ? translateResourceText(node.template) : null,
       profile: node.profile,
     };
     return [current, ...flattenStoryModeTreeOptions(node.children, level + 1, nextPath)];

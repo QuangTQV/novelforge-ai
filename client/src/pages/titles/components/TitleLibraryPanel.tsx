@@ -133,7 +133,7 @@ export default function TitleLibraryPanel({ genreOptions }: TitleLibraryPanelPro
               <div className="min-w-0 flex-1 space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                   <div className="flex flex-wrap gap-x-2 gap-y-1">
-                  {entry.genre?.name ? <span>{entry.genre.name}</span> : null}
+                  {entry.genre?.name ? <span>{translateUi(entry.genre.name)}</span> : null}
                   <span>{translateUi("使用")} {entry.usedCount}</span>
                   <span>{new Date(entry.createdAt).toLocaleDateString("zh-CN")}</span>
                   </div>

@@ -367,7 +367,7 @@ export default function NovelCreateTitleQuickFill({
                               {typeof entry.usedCount === "number" ? (
                                 <Badge variant="secondary">{translateUi("已用")} {entry.usedCount}</Badge>
                               ) : null}
-                              {entry.genre?.name ? <Badge variant="outline">{entry.genre.name}</Badge> : null}
+                              {entry.genre?.name ? <Badge variant="outline">{translateUi(entry.genre.name)}</Badge> : null}
                               {isSelected ? <Badge variant="outline">{translateUi("当前选中")}</Badge> : null}
                             </div>
                             <div className="text-lg font-semibold text-foreground">{entry.title}</div>

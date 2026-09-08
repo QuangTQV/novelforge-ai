@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
+import { translateGenrePath } from "@/api/genre";
 
 function normalizeTarget(form: NarrativeForm, value: number): number {
   if (form === "short_story") return Math.max(3000, Math.min(30000, Math.round(value)));
@@ -227,11 +228,11 @@ export default function CreationStudioPage() {
                   <div className="mt-4 border-t border-border/60 pt-3">
                     <div className="text-xs text-muted-foreground">{translateUi("AI 建议的创作底座")}</div>
                     <div className="mt-1 text-sm font-medium text-foreground">
-                      {interpretation.productionFoundation.genre.path}
+                      {translateGenrePath(interpretation.productionFoundation.genre.path)}
                       <span className="mx-2 text-muted-foreground">×</span>
-                      {interpretation.productionFoundation.primaryStoryMode.path}
+                      {translateUi(interpretation.productionFoundation.primaryStoryMode.path)}
                       {interpretation.productionFoundation.secondaryStoryMode
-                        ? ` + ${interpretation.productionFoundation.secondaryStoryMode.path}`
+                        ? ` + ${translateUi(interpretation.productionFoundation.secondaryStoryMode.path)}`
                         : ""}
                     </div>
                     <p className="mt-1 text-xs leading-5 text-muted-foreground">

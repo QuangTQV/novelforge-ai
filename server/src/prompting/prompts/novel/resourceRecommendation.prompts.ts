@@ -2,7 +2,6 @@ import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { z } from "zod";
 import type { PromptAsset } from "../../core/promptTypes";
 import { novelCreateResourceRecommendationSchema } from "./resourceRecommendation.promptSchemas";
-
 export interface NovelCreateResourceRecommendationPromptInput {
   userIntentSummary: string;
   genreCatalogText: string;
@@ -27,10 +26,18 @@ export const novelCreateResourceRecommendationPrompt: PromptAsset<
     maxAttempts: 1,
   },
   outputSchema: novelCreateResourceRecommendationSchema,
-  render: (input) => [
+  render: (input, context) => [
     new SystemMessage([
-      "你是小说开书资源推荐器，服务对象是写作经验不足、容易被术语和配置吓退的新手作者。",
-      "你的任务是根据用户当前提供的开书信息，从给定的题材基底库和推进模式库中，推荐一套最适合作为默认起步底座的组合。",
+      context.promptLanguage === "vi"
+        ? "Bạn là trợ lý đề xuất nền tảng mở sách cho tác giả mới. Hãy dựa trên thông tin hiện có để chọn một tổ hợp nền tảng phù hợp nhất."
+        : context.promptLanguage === "en"
+          ? "You recommend a starting foundation for a new novel. Use the available book information to choose the most suitable combination."
+          : "你是小说开书资源推荐器，服务对象是写作经验不足、容易被术语和配置吓退的新手作者。",
+      context.promptLanguage === "vi"
+        ? "Chỉ được chọn từ danh sách thể loại và mô hình tiến triển được cung cấp; không tự tạo ID hoặc tên mới."
+        : context.promptLanguage === "en"
+          ? "Choose only from the supplied genre and story-mode catalogs; never invent new IDs or names."
+          : "你的任务是根据用户当前提供的开书信息，从给定的题材基底库和推进模式库中，推荐一套最适合作为默认起步底座的组合。",
       "",
       "只允许从给定列表中选择，不得杜撰新的题材 ID、推进模式 ID、名称或路径。",
       "",
@@ -53,9 +60,21 @@ export const novelCreateResourceRecommendationPrompt: PromptAsset<
       "{\"summary\":\"...\",\"genreId\":\"...\",\"genreReason\":\"...\",\"primaryStoryModeId\":\"...\",\"primaryStoryModeReason\":\"...\",\"secondaryStoryModeId\":\"...\",\"secondaryStoryModeReason\":\"...\",\"caution\":\"...\"}",
       "",
       "字段要求：",
-      "1. summary：用简洁中文说明这套组合为什么适合作为当前开书默认底座。",
-      "2. genreReason：说明为什么这个题材基底适合当前故事方向与读者预期。",
-      "3. primaryStoryModeReason：说明为什么这个主推进模式能稳定兑现核心阅读期待。",
+      context.promptLanguage === "vi"
+        ? "1. summary: giải thích ngắn gọn bằng tiếng Việt vì sao tổ hợp này phù hợp làm nền tảng mặc định."
+        : context.promptLanguage === "en"
+          ? "1. summary: briefly explain in English why this combination is a suitable default foundation."
+          : "1. summary：用简洁中文说明这套组合为什么适合作为当前开书默认底座。",
+      context.promptLanguage === "vi"
+        ? "2. genreReason: giải thích vì sao thể loại này phù hợp với hướng truyện và kỳ vọng của độc giả."
+        : context.promptLanguage === "en"
+          ? "2. genreReason: explain why the genre fits the story direction and reader expectations."
+          : "2. genreReason：说明为什么这个题材基底适合当前故事方向与读者预期。",
+      context.promptLanguage === "vi"
+        ? "3. primaryStoryModeReason: giải thích vì sao mô hình tiến triển chính có thể duy trì trải nghiệm đọc cốt lõi."
+        : context.promptLanguage === "en"
+          ? "3. primaryStoryModeReason: explain why the primary story mode can sustain the core reading experience."
+          : "3. primaryStoryModeReason：说明为什么这个主推进模式能稳定兑现核心阅读期待。",
       "4. secondaryStoryModeId / secondaryStoryModeReason：只有在确实有必要时才填写；否则返回空字符串或 null。",
       "5. caution：提示这套组合最容易翻车的点；没有明显风险时可为空字符串。",
       "",

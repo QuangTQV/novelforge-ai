@@ -10,6 +10,7 @@ import { prisma } from "../../../db/prisma";
 import { runStructuredPrompt } from "../../../prompting/core/promptRunner";
 import { characterVisibleProfileCompletionPrompt } from "../../../prompting/prompts/novel/characterVisibleProfile.prompts";
 import { normalizeStoryModeOutput, buildStoryModePromptBlock } from "../../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import type { LLMGenerateOptions } from "../novelCoreShared";
 import { WorldContextGateway } from "../worldContext/WorldContextGateway";
 
@@ -228,6 +229,7 @@ export class CharacterVisibleProfileService {
     const storyModeBlock = buildStoryModePromptBlock({
       primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
       secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+      lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
     });
     const worldContext = await this.worldContextGateway.getWorldContextBlock(novelId, {
       purpose: "character",

@@ -1,4 +1,5 @@
 import type { BaseMessageChunk } from "@langchain/core/messages";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { prisma } from "../../db/prisma";
 import {
   runStructuredPrompt,
@@ -23,6 +24,7 @@ import {
 import { titleGenerationService } from "../title/TitleGenerationService";
 import { WorldContextGateway, type WorldContextPurpose } from "./worldContext/WorldContextGateway";
 import { normalizeNovelBiblePayload } from "./novelBiblePersistence";
+import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../storyMode/storyModeProfile";
 import {
   ChapterGenerateOptions,
   DEFAULT_ESTIMATED_CHAPTER_COUNT,
@@ -56,6 +58,76 @@ const sharedChapterStreamProductionPort: ChapterStreamProductionPort = {
   },
 };
 
+type NovelCharacterRow = {
+  name: string;
+  role: string;
+  personality?: string | null;
+  storyFunction?: string | null;
+  relationToProtagonist?: string | null;
+  outerGoal?: string | null;
+  innerNeed?: string | null;
+  fear?: string | null;
+  wound?: string | null;
+  misbelief?: string | null;
+};
+
+/**
+ * Khối ngữ cảnh nhân vật cho các prompt lập kế hoạch (outline / structured outline).
+ * Bơm đủ động cơ (mục tiêu, nỗi sợ, vết thương, quan hệ) để hướng phát triển bám nhân vật,
+ * thay vì chỉ có tên + vai trò khiến model viết chung chung.
+ */
+function buildPlanningCharacterText(characters: NovelCharacterRow[]): string {
+  if (characters.length === 0) {
+    return "暂无";
+  }
+  const clip = (value: string | null | undefined, max: number): string =>
+    (value ?? "").trim().replace(/\s+/g, " ").slice(0, max);
+  return characters
+    .map((character) => {
+      const parts: string[] = [`- ${character.name}（${character.role}）`];
+      const detail: string[] = [];
+      const fn = clip(character.storyFunction, 80);
+      const relation = clip(character.relationToProtagonist, 80);
+      const personality = clip(character.personality, 100);
+      const goal = clip(character.outerGoal, 90);
+      const need = clip(character.innerNeed, 90);
+      const fear = clip(character.fear, 70);
+      const wound = clip(character.wound, 90);
+      const misbelief = clip(character.misbelief, 90);
+      if (fn) detail.push(`作用：${fn}`);
+      if (relation) detail.push(`与主角关系：${relation}`);
+      if (personality) detail.push(`性格：${personality}`);
+      if (goal) detail.push(`外在目标：${goal}`);
+      if (need) detail.push(`内在需求：${need}`);
+      if (fear) detail.push(`恐惧：${fear}`);
+      if (wound) detail.push(`创伤：${wound}`);
+      if (misbelief) detail.push(`误信：${misbelief}`);
+      if (detail.length > 0) {
+        parts.push(`\n  ${detail.join("；")}`);
+      }
+      return parts.join("");
+    })
+    .join("\n");
+}
+
+type StoryModeRow = Parameters<typeof normalizeStoryModeOutput>[0];
+
+/**
+ * Khối ràng buộc story mode (流派模式) cho các prompt lập kế hoạch: trần xung đột,
+ * tín hiệu bắt buộc lặp lại, dạng xung đột cấm. Rỗng khi novel chưa chọn story mode.
+ */
+function buildNovelStoryModeContext(novel: {
+  novelLanguage?: string | null;
+  primaryStoryMode?: StoryModeRow | null;
+  secondaryStoryMode?: StoryModeRow | null;
+}): string {
+  return buildStoryModePromptBlock({
+    primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
+    secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+    lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
+  });
+}
+
 export class NovelCoreGenerationService {
   private readonly worldContextGateway = new WorldContextGateway();
 
@@ -86,7 +158,7 @@ export class NovelCoreGenerationService {
   async createOutlineStream(novelId: string, options: OutlineGenerateOptions = {}) {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
-      include: { world: true, characters: true },
+      include: { world: true, characters: true, primaryStoryMode: true, secondaryStoryMode: true },
     });
     if (!novel) {
       throw new Error("小说不存在");
@@ -103,11 +175,7 @@ export class NovelCoreGenerationService {
       novelReferenceService.buildReferenceForStage(novelId, "outline"),
     ]);
 
-    const charactersText = novel.characters.length > 0
-      ? novel.characters
-        .map((character) => `- ${character.name}（${character.role}）${character.personality ? `：${character.personality.slice(0, 80)}` : ""}`)
-        .join("\n")
-      : "暂无";
+    const charactersText = buildPlanningCharacterText(novel.characters);
     const initialPrompt = options.initialPrompt?.trim() ?? "";
     const streamed = await streamTextPrompt({
       asset: novelOutlinePrompt,
@@ -118,12 +186,14 @@ export class NovelCoreGenerationService {
         worldContext,
         referenceContext: referenceContext.trim() || undefined,
         initialPrompt: initialPrompt || undefined,
+        storyModeContext: buildNovelStoryModeContext(novel) || undefined,
+        outputLanguage: resolveNovelLanguage(novel.novelLanguage),
       },
       options: {
         novelId: novelId,
-        provider: options.provider ?? "deepseek",
+        provider: options.provider,
         model: options.model,
-        temperature: options.temperature ?? 0.7,
+        temperature: options.temperature,
       },
     });
 
@@ -143,7 +213,7 @@ export class NovelCoreGenerationService {
   async createStructuredOutlineStream(novelId: string, options: StructuredOutlineGenerateOptions = {}) {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
-      include: { world: true, characters: true },
+      include: { world: true, characters: true, primaryStoryMode: true, secondaryStoryMode: true },
     });
     if (!novel) {
       throw new Error("小说不存在");
@@ -165,11 +235,7 @@ export class NovelCoreGenerationService {
       novelReferenceService.buildReferenceForStage(novelId, "structured_outline"),
     ]);
 
-    const charactersText = novel.characters.length > 0
-      ? novel.characters
-        .map((character) => `- ${character.name}（${character.role}）${character.personality ? `：${character.personality.slice(0, 80)}` : ""}`)
-        .join("\n")
-      : "暂无";
+    const charactersText = buildPlanningCharacterText(novel.characters);
     const totalChapters = options.totalChapters
       ?? novel.estimatedChapterCount
       ?? DEFAULT_ESTIMATED_CHAPTER_COUNT;
@@ -182,10 +248,12 @@ export class NovelCoreGenerationService {
         outline: novel.outline,
         referenceContext: referenceContext.trim() || undefined,
         totalChapters,
+        storyModeContext: buildNovelStoryModeContext(novel) || undefined,
+        outputLanguage: resolveNovelLanguage(novel.novelLanguage),
       },
       options: {
         novelId: novelId,
-        provider: options.provider ?? "deepseek",
+        provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.2,
       },
@@ -237,7 +305,7 @@ export class NovelCoreGenerationService {
       },
       options: {
         novelId,
-        provider: options.provider ?? "deepseek",
+        provider: options.provider,
         model: options.model,
         temperature: 0.1,
       },
@@ -289,7 +357,7 @@ export class NovelCoreGenerationService {
   async createBibleStream(novelId: string, options: LLMGenerateOptions = {}) {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
-      include: { characters: true, genre: true, world: true },
+      include: { characters: true, genre: true, world: true, primaryStoryMode: true, secondaryStoryMode: true },
     });
     if (!novel) {
       throw new Error("小说不存在");
@@ -313,13 +381,15 @@ export class NovelCoreGenerationService {
         title: novel.title,
         genreName: novel.genre?.name ?? "未分类",
         description: novel.description ?? "",
-        charactersText: novel.characters.map((item) => `${item.name}（${item.role}）`).join("、") || "暂无",
+        charactersText: buildPlanningCharacterText(novel.characters),
         worldContext,
         referenceContext: referenceContext.trim() || undefined,
+        storyModeContext: buildNovelStoryModeContext(novel) || undefined,
+        outputLanguage: resolveNovelLanguage(novel.novelLanguage),
       },
       options: {
         novelId: novelId,
-        provider: options.provider ?? "deepseek",
+        provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.6,
       },
@@ -358,7 +428,7 @@ export class NovelCoreGenerationService {
   async createBeatStream(novelId: string, options: GenerateBeatOptions = {}) {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
-      include: { bible: true, chapters: true, world: true },
+      include: { bible: true, chapters: true, world: true, primaryStoryMode: true, secondaryStoryMode: true },
     });
     if (!novel) {
       throw new Error("小说不存在");
@@ -392,10 +462,12 @@ export class NovelCoreGenerationService {
         bibleRawContent: novel.bible?.rawContent ?? "暂无",
         targetChapters,
         referenceContext: referenceContext.trim() || undefined,
+        storyModeContext: buildNovelStoryModeContext(novel) || undefined,
+        outputLanguage: resolveNovelLanguage(novel.novelLanguage),
       },
       options: {
         novelId: novelId,
-        provider: options.provider ?? "deepseek",
+        provider: options.provider,
         model: options.model,
         temperature: options.temperature ?? 0.7,
       },

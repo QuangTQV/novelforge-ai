@@ -4,6 +4,7 @@ import type { PayoffLedgerResponse } from "@ai-novel/shared/types/payoffLedger";
 import { isPayoffOverdueAtChapter } from "../payoff/payoffLedgerShared";
 import { buildPlannerStyleContractSummaryText } from "../styleEngine/styleContractText";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { characterDynamicsQueryService } from "../novel/dynamics/CharacterDynamicsQueryService";
 
 export type PlannerStoryModeRow = {
@@ -53,12 +54,14 @@ function takeNonEmptyLines(text: string | null | undefined, maxLines: number): s
 }
 
 export function buildPlannerStoryModeBlock(input: {
+  novelLanguage?: string | null;
   primaryStoryMode?: PlannerStoryModeRow | null;
   secondaryStoryMode?: PlannerStoryModeRow | null;
 }): string {
   return buildStoryModePromptBlock({
     primary: input.primaryStoryMode ? normalizeStoryModeOutput(input.primaryStoryMode) : null,
     secondary: input.secondaryStoryMode ? normalizeStoryModeOutput(input.secondaryStoryMode) : null,
+    lang: resolvePromptLanguage(resolveNovelLanguage(input.novelLanguage)),
   });
 }
 

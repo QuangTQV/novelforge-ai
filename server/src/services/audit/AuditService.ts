@@ -4,6 +4,7 @@ import type { ChapterRuntimePackage, GenerationContextPackage } from "@ai-novel/
 import { prisma } from "../../db/prisma";
 import { payoffLedgerSyncService } from "../payoff/PayoffLedgerSyncService";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { openConflictService } from "../state/OpenConflictService";
 import {
   normalizeAuditType,
@@ -305,6 +306,7 @@ export class AuditService {
         const novel = await prisma.novel.findUnique({
           where: { id: novelId },
           select: {
+            novelLanguage: true,
             primaryStoryMode: {
               select: {
                 id: true,
@@ -335,6 +337,7 @@ export class AuditService {
           storyModeContext = buildStoryModePromptBlock({
             primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
             secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+            lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
           });
         }
       } catch {
@@ -400,6 +403,7 @@ export class AuditService {
         const novel = await prisma.novel.findUnique({
           where: { id: novelId },
           select: {
+            novelLanguage: true,
             primaryStoryMode: {
               select: {
                 id: true,
@@ -430,6 +434,7 @@ export class AuditService {
           storyModeContext = buildStoryModePromptBlock({
             primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
             secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+            lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
           });
         }
       } catch {

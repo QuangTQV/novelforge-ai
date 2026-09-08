@@ -2,6 +2,7 @@ import type {
   AIFreedom,
   EmotionIntensity,
   NarrativePov,
+  NovelLanguage,
   NovelWritingMode,
   PacePreference,
   ProjectMode,
@@ -14,6 +15,7 @@ import { ensureSystemResourceStarterData } from "../bootstrap/SystemResourceBoot
 import { GenreService, type GenreTreeNode } from "../genre/GenreService";
 import { StoryModeService, type StoryModeTreeNode } from "../storyMode/StoryModeService";
 import { buildStoryModePromptBlock } from "../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { buildBookFramingSummary } from "./bookFraming";
 
 interface RecommendNovelCreateResourcesInput {
@@ -35,6 +37,7 @@ interface RecommendNovelCreateResourcesInput {
   styleTone?: string;
   emotionIntensity?: EmotionIntensity;
   aiFreedom?: AIFreedom;
+  novelLanguage?: NovelLanguage;
   provider?: LLMProvider;
   model?: string;
   temperature?: number;
@@ -221,6 +224,7 @@ export class NovelCreateResourceRecommendationService {
         provider: input.provider,
         model: input.model,
         temperature: Math.min(input.temperature ?? 0.3, 0.5),
+        outputLanguage: input.novelLanguage,
       },
     });
 
@@ -352,6 +356,7 @@ export class NovelCreateResourceRecommendationService {
     const storyModeBlock = buildStoryModePromptBlock({
       primary,
       secondary: secondary ?? null,
+      lang: resolvePromptLanguage(resolveNovelLanguage(input.novelLanguage)),
     });
     return {
       genreId: genre.id,

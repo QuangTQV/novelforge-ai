@@ -23,6 +23,7 @@ import {
   volumeStrategyCritiquePrompt,
 } from "../../../prompting/prompts/novel/volume/strategy.prompts";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import type { StoryMacroPlanService } from "../storyMacro/StoryMacroPlanService";
 import {
   inferRequiredChapterCountFromBeatSheet,
@@ -114,6 +115,7 @@ async function loadGenerationContext(params: {
         narrativePov: true,
         pacePreference: true,
         emotionIntensity: true,
+        novelLanguage: true,
         primaryStoryMode: {
           select: {
             id: true,
@@ -165,6 +167,7 @@ async function loadGenerationContext(params: {
     storyModePromptBlock: buildStoryModePromptBlock({
       primary: rawNovel.primaryStoryMode ? normalizeStoryModeOutput(rawNovel.primaryStoryMode) : null,
       secondary: rawNovel.secondaryStoryMode ? normalizeStoryModeOutput(rawNovel.secondaryStoryMode) : null,
+      lang: resolvePromptLanguage(resolveNovelLanguage(rawNovel.novelLanguage)),
     }),
   };
 

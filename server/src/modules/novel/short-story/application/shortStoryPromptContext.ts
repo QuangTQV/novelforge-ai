@@ -1,9 +1,11 @@
 import type { PromptContextBlock } from "../../../../prompting/core/promptTypes";
 import type { WritingPlatformSnapshot } from "@ai-novel/shared/types/writingPlatform";
 import type { CreationDirection, ShortStoryPlanContract, ShortStoryPlanSegment } from "@ai-novel/shared/types/creationStudio";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { buildStoryModePromptBlock, parseStoryModeProfileJson } from "../../../../services/storyMode/storyModeProfile";
 
 interface ShortStoryFoundationNovel {
+  novelLanguage?: string | null;
   genre?: { name: string; description?: string | null; template?: string | null } | null;
   primaryStoryMode?: { id: string; name: string; description?: string | null; template?: string | null; profileJson?: string | null } | null;
   secondaryStoryMode?: { id: string; name: string; description?: string | null; template?: string | null; profileJson?: string | null } | null;
@@ -26,6 +28,7 @@ export function shortStoryProductionFoundationText(novel: ShortStoryFoundationNo
     buildStoryModePromptBlock({
       primary: toMode(novel.primaryStoryMode),
       secondary: toMode(novel.secondaryStoryMode),
+      lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
     }),
   ].filter(Boolean).join("\n\n");
 }

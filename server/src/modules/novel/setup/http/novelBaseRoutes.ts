@@ -157,6 +157,7 @@ const createResourceRecommendationSchema = z.object({
   styleTone: z.string().trim().optional(),
   emotionIntensity: z.enum(["low", "medium", "high"]).optional(),
   aiFreedom: z.enum(["low", "medium", "high"]).optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).optional(),
   provider: llmProviderSchema.optional(),
   model: z.string().trim().optional(),
   temperature: z.number().min(0).max(2).optional(),

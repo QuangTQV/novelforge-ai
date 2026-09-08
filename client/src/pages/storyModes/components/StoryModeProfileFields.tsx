@@ -77,7 +77,7 @@ export default function StoryModeProfileFields({
               rows={4}
               className={textareaClassName}
               value={listToLines(value.progressionUnits)}
-              placeholder={translateUi("每行一项，例如：\n发现资源缺口\n完成建设目标\n获得阶段反馈")}
+              placeholder={translateUi("Mỗi dòng một mục, ví dụ:\nPhát hiện thiếu hụt tài nguyên\nHoàn thành mục tiêu xây dựng\nNhận phản hồi theo giai đoạn")}
               onChange={(event) => updateList("progressionUnits", event.target.value)}
             />
           </label>

@@ -379,7 +379,7 @@ export function DirectorAutoExecutionPlanFields({
 
       <div className={`mt-3 text-xs leading-5 text-muted-foreground ${AUTO_DIRECTOR_MOBILE_CLASSES.wrapText}`}>
 
-        {translateUi("系统会按你选定的范围，自动准备节奏板、拆章和章节执行资源，再继续写作。\n        当前质量策略：")}{reviewLabel}{translateUi("。")}
+        {translateUi("Hệ thống sẽ tự chuẩn bị nhịp truyện, phân chương và tài nguyên thực thi theo phạm vi bạn chọn rồi tiếp tục viết.\nChiến lược chất lượng hiện tại:")}{reviewLabel}{translateUi(".")}
       </div>
     </div>
   );

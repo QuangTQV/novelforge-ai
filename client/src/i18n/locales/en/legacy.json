@@ -8130,5 +8130,17 @@
   "Trung bình": "Medium",
   "Cao": "High",
   "Mức độ suy luận mặc định": "Default reasoning effort",
-  "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.": "Only applies while the reasoning toggle on the provider card is on. Can be overridden per stage on the Model Routes page."
+  "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.": "Only applies while the reasoning toggle on the provider card is on. Can be overridden per stage on the Model Routes page.",
+  "Giao thức yêu cầu; chiến lược cấu trúc:": "Request protocol; structured strategy:",
+  "Giao thức yêu cầu:": "Request protocol:",
+  "; chiến lược cấu trúc:": "; structured strategy:",
+  "Không có": "None",
+  "Mỗi dòng một mục, ví dụ:\nPhát hiện thiếu hụt tài nguyên\nHoàn thành mục tiêu xây dựng\nNhận phản hồi theo giai đoạn": "One item per line, for example:\nIdentify a resource gap\nComplete a building goal\nReceive milestone feedback",
+  "Khoảng": "About",
+  "ký tự, dự kiến chia thành": "characters, estimated to split into",
+  "đoạn văn bản gốc, khoảng": "source-text segments, about",
+  "lượt gọi model.": "model calls.",
+  "chưa có sheet ba góc.\nKhi tạo kịch bản từng khung, hệ thống sẽ đưa mốc ngoại hình nhân vật vào prompt; cần có bản thiết kế để giữ ngoại hình nhất quán giữa các khung.": "does not have a turnaround sheet yet.\nThe panel script will inject the character's visual anchor; a design sheet is needed to keep the character consistent across panels.",
+  "Sau khi đặt lại, nội dung chương, sổ sự kiện, bản tóm tắt và báo cáo chất lượng sẽ bị xóa; trạng thái chương trở về \"chưa lập kế hoạch\". Dữ liệu lập kế hoạch như nhân vật, dàn ý và cấu trúc tập vẫn được giữ nguyên.": "Resetting will clear chapter text, the fact ledger, summaries, and quality reports; chapter status will return to \"unplanned\". Planning data such as characters, outlines, and volume structure will be kept.",
+  "Hệ thống sẽ tự chuẩn bị nhịp truyện, phân chương và tài nguyên thực thi theo phạm vi bạn chọn rồi tiếp tục viết.\nChiến lược chất lượng hiện tại:": "The system will prepare beats, chapter breakdowns, and execution resources for the selected range, then continue writing.\nCurrent quality strategy:"
 }

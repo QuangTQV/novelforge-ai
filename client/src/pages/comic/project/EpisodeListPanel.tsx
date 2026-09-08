@@ -272,7 +272,7 @@ function CharacterReadinessWarning({ characters }: { characters: ComicCharacter[
       <div>
         <span className="font-semibold">{translateUi("建议先完善角色设计稿")}</span>
         <span className="ml-1">
-          {withoutSheet.map((c) => c.name).join(translateUi("、"))}  {translateUi("尚未生成三视图。\n          生成分格脚本时会注入角色视觉锚点，有设计稿才能保证各格角色外貌一致。")}
+          {withoutSheet.map((c) => c.name).join(translateUi(", "))}  {translateUi("chưa có sheet ba góc.\nKhi tạo kịch bản từng khung, hệ thống sẽ đưa mốc ngoại hình nhân vật vào prompt; cần có bản thiết kế để giữ ngoại hình nhất quán giữa các khung.")}
         </span>
       </div>
     </div>

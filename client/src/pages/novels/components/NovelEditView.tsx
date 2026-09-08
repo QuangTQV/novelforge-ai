@@ -348,7 +348,7 @@ function DesktopNovelEditView(props: NovelEditViewProps) {
                     <CardContent className="space-y-2">
                       <p className="text-xs text-muted-foreground">
 
-                        {translateUi("重置后，所有章节正文、事实账本、摘要和质量报告将被清空，章节状态回到\"未规划\"。规划层数据（人物、大纲、卷规划）保留不变。")}
+                        {translateUi("Sau khi đặt lại, nội dung chương, sổ sự kiện, bản tóm tắt và báo cáo chất lượng sẽ bị xóa; trạng thái chương trở về \"chưa lập kế hoạch\". Dữ liệu lập kế hoạch như nhân vật, dàn ý và cấu trúc tập vẫn được giữ nguyên.")}
                       </p>
                       <Button
                         variant="outline"

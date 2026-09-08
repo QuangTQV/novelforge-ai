@@ -191,7 +191,7 @@ export const NOVEL_STYLE_FLAVOR_OPTIONS: BasicInfoOption<NovelStyleFlavor>[] = [
 export const PACE_OPTIONS: BasicInfoOption<NovelBasicFormState["pacePreference"]>[] = [
   {
     value: "fast",
-    label: translateUi("快 nhịp"),
+    label: translateUi("Nhịp nhanh"),
     summary: translateUi("Vào xung đột sớm, ưu tiên cảnh có hành động, tương tác và điểm móc câu; phù hợp với manga."),
     recommended: true,
   },

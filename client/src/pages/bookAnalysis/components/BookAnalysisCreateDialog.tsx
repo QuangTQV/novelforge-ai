@@ -358,7 +358,7 @@ export default function BookAnalysisCreateDialog(props: BookAnalysisCreateDialog
                 <div className="font-medium text-foreground">{translateUi("本次拆书体量：")}{scale.label}</div>
                 <div className="mt-1">
 
-                  {translateUi("约")} {formatCount(effectiveSourceCharCount)}  {translateUi("字，预计拆成")} {estimatedSegmentCount}  {translateUi("个原文片段，\n                  约")} {estimatedLlmCalls}  {translateUi("次模型调用。")}
+                  {translateUi("Khoảng")} {formatCount(effectiveSourceCharCount)}  {translateUi("ký tự, dự kiến chia thành")} {estimatedSegmentCount}  {translateUi("đoạn văn bản gốc, khoảng")} {estimatedLlmCalls}  {translateUi("lượt gọi model.")}
                 </div>
                 <div className="mt-1">{scale.tone}</div>
               </div>

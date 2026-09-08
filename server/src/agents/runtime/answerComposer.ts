@@ -582,6 +582,7 @@ async function composeFallbackAnswer(
         model: context.model,
         temperature: 0.2,
         maxTokens: context.maxTokens,
+        novelId: context.novelId,
       },
     });
     return result.output.trim() || "当前信息不足，无法继续";

@@ -8201,5 +8201,17 @@
   "Trung bình": "Trung bình",
   "Cao": "Cao",
   "Mức độ suy luận mặc định": "Mức độ suy luận mặc định",
-  "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.": "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes."
+  "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.": "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.",
+  "Giao thức yêu cầu; chiến lược cấu trúc:": "Giao thức yêu cầu; chiến lược cấu trúc:",
+  "Giao thức yêu cầu:": "Giao thức yêu cầu:",
+  "; chiến lược cấu trúc:": "; chiến lược cấu trúc:",
+  "Không có": "Không có",
+  "Mỗi dòng một mục, ví dụ:\nPhát hiện thiếu hụt tài nguyên\nHoàn thành mục tiêu xây dựng\nNhận phản hồi theo giai đoạn": "Mỗi dòng một mục, ví dụ:\nPhát hiện thiếu hụt tài nguyên\nHoàn thành mục tiêu xây dựng\nNhận phản hồi theo giai đoạn",
+  "Khoảng": "Khoảng",
+  "ký tự, dự kiến chia thành": "ký tự, dự kiến chia thành",
+  "đoạn văn bản gốc, khoảng": "đoạn văn bản gốc, khoảng",
+  "lượt gọi model.": "lượt gọi model.",
+  "chưa có sheet ba góc.\nKhi tạo kịch bản từng khung, hệ thống sẽ đưa mốc ngoại hình nhân vật vào prompt; cần có bản thiết kế để giữ ngoại hình nhất quán giữa các khung.": "chưa có sheet ba góc.\nKhi tạo kịch bản từng khung, hệ thống sẽ đưa mốc ngoại hình nhân vật vào prompt; cần có bản thiết kế để giữ ngoại hình nhất quán giữa các khung.",
+  "Sau khi đặt lại, nội dung chương, sổ sự kiện, bản tóm tắt và báo cáo chất lượng sẽ bị xóa; trạng thái chương trở về \"chưa lập kế hoạch\". Dữ liệu lập kế hoạch như nhân vật, dàn ý và cấu trúc tập vẫn được giữ nguyên.": "Sau khi đặt lại, nội dung chương, sổ sự kiện, bản tóm tắt và báo cáo chất lượng sẽ bị xóa; trạng thái chương trở về \"chưa lập kế hoạch\". Dữ liệu lập kế hoạch như nhân vật, dàn ý và cấu trúc tập vẫn được giữ nguyên.",
+  "Hệ thống sẽ tự chuẩn bị nhịp truyện, phân chương và tài nguyên thực thi theo phạm vi bạn chọn rồi tiếp tục viết.\nChiến lược chất lượng hiện tại:": "Hệ thống sẽ tự chuẩn bị nhịp truyện, phân chương và tài nguyên thực thi theo phạm vi bạn chọn rồi tiếp tục viết.\nChiến lược chất lượng hiện tại:"
 }

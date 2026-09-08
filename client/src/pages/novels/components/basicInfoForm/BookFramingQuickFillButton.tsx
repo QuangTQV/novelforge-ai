@@ -48,6 +48,7 @@ export function BookFramingQuickFillButton(props: BookFramingQuickFillButtonProp
       description: effectiveDescription || undefined,
       genreLabel: selectedGenreLabel || undefined,
       styleTone: basicForm.styleTone.trim() || undefined,
+      novelLanguage: basicForm.novelLanguage,
       provider: llm.provider,
       model: llm.model,
       temperature: llm.temperature,

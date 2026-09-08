@@ -506,7 +506,7 @@ export default function ModelRoutesPage() {
                   {connectivity?.structured ? (
                     <div>
 
-                      {translateUi("请求协议：")}{connectivity.structured.requestProtocol ?? connectivity.requestProtocol ?? translateUi("无")}{translateUi("，\n                      结构化策略：")}{connectivity.structured.strategy ?? translateUi("无")}{translateUi("，")}
+                      {translateUi("Giao thức yêu cầu:")}{connectivity.structured.requestProtocol ?? connectivity.requestProtocol ?? translateUi("Không có")}{translateUi("; chiến lược cấu trúc:")}{connectivity.structured.strategy ?? translateUi("Không có")}{translateUi(".")}
                       {connectivity.structured.reasoningForcedOff ? translateUi("会关闭 thinking") : translateUi("保留 thinking")}{translateUi("，")}
                       {connectivity.structured.fallbackAvailable ? translateUi("备用模型可用") : translateUi("备用模型未启用")}
                     </div>

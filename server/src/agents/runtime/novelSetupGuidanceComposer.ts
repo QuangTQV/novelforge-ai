@@ -1,5 +1,6 @@
 import { getLLM } from "../../llm/factory";
 import { preparePromptExecution, runTextPrompt } from "../../prompting/core/promptRunner";
+import { appendOutputLanguageDirective } from "../../prompting/core/novelOutputLanguage";
 import { runtimeSetupGuidancePrompt } from "../../prompting/prompts/agent/runtime.prompts";
 import type { StructuredIntent, ToolCall, ToolExecutionContext } from "../types";
 import type { ToolExecutionResult } from "./runtimeHelpers";
@@ -111,6 +112,7 @@ async function composeWarmGuidance(input: {
           model: input.context.model,
           temperature: Math.max(input.context.temperature ?? 0.7, 0.7),
           maxTokens: resolvedMaxTokens,
+          novelId: input.context.novelId,
         },
       });
       return result.output.trim() || input.fallback;
@@ -124,6 +126,7 @@ async function composeWarmGuidance(input: {
         intentFacts: buildIntentFacts(input.structuredIntent),
         knownFacts: input.facts,
       },
+      options: { novelId: input.context.novelId },
     });
     const llm = await guidanceLLMFactory(input.context.provider ?? "deepseek", {
       model: input.context.model,
@@ -132,7 +135,8 @@ async function composeWarmGuidance(input: {
       taskType: runtimeSetupGuidancePrompt.taskType,
       promptMeta: prepared.invocation,
     });
-    const result = await llm.invoke(prepared.messages);
+    const messages = await appendOutputLanguageDirective(prepared.messages, input.context.novelId);
+    const result = await llm.invoke(messages);
     const text = extractTextFromContent(result.content);
     return text || input.fallback;
   } catch {

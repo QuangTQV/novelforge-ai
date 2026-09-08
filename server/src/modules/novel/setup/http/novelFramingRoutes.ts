@@ -3,6 +3,7 @@ import type { ApiResponse } from "@ai-novel/shared/types/api";
 import type { BookFramingSuggestionInput } from "@ai-novel/shared/types/novelFraming";
 import { z } from "zod";
 import { llmProviderSchema } from "../../../../llm/providerSchema";
+import { NOVEL_LANGUAGE_VALUES } from "@ai-novel/shared/utils/novelLanguage";
 import { validate } from "../../../../middleware/validate";
 import { novelFramingSuggestionService } from "../../../../services/novel/NovelFramingSuggestionService";
 
@@ -17,6 +18,7 @@ const framingSuggestSchema = llmGenerateSchema.extend({
   description: z.string().trim().max(2000).optional(),
   genreLabel: z.string().trim().max(120).optional(),
   styleTone: z.string().trim().max(120).optional(),
+  novelLanguage: z.enum(NOVEL_LANGUAGE_VALUES).optional(),
 }).refine((value) => Boolean(value.title?.trim() || value.description?.trim()), {
   message: "请至少填写书名或一句话概述。",
 });

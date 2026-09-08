@@ -87,5 +87,17 @@
   "Trung bình": "中",
   "Cao": "高",
   "Mức độ suy luận mặc định": "默认推理强度",
-  "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.": "仅在供应商卡片上的推理开关打开时生效。可在“模型路由”页面按阶段单独覆盖。"
+  "Chỉ áp dụng khi công tắc suy luận trên thẻ provider đang bật. Có thể ghi đè riêng theo từng giai đoạn ở trang Model Routes.": "仅在供应商卡片上的推理开关打开时生效。可在“模型路由”页面按阶段单独覆盖。",
+  "Giao thức yêu cầu; chiến lược cấu trúc:": "请求协议；结构化策略：",
+  "Giao thức yêu cầu:": "请求协议：",
+  "; chiến lược cấu trúc:": "；结构化策略：",
+  "Không có": "无",
+  "Mỗi dòng một mục, ví dụ:\nPhát hiện thiếu hụt tài nguyên\nHoàn thành mục tiêu xây dựng\nNhận phản hồi theo giai đoạn": "每行一项，例如：\n发现资源缺口\n完成建设目标\n获得阶段反馈",
+  "Khoảng": "约",
+  "ký tự, dự kiến chia thành": "字，预计拆成",
+  "đoạn văn bản gốc, khoảng": "个原文片段，约",
+  "lượt gọi model.": "次模型调用。",
+  "chưa có sheet ba góc.\nKhi tạo kịch bản từng khung, hệ thống sẽ đưa mốc ngoại hình nhân vật vào prompt; cần có bản thiết kế để giữ ngoại hình nhất quán giữa các khung.": "尚未生成三视图。\n生成分格脚本时会注入角色视觉锚点，有设计稿才能保证各格角色外貌一致。",
+  "Sau khi đặt lại, nội dung chương, sổ sự kiện, bản tóm tắt và báo cáo chất lượng sẽ bị xóa; trạng thái chương trở về \"chưa lập kế hoạch\". Dữ liệu lập kế hoạch như nhân vật, dàn ý và cấu trúc tập vẫn được giữ nguyên.": "重置后，所有章节正文、事实账本、摘要和质量报告将被清空，章节状态回到\"未规划\"。规划层数据（人物、大纲、卷规划）保留不变。",
+  "Hệ thống sẽ tự chuẩn bị nhịp truyện, phân chương và tài nguyên thực thi theo phạm vi bạn chọn rồi tiếp tục viết.\nChiến lược chất lượng hiện tại:": "系统会按你选定的范围，自动准备节奏板、拆章和章节执行资源，再继续写作。\n当前质量策略："
 }

@@ -30,6 +30,7 @@ export class NovelFramingSuggestionService {
         provider: input.provider,
         model: input.model,
         temperature: Math.min(input.temperature ?? 0.5, 0.8),
+        outputLanguage: input.novelLanguage,
       },
     });
     return result.output;

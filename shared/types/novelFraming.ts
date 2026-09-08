@@ -1,4 +1,5 @@
 import type { LLMProvider } from "./llm";
+import type { NovelLanguage } from "./novel";
 
 export const BOOK_FRAMING_MAX_COMMERCIAL_TAGS = 6;
 export const BOOK_FRAMING_COMMERCIAL_TAG_MAX_LENGTH = 20;
@@ -16,6 +17,7 @@ export interface BookFramingSuggestionInput {
   description?: string;
   genreLabel?: string;
   styleTone?: string;
+  novelLanguage?: NovelLanguage;
   provider?: LLMProvider;
   model?: string;
   temperature?: number;

@@ -1,5 +1,6 @@
 import { getLLM } from "../../llm/factory";
 import { preparePromptExecution, runTextPrompt } from "../../prompting/core/promptRunner";
+import { appendOutputLanguageDirective } from "../../prompting/core/novelOutputLanguage";
 import { runtimeSetupIdeationPrompt } from "../../prompting/prompts/agent/runtime.prompts";
 import type { StructuredIntent, ToolCall, ToolExecutionContext } from "../types";
 import { safeJson, type ToolExecutionResult } from "./runtimeHelpers";
@@ -164,6 +165,7 @@ export async function composeNovelSetupIdeationAnswer(
           model: context.model,
           temperature: Math.max(context.temperature ?? 0.75, 0.75),
           maxTokens: resolvedMaxTokens,
+          novelId: context.novelId,
         },
       });
       return result.output.trim() || fallback;
@@ -176,6 +178,7 @@ export async function composeNovelSetupIdeationAnswer(
         structuredIntentJson: safeJson(structuredIntent ?? { intent: "ideate_novel_setup" }),
         facts,
       },
+      options: { novelId: context.novelId },
     });
     const llm = await ideationLLMFactory(context.provider ?? "deepseek", {
       model: context.model,
@@ -184,7 +187,8 @@ export async function composeNovelSetupIdeationAnswer(
       taskType: runtimeSetupIdeationPrompt.taskType,
       promptMeta: prepared.invocation,
     });
-    const result = await llm.invoke(prepared.messages);
+    const messages = await appendOutputLanguageDirective(prepared.messages, context.novelId);
+    const result = await llm.invoke(messages);
     const text = extractTextFromContent(result.content);
     return text || fallback;
   } catch {

@@ -28,7 +28,7 @@
     "currentStage": "Giai đoạn hiện tại: {{stage}}",
     "notStarted": "Chưa bắt đầu",
     "order": {
-      "executionPlan": "Kế hoạch thực thi",
+      "executionPlan": "Kế hoạch viết chương",
       "writing": "Viết",
       "review": "Kiểm tra",
       "repair": "Sửa chữa",
@@ -37,18 +37,18 @@
       "ready": "Sẵn sàng"
     },
     "notes": {
-      "executionPlanDone": "Kế hoạch thực thi của chương đã đầy đủ.",
-      "executionPlanPending": "Chương còn thiếu kế hoạch thực thi; hệ thống sẽ chuẩn bị phiếu tác vụ hoặc phân rã cảnh.",
+      "executionPlanDone": "Kế hoạch viết chương đã đầy đủ.",
+      "executionPlanPending": "Chương còn thiếu kế hoạch viết; hệ thống sẽ chuẩn bị phiếu tác vụ hoặc chia thành các cảnh.",
       "writingInProgress": "AI đang viết nội dung chương này.",
-      "writingPending": "Đã có kế hoạch thực thi, bạn có thể bắt đầu viết nội dung.",
+      "writingPending": "Kế hoạch đã sẵn sàng; bạn có thể bắt đầu viết nội dung.",
       "reviewInProgress": "Nội dung đã được tạo và hệ thống đang kiểm tra.",
       "reviewPending": "Chương đã có nội dung; bước tiếp theo là kiểm tra.",
       "repairInProgress": "Hệ thống đang sửa nội dung theo các vấn đề đã phát hiện.",
-      "repairPending": "Nếu kiểm tra phát hiện vấn đề, chương sẽ chuyển sang giai đoạn sửa chữa.",
+      "repairPending": "Nếu phát hiện vấn đề, hệ thống sẽ chuyển chương sang bước chỉnh sửa.",
       "stateSyncInProgress": "Nội dung đã sẵn sàng đọc; hệ thống đang đồng bộ trạng thái, thay đổi nhân vật và tài nguyên chính.",
       "stateSyncPending": "Sau khi nội dung sẵn sàng, hệ thống sẽ đồng bộ trạng thái và tài nguyên chính.",
-      "payoffSyncInProgress": "Hệ thống đang cân chỉnh sổ nút thắt của chương.",
-      "payoffSyncPending": "Sau khi đồng bộ tài nguyên, hệ thống sẽ cân chỉnh sổ nút thắt theo rủi ro và nhịp độ.",
+      "payoffSyncInProgress": "Hệ thống đang cập nhật các nút thắt của chương.",
+      "payoffSyncPending": "Sau khi đồng bộ tài nguyên, hệ thống sẽ cập nhật các nút thắt theo rủi ro và nhịp độ.",
       "readyDone": "Chương đã đạt trạng thái có thể tiếp tục.",
       "readyInProgress": "Chương đã hoàn tất lượt kiểm tra hiện tại; bạn có thể tiếp tục chỉnh sửa hoặc xử lý đề xuất.",
       "readyPending": "Hoàn tất các bước trước để tiếp tục chương."
@@ -63,8 +63,8 @@
     "fullAudit": "Kiểm tra toàn bộ",
     "fullAuditRunning": "Đang kiểm tra toàn bộ…",
     "fullAuditReason": "Nội dung đã có; hãy kiểm tra toàn bộ trước khi sửa hoặc viết lại.",
-    "createPlan": "Tạo kế hoạch thực thi",
-    "planRunning": "Đang tạo kế hoạch thực thi…",
+    "createPlan": "Tạo kế hoạch viết chương",
+    "planRunning": "Đang tạo kế hoạch viết chương…",
     "createPlanReason": "Chương còn thiếu mục tiêu hoặc phiếu tác vụ; hãy bổ sung kế hoạch trước.",
     "writeChapter": "Viết chương này",
     "writeRunning": "Đang viết chương này…",
@@ -124,7 +124,7 @@
   "status": {
     "unplanned": {
       "label": "Chờ chuẩn bị",
-      "description": "Chờ chuẩn bị: chương còn thiếu tài nguyên thực thi."
+      "description": "Chờ chuẩn bị: chương còn thiếu thông tin cần thiết để bắt đầu viết."
     },
     "pendingGeneration": {
       "label": "Chờ viết",

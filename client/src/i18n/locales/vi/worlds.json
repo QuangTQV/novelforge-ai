@@ -5,8 +5,8 @@
     "analyze": { "analyzing": "Đang phân tích…", "referenceCta": "Phân tích tài liệu tham khảo", "freeCta": "Bắt đầu từ ý tưởng" },
     "stepOne": {
       "name": { "label": "Tên thế giới", "hint": "Đặt tên dễ nhận biết", "placeholder": "Ví dụ: Vương quốc sương mù" },
-      "genre": { "label": "Nền đề tài", "hint": "Chọn nền đề tài cho thế giới", "loadingOption": "Đang tải…", "selectPlaceholder": "Chọn nền đề tài", "currentPath": "Đường dẫn hiện tại", "description": "Mô tả", "template": "Mẫu", "loadingTree": "Đang tải thư viện…", "emptyLibrary": "Thư viện chưa có dữ liệu", "goToLibrary": "Mở thư viện nền đề tài", "footerHint": "Bạn có thể đổi lựa chọn sau" },
-      "mode": { "label": "Chế độ triển khai" },
+      "genre": { "label": "Thể loại & đề tài", "hint": "Chọn thể loại cho thế giới", "loadingOption": "Đang tải…", "selectPlaceholder": "Chọn thể loại", "currentPath": "Đường dẫn hiện tại", "description": "Mô tả", "template": "Mẫu", "loadingTree": "Đang tải thư viện…", "emptyLibrary": "Thư viện chưa có dữ liệu", "goToLibrary": "Mở thư viện thể loại & đề tài", "footerHint": "Bạn có thể đổi lựa chọn sau" },
+      "mode": { "label": "Hướng phát triển truyện" },
       "reference": { "knowledgeTitle": "Tài liệu tham khảo", "knowledgeDescription": "Dùng tài liệu làm nền cho thế giới", "modeLabel": "Cách dùng tài liệu", "preserveLabel": "Giữ lại", "preservePlaceholder": "Các yếu tố cần giữ", "allowedLabel": "Được phép", "allowedPlaceholder": "Các yếu tố được phép thêm", "forbiddenLabel": "Không được dùng", "forbiddenPlaceholder": "Các yếu tố cần tránh" },
       "inspirationText": { "referencePlaceholder": "Dán nội dung tham khảo…", "randomPlaceholder": "Mô tả cảm hứng…", "freePlaceholder": "Mô tả thế giới bạn muốn tạo…" },
       "preferences": { "title": "Tùy chọn chi tiết", "hint": "Điều chỉnh mức độ chi tiết đầu ra", "collapse": "Thu gọn", "expand": "Mở rộng", "refinementLabel": "Mức độ tinh chỉnh", "refinement": { "basic": "Cơ bản", "standard": "Tiêu chuẩn", "detailed": "Chi tiết" }, "countLabel": "Số lượng gợi ý" },

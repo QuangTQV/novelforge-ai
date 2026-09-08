@@ -1,6 +1,6 @@
 {
-  "emptyProject": "Hãy tạo tập và kịch bản trước, rồi mở phần phân cảnh và prompt video.",
-  "metrics": { "currentPrompt": "Prompt hiện tại", "createdTasks": "Tác vụ đã tạo", "generating": "Đang tạo", "completed": "Đã hoàn tất", "failed": "Thất bại", "history": "Phiên bản cũ" },
+  "emptyProject": "Hãy tạo tập và kịch bản trước, rồi mở phần phân cảnh và chỉ dẫn video.",
+  "metrics": { "currentPrompt": "Chỉ dẫn hiện tại", "createdTasks": "Tác vụ đã tạo", "generating": "Đang tạo", "completed": "Đã hoàn tất", "failed": "Thất bại", "history": "Lịch sử phiên bản" },
   "fields": { "videoProvider": "Kênh video", "imageProvider": "Provider ảnh khung đầu", "imageProviderUnset": "Chưa cấu hình Provider ảnh", "characterReference": "Ảnh tham chiếu nhân vật" },
   "actions": { "createStoryboard": "Tạo phân cảnh", "createEpisodeKeyframe": "Tạo khung đầu tập này", "createEpisodeVideo": "Tạo tác vụ video tập này" },
   "storyboard": { "title": "Phân cảnh", "generated": "Đã tạo chuỗi cảnh quay." },

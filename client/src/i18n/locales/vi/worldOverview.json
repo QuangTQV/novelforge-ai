@@ -26,7 +26,7 @@
     "next": "Bước tiếp theo đề xuất",
     "buildWorld": "AI xây dựng thế giới",
     "fragments": "Các mảnh thiết lập hiện có",
-    "assetEntry": "Lối vào tài sản thế giới",
+    "assetEntry": "Tư liệu trực quan của thế giới",
     "assetDescription": "Bản đồ và đồ thị là tài sản trực quan của sổ tay thế giới; không tự động ghi đè đồng bộ và không thay thế nguồn quy tắc.",
     "reserved": "Lối vào dự phòng",
     "map": "Bản đồ thế giới",

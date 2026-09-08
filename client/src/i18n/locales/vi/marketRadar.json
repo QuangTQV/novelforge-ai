@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Radar đề tài xu hướng"
+    "title": "Theo dõi xu hướng đề tài"
   },
   "platforms": {
     "fanqie": "Fanqie Novel",
@@ -8,7 +8,7 @@
     "jinjiang": "Jinjiang Literature"
   },
   "signalKind": {
-    "genre": "Đề tài hot",
+    "genre": "Đề tài nổi bật",
     "protagonist": "Thân phận nhân vật chính",
     "advantage": "Lợi thế đặc biệt",
     "opening": "Điểm bùng nổ mở đầu",
@@ -18,7 +18,7 @@
     "crowding": "Mô-típ bão hòa"
   },
   "influenceMode": {
-    "follow_hot": "Bám theo xu hướng",
+    "follow_hot": "Theo xu hướng",
     "differentiate": "Khác biệt trong xu hướng",
     "light": "Giảm ảnh hưởng thị trường"
   },
@@ -77,7 +77,7 @@
     "platformItemCount": "{{platform}} · {{count}} mục",
     "suggestRefresh": " · nên làm mới",
     "signalSelected": "Đã chọn",
-    "signalHeat": "Độ hot {{value}}",
+    "signalHeat": "Mức độ quan tâm {{value}}",
     "signalCrowding": "Độ bão hòa {{value}}",
     "selectionCount": "Đã chọn {{count}}/5 tín hiệu thị trường",
     "selectionHint": "AI đã tự động chọn gợi ý, bạn có thể thay thế rồi mới mở truyện.",

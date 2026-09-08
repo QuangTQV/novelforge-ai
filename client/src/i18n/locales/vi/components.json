@@ -41,12 +41,12 @@
     "selectModel": "Chọn mô hình",
     "noModels": "Chưa có mô hình khả dụng",
     "searchModel": "Tìm mô hình",
-    "customModel": "Nhập model tùy chỉnh",
+    "customModel": "Nhập mô hình tùy chỉnh",
     "temperatureHint": "Nhiệt độ càng cao thì kết quả càng đa dạng; lập kế hoạch nên dùng 0,3–0,7",
     "temperature": "Nhiệt độ",
     "modelTemperature": "Nhiệt độ mô hình",
     "noConfiguredProvider": "Chưa có nhà cung cấp mô hình khả dụng. Hãy hoàn tất API Key và cấu hình mô hình trong Cài đặt hệ thống.",
     "temperatureRange": "Nhiệt độ (0–2)",
-    "maxTokens": "Tokens tối đa (để trống = không giới hạn)"
+    "maxTokens": "Số token tối đa (bỏ trống = không giới hạn)"
   }
 }

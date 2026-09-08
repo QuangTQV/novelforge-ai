@@ -23,9 +23,9 @@
     "delete": "Xóa"
   },
   "advanced": {
-    "emptyHint": "Phần này chưa có trường dễ đọc. Bạn có thể dựa vào giới thiệu và quy tắc chống AI ở trên; chỉ mở JSON nâng cao khi cần tương thích chi tiết.",
+    "emptyHint": "Phần này chưa có thông tin tóm tắt dễ đọc. Bạn có thể xem phần giới thiệu và nguyên tắc giữ giọng viết tự nhiên ở trên; chỉ mở JSON nâng cao khi cần chỉnh sâu.",
     "toggle": "Xem hoặc sửa JSON nâng cao",
-    "description": "Đây là lối vào JSON gốc, chủ yếu để tương thích tài sản cũ hoặc tinh chỉnh chi tiết. Thông thường chỉ cần xem các trường dễ đọc ở trên.",
+    "description": "Đây là phần chỉnh sửa JSON gốc, chủ yếu dành cho dữ liệu cũ hoặc khi cần tinh chỉnh sâu. Thông thường bạn chỉ cần dùng các trường dễ đọc ở trên.",
     "invalidJson": "Không thể nhận diện cấu trúc JSON hiện tại. Khi lưu, hệ thống sẽ cố gắng dùng object rỗng; nên sửa định dạng trước khi lưu."
   },
   "fields": {
@@ -59,12 +59,12 @@
     "fingerprintRisk": "Rủi ro dấu vân tay {{value}}",
     "summaryOnly": "Hiện chỉ có quy tắc dạng tóm tắt",
     "presetTitle": "Gợi ý preset trích xuất",
-    "presetDescription": "Hiển thị ba chiến lược giữ lại do model đề xuất; lựa chọn đang lưu sẽ được đánh dấu riêng.",
+    "presetDescription": "Hiển thị ba chiến lược giữ lại do mô hình đề xuất; lựa chọn đang lưu sẽ được đánh dấu riêng.",
     "currentPreset": "Đang áp dụng",
     "keep": "Giữ lại {{count}}",
     "weaken": "Làm nhẹ {{count}}",
     "remove": "Tách bỏ {{count}}",
-    "antiAiTitle": "Quy tắc chống AI do model đề xuất",
+    "antiAiTitle": "Nguyên tắc giữ giọng viết tự nhiên do mô hình đề xuất",
     "antiAiDescription": "Đây là các quy tắc được đề xuất gắn trong giai đoạn trích xuất; quy tắc đã gắn sẽ được đánh dấu.",
     "bound": " · Đã gắn",
     "recommendedUnbound": " · Đề xuất nhưng chưa gắn",
@@ -85,8 +85,8 @@
     "rhythmTitle": "Quy tắc mật độ nhịp điệu",
     "rhythmHint": "Kiểm soát tốc độ tiến triển, mật độ đoạn văn và ưu tiên hành động hay giải thích.",
     "antiAiBindingTitle": "Gắn quy tắc chống AI",
-    "antiAiBindingDescription": "Quyết định hệ thống ưu tiên phòng tránh vấn đề nào khi kiểm tra và sửa bản thảo. Gắn càng rõ, việc khử chất AI càng có định hướng.",
-    "savedNotice": "Sau khi lưu, chi tiết mở rộng, kiểm tra khử chất AI và thử nghiệm áp dụng của công thức sẽ đọc thiết lập mới.",
+    "antiAiBindingDescription": "Chọn những vấn đề hệ thống cần ưu tiên phát hiện và chỉnh sửa trong bản thảo. Mô tả càng rõ, việc làm tự nhiên giọng văn càng sát ý bạn.",
+    "savedNotice": "Sau khi lưu, phần chi tiết mở rộng, kiểm tra giọng văn và thử nghiệm áp dụng sẽ dùng thiết lập mới.",
     "save": "Lưu công thức hiện tại",
     "saving": "Đang lưu..."
   }

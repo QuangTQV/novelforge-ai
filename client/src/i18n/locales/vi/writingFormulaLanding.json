@@ -4,7 +4,7 @@
   "actions": {
     "edit": "Sửa thiết lập",
     "apply": "Áp dụng và thử nghiệm",
-    "clean": "Khử chất AI"
+    "clean": "Làm tự nhiên giọng văn"
   },
   "panels": {
     "feel": {
@@ -21,8 +21,8 @@
       "rhythm": "Kiểm soát nhịp"
     },
     "antiAi": {
-      "title": "Ràng buộc chống AI",
-      "description": "Xác định các rủi ro hệ thống sẽ ưu tiên phát hiện và sửa trong bản thảo."
+      "title": "Giữ giọng viết tự nhiên",
+      "description": "Xác định những dấu hiệu máy móc cần ưu tiên phát hiện và chỉnh lại trong bản thảo."
     },
     "asset": {
       "title": "Tổng quan tài sản",

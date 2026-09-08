@@ -87,7 +87,7 @@
     },
     "longTerm": {
       "label": "Tài nguyên then chốt của nhân vật lâu dài",
-      "helper": "Nhân vật lâu dài ưu tiên hiển thị tài nguyên làm thay đổi lựa chọn hành động, quân bài quan hệ, mức độ người đọc biết hoặc việc hoàn trả phục bút."
+      "helper": "Nhân vật lâu dài ưu tiên hiển thị những tư liệu có thể làm thay đổi lựa chọn hành động, lợi thế quan hệ, mức độ người đọc biết hoặc cách cài cắm được giải quyết."
     }
   },
   "resourceStatus": {
@@ -147,7 +147,7 @@
   },
   "castOptions": {
     "confirmApplyHeading": "Đội hình «{{title}}» vẫn còn điểm chưa khớp hoàn toàn với thiết lập câu chuyện hiện tại.",
-    "confirmApplyFooter": "Vẫn áp dụng vào bàn làm việc tài sản nhân vật chứ? Sau khi áp dụng bạn vẫn có thể tiếp tục điều chỉnh trong phần tài sản nhân vật.",
+    "confirmApplyFooter": "Vẫn áp dụng vào không gian nhân vật chứ? Sau khi áp dụng, bạn vẫn có thể tiếp tục chỉnh sửa hồ sơ nhân vật.",
     "confirmDeleteApplied": "Xác nhận xóa phương án «{{title}}»? Việc này chỉ xóa bản ghi phương án, không hoàn tác các nhân vật và quan hệ đã đồng bộ.",
     "confirmDelete": "Xác nhận xóa phương án «{{title}}»?",
     "confirmClearApplied": "Xác nhận xóa toàn bộ bản ghi phương án đội hình hiện tại? Các nhân vật và quan hệ đã đồng bộ sẽ không tự động hoàn tác.",
@@ -192,7 +192,7 @@
     "clearing": "Đang xóa...",
     "dislikeAll": "Không thích cái nào",
     "collapsePlanner": "Thu gọn khu phương án",
-    "applyNote": "Sau khi áp dụng một đội hình, hệ thống sẽ đồng bộ tạo/cập nhật nhân vật và làm mới bàn làm việc tài sản nhân vật.",
+    "applyNote": "Sau khi áp dụng một đội hình, hệ thống sẽ tạo/cập nhật nhân vật và làm mới không gian nhân vật.",
     "loadingOptions": "Đang tải phương án đội hình...",
     "appliedTag": "Đã áp dụng",
     "recommendedTag": "Đề xuất",
@@ -263,7 +263,7 @@
     "merging": "Đang gộp...",
     "mergeIntoFocus": "Gộp vào nhân vật đang chọn",
     "selectExistingFirst": "Chọn một nhân vật đã có trước",
-    "noCandidates": "Chưa có ứng viên nhân vật mới nào chờ xác nhận. Sau khi viết vài chương, nơi này sẽ tự tổng hợp các lối vào nhân vật mới mà AI trích xuất được.",
+    "noCandidates": "Chưa có ứng viên nhân vật mới nào chờ xác nhận. Sau khi viết vài chương, hệ thống sẽ tổng hợp những nhân vật tiềm năng mà AI phát hiện được.",
     "relationVolume": "Tập: {{value}}",
     "relationRecentChapter": "Chương đẩy tiến gần nhất: chương {{order}}",
     "relationNextTrigger": "Điểm kích hoạt giai đoạn tiếp theo: {{value}}",

@@ -110,14 +110,14 @@
     "current": "Đang dùng",
     "backgroundTask": "Tác vụ nền",
     "taskTitle": "Tiêu đề tác vụ: {{title}}",
-    "stage": "Giai đoạn thực thi: {{stage}}",
+    "stage": "Giai đoạn xử lý: {{stage}}",
     "progress": "Tiến độ tác vụ: {{progress}}%",
     "failure": "Nguyên nhân lỗi: {{reason}}",
     "taskCenter": "Mở trung tâm tác vụ",
     "afterSubmit": "Sau khi gửi, hệ thống sẽ trích xuất, áp dụng chiến lược giữ lại và tự động lưu công thức. Bạn có thể đóng hộp thoại; khi hoàn tất kết quả sẽ tự động mở.",
     "creatingFormula": "Đang tạo...",
     "submitting": "Đang gửi tác vụ...",
-    "taskActive": "Tác vụ nền đang chạy",
+    "taskActive": "Tác vụ nền đang xử lý",
     "sourceVersion": "Phiên bản nguồn v{{version}} · {{chars}}"
   }
 }

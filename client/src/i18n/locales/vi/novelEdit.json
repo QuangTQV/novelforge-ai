@@ -28,7 +28,7 @@
       "regenerateStep": "Tạo lại bước hiện tại",
       "confirming": "Đang xác nhận...",
       "saveAndConfirm": "Lưu và xác nhận",
-      "openChapterExecution": "Mở thực thi chương",
+      "openChapterExecution": "Mở quy trình viết chương",
       "openQualityRepair": "Mở sửa chất lượng",
       "completeDirectorOutput": "Hoàn thiện phần AI đã chuẩn bị",
       "goCharacterPrep": "Đến chuẩn bị nhân vật",
@@ -42,7 +42,7 @@
       "collapsing": "Đang thu gọn...",
       "completeAndCollapse": "Hoàn tất và thu gọn",
       "dismissReminder": "Thu gọn nhắc nhở này",
-      "executionDetails": "Chi tiết thực thi"
+      "executionDetails": "Chi tiết quy trình"
     }
   }
 }

@@ -24,6 +24,7 @@ import { validate } from "../middleware/validate";
 import { ragServices } from "../services/rag";
 import { providerBalanceService } from "../services/settings/ProviderBalanceService";
 import { secretStore } from "../services/settings/secretStore";
+import { embeddingSecretProvider } from "../services/settings/embeddingSecret";
 import {
   getDefaultImageModel,
   getImageModelOptions,
@@ -420,15 +421,18 @@ router.put(
     try {
       const body = req.body as z.infer<typeof ragSettingsSchema>;
       if (body.embeddingApiKey || body.embeddingBaseURL) {
-        const existing = await secretStore.getProvider(body.embeddingProvider);
-        const record = await secretStore.upsertProvider(body.embeddingProvider, {
+        // Credential embedding lưu ở không gian riêng ("embedding:<provider>") để không
+        // đè lên cấu hình LLM cùng nhà cung cấp.
+        const embeddingSecretKey = embeddingSecretProvider(body.embeddingProvider);
+        const existing = await secretStore.getProvider(embeddingSecretKey);
+        const record = await secretStore.upsertProvider(embeddingSecretKey, {
           key: body.embeddingApiKey ?? existing?.key ?? null,
           baseURL: body.embeddingBaseURL
             ?? existing?.baseURL
             ?? (isBuiltInProvider(body.embeddingProvider) ? PROVIDERS[body.embeddingProvider].baseURL : null),
           isActive: true,
         });
-        setProviderSecretCache(body.embeddingProvider, record.isActive ? {
+        setProviderSecretCache(embeddingSecretKey, record.isActive ? {
           displayName: record.displayName ?? undefined,
           key: record.key ?? undefined,
           model: record.model ?? undefined,
@@ -437,7 +441,7 @@ router.put(
           concurrencyLimit: record.concurrencyLimit ?? 0,
           requestIntervalMs: record.requestIntervalMs ?? 0,
         } : null);
-        evictSharedLimiters(body.embeddingProvider);
+        evictSharedLimiters(embeddingSecretKey);
       }
       const [embeddingResult, runtimeResult] = await Promise.all([
         saveRagEmbeddingSettings({

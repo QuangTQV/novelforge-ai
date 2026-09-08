@@ -17,6 +17,7 @@ import { getLLMSelectionSettings } from "../../services/settings/LLMSelectionSet
 import { getRagEmbeddingSettings } from "../../services/settings/RagSettingsService";
 import { getRagRuntimeSettings } from "../../services/settings/RagRuntimeSettingsService";
 import { secretStore } from "../../services/settings/secretStore";
+import { embeddingSecretProvider } from "../../services/settings/embeddingSecret";
 
 const MAX_PROVIDER_CONCURRENCY_LIMIT = 100;
 const MAX_PROVIDER_REQUEST_INTERVAL_MS = 3_600_000;
@@ -244,8 +245,11 @@ export function registerCustomProviderRoutes(router: Router): void {
           throw new AppError("知识库正在使用这个向量服务，请先切换向量服务或暂停资料检索。", 400);
         }
         await secretStore.deleteProvider(provider);
+        // Dọn luôn dòng credential embedding riêng (nếu có) cho nhà cung cấp này.
+        await secretStore.deleteProvider(embeddingSecretProvider(provider)).catch(() => undefined);
         await saveProviderImageModel(provider, null);
         setProviderSecretCache(provider, null);
+        setProviderSecretCache(embeddingSecretProvider(provider), null);
         evictSharedLimiters(provider);
         res.status(200).json({
           success: true,

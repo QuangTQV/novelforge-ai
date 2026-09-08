@@ -12,7 +12,7 @@
     "worldHint": "Hãy sắp xếp phạm vi thế giới thực sự dùng trong sách trước để tránh việc tạo chương đọc quá nhiều thiết lập không liên quan.",
     "noWorldHint": "Hãy tạo hoặc nhập thế giới của sách trước, sau đó sắp xếp phạm vi mà việc tạo nội dung sẽ đọc.",
     "refreshing": "Đang sắp xếp...",
-    "refresh": " sắp xếp phạm vi sử dụng của sách",
+    "refresh": "Sắp xếp phạm vi sử dụng của sách",
     "adjust": "Điều chỉnh mục giữ lại",
     "save": "Lưu mục giữ lại",
     "saving": "Đang lưu...",
@@ -26,7 +26,7 @@
     "boundary": "Ranh giới: ",
     "detailsTitle": "Phạm vi sử dụng được tạo",
     "detailsHint": "Xác nhận các quy tắc, thế lực và địa điểm mà việc tạo chương thực sự sẽ đọc. Chỉ cần chỉ định một số mục bắt buộc, phần còn lại để hệ thống cắt theo hướng sách.",
-    "reorganize": " sắp xếp lại phạm vi sử dụng",
+    "reorganize": "Sắp xếp lại phạm vi sử dụng",
     "noBookWorld": "Tiểu thuyết này chưa có thế giới riêng. Hãy nhập từ thư viện thế giới hoặc tạo theo chủ đề sách, sau đó sắp xếp phạm vi dùng cho câu chuyện.",
     "unnamedWorld": "Thế giới chưa đặt tên",
     "storySource": "Nguồn ý tưởng câu chuyện",
@@ -57,7 +57,7 @@
     "scopeLabel": "Mô tả ranh giới không được vượt qua ở giai đoạn đầu",
     "scopeHint": "Có thể thêm một câu, ví dụ: giữ nền đô thị hiện thực, không chuyển thành truyện huyền huyễn triển khai.",
     "scopePlaceholder": "Ví dụ: Giữ môi trường thương mại hiện thực và cảm giác áp lực của nhân vật, không đưa hệ thống siêu nhiên vào.",
-    "noSlice": "Tiểu thuyết này chưa sắp xếp ra phạm vi thế giới dùng cho câu chuyện hiện tại. Hãy bấm “ sắp xếp phạm vi sử dụng của sách” để tạo bản quy tắc, thế lực và địa điểm có thể xác nhận.",
+    "noSlice": "Tiểu thuyết này chưa có phạm vi thế giới cho câu chuyện hiện tại. Hãy bấm “Sắp xếp phạm vi sử dụng của sách” để tạo danh sách quy tắc, thế lực và địa điểm cần xác nhận.",
     "disclosureTitle": "Chi tiết phạm vi sử dụng",
     "disclosureHint": "Xem và điều chỉnh các ràng buộc thế giới cần giữ lại ở giai đoạn đầu."
   }

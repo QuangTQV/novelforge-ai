@@ -75,6 +75,7 @@ export class StoryMacroPlanService {
         pacePreference: true,
         emotionIntensity: true,
         estimatedChapterCount: true,
+        novelLanguage: true,
         genre: {
           select: {
             name: true,

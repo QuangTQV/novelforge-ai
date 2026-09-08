@@ -368,6 +368,12 @@ const BUILT_IN_GENRE_SEEDS: GenreSeedNode[] = [
         description: "围绕成长、同伴关系、试探靠近和青春氛围展开。",
         template: "强调成长心事、关系试探和阶段性心动兑现。",
       },
+      {
+        id: "genre_romance_harem",
+        name: "Harem",
+        description: "主角同时与多名核心角色发展情感关系，看点在于多线情感拉扯、成员差异化和关系格局的持续变化。",
+        template: "强调每名核心角色独立的吸引力与诉求、情感线并行推进和阶段性关系确认，避免角色沦为背景板或轮流工具人。",
+      },
     ],
   },
   {

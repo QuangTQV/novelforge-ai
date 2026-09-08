@@ -1,4 +1,5 @@
 import { prisma } from "../../../db/prisma";
+import { EMBEDDING_SECRET_PREFIX } from "../embeddingSecret";
 import type { SecretStore, SecretStoreListOptions, SecretStoreRecord, SecretStoreWriteInput } from "./SecretStore";
 
 function toPrismaWriteInput(input: SecretStoreWriteInput): Record<string, unknown> {
@@ -31,7 +32,9 @@ export class DatabaseSecretStore implements SecretStore {
               in: options.providers,
             },
           }
-          : {}),
+          // Dòng credential embedding (tiền tố "embedding:") là không gian riêng —
+          // không hiện trong danh sách provider LLM.
+          : { NOT: { provider: { startsWith: EMBEDDING_SECRET_PREFIX } } }),
       },
       orderBy: [{ createdAt: "asc" }],
     });

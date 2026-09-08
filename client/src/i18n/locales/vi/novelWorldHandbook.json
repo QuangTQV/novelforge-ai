@@ -9,7 +9,7 @@
     "push": "Chỉ đẩy lên thư viện thế giới",
     "pull": "Chỉ lấy từ thư viện thế giới",
     "bidirectional": "Đồng bộ hai chiều",
-    "none": "Không đồng bộ"
+    "none": "Không đồng bộ hóa"
   },
   "section": {
     "profile": "Tổng quan thế giới",
@@ -26,12 +26,12 @@
     "pending": "Chờ tạo"
   },
   "assetHints": {
-    "map": "Bổ sung sân khấu và rủi ro địa điểm để bản đồ thể hiện khu vực và điểm xung đột.",
+    "map": "Bổ sung bối cảnh và rủi ro địa điểm để bản đồ thể hiện khu vực và điểm xung đột.",
     "factionDiagram": "Bổ sung thế lực chính, mục tiêu và áp lực để sơ đồ thể hiện quan hệ phe phái.",
     "timeline": "Bổ sung xung đột cốt lõi và hệ quả chung để dòng thời gian thể hiện biến động.",
     "characterNetwork": "Bổ sung phe phái và áp lực để quan hệ nhân vật sát với thế giới hơn.",
     "powerSystemTree": "Bổ sung quy tắc, cái giá và ranh giới để cây hệ thống không biến thành bảng cấp bậc.",
-    "default": "Hoàn thiện sổ tay thế giới trước, rồi sắp xếp tài sản trực quan."
+    "default": "Hoàn thiện sổ tay thế giới trước, rồi sắp xếp các tư liệu trực quan."
   },
   "overview": {
     "title": "Tổng quan thế giới",

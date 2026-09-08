@@ -34,7 +34,8 @@
     "empty": "No matching embedding models",
     "availableCount": "The provider has {{count}} available models.",
     "remoteHint": "Use a suggested model first; once the connection works, the provider's model list appears here.",
-    "example": "e.g. text-embedding-3-small"
+    "example": "e.g. text-embedding-3-small",
+    "customHint": "Choose a model above or enter a custom model name."
   },
   "placeholders": {
     "keepKey": "Leave blank to keep the saved key",

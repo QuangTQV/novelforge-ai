@@ -1,5 +1,6 @@
 import type { StoryMacroField, StoryMacroFieldValue, StoryMacroPlan } from "@ai-novel/shared/types/storyMacro";
 import type { NovelStoryMode } from "@ai-novel/shared/types/storyMode";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { buildBookFramingSummary } from "../bookFraming";
 import { buildStoryModePromptBlock } from "../../storyMode/storyModeProfile";
 import {
@@ -25,6 +26,7 @@ export interface StoryMacroNovelContext {
   pacePreference: string | null;
   emotionIntensity: string | null;
   estimatedChapterCount: number | null;
+  novelLanguage: string | null;
   genre: { name: string } | null;
   primaryStoryMode: NovelStoryMode | null;
   secondaryStoryMode: NovelStoryMode | null;
@@ -35,6 +37,7 @@ export function formatProjectContext(novel: StoryMacroNovelContext, worldSliceCo
   const storyModeBlock = buildStoryModePromptBlock({
     primary: novel.primaryStoryMode,
     secondary: novel.secondaryStoryMode,
+    lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
   });
 
   return [

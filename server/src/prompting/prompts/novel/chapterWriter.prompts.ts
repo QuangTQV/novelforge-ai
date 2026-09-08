@@ -232,6 +232,10 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
   render: (input, context) => {
     const slots = context.slots;
     const mode = input.mode ?? "draft";
+    // Chương 1 là mở đầu cả cuốn sách: không có chương trước, người đọc chưa biết gì.
+    // Các ràng buộc "tiếp nối / không dẫn dắt bối cảnh" phải được nới cho riêng chương này,
+    // nếu không model sẽ viết chương 1 như một chương ở giữa truyện.
+    const isOpeningChapter = (input.chapterOrder ?? 1) <= 1 && mode !== "continue";
     const outputLanguage = input.outputLanguage ?? "zh";
     const lang = resolvePromptLanguage(outputLanguage);
     const lengthUnit = narrativeLengthUnitLabel(outputLanguage);
@@ -311,6 +315,28 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
         ].filter(Boolean).join("\n")
       : "";
 
+    const openingBlock = isOpeningChapter
+      ? [
+          pick(lang, "【开篇要求（本章为全书第一章）】", "【YÊU CẦU MỞ TRUYỆN (chương này là chương đầu của cả cuốn sách)】", "【OPENING REQUIREMENTS (this is the book's first chapter)】"),
+          pick(lang,
+            "1. 读者对主角、世界和处境一无所知。开篇必须在第一个场景内让读者明确：主角是谁（身份 + 当下最在意的事）、身处何时何地（具体、可感）、以及这本书值得追读的核心张力或悬念。",
+            "1. Người đọc chưa biết gì về nhân vật chính, thế giới hay hoàn cảnh. Phần mở phải để người đọc, ngay trong cảnh đầu tiên, nắm được: nhân vật chính là ai (thân phận + điều họ bận tâm nhất lúc này), đang ở đâu và khi nào (cụ thể, cảm nhận được), và cái căng thẳng hoặc nghi vấn cốt lõi khiến cuốn sách đáng đọc tiếp.",
+            "1. The reader knows nothing about the protagonist, the world, or the situation. The opening must, within the first scene, make clear: who the protagonist is (identity + what they care about most right now), where and when they are (concrete, sensory), and the core tension or question that makes this book worth continuing."),
+          pick(lang,
+            "2. 允许从主角的一个日常瞬间切入，但必须迅速让这个瞬间产生变化、选择或压力；不要停留在纯铺陈，也不要用大段设定讲解或人物档案式介绍——用正在发生的场景、动作和细节交代信息。",
+            "2. Được phép bắt đầu từ một khoảnh khắc đời thường của nhân vật chính, nhưng phải nhanh chóng để khoảnh khắc đó sinh ra biến chuyển, lựa chọn hoặc áp lực; đừng dừng ở kể lể thuần túy, cũng đừng dùng đoạn thuyết minh thiết lập dài hay giới thiệu nhân vật kiểu hồ sơ — hãy truyền thông tin bằng cảnh đang diễn ra, hành động và chi tiết.",
+            "2. You may open from an ordinary moment in the protagonist's life, but that moment must quickly produce a change, a choice, or pressure; do not linger on pure exposition, and do not use a long setting lecture or a dossier-style character intro — convey information through the unfolding scene, action, and detail."),
+          pick(lang,
+            "3. 本章没有「上一章」，不存在需要承接的旧钩子、既有局面或读者已知的人物关系。不要写成仿佛读者已经了解前情的中段章节。",
+            "3. Chương này KHÔNG có \"chương trước\": không tồn tại móc câu cũ, cục diện sẵn có hay quan hệ nhân vật mà người đọc đã biết cần tiếp nối. Đừng viết như một chương ở giữa truyện mà người đọc đã hiểu tiền truyện.",
+            "3. This chapter has no \"previous chapter\": there are no prior hooks, no established situation, and no character relationships the reader already knows. Do not write it like a mid-book chapter that assumes the reader knows the backstory."),
+          pick(lang,
+            "4. 读者读完第一章不应对「该关注谁、发生了什么、赌注是什么」感到困惑。",
+            "4. Đọc xong chương 1, người đọc không được mơ hồ về \"nên theo dõi ai, đã xảy ra chuyện gì, đánh cược điều gì\".",
+            "4. After finishing chapter 1, the reader must not be confused about \"who to follow, what happened, and what's at stake\"."),
+        ].join("\n")
+      : "";
+
     return [
       new SystemMessage([
         pick(lang,
@@ -348,10 +374,12 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
           "1a. reader_experience 是本章读者体验硬合同：必须让 promisedReward、keyTurn 与 netChange 在正文中可见，主角必须围绕 protagonistWant 主动行动并面对 primaryResistance。",
           "1a. reader_experience là hợp đồng cứng về trải nghiệm đọc của chương này: phải làm cho promisedReward, keyTurn và netChange hiện rõ trong chính văn; nhân vật chính phải chủ động hành động xoay quanh protagonistWant và đối mặt với primaryResistance.",
           "1a. reader_experience is this chapter's hard reader-experience contract: promisedReward, keyTurn, and netChange must be visible in the prose; the protagonist must actively act around protagonistWant and face primaryResistance."),
-        pick(lang,
-          "1b. inheritedHookResponsibilities 必须优先得到回应、触达或部分兑现；不得只制造新钩子而不给旧问题任何回报。",
-          "1b. inheritedHookResponsibilities phải được ưu tiên hồi đáp, chạm tới hoặc thực hiện một phần; không được chỉ tạo móc câu mới mà không trả lại gì cho vấn đề cũ.",
-          "1b. inheritedHookResponsibilities must be answered, touched, or partially paid off first — do not create new hooks without giving the old ones any payoff."),
+        isOpeningChapter
+          ? ""
+          : pick(lang,
+            "1b. inheritedHookResponsibilities 必须优先得到回应、触达或部分兑现；不得只制造新钩子而不给旧问题任何回报。",
+            "1b. inheritedHookResponsibilities phải được ưu tiên hồi đáp, chạm tới hoặc thực hiện một phần; không được chỉ tạo móc câu mới mà không trả lại gì cho vấn đề cũ.",
+            "1b. inheritedHookResponsibilities must be answered, touched, or partially paid off first — do not create new hooks without giving the old ones any payoff."),
         pick(lang,
           "2. 必须严格服从 chapter mission、mustAdvance、mustPreserve 与 ending hook。",
           "2. Phải tuân thủ nghiêm ngặt chapter mission, mustAdvance, mustPreserve và ending hook.",
@@ -380,12 +408,18 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
           "7. 不得写成总结、复盘、解释性段落为主的章节，正文必须以「正在发生」的内容为主。",
           "7. Không được viết thành chương chủ yếu là tóm tắt, nhìn lại hoặc đoạn văn giải thích — chính văn phải lấy nội dung \"đang diễn ra\" làm trọng tâm.",
           "7. Do not write a chapter dominated by summary, recap, or explanatory passages — the prose must center on events \"happening now\"."),
+        openingBlock,
         "",
         pick(lang, "【结构要求】", "【YÊU CẦU CẤU TRÚC】", "【STRUCTURE REQUIREMENTS】"),
-        pick(lang,
-          "1. 开头必须迅速进入当前情境，不得长时间铺垫背景或复述上一章。",
-          "1. Mở đầu phải nhanh chóng đi vào tình huống hiện tại, không được dẫn dắt bối cảnh quá lâu hoặc thuật lại chương trước.",
-          "1. The opening must move quickly into the current situation — no long background setup or recap of the previous chapter."),
+        isOpeningChapter
+          ? pick(lang,
+              "1. 开头必须在展开的场景中把读者带入主角与其所处世界；可以从一个日常瞬间起笔，但要迅速产生张力。不要写讲解式设定堆砌，也不要仿佛读者已知前情。",
+              "1. Mở đầu phải đưa người đọc vào với nhân vật chính và thế giới của họ qua một cảnh đang mở ra; có thể bắt đầu từ một khoảnh khắc đời thường nhưng phải nhanh chóng sinh ra căng thẳng. Không viết kiểu chồng chất thiết lập theo lối thuyết minh, cũng không viết như thể người đọc đã biết tiền truyện.",
+              "1. The opening must bring the reader into the protagonist and their world through an unfolding scene; you may start from an ordinary moment, but it must quickly generate tension. Do not pile on lecture-style setting, and do not write as if the reader already knows the backstory.")
+          : pick(lang,
+              "1. 开头必须迅速进入当前情境，不得长时间铺垫背景或复述上一章。",
+              "1. Mở đầu phải nhanh chóng đi vào tình huống hiện tại, không được dẫn dắt bối cảnh quá lâu hoặc thuật lại chương trước.",
+              "1. The opening must move quickly into the current situation — no long background setup or recap of the previous chapter."),
         pick(lang,
           "2. 中段必须出现推进、变化或对抗，不能平铺直叙维持同一状态。",
           "2. Đoạn giữa bắt buộc phải có sự tiến triển, thay đổi hoặc đối đầu, không được kể lể đều đều giữ nguyên một trạng thái.",
@@ -405,7 +439,9 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
               "1. 当前是补写模式，不得重写章节开头；只允许从现有正文尾部自然续接。",
               "1. Đây là chế độ viết tiếp — không được viết lại phần mở đầu chương; chỉ được nối tiếp một cách tự nhiên từ đoạn cuối của chính văn hiện có.",
               "1. This is continuation mode — do not rewrite the chapter opening; only continue naturally from the end of the existing prose.")
-          : pick(lang,
+          : isOpeningChapter
+            ? ""
+            : pick(lang,
               "1. 章节开头必须与 recent_chapters 明显区分，禁止复用相同开场模式（如重复描写环境、回忆开头等）。",
               "1. Phần mở đầu chương phải khác biệt rõ rệt so với recent_chapters, cấm lặp lại cùng một kiểu mở đầu (như tả cảnh lặp lại, mở đầu bằng hồi tưởng...).",
               "1. The chapter opening must be clearly distinct from recent_chapters — do not reuse the same opening pattern (e.g. repeating the same scenery description, opening with a flashback, etc.)."),
@@ -413,10 +449,15 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
           "2. 允许短回调，但不得大段复述已发生事件，不得复制上下文原句。",
           "2. Được phép nhắc lại ngắn gọn, nhưng không được thuật lại dài dòng sự việc đã xảy ra, không được sao chép nguyên câu từ bối cảnh.",
           "2. Brief callbacks are allowed, but do not recap past events at length, and do not copy sentences verbatim from the context."),
-        pick(lang,
-          "3. 必须延续当前人物状态与局面，不得让角色行为失去动机或连续性。",
-          "3. Phải tiếp nối đúng trạng thái nhân vật và cục diện hiện tại, không được để hành vi nhân vật mất động cơ hoặc đứt mạch liên tục.",
-          "3. Must continue the current character states and situation faithfully — character behavior must not lose its motivation or continuity."),
+        isOpeningChapter
+          ? pick(lang,
+              "3. 本章负责确立主角的初始状态、处境与动机基线，写清楚即可，不需要延续任何既有状态或局面。",
+              "3. Chương này chịu trách nhiệm thiết lập trạng thái ban đầu, hoàn cảnh và nền tảng động cơ của nhân vật chính — viết rõ ràng là đủ, không cần tiếp nối bất kỳ trạng thái hay cục diện có sẵn nào.",
+              "3. This chapter is responsible for establishing the protagonist's initial state, situation, and motivational baseline — writing it clearly is enough; there is no prior state or situation to carry over.")
+          : pick(lang,
+              "3. 必须延续当前人物状态与局面，不得让角色行为失去动机或连续性。",
+              "3. Phải tiếp nối đúng trạng thái nhân vật và cục diện hiện tại, không được để hành vi nhân vật mất động cơ hoặc đứt mạch liên tục.",
+              "3. Must continue the current character states and situation faithfully — character behavior must not lose its motivation or continuity."),
         continuationBlock ? continuationBlock : "",
         "",
         pick(lang, "【表达要求】", "【YÊU CẦU BIỂU ĐẠT】", "【EXPRESSION REQUIREMENTS】"),
@@ -462,10 +503,15 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
           "* 想写大段心理独白 -> 改为行为/对话/细节，让读者感受而非被告知。",
           "* Định viết đoạn độc thoại nội tâm dài -> đổi thành hành vi/đối thoại/chi tiết, để người đọc tự cảm nhận thay vì bị kể thẳng ra.",
           "* Tempted to write a long internal monologue -> replace with behavior/dialogue/detail so the reader feels it instead of being told."),
-        pick(lang,
-          "* 想用天气/环境渲染开场 -> 改为从已经发生的事件直接切入。",
-          "* Định dùng thời tiết/khung cảnh để mở đầu -> đổi thành đi thẳng vào một sự việc đã đang xảy ra.",
-          "* Tempted to open with weather/atmosphere -> cut straight into an event that is already underway instead."),
+        isOpeningChapter
+          ? pick(lang,
+              "* 想用大段天气/环境渲染开场 -> 改为让主角在做一件能体现其身份与当下处境的事，再让它生变。",
+              "* Định mở đầu bằng đoạn tả thời tiết/khung cảnh dài -> đổi thành để nhân vật chính đang làm một việc bộc lộ thân phận và hoàn cảnh hiện tại của họ, rồi để việc đó sinh biến.",
+              "* Tempted to open with a long weather/setting paragraph -> instead open on the protagonist doing something that reveals who they are and their current situation, then let it turn.")
+          : pick(lang,
+              "* 想用天气/环境渲染开场 -> 改为从已经发生的事件直接切入。",
+              "* Định dùng thời tiết/khung cảnh để mở đầu -> đổi thành đi thẳng vào một sự việc đã đang xảy ra.",
+              "* Tempted to open with weather/atmosphere -> cut straight into an event that is already underway instead."),
         pick(lang,
           "* 想写总结回顾段 -> 改为角色对当前局面的即时反应或决策。",
           "* Định viết đoạn tổng kết nhìn lại -> đổi thành phản ứng hoặc quyết định tức thời của nhân vật trước cục diện hiện tại.",
@@ -485,10 +531,15 @@ export const chapterWriterPrompt: PromptAsset<ChapterWriterPromptInput, string, 
           "(3) 是否违反了任何禁止规则（新角色、场景模式重复、未铺垫转折）？",
           "(3) Có vi phạm quy tắc cấm kỵ nào không (nhân vật mới, lặp mẫu cảnh, bước ngoặt chưa được gài cài)?",
           "(3) Does it violate any prohibition (a new character, a repeated scene pattern, an unforeshadowed twist)?"),
-        pick(lang,
-          "(4) 读者是否实际获得了 promisedReward，并能看见 keyTurn、netChange 和旧钩子承接？",
-          "(4) Người đọc có thực sự nhận được promisedReward, và có thấy được keyTurn, netChange cùng việc tiếp nối móc câu cũ không?",
-          "(4) Does the reader actually receive promisedReward, and can they see keyTurn, netChange, and follow-through on old hooks?"),
+        isOpeningChapter
+          ? pick(lang,
+              "(4) 读者是否实际获得了 promisedReward，看见 keyTurn 与 netChange，并且读完后清楚该关注谁、发生了什么、赌注是什么？",
+              "(4) Người đọc có thực sự nhận được promisedReward, thấy được keyTurn và netChange, và sau khi đọc xong có rõ nên theo dõi ai, đã xảy ra chuyện gì, đánh cược điều gì không?",
+              "(4) Does the reader actually receive promisedReward, see keyTurn and netChange, and finish the chapter clear on who to follow, what happened, and what's at stake?")
+          : pick(lang,
+              "(4) 读者是否实际获得了 promisedReward，并能看见 keyTurn、netChange 和旧钩子承接？",
+              "(4) Người đọc có thực sự nhận được promisedReward, và có thấy được keyTurn, netChange cùng việc tiếp nối móc câu cũ không?",
+              "(4) Does the reader actually receive promisedReward, and can they see keyTurn, netChange, and follow-through on old hooks?"),
         pick(lang,
           "确认通过后再开始输出，不需要在正文中输出核查结果。",
           "Chỉ bắt đầu xuất nội dung sau khi đã xác nhận đạt; không cần in kết quả tự kiểm vào chính văn.",

@@ -1,7 +1,7 @@
 {
   "appearance": {
     "title": "Giao diện & chủ đề",
-    "description": "Chọn màu giao diện và mật độ hiển thị phù hợp để sáng tác lâu dài.",
+    "description": "Chọn giao diện và cách bố trí phù hợp với thói quen sáng tác của bạn.",
     "cardTitle": "Giao diện ứng dụng",
     "cardDescription": "Chủ đề chỉ được lưu trên thiết bị này; không ảnh hưởng đến nội dung tiểu thuyết hay trạng thái tác vụ.",
     "mode": {
@@ -14,7 +14,7 @@
       "label": "Phong cách chủ đề",
       "ink": { "label": "Nghiên mực", "description": "Xanh xám tiết chế, hợp sáng tác hằng ngày." },
       "paper": { "label": "Giấy ấm", "description": "Trắng ngà dịu, hợp đọc và biên tập chương." },
-      "night": { "label": "Hành trình đêm", "description": "Chàm đậm và lục lam, hợp chạy AI và xem nhật ký." }
+      "night": { "label": "Đêm sâu", "description": "Tông chàm dịu mắt, phù hợp khi làm việc buổi tối." }
     },
     "density": {
       "label": "Mật độ giao diện",
@@ -31,33 +31,33 @@
   },
   "overview": {
     "title": "Cài đặt hệ thống",
-    "description": "Xem trạng thái môi trường sáng tác và mở phần cài đặt cần điều chỉnh.",
+    "description": "Xem nhanh trạng thái thiết lập và mở đúng phần bạn muốn điều chỉnh.",
     "open": "Mở",
     "entries": {
       "models": {
         "title": "Mô hình & nhà cung cấp",
-        "description": "Chọn mô hình sáng tác, kiểm tra tuyến xử lý và quản lý kết nối.",
-        "summaryConfigured": "{{provider}} · {{model}} · {{routeCount}} tuyến tác vụ",
+        "description": "Chọn mô hình sáng tác và quản lý các kết nối dịch vụ.",
+        "summaryConfigured": "{{provider}} · {{model}} · {{routeCount}} luồng tác vụ",
         "summaryEmpty": "Chưa cấu hình mô hình văn bản khả dụng",
         "noModel": "Chưa chọn mô hình"
       },
       "director": {
         "title": "Đạo diễn tự động",
-        "description": "Thiết lập cách xử lý sự cố, các bước cần xác nhận và thông báo.",
-        "summary": "Thiết lập xác nhận, xử lý sự cố và thông báo"
+        "description": "Chọn cách hệ thống xử lý sự cố, xin xác nhận và gửi thông báo.",
+        "summary": "Xác nhận, xử lý sự cố và thông báo"
       },
       "knowledge": {
         "title": "Kho tri thức & phong cách viết",
-        "description": "Cho phép AI sử dụng tư liệu và phong cách viết trong các bước sáng tác tiếp theo.",
-        "summaryEnabled": "Đã bật truy xuất tư liệu · {{model}}",
-        "summaryDisabled": "Chưa bật phần nâng cao; không ảnh hưởng đến việc bắt đầu sáng tác",
+        "description": "Cho phép AI tham khảo tư liệu và phong cách viết trong các bước tiếp theo.",
+        "summaryEnabled": "Đã bật tra cứu tư liệu · {{model}}",
+        "summaryDisabled": "Chưa bật tra cứu nâng cao; bạn vẫn có thể bắt đầu sáng tác",
         "noModel": "Chưa chọn mô hình vector"
       },
       "maintenance": {
         "title": "Ứng dụng & bảo trì",
-        "description": "Kiểm tra cập nhật và các thao tác bảo trì dữ liệu trên thiết bị hiện tại.",
-        "summaryDesktop": "Có thể kiểm tra cập nhật ứng dụng và nhập dữ liệu cũ",
-        "summaryWeb": "Bản web không cần bảo trì ứng dụng desktop"
+        "description": "Kiểm tra cập nhật và quản lý dữ liệu trên thiết bị hiện tại.",
+        "summaryDesktop": "Kiểm tra cập nhật ứng dụng hoặc nhập dữ liệu cũ",
+        "summaryWeb": "Phiên bản web không cần bảo trì ứng dụng máy tính"
       }
     }
   }

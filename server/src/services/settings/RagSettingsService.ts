@@ -1,5 +1,6 @@
 import { prisma } from "../../db/prisma";
 import { ragConfig, asEmbeddingProvider, type EmbeddingProvider } from "../../config/rag";
+import { isEmbeddingSecretProvider, stripEmbeddingSecretPrefix } from "./embeddingSecret";
 import {
   getProviderEnvApiKey,
   isBuiltInProvider,
@@ -405,15 +406,26 @@ export async function getRagEmbeddingProviders(): Promise<RagEmbeddingProviderSt
         isActive: true,
       },
     });
-    const itemMap = new Map(items.map((item) => [item.provider, item]));
+    // Trạng thái "đã cấu hình" cho embedding lấy từ dòng credential riêng
+    // ("embedding:<provider>"); dòng LLM cùng tên chỉ dùng để hiện tên hiển thị.
+    const embeddingItemMap = new Map(
+      items
+        .filter((item) => isEmbeddingSecretProvider(item.provider))
+        .map((item) => [stripEmbeddingSecretPrefix(item.provider), item]),
+    );
+    const llmItemMap = new Map(
+      items
+        .filter((item) => !isEmbeddingSecretProvider(item.provider))
+        .map((item) => [item.provider, item]),
+    );
     const providers = uniqueProviders([
       ...builtInProviders,
       ...items
-        .filter((item) => !isBuiltInProvider(item.provider))
-        .map((item) => item.provider),
+        .map((item) => stripEmbeddingSecretPrefix(item.provider))
+        .filter((provider) => !isBuiltInProvider(provider)),
     ]);
     return providers.map((provider) => {
-      const item = itemMap.get(provider);
+      const item = embeddingItemMap.get(provider);
       const envApiKey = isBuiltInProvider(provider)
         ? normalizeOptionalText(getProviderEnvApiKey(provider))
         : undefined;
@@ -422,7 +434,7 @@ export async function getRagEmbeddingProviders(): Promise<RagEmbeddingProviderSt
       const canRunWithoutApiKey = !isBuiltInProvider(provider) || !providerRequiresApiKey(provider);
       return {
         provider,
-        name: getProviderDisplayName(provider, item?.displayName),
+        name: getProviderDisplayName(provider, item?.displayName ?? llmItemMap.get(provider)?.displayName),
         isConfigured: Boolean(configuredSecret) || (canRunWithoutApiKey && Boolean(configuredBaseUrl || isBuiltInProvider(provider))),
         isActive: item?.isActive ?? (Boolean(envApiKey) || canRunWithoutApiKey),
       };

@@ -185,7 +185,10 @@ export default function KnowledgePage() {
       if (prev.embeddingProvider !== data.provider) {
         return prev;
       }
-      if (prev.embeddingModel && data.models.includes(prev.embeddingModel)) {
+      // Preserve a saved/custom model even when the provider's discovery endpoint
+      // does not return it. Only choose a default after the provider was changed
+      // and the model field was intentionally cleared.
+      if (prev.embeddingModel) {
         return prev;
       }
       return {

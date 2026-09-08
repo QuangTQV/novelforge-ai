@@ -29,7 +29,7 @@ import {
   type PromptQualityFailureKind,
 } from "./promptQualityTelemetry";
 import { appendStructuredOutputHintMessages } from "./structuredOutputHint";
-import { appendOutputLanguageDirective } from "./novelOutputLanguage";
+import { appendOutputLanguageDirective, resolveNovelOutputLanguage } from "./novelOutputLanguage";
 import { DEFAULT_NOVEL_LANGUAGE, resolvePromptLanguage, resolveNovelLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import type {
   PromptAsset,
@@ -263,6 +263,24 @@ function buildSemanticRetryMessages<I, O, R>(input: {
     parsedOutput: input.parsedOutput,
     validationError: input.validationError,
   }) ?? buildDefaultSemanticRetryMessages(input);
+}
+
+/**
+ * Ngôn ngữ đầu ra hiệu lực cho render context (`context.promptLanguage`).
+ * Ưu tiên `options.outputLanguage`; nếu không có thì tra theo `novelId` — để mọi prompt
+ * gắn novel dùng `context.promptLanguage` / `pick(lang, ...)` render đúng ngôn ngữ,
+ * đồng bộ với chỉ thị ngôn ngữ đầu ra được chèn ở runtime.
+ */
+async function resolveEffectiveOutputLanguage(
+  options?: PromptExecutionOptions,
+): Promise<import("@ai-novel/shared/types/novel").NovelLanguage | undefined> {
+  if (options?.outputLanguage) {
+    return options.outputLanguage;
+  }
+  if (options?.novelId) {
+    return resolveNovelOutputLanguage(options.novelId);
+  }
+  return undefined;
 }
 
 export function preparePromptExecution<I, O, R = O>(input: {
@@ -728,8 +746,10 @@ export async function runStructuredPrompt<I, O, R = O>(input: {
     contextBlocks: input.contextBlocks,
     options: input.options,
   });
+  const effectiveOutputLanguage = await resolveEffectiveOutputLanguage(input.options);
   const prepared = preparePromptExecution({
     ...input,
+    options: { ...input.options, outputLanguage: effectiveOutputLanguage },
     contextBlocks: overlays.blocks,
     resolvedSlots: overlays.resolvedSlots,
   });
@@ -858,8 +878,10 @@ export async function runTextPrompt<I>(input: {
     contextBlocks: input.contextBlocks,
     options: input.options,
   });
+  const effectiveOutputLanguage = await resolveEffectiveOutputLanguage(input.options);
   const prepared = preparePromptExecution({
     ...input,
+    options: { ...input.options, outputLanguage: effectiveOutputLanguage },
     contextBlocks: overlays.blocks,
     resolvedSlots: overlays.resolvedSlots,
   });
@@ -960,8 +982,10 @@ export async function streamTextPrompt<I>(input: {
     contextBlocks: input.contextBlocks,
     options: input.options,
   });
+  const effectiveOutputLanguage = await resolveEffectiveOutputLanguage(input.options);
   const prepared = preparePromptExecution({
     ...input,
+    options: { ...input.options, outputLanguage: effectiveOutputLanguage },
     contextBlocks: overlays.blocks,
     resolvedSlots: overlays.resolvedSlots,
   });
@@ -1079,8 +1103,10 @@ export async function streamStructuredPrompt<I, O, R = O>(input: {
     contextBlocks: input.contextBlocks,
     options: input.options,
   });
+  const effectiveOutputLanguage = await resolveEffectiveOutputLanguage(input.options);
   const prepared = preparePromptExecution({
     ...input,
+    options: { ...input.options, outputLanguage: effectiveOutputLanguage },
     contextBlocks: overlays.blocks,
     resolvedSlots: overlays.resolvedSlots,
   });

@@ -1,5 +1,6 @@
 import { prisma } from "../../db/prisma";
 import { type EmbeddingProvider } from "../../config/rag";
+import { embeddingSecretProvider } from "./embeddingSecret";
 import { getProviderModels } from "../../llm/modelCatalog";
 import {
   getProviderEnvApiKey,
@@ -97,7 +98,7 @@ function getProviderDisplayName(provider: EmbeddingProvider, displayName?: strin
 async function resolveProviderSecret(provider: EmbeddingProvider): Promise<ProviderSecret> {
   try {
     const record = await prisma.aPIKey.findUnique({
-      where: { provider },
+      where: { provider: embeddingSecretProvider(provider) },
     });
     const dbApiKey = record?.isActive ? record.key?.trim() : undefined;
     const dbBaseURL = record?.isActive ? record.baseURL?.trim() : undefined;

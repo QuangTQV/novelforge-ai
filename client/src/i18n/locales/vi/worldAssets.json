@@ -1,7 +1,7 @@
 {
   "planning": {
-    "title": "Kế hoạch tài sản thế giới",
-    "description": "Bản đồ, sơ đồ thế lực, dòng thời gian và cây hệ thống đều phát triển từ sổ tay thế giới. Hãy hoàn thiện quy tắc, thế lực, địa điểm và sức căng trước khi tạo tài sản trực quan.",
+    "title": "Kế hoạch tư liệu trực quan của thế giới",
+    "description": "Bản đồ, sơ đồ thế lực, dòng thời gian và cây hệ thống đều được xây dựng từ sổ tay thế giới. Hãy hoàn thiện quy tắc, thế lực, địa điểm và xung đột trước khi tạo tư liệu trực quan.",
     "reserved": "Tính năng sắp ra mắt"
   },
   "references": {
@@ -10,8 +10,8 @@
   "library": {
     "title": "Tài sản thế giới",
     "keyword": "Từ khóa",
-    "saveCurrent": "Lưu thiết lập hiện tại thành tài sản thế giới",
-    "name": "Tên tài sản",
+    "saveCurrent": "Lưu thiết lập hiện tại thành tư liệu thế giới",
+    "name": "Tên tư liệu",
     "descriptionPlaceholder": "Mô tả tùy chọn (để trống sẽ dùng nội dung lớp hiện tại)",
     "addToLayer": "Thêm vào lớp hiện tại ({{field}})",
     "addToForces": "Thêm vào sổ tay thế lực",
@@ -31,7 +31,7 @@
   "actions": {
     "refresh": "Làm mới",
     "saving": "Đang lưu...",
-    "saveAsset": "Lưu tài sản"
+    "saveAsset": "Lưu tư liệu"
   },
   "snapshots": {
     "title": "Ảnh chụp phiên bản",
@@ -58,7 +58,7 @@
     "map": {
       "title": "Bản đồ thế giới",
       "description": "Dùng khu vực, đường đi, biên giới và địa điểm truyện để giải thích nhân vật di chuyển ra sao và xung đột bùng nổ ở đâu.",
-      "readiness": "Hãy bổ sung sân khấu truyện, rủi ro địa điểm và vùng kiểm soát của thế lực."
+      "readiness": "Hãy bổ sung bối cảnh truyện, rủi ro địa điểm và vùng kiểm soát của các thế lực."
     },
     "factions": {
       "title": "Sơ đồ thế lực",

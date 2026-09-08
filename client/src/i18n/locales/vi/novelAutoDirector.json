@@ -14,16 +14,16 @@
   "approvalStrategy": {
     "advanced": "Uỷ quyền phê duyệt nâng cao",
     "auto": {
-      "description": "Tự động triển khai toàn bộ trong phạm vi mục tiêu; chỉ dừng lại khi mô hình không khả dụng, dịch vụ gặp sự cố, cần bảo vệ nội dung chính hoặc có rủi ro không thể khôi phục.",
-      "title": "AI tự động triển khai"
+      "description": "Tự động điều phối toàn bộ công việc trong phạm vi đã chọn; chỉ dừng khi mô hình hoặc dịch vụ gặp sự cố, cần bảo vệ nội dung chính hoặc phát sinh rủi ro không thể khôi phục.",
+      "title": "AI tự động điều phối"
     },
     "copilot": {
       "description": "Thông qua các nút rủi ro thấp theo uỷ quyền phê duyệt nâng cao, các điểm phê duyệt còn lại do bạn quyết định.",
-      "title": "AI phụ lái xác nhận"
+      "title": "AI hỗ trợ xác nhận"
     },
-    "heading": "Cách tự động triển khai",
+    "heading": "Cách AI tự điều phối",
     "note": {
-      "auto": "Tự động triển khai: hệ thống sẽ tự xác nhận việc lập kế hoạch, thực thi chương, sửa chất lượng và tái lập kế hoạch cần thiết trong phạm vi mục tiêu.",
+      "auto": "Tự động điều phối: hệ thống sẽ tự lập kế hoạch, viết chương, kiểm tra chất lượng và điều chỉnh kế hoạch khi cần trong phạm vi đã chọn.",
       "copilot": "Ranh giới phụ lái xác nhận: {{summary}}. Các điểm phê duyệt không nằm trong danh sách sẽ chờ bạn xác nhận."
     }
   },

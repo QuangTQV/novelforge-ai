@@ -162,7 +162,7 @@
       "empty": "Chưa có dự án phim ngắn. Hãy tạo một dự án ở cột bên trái."
     },
     "card": {
-      "open": "Mở bàn làm việc",
+      "open": "Mở không gian làm việc",
       "assemble": "Dựng tư liệu",
       "strategy": "Tạo chiến lược",
       "outline12": "Tạo 12 tập đầu",
@@ -178,7 +178,7 @@
   "project": {
     "loading": "Đang tải dự án phim ngắn...",
     "notFound": "Không tìm thấy dự án phim ngắn này.",
-    "backToWorkspace": "Về bàn làm việc phim ngắn",
+    "backToWorkspace": "Về không gian làm phim ngắn",
     "workspaceLink": "Bàn làm việc phim ngắn",
     "episodesBadge": "{{count}} tập",
     "costBadge": "Chi phí sản xuất: đã dùng {{actual}} / dự kiến {{estimated}}",

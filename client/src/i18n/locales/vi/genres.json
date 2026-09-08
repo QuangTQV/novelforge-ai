@@ -2,9 +2,9 @@
   "page": {
     "header": {
       "context": "Tài sản sáng tác / Định vị tiểu thuyết",
-      "title": "Thư viện nền đề tài",
-      "description": "Duy trì định vị đề tài và phân cấp thể loại có thể tái sử dụng cho tiểu thuyết. Khi tạo tiểu thuyết mới, hãy chọn nền đề tài phù hợp để AI hiểu thể loại, kỳ vọng của độc giả và hướng sáng tác chính.",
-      "createRootTree": "Tạo cây nền đề tài mới"
+      "title": "Thư viện thể loại & đề tài",
+      "description": "Quản lý các thể loại và nhánh đề tài có thể tái sử dụng cho tiểu thuyết. Khi tạo tiểu thuyết mới, hãy chọn mục phù hợp để AI hiểu thể loại, kỳ vọng của độc giả và hướng sáng tác chính.",
+      "createRootTree": "Tạo cây thể loại & đề tài mới"
     },
     "status": {
       "genres": {
@@ -25,20 +25,20 @@
       }
     },
     "delete": {
-      "confirmWithChildren_one": "Xác nhận xóa nền đề tài “{{name}}”? Thao tác này cũng xóa {{count}} phân loại con bên dưới và không thể khôi phục.",
-      "confirmWithChildren_other": "Xác nhận xóa nền đề tài “{{name}}”? Thao tác này cũng xóa {{count}} phân loại con bên dưới và không thể khôi phục.",
-      "confirm": "Xác nhận xóa nền đề tài “{{name}}”? Thao tác này không thể khôi phục.",
-      "success": "Đã xóa nền đề tài."
+      "confirmWithChildren_one": "Xóa “{{name}}”? Thao tác này cũng xóa {{count}} nhánh con và không thể khôi phục.",
+      "confirmWithChildren_other": "Xóa “{{name}}”? Thao tác này cũng xóa {{count}} nhánh con và không thể khôi phục.",
+      "confirm": "Xóa “{{name}}”? Thao tác này không thể khôi phục.",
+      "success": "Đã xóa thể loại/đề tài."
     },
     "recommendation": {
-      "errorTitle": "Tải lại nền đề tài",
+      "errorTitle": "Tải lại thư viện thể loại & đề tài",
       "errorDescription": "Tạm thời không đọc được cấu trúc đề tài. Sau khi tải lại, bạn có thể tiếp tục xem, chỉnh sửa và duy trì đề tài.",
       "reload": "Tải lại",
-      "loadingTitle": "Đang xác nhận trạng thái nền đề tài",
+      "loadingTitle": "Đang kiểm tra thư viện thể loại & đề tài",
       "loadingDescription": "Sau khi tải xong sẽ đưa ra gợi ý bước tiếp theo dựa trên độ phủ đề tài và mức độ đầy đủ của mô tả.",
-      "emptyTitle": "Hãy dựng cây nền đề tài đầu tiên",
+      "emptyTitle": "Hãy tạo cây thể loại & đề tài đầu tiên",
       "emptyDescription": "Mô tả hướng sáng tác bạn muốn bao phủ; bạn có thể tự dựng phân cấp, hoặc để AI tạo bản nháp rồi tinh chỉnh.",
-      "emptyAction": "Tạo nền đề tài",
+      "emptyAction": "Tạo thể loại/đề tài",
       "describeTitle": "Bổ sung mô tả đề tài cho “{{name}}”",
       "describeDescription": "Làm rõ định vị tác phẩm, kỳ vọng độc giả và xung đột cốt lõi sẽ giúp AI hiểu chính xác hơn về đề tài khi tạo tiểu thuyết và lập kế hoạch.",
       "describeAction": "Bổ sung mô tả",
@@ -51,32 +51,32 @@
       "description": "Mở rộng các hướng chi tiết từ danh mục bên trái, xem định vị và duy trì các nút ở bên phải. Phân loại đang được tiểu thuyết sử dụng chỉ xóa được sau khi điều chỉnh tác phẩm liên kết.",
       "loadingTitle": "Đang tải cấu trúc đề tài",
       "loadingDescription": "Vui lòng chờ, liên kết giữa đề tài và tiểu thuyết đang được đồng bộ.",
-      "errorTitle": "Tạm thời không tải được nền đề tài",
+      "errorTitle": "Tạm thời không tải được thư viện thể loại & đề tài",
       "errorDescription": "Vui lòng kiểm tra kết nối dịch vụ rồi tải lại. Các đề tài hiện có không bị ảnh hưởng.",
-      "emptyTitle": "Chưa có nền đề tài nào để chọn khi tạo tiểu thuyết",
+      "emptyTitle": "Chưa có thể loại/đề tài nào để chọn khi tạo tiểu thuyết",
       "emptyDescription": "Hãy tạo một đề tài chính trước. Bạn có thể tự điền, hoặc mô tả hướng sáng tác để AI tạo bản nháp cây đề tài kèm phân loại con.",
       "emptyAction": "Tạo cây đề tài đầu tiên"
     }
   },
   "createDialog": {
-    "title": "Tạo cây nền đề tài mới",
-    "description": "Trước tiên xác định vị trí cấp cha, rồi tự điền cấu trúc hoặc để AI tạo bản nháp. Nơi này duy trì nền đề tài của tác phẩm, tức là “đây là sách gì”.",
+    "title": "Tạo cây thể loại & đề tài mới",
+    "description": "Trước tiên xác định vị trí của nhánh cha, rồi tự điền cấu trúc hoặc để AI tạo bản nháp. Nơi này giúp xác định tác phẩm thuộc thể loại và đề tài nào.",
     "aiSectionTitle": "AI tạo",
-    "aiSectionHint": "Phù hợp để phác ra cùng lúc nhóm lớn, nhóm con và các nền đề tài cấp dưới, rồi tinh chỉnh thủ công.",
+    "aiSectionHint": "Phù hợp để phác thảo cùng lúc các nhóm lớn, nhánh con và cấp phân loại bên dưới, rồi tinh chỉnh thủ công.",
     "promptPlaceholder": "Ví dụ: Tôi muốn làm tuyến trưởng thành siêu phàm đô thị thiên hướng nữ, điểm bán chính là đảo ngược thân phận, kinh doanh thế lực và giằng co quan hệ giàu cảm xúc.",
     "generating": "Đang tạo...",
-    "generate": "Tạo cây nền đề tài",
+    "generate": "Tạo cây thể loại & đề tài",
     "resetDraft": "Đặt lại bản nháp",
     "parentLabel": "Nền đề tài cấp cha",
-    "parentNone": "Không có cấp cha, tạo làm nền đề tài gốc",
+    "parentNone": "Không có nhánh cha, tạo làm mục gốc",
     "cancel": "Hủy",
     "saving": "Đang lưu...",
-    "save": "Lưu cây nền đề tài",
-    "createSuccess": "Đã tạo cây nền đề tài.",
-    "generateSuccess": "Đã tạo cây nền đề tài bằng AI."
+    "save": "Lưu cây thể loại & đề tài",
+    "createSuccess": "Đã tạo cây thể loại & đề tài.",
+    "generateSuccess": "Đã tạo cây thể loại & đề tài bằng AI."
   },
   "editDialog": {
-    "title": "Chỉnh sửa nền đề tài",
+    "title": "Chỉnh sửa thể loại/đề tài",
     "description": "Có thể sửa tên, mô tả và vị trí gắn. Các nút con và tiểu thuyết đã gắn sẽ được giữ lại.",
     "cancel": "Hủy",
     "saving": "Đang lưu...",
@@ -84,13 +84,13 @@
     "nameLabel": "Tên",
     "descriptionLabel": "Mô tả",
     "parentLabel": "Nền đề tài cấp cha",
-    "parentNone": "Không có cấp cha, làm nền đề tài gốc",
-    "updateSuccess": "Đã cập nhật nền đề tài."
+    "parentNone": "Không có nhánh cha, làm mục gốc",
+    "updateSuccess": "Đã cập nhật thể loại/đề tài."
   },
   "browser": {
     "navigatorTitle": "Danh mục đề tài",
     "navigatorHint": "Nhấp vào nút để xem chi tiết",
-    "navigatorAriaLabel": "Cây nền đề tài",
+    "navigatorAriaLabel": "Cây thể loại & đề tài",
     "addChild": "Thêm cấp dưới",
     "edit": "Chỉnh sửa",
     "deleteBlockedTitle": "Đề tài hiện tại hoặc đề tài cấp dưới vẫn đang được tiểu thuyết sử dụng, hãy điều chỉnh tác phẩm liên kết trước.",

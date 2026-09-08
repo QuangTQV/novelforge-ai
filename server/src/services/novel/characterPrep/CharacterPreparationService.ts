@@ -23,6 +23,7 @@ import {
 } from "../../../prompting/prompts/novel/characterPreparation.prompts";
 import type { CharacterCastOptionResponseParsed } from "../../../prompting/prompts/novel/characterPreparation.promptSchemas";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { NovelContextService } from "../NovelContextService";
 import {
   CharacterVisibleProfileService,
@@ -310,6 +311,7 @@ export class CharacterPreparationService {
     const storyModeBlock = buildStoryModePromptBlock({
       primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
       secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+      lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
     });
     const contextBlocks = buildCharacterCastContextBlocks({
       projectTitle: novel.title,

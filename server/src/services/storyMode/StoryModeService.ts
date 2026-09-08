@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "../../db/prisma";
 import { AppError } from "../../middleware/errorHandler";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput, sanitizeStoryModeProfile, serializeStoryModeProfile } from "./storyModeProfile";
 import type { StoryModeTreeDraft } from "./storyModeGenerate";
 
@@ -336,6 +337,7 @@ export class StoryModeService {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
       select: {
+        novelLanguage: true,
         primaryStoryMode: true,
         secondaryStoryMode: true,
       },
@@ -346,6 +348,7 @@ export class StoryModeService {
     return buildStoryModePromptBlock({
       primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
       secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+      lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
     });
   }
 

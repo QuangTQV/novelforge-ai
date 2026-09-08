@@ -20,6 +20,7 @@ import {
   type SupplementalCharacterGenerationResponseParsed,
 } from "../../../prompting/prompts/novel/characterPreparation.promptSchemas";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../../storyMode/storyModeProfile";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { parseCharacterProhibitionsJson } from "../characters/characterHardFacts";
 import { WorldContextGateway } from "../worldContext/WorldContextGateway";
 import { characterMindService } from "../characterMind/CharacterMindService";
@@ -216,6 +217,7 @@ export class CharacterPreparationSupplementalService {
     const storyModeBlock = buildStoryModePromptBlock({
       primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
       secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
+      lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
     });
     const anchorCharacters = novel.characters.filter((character) => anchorIds.includes(character.id));
     const relevantRelations = anchorCharacters.length > 0

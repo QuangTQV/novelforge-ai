@@ -8,6 +8,7 @@ import {
 } from "../../llm/providers";
 import { getRagRuntimeSettings } from "./RagRuntimeSettingsService";
 import { getRagEmbeddingSettings } from "./RagSettingsService";
+import { embeddingSecretProvider } from "./embeddingSecret";
 import {
   hasExplicitLegacyQdrantCollectionEnv,
   isMissingTableError,
@@ -280,13 +281,57 @@ async function importMissingEmbeddingProviderRecords(): Promise<string[]> {
   }
 }
 
+/**
+ * Trước đây credential embedding và LLM dùng chung một dòng `APIKey` theo tên provider,
+ * nên cấu hình bên này đè bên kia. Giờ embedding có không gian riêng "embedding:<provider>".
+ * Bước này copy cấu hình embedding hiện hành (provider đang chọn trong RAG settings) từ
+ * dòng dùng chung sang dòng riêng, để cài đặt cũ không bị mất sau khi tách.
+ * Idempotent: bỏ qua nếu dòng "embedding:<provider>" đã tồn tại.
+ */
+async function migrateActiveEmbeddingSecret(provider: string): Promise<string | null> {
+  try {
+    if (!provider) {
+      return null;
+    }
+    const namespacedKey = embeddingSecretProvider(provider);
+    const [namespaced, shared] = await Promise.all([
+      prisma.aPIKey.findUnique({ where: { provider: namespacedKey }, select: { provider: true } }),
+      prisma.aPIKey.findUnique({ where: { provider } }),
+    ]);
+    if (namespaced || !shared) {
+      return null;
+    }
+    if (!normalizeOptionalText(shared.key ?? undefined) && !normalizeOptionalText(shared.baseURL ?? undefined)) {
+      return null;
+    }
+    await prisma.aPIKey.create({
+      data: {
+        provider: namespacedKey,
+        displayName: shared.displayName ?? null,
+        key: shared.key ?? null,
+        baseURL: shared.baseURL ?? null,
+        model: shared.model ?? null,
+        isActive: shared.isActive,
+        reasoningEnabled: true,
+      },
+    });
+    return provider;
+  } catch (error) {
+    if (isMissingTableError(error)) {
+      return null;
+    }
+    throw error;
+  }
+}
+
 export async function initializeRagSettingsCompatibility(): Promise<RagCompatibilityBootstrapReport> {
   const [importedSettingKeys, importedProviderRecords] = await Promise.all([
     importMissingRagSettingsFromEnv(),
     importMissingEmbeddingProviderRecords(),
   ]);
 
-  await getRagEmbeddingSettings();
+  const embeddingSettings = await getRagEmbeddingSettings();
+  await migrateActiveEmbeddingSecret(embeddingSettings.embeddingProvider);
   await getRagRuntimeSettings();
 
   return {

@@ -83,8 +83,8 @@ export function flattenGenreTreeOptions(
       label: `${level > 0 ? `${"— ".repeat(level)}` : ""}${translateUi(node.name)}`,
       path: translatedPath.join(" / "),
       level,
-      description: node.description ?? null,
-      template: node.template ?? null,
+      description: node.description?.trim() ? translateUi(node.description.trim()) : null,
+      template: node.template?.trim() ? translateUi(node.template.trim()) : null,
     };
     return [current, ...flattenGenreTreeOptions(node.children, level + 1, nextPath)];
   });

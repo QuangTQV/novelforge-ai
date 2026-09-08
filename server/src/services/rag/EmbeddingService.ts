@@ -10,6 +10,7 @@ import {
 } from "../../llm/providers";
 import { normalizeRagText } from "./utils";
 import { getRagEmbeddingSettings } from "../settings/RagSettingsService";
+import { embeddingSecretProvider } from "../settings/embeddingSecret";
 
 interface EmbeddingResult {
   vectors: number[][];
@@ -117,7 +118,7 @@ export class EmbeddingService {
 
   private async resolveApiKey(provider: LLMProvider): Promise<string | undefined> {
     try {
-      const dbSecret = await prisma.aPIKey.findUnique({ where: { provider } });
+      const dbSecret = await prisma.aPIKey.findUnique({ where: { provider: embeddingSecretProvider(provider) } });
       if (dbSecret?.isActive && dbSecret.key?.trim()) {
         return dbSecret.key.trim();
       }
@@ -142,7 +143,7 @@ export class EmbeddingService {
   private async resolveBaseUrl(provider: LLMProvider): Promise<string> {
     let dbBaseURL: string | undefined;
     try {
-      const record = await prisma.aPIKey.findUnique({ where: { provider } });
+      const record = await prisma.aPIKey.findUnique({ where: { provider: embeddingSecretProvider(provider) } });
       if (record?.isActive && record.baseURL?.trim()) {
         dbBaseURL = record.baseURL.trim();
       }

@@ -34,12 +34,32 @@ export interface StoryDecomposition {
   ending_flavor: string;
 }
 
+/**
+ * Một tầng trong "cây bí ẩn" — chỉ dùng cho story mode có twistCadence dày
+ * (悬念博弈 và tương tự). Cho phép thiết kế trước chuỗi hé lộ nhiều tầng kiểu
+ * Attack on Titan thay vì một `mystery_box` phẳng.
+ */
+export interface StoryMysteryLayer {
+  /** Câu hỏi bề mặt người đọc đang thắc mắc ở tầng này. */
+  question: string;
+  /** Sự thật thật (chỉ tác giả biết) — cái sẽ được hé lộ. */
+  hidden_truth: string;
+  /** Arc/tập (đại khái) nơi tầng này bắt đầu lộ diện. */
+  activates_arc: string;
+  /** Arc/tập (đại khái) nơi tầng này được trả / hé lộ. */
+  pays_off_arc: string;
+  /** Thông tin cũ mà cú hé lộ này tái cấu trúc (nếu có). */
+  reframes?: string;
+}
+
 export interface StoryExpansion {
   expanded_premise: string;
   protagonist_core: string;
   conflict_engine: string;
   conflict_layers: StoryConflictLayers;
   mystery_box: string;
+  /** Cây bí ẩn phân tầng; rỗng nếu truyện không thiên về hé lộ/đảo chiều. */
+  mystery_layers?: StoryMysteryLayer[];
   emotional_line: string;
   setpiece_seeds: string[];
   tone_reference: string;

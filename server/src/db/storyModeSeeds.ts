@@ -1,4 +1,10 @@
-import type { StoryModeProfile } from "@ai-novel/shared/types/storyMode";
+import type {
+  StoryModeConflictCeiling,
+  StoryModeEndingHookStyle,
+  StoryModeForeshadowHold,
+  StoryModeProfile,
+  StoryModeTwistCadence,
+} from "@ai-novel/shared/types/storyMode";
 
 export interface StoryModeSeedNode {
   id: string;
@@ -15,19 +21,46 @@ export interface StoryModeSeedNode {
   }>;
 }
 
+/** Mặc định 3 field engine theo trần xung đột khi seed không nêu rõ. */
+function engineDefaultsFor(ceiling: StoryModeConflictCeiling): {
+  twistCadence: StoryModeTwistCadence;
+  foreshadowHold: StoryModeForeshadowHold;
+  endingHookStyle: StoryModeEndingHookStyle;
+} {
+  if (ceiling === "low") {
+    return { twistCadence: "rare", foreshadowHold: "short", endingHookStyle: "emotional_pull" };
+  }
+  if (ceiling === "high") {
+    return { twistCadence: "periodic", foreshadowHold: "arc", endingHookStyle: "escalation" };
+  }
+  return { twistCadence: "periodic", foreshadowHold: "arc", endingHookStyle: "cliffhanger" };
+}
+
 function buildProfile(input: Partial<StoryModeProfile> & Pick<StoryModeProfile, "coreDrive" | "readerReward">): StoryModeProfile {
+  const conflictCeiling = input.conflictCeiling ?? "medium";
+  const engine = engineDefaultsFor(conflictCeiling);
   return {
     coreDrive: input.coreDrive,
     readerReward: input.readerReward,
     progressionUnits: input.progressionUnits ?? ["关系推进", "阶段目标兑现"],
     allowedConflictForms: input.allowedConflictForms ?? ["与主驱动一致的中低烈度冲突"],
     forbiddenConflictForms: input.forbiddenConflictForms ?? ["无关的高压狗血冲突"],
-    conflictCeiling: input.conflictCeiling ?? "medium",
+    conflictCeiling,
     resolutionStyle: input.resolutionStyle ?? "优先用符合该模式的方式解决问题，而不是强行升级矛盾。",
     chapterUnit: input.chapterUnit ?? "每章围绕一个清晰推进单位展开。",
     volumeReward: input.volumeReward ?? "卷末给出阶段性兑现，让读者确认这条线值得继续追。",
     mandatorySignals: input.mandatorySignals ?? ["主驱动持续出现", "读者期待被反复确认"],
     antiSignals: input.antiSignals ?? ["长期偏离主驱动", "冲突烈度失控"],
+    momentumSource: input.momentumSource ?? "goal_pursuit",
+    perChapterChangeMenu: input.perChapterChangeMenu ?? [
+      "推进一个明确的阶段目标",
+      "关系或立场发生可见变化",
+      "获得新信息或修正误判",
+      "风险等级或代价上升",
+    ],
+    twistCadence: input.twistCadence ?? engine.twistCadence,
+    foreshadowHold: input.foreshadowHold ?? engine.foreshadowHold,
+    endingHookStyle: input.endingHookStyle ?? engine.endingHookStyle,
   };
 }
 
@@ -90,7 +123,7 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
     name: "恋爱喜剧",
     description: "以恋爱互动、误会、日常笑点和关系升温为核心。",
     template: "笑点服务于关系变化，误会要推动靠近而不是无限拖延。",
-    profile: buildProfile({ coreDrive: "通过日常互动、误会和关系升温持续制造轻松追读感。", readerReward: "读者获得笑点、暧昧、心动和关系确认的满足。", progressionUnits: ["偶遇互动", "误会升级", "关系靠近", "情感确认"], allowedConflictForms: ["性格反差", "轻度误会", "竞争追求", "日常尴尬"], forbiddenConflictForms: ["恶意虐待", "误会长期不解释", "笑点与人物无关"], conflictCeiling: "medium", resolutionStyle: "通过互动、坦诚和意外行动推动关系自然升级。", chapterUnit: "每章推进一个笑点、互动或关系变化。", volumeReward: "卷末完成一次关系确认或新的感情竞争格局。", mandatorySignals: ["互动笑点", "暧昧变化", "关系回收"], antiSignals: ["只有段子没有关系", "人物反复降智"] }),
+    profile: buildProfile({ coreDrive: "通过日常互动、误会和关系升温持续制造轻松追读感。", readerReward: "读者获得笑点、暧昧、心动和关系确认的满足。", progressionUnits: ["偶遇互动", "误会升级", "关系靠近", "情感确认"], allowedConflictForms: ["性格反差", "轻度误会", "竞争追求", "日常尴尬"], forbiddenConflictForms: ["恶意虐待", "误会长期不解释", "笑点与人物无关"], conflictCeiling: "medium", resolutionStyle: "通过互动、坦诚和意外行动推动关系自然升级。", chapterUnit: "每章推进一个笑点、互动或关系变化。", volumeReward: "卷末完成一次关系确认或新的感情竞争格局。", mandatorySignals: ["互动笑点", "暧昧变化", "关系回收"], antiSignals: ["只有段子没有关系", "人物反复降智"], momentumSource: "relationship_emotion", perChapterChangeMenu: ["关系距离拉近或拉远一步", "一次被点名的心动或吃醋", "误会产生或被化解", "一个新的暧昧信号或竞争者出现", "角色露出一次真实的脆弱"], twistCadence: "rare", foreshadowHold: "short", endingHookStyle: "emotional_pull" }),
     children: [],
   },
   {
@@ -98,7 +131,7 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
     name: "成人关系",
     description: "以成年人的亲密关系、欲望、边界和现实选择推动故事。",
     template: "由作者决定亲密表达强度，并保持人物意愿、边界和关系后果一致。",
-    profile: buildProfile({ coreDrive: "通过成熟关系中的吸引、欲望、边界和现实选择推动人物变化。", readerReward: "读者获得真实的亲密张力、情绪回应和关系变化。", progressionUnits: ["建立吸引", "确认边界", "亲密变化", "关系选择"], allowedConflictForms: ["价值观差异", "亲密边界", "现实压力", "关系承诺"], forbiddenConflictForms: ["无视人物意愿", "亲密场景与人物无关", "只靠露骨描写推进"], conflictCeiling: "medium", resolutionStyle: "通过沟通、选择、承诺和承担关系后果推进。", chapterUnit: "每章推进一次亲密关系、边界或现实选择。", volumeReward: "卷末完成关系确认、分离或新的成熟选择。", mandatorySignals: ["人物意愿", "关系边界", "情绪后果"], antiSignals: ["人物被物化", "关系没有变化"] }),
+    profile: buildProfile({ coreDrive: "通过成熟关系中的吸引、欲望、边界和现实选择推动人物变化。", readerReward: "读者获得真实的亲密张力、情绪回应和关系变化。", progressionUnits: ["建立吸引", "确认边界", "亲密变化", "关系选择"], allowedConflictForms: ["价值观差异", "亲密边界", "现实压力", "关系承诺"], forbiddenConflictForms: ["无视人物意愿", "亲密场景与人物无关", "只靠露骨描写推进"], conflictCeiling: "medium", resolutionStyle: "通过沟通、选择、承诺和承担关系后果推进。", chapterUnit: "每章推进一次亲密关系、边界或现实选择。", volumeReward: "卷末完成关系确认、分离或新的成熟选择。", mandatorySignals: ["人物意愿", "关系边界", "情绪后果"], antiSignals: ["人物被物化", "关系没有变化"], momentumSource: "relationship_emotion", perChapterChangeMenu: ["吸引或抗拒程度发生变化", "一条边界被试探、确认或越过", "现实压力介入关系", "一次关于承诺或未来的选择", "情绪后果显现"], twistCadence: "rare", foreshadowHold: "arc", endingHookStyle: "decision" }),
     children: [],
   },
   {
@@ -310,6 +343,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
       volumeReward: "卷末让读者感到人物状态更稳、更暖、更愿意继续生活。",
       mandatorySignals: ["生活感", "安抚点", "关系回暖"],
       antiSignals: ["高压主线喧宾夺主", "治愈感被连续打断"],
+      momentumSource: "relationship_emotion",
+      perChapterChangeMenu: ["一个小问题被温柔地解决", "关系回暖或加深一层", "生活细节带来一次情绪落地", "角色的一处旧伤被轻轻触碰或修复"],
+      twistCadence: "rare",
+      foreshadowHold: "short",
+      endingHookStyle: "emotional_pull",
     }),
     children: [
       {
@@ -406,6 +444,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
       volumeReward: "卷末形成更大的整活名场面或误会共同体。",
       mandatorySignals: ["反差", "回收", "轻松释放"],
       antiSignals: ["长时间严肃无包袱", "笑点只靠口癖和段子堆砌"],
+      momentumSource: "comedic_situation",
+      perChapterChangeMenu: ["一个包袱被抖响", "误会升级或反差被回收", "局面滑稽地失控又被兜住", "角色关系在笑闹中悄悄变化"],
+      twistCadence: "rare",
+      foreshadowHold: "short",
+      endingHookStyle: "emotional_pull",
     }),
     children: [
       {
@@ -482,6 +525,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
       volumeReward: "卷末揭开一层更大的真相或完成一次关键博弈。",
       mandatorySignals: ["线索", "推演", "反制"],
       antiSignals: ["谜团只堆不解", "答案靠天降"],
+      momentumSource: "information_revelation",
+      perChapterChangeMenu: ["抛出或收束一个疑点", "揭示一层真相并制造更大的未知", "重构此前已知信息的含义", "布局或反制推进一步", "认知反转：读者以为的真相被推翻"],
+      twistCadence: "dense",
+      foreshadowHold: "cross_arc",
+      endingHookStyle: "revelation",
     }),
     children: [
       {
@@ -500,6 +548,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
           volumeReward: "卷末揭穿核心谜面或打开更大的悬念入口。",
           mandatorySignals: ["线索感", "逻辑链", "真相逼近"],
           antiSignals: ["故弄玄虚", "结论和线索脱节"],
+          momentumSource: "information_revelation",
+          perChapterChangeMenu: ["补充一条关键线索", "推演收束改变对局面的认知", "揭穿一个谎言或误导", "真相分层：解开一层露出更深一层"],
+          twistCadence: "dense",
+          foreshadowHold: "cross_arc",
+          endingHookStyle: "revelation",
         }),
       },
       {
@@ -518,6 +571,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
           volumeReward: "卷末完成一次大局收网或更高阶对手登场。",
           mandatorySignals: ["布局感", "对手压迫", "反制回收"],
           antiSignals: ["胜负没有博弈过程", "对手工具化"],
+          momentumSource: "information_revelation",
+          perChapterChangeMenu: ["一方布子或试探", "对手后手暴露改变局面", "关键预判被回收或被反制", "信息差发生转移"],
+          twistCadence: "dense",
+          foreshadowHold: "arc",
+          endingHookStyle: "revelation",
         }),
       },
       {
@@ -537,6 +595,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
           volumeReward: "卷末完成一次阶段求生成功、规则突破或阵营格局改写。",
           mandatorySignals: ["资源压力", "选择代价", "规则利用"],
           antiSignals: ["危机廉价化", "总是同一类困境循环"],
+          momentumSource: "survival_pressure",
+          perChapterChangeMenu: ["压力或威胁等级跳升", "发现或验证一条规则", "资源得失改变生存概率", "被迫做出有代价的抉择", "阵营关系翻转"],
+          twistCadence: "dense",
+          foreshadowHold: "cross_arc",
+          endingHookStyle: "escalation",
         }),
       },
     ],
@@ -558,6 +621,11 @@ export const BUILT_IN_STORY_MODE_SEEDS: StoryModeSeedNode[] = [
       volumeReward: "卷末让关键关系发生明确变化或完成一次高价值情感兑现。",
       mandatorySignals: ["关系张力", "情绪节点", "兑现感"],
       antiSignals: ["关系原地踏步", "只有设定没有互动"],
+      momentumSource: "relationship_emotion",
+      perChapterChangeMenu: ["关系距离或信任发生可见变化", "一次情绪错位或误解被制造/化解", "一个关系节点被兑现", "现实阻力介入两人之间", "彼此认知发生改变"],
+      twistCadence: "rare",
+      foreshadowHold: "arc",
+      endingHookStyle: "emotional_pull",
     }),
     children: [
       {

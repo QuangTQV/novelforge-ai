@@ -124,6 +124,22 @@ function formatStoryMacroSummary(plan: StoryMacroPlan | null | undefined): strin
     plan.expansion?.expanded_premise ? `expanded premise: ${plan.expansion.expanded_premise}` : "",
     plan.expansion?.conflict_engine ? `conflict engine: ${plan.expansion.conflict_engine}` : "",
     plan.expansion?.mystery_box ? `mystery box: ${plan.expansion.mystery_box}` : "",
+    plan.expansion?.mystery_layers && plan.expansion.mystery_layers.length > 0
+      ? `mystery layers (layered reveal tree):\n${plan.expansion.mystery_layers
+        .map((layer, index) => {
+          const parts = [
+            `  ${index + 1}. Q: ${layer.question}`,
+            `truth: ${layer.hidden_truth}`,
+            `activates: ${layer.activates_arc}`,
+            `pays off: ${layer.pays_off_arc}`,
+          ];
+          if (layer.reframes) {
+            parts.push(`reframes: ${layer.reframes}`);
+          }
+          return parts.join(" | ");
+        })
+        .join("\n")}`
+      : "",
     plan.decomposition?.selling_point ? `selling point: ${plan.decomposition.selling_point}` : "",
     plan.decomposition?.core_conflict ? `core conflict: ${plan.decomposition.core_conflict}` : "",
     plan.decomposition?.progression_loop ? `progression loop: ${plan.decomposition.progression_loop}` : "",

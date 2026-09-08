@@ -77,6 +77,7 @@ function deriveExpansion(rawExpansion: unknown, rawDecomposition: unknown, rawCo
     conflict_engine: pickString(rawExpansion, "conflict_engine") || pickString(rawDecomposition, "core_conflict"),
     conflict_layers: isRecord(rawExpansion) ? rawExpansion.conflict_layers : rawExpansion,
     mystery_box: pickString(rawExpansion, "mystery_box") || pickString(rawDecomposition, "main_hook"),
+    mystery_layers: isRecord(rawExpansion) ? rawExpansion.mystery_layers : undefined,
     emotional_line: pickString(rawExpansion, "emotional_line"),
     setpiece_seeds: pickStringArray(rawExpansion, "setpiece_seeds"),
     tone_reference: pickString(rawExpansion, "tone_reference") || pickString(rawConstraintPayload.engine, "tone"),

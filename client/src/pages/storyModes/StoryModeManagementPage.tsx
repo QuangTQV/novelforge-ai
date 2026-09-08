@@ -58,6 +58,11 @@ function createEmptyProfile(): StoryModeProfileDraft {
     volumeReward: "",
     mandatorySignals: [],
     antiSignals: [],
+    momentumSource: "goal_pursuit",
+    perChapterChangeMenu: [],
+    twistCadence: "periodic",
+    foreshadowHold: "arc",
+    endingHookStyle: "cliffhanger",
   };
 }
 
@@ -115,6 +120,11 @@ function normalizeProfileInput(profile: StoryModeDialogState["profile"]): StoryM
     volumeReward: profile.volumeReward.trim(),
     mandatorySignals: profile.mandatorySignals,
     antiSignals: profile.antiSignals,
+    momentumSource: profile.momentumSource,
+    perChapterChangeMenu: profile.perChapterChangeMenu,
+    twistCadence: profile.twistCadence,
+    foreshadowHold: profile.foreshadowHold,
+    endingHookStyle: profile.endingHookStyle,
   };
 }
 

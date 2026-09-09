@@ -14,6 +14,13 @@ import {
   LLMGenerateOptions,
 } from "./novelCoreShared";
 import { serializeCharacterProhibitions } from "./characters/characterHardFacts";
+import { resolveNovelLanguage, resolvePromptLanguage, type PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
+
+function pickText(lang: PromptLanguage, zh: string, vi: string, en: string): string {
+  if (lang === "vi") return vi;
+  if (lang === "en") return en;
+  return zh;
+}
 
 export class NovelCoreCharacterService {
   private readonly worldContextGateway = new WorldContextGateway();
@@ -235,14 +242,17 @@ export class NovelCoreCharacterService {
     ]);
 
     if (!novel || !character) {
-      throw new Error("小说或角色不存在");
+      throw new Error("Novel or character not found.");
     }
+
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
+    const emptyText = pickText(lang, "暂无", "chưa có", "(none)");
 
     const timelineText = timelines.length > 0
       ? timelines
         .map((item) => `${item.title}: ${item.content}`)
         .join("\n")
-      : "暂无时间线事件";
+      : pickText(lang, "暂无时间线事件", "chưa có sự kiện dòng thời gian", "(no timeline events)");
 
     let ragContext = "";
     try {
@@ -262,14 +272,14 @@ export class NovelCoreCharacterService {
       asset: characterEvolutionPrompt,
       promptInput: {
         novelTitle: novel.title,
-        bibleContent: novel.bible?.rawContent ?? "暂无",
+        bibleContent: novel.bible?.rawContent ?? emptyText,
         characterName: character.name,
         characterRole: character.role,
-        personality: character.personality ?? "暂无",
-        background: character.background ?? "暂无",
-        development: character.development ?? "暂无",
-        currentState: character.currentState ?? "暂无",
-        currentGoal: character.currentGoal ?? "暂无",
+        personality: character.personality ?? emptyText,
+        background: character.background ?? emptyText,
+        development: character.development ?? emptyText,
+        currentState: character.currentState ?? emptyText,
+        currentGoal: character.currentGoal ?? emptyText,
         timelineText,
         ragContext: ragContext || "",
       },
@@ -298,8 +308,11 @@ export class NovelCoreCharacterService {
       data: {
         novelId,
         characterId,
-        title: `角色演进更新 · ${new Date().toLocaleString("zh-CN")}`,
-        content: `状态：${updated.currentState ?? "暂无"}；目标：${updated.currentGoal ?? "暂无"}`,
+        title: `${pickText(lang, "角色演进更新", "Cập nhật tiến hoá nhân vật", "Character evolution update")} · ${new Date().toISOString()}`,
+        content: pickText(lang,
+          `状态：${updated.currentState ?? emptyText}；目标：${updated.currentGoal ?? emptyText}`,
+          `Trạng thái: ${updated.currentState ?? emptyText}; Mục tiêu: ${updated.currentGoal ?? emptyText}`,
+          `State: ${updated.currentState ?? emptyText}; Goal: ${updated.currentGoal ?? emptyText}`),
         source: "ai_evolve",
       },
     });

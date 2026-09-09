@@ -2,6 +2,7 @@ import type { LLMProvider } from "@ai-novel/shared/types/llm";
 import type { AuditReport, OpenConflict, PayoffLedgerResponse } from "@ai-novel/shared/types/novel";
 import type { PayoffLedgerItem } from "@ai-novel/shared/types/payoffLedger";
 import { prisma } from "../../db/prisma";
+import { resolveNovelLanguage, resolvePromptLanguage, type PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { runStructuredPrompt } from "../../prompting/core/promptRunner";
 import { payoffLedgerSyncPrompt } from "../../prompting/prompts/payoff/payoffLedgerSync.prompts";
 import {
@@ -22,6 +23,12 @@ import {
 import { resolveSupersededBookContractLedgerKeys } from "./domain/payoffLedgerSourceLifecycle";
 import { buildBookContractPayoffSources } from "./sources/bookContractPayoffSources";
 
+function pl(lang: PromptLanguage, zh: string, vi: string, en: string): string {
+  if (lang === "vi") return vi;
+  if (lang === "en") return en;
+  return zh;
+}
+
 interface PayoffLedgerSyncOptions {
   provider?: LLMProvider;
   model?: string;
@@ -34,7 +41,7 @@ interface PayoffLedgerReadOptions extends PayoffLedgerSyncOptions {
   syncIfMissing?: boolean;
 }
 
-function compactText(value: string | null | undefined, fallback = "无"): string {
+function compactText(value: string | null | undefined, fallback = ""): string {
   const normalized = String(value ?? "").replace(/\s+/g, " ").trim();
   return normalized || fallback;
 }
@@ -99,7 +106,7 @@ function formatMajorPayoffs(rawPlanJson: string | null | undefined): string {
     : [];
   return majorPayoffs.length > 0
     ? majorPayoffs.map((item, index) => `${index + 1}. ${item}`).join("\n")
-    : "无";
+    : "";
 }
 
 export class PayoffLedgerSyncService {
@@ -138,6 +145,7 @@ export class PayoffLedgerSyncService {
         select: {
           id: true,
           title: true,
+          novelLanguage: true,
           storyMacroPlan: {
             select: {
               decompositionJson: true,
@@ -204,8 +212,12 @@ export class PayoffLedgerSyncService {
     ]);
 
     if (!novel) {
-      throw new Error("小说不存在。");
+      throw new Error("Novel not found.");
     }
+
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
+    const none = pl(lang, "无", "không có", "none");
+    const sep = pl(lang, "；", "; ", "; ");
 
     const activeVolume = typeof chapterOrder === "number"
       ? volumeRows.find((volume) => volume.chapters.some((chapter) => chapter.chapterOrder === chapterOrder))
@@ -213,21 +225,23 @@ export class PayoffLedgerSyncService {
 
     const activeVolumeSummary = activeVolume
       ? [
-          `当前卷：第${activeVolume.sortOrder}卷《${activeVolume.title}》`,
-          `卷摘要：${compactText(activeVolume.summary)}`,
-          `卷 open payoffs：${safeParseJson<string[]>(activeVolume.openPayoffsJson, []).join("；") || "无"}`,
+          `${pl(lang, "当前卷", "Tập hiện tại", "Current volume")}: ${pl(lang, `第${activeVolume.sortOrder}卷`, `tập ${activeVolume.sortOrder}`, `volume ${activeVolume.sortOrder}`)} "${activeVolume.title}"`,
+          `${pl(lang, "卷摘要", "Tóm tắt tập", "Volume summary")}: ${compactText(activeVolume.summary, none)}`,
+          `${pl(lang, "卷 open payoffs", "open payoffs của tập", "Volume open payoffs")}: ${safeParseJson<string[]>(activeVolume.openPayoffsJson, []).join(sep) || none}`,
           activeVolume.chapters.length > 0
-            ? `卷章节范围：${activeVolume.chapters[0]?.chapterOrder ?? "-"}-${activeVolume.chapters[activeVolume.chapters.length - 1]?.chapterOrder ?? "-"}`
-            : "卷章节范围：无",
+            ? `${pl(lang, "卷章节范围", "Phạm vi chương của tập", "Volume chapter range")}: ${activeVolume.chapters[0]?.chapterOrder ?? "-"}-${activeVolume.chapters[activeVolume.chapters.length - 1]?.chapterOrder ?? "-"}`
+            : `${pl(lang, "卷章节范围", "Phạm vi chương của tập", "Volume chapter range")}: ${none}`,
         ].join("\n")
-      : `当前暂无激活卷窗口。${volumeRows.length > 0 ? `已有卷：${volumeRows.map((item) => `第${item.sortOrder}卷《${item.title}》`).join("；")}` : ""}`;
+      : `${pl(lang, "当前暂无激活卷窗口。", "Hiện chưa có cửa sổ tập đang kích hoạt.", "There is no active volume window right now.")}${volumeRows.length > 0 ? `${pl(lang, "已有卷", " Existing volumes", " Existing volumes")}: ${volumeRows.map((item) => `${pl(lang, `第${item.sortOrder}卷`, `tập ${item.sortOrder}`, `volume ${item.sortOrder}`)} "${item.title}"`).join(sep)}` : ""}`;
 
     const latestChapterContext = [
-      typeof chapterOrder === "number" ? `当前章节序号：第${chapterOrder}章` : "当前章节序号：未知",
+      typeof chapterOrder === "number"
+        ? `${pl(lang, "当前章节序号", "Số thứ tự chương hiện tại", "Current chapter order")}: ${chapterOrder}`
+        : `${pl(lang, "当前章节序号", "Số thứ tự chương hiện tại", "Current chapter order")}: ${pl(lang, "未知", "chưa biết", "unknown")}`,
       snapshot?.sourceChapter
-        ? `最新状态快照来源：第${snapshot.sourceChapter.order}章《${snapshot.sourceChapter.title}》`
-        : "最新状态快照来源：无",
-      snapshot?.summary ? `状态快照摘要：${snapshot.summary}` : "",
+        ? `${pl(lang, "最新状态快照来源", "Nguồn ảnh chụp trạng thái mới nhất", "Latest state-snapshot source")}: ${pl(lang, `第${snapshot.sourceChapter.order}章`, `chương ${snapshot.sourceChapter.order}`, `chapter ${snapshot.sourceChapter.order}`)} "${snapshot.sourceChapter.title}"`
+        : `${pl(lang, "最新状态快照来源", "Nguồn ảnh chụp trạng thái mới nhất", "Latest state-snapshot source")}: ${none}`,
+      snapshot?.summary ? `${pl(lang, "状态快照摘要", "Tóm tắt ảnh chụp trạng thái", "State-snapshot summary")}: ${snapshot.summary}` : "",
     ].filter(Boolean).join("\n");
 
     const openPayoffsText = volumeRows.length > 0
@@ -236,49 +250,50 @@ export class PayoffLedgerSyncService {
           if (openPayoffs.length === 0) {
             return "";
           }
-          return `【第${volume.sortOrder}卷 ${volume.title}】 ${openPayoffs.map((item) => compactText(item, "无")).join("；")}`;
-        }).filter(Boolean).join("\n\n") || "无"
-      : "无";
+          return `[${pl(lang, `第${volume.sortOrder}卷`, `tập ${volume.sortOrder}`, `volume ${volume.sortOrder}`)} ${volume.title}] ${openPayoffs.map((item) => compactText(item, none)).join(sep)}`;
+        }).filter(Boolean).join("\n\n") || none
+      : none;
 
     const chapterPayoffRefsText = volumeRows.flatMap((volume) => volume.chapters.map((chapter) => {
       const refs = safeParseJson<string[]>(chapter.payoffRefsJson, []);
       if (refs.length === 0) {
         return "";
       }
-      return `第${chapter.chapterOrder}章《${chapter.title}》 | ${refs.map((item) => compactText(item, "无")).join("；")}`;
-    })).filter(Boolean).join("\n\n") || "无";
+      return `${pl(lang, `第${chapter.chapterOrder}章`, `chương ${chapter.chapterOrder}`, `chapter ${chapter.chapterOrder}`)} "${chapter.title}" | ${refs.map((item) => compactText(item, none)).join(sep)}`;
+    })).filter(Boolean).join("\n\n") || none;
 
     const foreshadowStatesText = snapshot?.foreshadowStates.length
       ? snapshot.foreshadowStates.map((item) => (
         [
-          `标题：${item.title}`,
-          `状态：${compactText(item.status)}`,
-          item.summary ? `摘要：${item.summary}` : "",
-          item.setupChapterId ? `setupChapterId：${item.setupChapterId}` : "",
-          item.payoffChapterId ? `payoffChapterId：${item.payoffChapterId}` : "",
+          `${pl(lang, "标题", "Tiêu đề", "Title")}: ${item.title}`,
+          `${pl(lang, "状态", "Trạng thái", "Status")}: ${compactText(item.status, none)}`,
+          item.summary ? `${pl(lang, "摘要", "Tóm tắt", "Summary")}: ${item.summary}` : "",
+          item.setupChapterId ? `setupChapterId: ${item.setupChapterId}` : "",
+          item.payoffChapterId ? `payoffChapterId: ${item.payoffChapterId}` : "",
         ].filter(Boolean).join(" | ")
       )).join("\n")
-      : "无";
+      : none;
 
     const payoffConflictsText = openConflicts.length > 0
       ? openConflicts.map((row) => {
           const conflict = normalizeConflict(row);
           return [
-            `${conflict.conflictType}/${conflict.severity}：${conflict.title}`,
-            compactText(conflict.summary),
-            conflict.resolutionHint ? `修复建议：${compactText(conflict.resolutionHint)}` : "",
+            `${conflict.conflictType}/${conflict.severity}: ${conflict.title}`,
+            compactText(conflict.summary, none),
+            conflict.resolutionHint ? `${pl(lang, "修复建议", "Gợi ý sửa", "Fix suggestion")}: ${compactText(conflict.resolutionHint, none)}` : "",
           ].filter(Boolean).join(" | ");
         }).join("\n")
-      : "无";
+      : none;
 
     const payoffAuditIssuesText = recentAuditReports.length > 0
       ? recentAuditReports.flatMap((report) => report.issues.map((issue) => (
-        `${issue.code} (${issue.severity})：${compactText(issue.description)} | 证据：${compactText(issue.evidence)}`
-      ))).join("\n") || "无"
-      : "无";
+        `${issue.code} (${issue.severity}): ${compactText(issue.description, none)} | ${pl(lang, "证据", "chứng cứ", "evidence")}: ${compactText(issue.evidence, none)}`
+      ))).join("\n") || none
+      : none;
 
     return {
       chapterOrder,
+      lang,
       latestSnapshotId: snapshot?.id ?? null,
       promptInput: {
         novelTitle: novel.title,
@@ -369,7 +384,7 @@ export class PayoffLedgerSyncService {
   async syncLedger(novelId: string, options: PayoffLedgerSyncOptions = {}): Promise<PayoffLedgerResponse> {
     const existingRows = await this.loadLedgerRows(novelId);
     try {
-      const { promptInput, chapterOrder, latestSnapshotId } = await this.buildSyncPromptInput(novelId, options);
+      const { promptInput, chapterOrder, latestSnapshotId, lang } = await this.buildSyncPromptInput(novelId, options);
       const result = await runStructuredPrompt({
         asset: payoffLedgerSyncPrompt,
         promptInput,
@@ -486,7 +501,7 @@ export class PayoffLedgerSyncService {
               {
                 code: "source_superseded",
                 severity: "low",
-                summary: "Book Contract 阶段回报已修改或移除，这条旧承诺已退出当前执行义务。",
+                summary: pl(lang, "Book Contract 阶段回报已修改或移除，这条旧承诺已退出当前执行义务。", "Phần trả nợ theo giai đoạn của Book Contract đã bị sửa hoặc gỡ, lời hứa cũ này đã rời khỏi nghĩa vụ thực thi hiện tại.", "The Book Contract phased payoff was changed or removed; this old promise has left the current execution obligation."),
                 stale: true,
               },
             ]);
@@ -495,7 +510,7 @@ export class PayoffLedgerSyncService {
               data: {
                 currentStatus: "failed",
                 riskSignalsJson: serializeLedgerJson(riskSignals),
-                statusReason: "Book Contract 来源已被新的阶段回报替换或移除。",
+                statusReason: pl(lang, "Book Contract 来源已被新的阶段回报替换或移除。", "Nguồn Book Contract đã bị phần trả nợ theo giai đoạn mới thay thế hoặc gỡ bỏ.", "The Book Contract source was replaced or removed by a new phased payoff."),
                 updatedAt: now,
               },
             });
@@ -510,7 +525,7 @@ export class PayoffLedgerSyncService {
           }
           const staleSignals = appendStaleRiskSignal(
             safeParseJson(row.riskSignalsJson, [] as Array<{ code: string; severity: "low" | "medium" | "high" | "critical"; summary: string; stale?: boolean }>),
-            "本轮 AI 对账没有再次命中这条伏笔，已保留旧账本并标记为 stale，等待下一次同步确认。",
+            pl(lang, "本轮 AI 对账没有再次命中这条伏笔，已保留旧账本并标记为 stale，等待下一次同步确认。", "Vòng đối soát AI lần này không khớp lại foreshadow này; đã giữ sổ cũ và đánh dấu stale, chờ lần đồng bộ sau xác nhận.", "This AI reconciliation pass did not re-match this foreshadowing; the old ledger entry is kept and marked stale, pending the next sync."),
           );
           await tx.payoffLedgerItem.update({
             where: { id: row.id },
@@ -532,7 +547,7 @@ export class PayoffLedgerSyncService {
           for (const row of existingRows) {
             const staleSignals = appendStaleRiskSignal(
               safeParseJson(row.riskSignalsJson, [] as Array<{ code: string; severity: "low" | "medium" | "high" | "critical"; summary: string; stale?: boolean }>),
-              "伏笔账本同步失败，已保留上次成功结果。",
+              "Payoff-ledger sync failed; the last successful result was kept.",
             );
             await tx.payoffLedgerItem.update({
               where: { id: row.id },
@@ -561,7 +576,7 @@ export class PayoffLedgerSyncService {
       chapterId,
       auditType: "plot",
       overallScore: null,
-      summary: "系统根据伏笔账本补充了需要继续跟踪的兑现风险。",
+      summary: "The system added payoff risks that still need tracking, based on the payoff ledger.",
       legacyScoreJson: null,
       issues: issues.map((issue) => ({
         id: `${reportId}:${issue.ledgerKey}:${issue.code}`,

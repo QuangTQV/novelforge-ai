@@ -500,7 +500,7 @@ async function seedStoryModeNode(
   let report = { storyModesCreated: 0, storyModesUpdated: 0 };
   const existing = await tx.novelStoryMode.findUnique({
     where: { id: node.id },
-    select: { id: true },
+    select: { id: true, name: true, description: true, template: true },
   });
 
   const data = {
@@ -512,7 +512,13 @@ async function seedStoryModeNode(
   };
 
   if (existing) {
-    if (mode === "sync_existing") {
+    // Legacy installations contained the built-in catalog in Chinese. Repair
+    // only those records during normal startup; preserve user-edited records
+    // written in another language.
+    const isLegacyChineseRecord = containsCjkText(existing.name)
+      || containsCjkText(existing.description)
+      || containsCjkText(existing.template);
+    if (mode === "sync_existing" || isLegacyChineseRecord) {
       await tx.novelStoryMode.update({
         where: { id: node.id },
         data,

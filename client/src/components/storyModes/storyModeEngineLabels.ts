@@ -10,12 +10,14 @@ type Lang = "zh" | "vi" | "en";
 
 export interface StoryModeEngineLabels {
   sectionTitle: string;
+  sectionHint: string;
   momentumSource: string;
   twistCadence: string;
   foreshadowHold: string;
   endingHookStyle: string;
   perChapterChangeMenu: string;
   perChapterChangeMenuEmpty: string;
+  perChapterChangeMenuPlaceholder: string;
   momentum: Record<StoryModeMomentumSource, string>;
   cadence: Record<StoryModeTwistCadence, string>;
   hold: Record<StoryModeForeshadowHold, string>;
@@ -25,12 +27,14 @@ export interface StoryModeEngineLabels {
 const LABELS: Record<Lang, StoryModeEngineLabels> = {
   zh: {
     sectionTitle: "叙事引擎",
+    sectionHint: "决定这种模式如何逐章推进：靠什么驱动、反转多密、伏笔留多久、章末怎样收尾。",
     momentumSource: "章节推进动力来源",
     twistCadence: "反转/揭示密度",
     foreshadowHold: "伏笔保留时长",
     endingHookStyle: "章末钩子类型",
     perChapterChangeMenu: "每章可选的状态变化",
     perChapterChangeMenuEmpty: "尚未定义每章状态变化",
+    perChapterChangeMenuPlaceholder: "每行一种本模式下每章允许发生的状态变化，例如：\n推进一个明确的阶段目标\n关系或立场发生可见变化\n获得新信息或修正误判",
     momentum: {
       relationship_emotion: "关系与情绪",
       information_revelation: "信息揭示节奏",
@@ -62,12 +66,14 @@ const LABELS: Record<Lang, StoryModeEngineLabels> = {
   },
   vi: {
     sectionTitle: "Động cơ tự sự",
+    sectionHint: "Quy định mode này đẩy truyện qua từng chương thế nào: đẩy bằng gì, đảo chiều dày ra sao, giữ foreshadow bao lâu, cuối chương chốt kiểu gì.",
     momentumSource: "Nguồn lực đẩy truyện mỗi chương",
     twistCadence: "Mật độ đảo chiều / hé lộ",
     foreshadowHold: "Thời gian giữ foreshadow",
     endingHookStyle: "Kiểu móc câu cuối chương",
     perChapterChangeMenu: "State change hợp lệ mỗi chương",
     perChapterChangeMenuEmpty: "Chưa định nghĩa state change mỗi chương",
+    perChapterChangeMenuPlaceholder: "Mỗi dòng một loại thay đổi trạng thái được phép xảy ra mỗi chương trong mode này, ví dụ:\nĐẩy một mục tiêu giai đoạn rõ ràng\nQuan hệ hoặc lập trường thay đổi thấy được\nCó thông tin mới hoặc sửa một phán đoán sai",
     momentum: {
       relationship_emotion: "quan hệ & cảm xúc",
       information_revelation: "nhịp hé lộ thông tin",
@@ -99,12 +105,14 @@ const LABELS: Record<Lang, StoryModeEngineLabels> = {
   },
   en: {
     sectionTitle: "Narrative engine",
+    sectionHint: "Defines how this mode advances chapter by chapter: what drives it, how dense the reversals are, how long foreshadowing is held, and how chapters close.",
     momentumSource: "Per-chapter momentum source",
     twistCadence: "Reversal / reveal density",
     foreshadowHold: "Foreshadow hold duration",
     endingHookStyle: "Chapter-ending hook style",
     perChapterChangeMenu: "Valid per-chapter state changes",
     perChapterChangeMenuEmpty: "No per-chapter state changes defined yet",
+    perChapterChangeMenuPlaceholder: "One state change allowed per chapter in this mode per line, e.g.:\nAdvance a clear stage goal\nA visible shift in a relationship or stance\nGain new information or correct a misjudgment",
     momentum: {
       relationship_emotion: "relationship & emotion",
       information_revelation: "information-revelation cadence",

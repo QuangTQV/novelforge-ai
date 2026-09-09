@@ -1,6 +1,13 @@
 import { translateUi } from "@/i18n/legacy";
 import type { StoryModeProfile } from "@ai-novel/shared/types/storyMode";
+import {
+  STORY_MODE_ENDING_HOOK_STYLES,
+  STORY_MODE_FORESHADOW_HOLDS,
+  STORY_MODE_MOMENTUM_SOURCES,
+  STORY_MODE_TWIST_CADENCES,
+} from "@ai-novel/shared/types/storyMode";
 import SelectControl from "@/components/common/SelectControl";
+import { getStoryModeEngineLabels } from "@/components/storyModes/storyModeEngineLabels";
 
 function linesToList(value: string): string[] {
   return value
@@ -24,7 +31,7 @@ export default function StoryModeProfileFields({
 }: StoryModeProfileFieldsProps) {
   const updateList = (field: keyof Pick<
     StoryModeProfile,
-    "progressionUnits" | "allowedConflictForms" | "forbiddenConflictForms" | "mandatorySignals" | "antiSignals"
+    "progressionUnits" | "allowedConflictForms" | "forbiddenConflictForms" | "mandatorySignals" | "antiSignals" | "perChapterChangeMenu"
   >, text: string) => {
     onChange({
       ...value,
@@ -33,6 +40,7 @@ export default function StoryModeProfileFields({
   };
 
   const textareaClassName = "w-full rounded-md border bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
+  const engine = getStoryModeEngineLabels();
 
   return (
     <div className="space-y-7">
@@ -172,6 +180,73 @@ export default function StoryModeProfileFields({
               value={listToLines(value.antiSignals)}
               placeholder={translateUi("每行一个出现后说明故事正在偏离该模式的信号。")}
               onChange={(event) => updateList("antiSignals", event.target.value)}
+            />
+          </label>
+        </div>
+      </section>
+
+      <section className="border-t border-border pt-6">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">{engine.sectionTitle}</h3>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">{engine.sectionHint}</p>
+        </div>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{engine.momentumSource}</span>
+            <SelectControl
+              className="w-full"
+              value={value.momentumSource}
+              onChange={(event) => onChange({ ...value, momentumSource: event.target.value as StoryModeProfile["momentumSource"] })}
+            >
+              {STORY_MODE_MOMENTUM_SOURCES.map((option) => (
+                <option key={option} value={option}>{engine.momentum[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{engine.twistCadence}</span>
+            <SelectControl
+              className="w-full"
+              value={value.twistCadence}
+              onChange={(event) => onChange({ ...value, twistCadence: event.target.value as StoryModeProfile["twistCadence"] })}
+            >
+              {STORY_MODE_TWIST_CADENCES.map((option) => (
+                <option key={option} value={option}>{engine.cadence[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{engine.foreshadowHold}</span>
+            <SelectControl
+              className="w-full"
+              value={value.foreshadowHold}
+              onChange={(event) => onChange({ ...value, foreshadowHold: event.target.value as StoryModeProfile["foreshadowHold"] })}
+            >
+              {STORY_MODE_FORESHADOW_HOLDS.map((option) => (
+                <option key={option} value={option}>{engine.hold[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{engine.endingHookStyle}</span>
+            <SelectControl
+              className="w-full"
+              value={value.endingHookStyle}
+              onChange={(event) => onChange({ ...value, endingHookStyle: event.target.value as StoryModeProfile["endingHookStyle"] })}
+            >
+              {STORY_MODE_ENDING_HOOK_STYLES.map((option) => (
+                <option key={option} value={option}>{engine.hook[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm md:col-span-2">
+            <span className="font-medium text-foreground">{engine.perChapterChangeMenu}</span>
+            <textarea
+              rows={4}
+              className={textareaClassName}
+              value={listToLines(value.perChapterChangeMenu)}
+              placeholder={engine.perChapterChangeMenuPlaceholder}
+              onChange={(event) => updateList("perChapterChangeMenu", event.target.value)}
             />
           </label>
         </div>

@@ -377,14 +377,20 @@ export class GenerationContextAssembler {
       })(),
     });
     const macroConstraints = buildMacroConstraintContext(storyMacroPlan);
+    const foundationPromptLanguage = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
+    const genreLabels = foundationPromptLanguage === "vi"
+      ? { sep: ": ", base: "Nền thể loại", positioning: "Định vị thể loại", tendency: "Xu hướng vận dụng thể loại" }
+      : foundationPromptLanguage === "en"
+        ? { sep: ": ", base: "Genre base", positioning: "Genre positioning", tendency: "Genre usage tendency" }
+        : { sep: "：", base: "题材基底", positioning: "题材定位", tendency: "题材使用倾向" };
     const productionFoundationPrompt = [
-      novel.genre?.name ? `题材基底：${novel.genre.name}` : "",
-      novel.genre?.description ? `题材定位：${novel.genre.description}` : "",
-      novel.genre?.template ? `题材使用倾向：${novel.genre.template}` : "",
+      novel.genre?.name ? `${genreLabels.base}${genreLabels.sep}${novel.genre.name}` : "",
+      novel.genre?.description ? `${genreLabels.positioning}${genreLabels.sep}${novel.genre.description}` : "",
+      novel.genre?.template ? `${genreLabels.tendency}${genreLabels.sep}${novel.genre.template}` : "",
       buildStoryModePromptBlock({
         primary: novel.primaryStoryMode ? normalizeStoryModeOutput(novel.primaryStoryMode) : null,
         secondary: novel.secondaryStoryMode ? normalizeStoryModeOutput(novel.secondaryStoryMode) : null,
-        lang: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
+        lang: foundationPromptLanguage,
       }),
     ].filter(Boolean).join("\n\n");
     const mappedPlan = mapPlan(ensuredPlan);

@@ -1,7 +1,11 @@
+import i18n from "i18next";
 import { translateResourceText, translateUi } from "@/i18n/legacy";
-import { BookOpen, CircleGauge, Workflow } from "lucide-react";
+import { BookOpen, CircleGauge, Gauge, Workflow } from "lucide-react";
 import type { NovelStoryMode } from "@ai-novel/shared/types/storyMode";
 import { cn } from "@/lib/utils";
+import { getStoryModeEngineLabels } from "./storyModeEngineLabels";
+
+const CJK_PATTERN = /[㐀-鿿]/u;
 
 const conflictCeilingLabel = {
   low: translateUi("低强度"),
@@ -40,6 +44,17 @@ export default function StoryModeProfileDetails({
   titleId?: string;
 }) {
   const { profile } = node;
+  const engine = getStoryModeEngineLabels();
+  const engineRows: Array<{ label: string; value: string }> = [
+    { label: engine.momentumSource, value: engine.momentum[profile.momentumSource] ?? profile.momentumSource },
+    { label: engine.twistCadence, value: engine.cadence[profile.twistCadence] ?? profile.twistCadence },
+    { label: engine.foreshadowHold, value: engine.hold[profile.foreshadowHold] ?? profile.foreshadowHold },
+    { label: engine.endingHookStyle, value: engine.hook[profile.endingHookStyle] ?? profile.endingHookStyle },
+  ];
+  const isZh = (i18n.resolvedLanguage ?? i18n.language ?? "vi").split("-")[0] === "zh";
+  const changeMenuItems = profile.perChapterChangeMenu
+    .map((item) => translateUi(item))
+    .filter((item) => item.trim().length > 0 && (isZh || !CJK_PATTERN.test(item)));
 
   return (
     <div className={cn("max-w-4xl", className)}>
@@ -95,6 +110,30 @@ export default function StoryModeProfileDetails({
 
             {translateUi("不适合：")}{profile.forbiddenConflictForms.map((item) => translateResourceText(item)).filter(Boolean).join(translateUi("、"))}
           </p>
+        ) : null}
+      </div>
+
+      <div className="mt-7 border-t border-border/70 pt-6">
+        <div className="flex items-center gap-2">
+          <Gauge className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <div className="text-sm font-semibold text-foreground">{engine.sectionTitle}</div>
+        </div>
+        <div className="mt-3 grid gap-px overflow-hidden rounded-md border border-border/70 bg-border/70 sm:grid-cols-2">
+          {engineRows.map((row) => (
+            <div key={row.label} className="bg-background p-3">
+              <div className="text-xs font-medium text-muted-foreground">{row.label}</div>
+              <div className="mt-1 text-sm leading-6 text-foreground">{row.value}</div>
+            </div>
+          ))}
+        </div>
+        {changeMenuItems.length > 0 ? (
+          <div className="mt-4">
+            <ContractList
+              title={engine.perChapterChangeMenu}
+              items={changeMenuItems}
+              emptyText={engine.perChapterChangeMenuEmpty}
+            />
+          </div>
         ) : null}
       </div>
 

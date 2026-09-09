@@ -618,7 +618,7 @@ test("character dynamics prompts harden plannedChapterOrders and confidence outp
     rosterText: "赵高\n李斯",
     relationText: "赵高-李斯 对立",
     volumePlansText: "第一卷：立足；第二卷：扩权",
-  });
+  }, { promptLanguage: "zh" });
   const chapterMessages = chapterAsset.render({
     novelTitle: "测试小说",
     targetAudience: "男频",
@@ -630,7 +630,7 @@ test("character dynamics prompts harden plannedChapterOrders and confidence outp
     chapterOrder: 1,
     chapterTitle: "入局",
     chapterContent: "赵高第一次被要求处理脏活。",
-  });
+  }, { promptLanguage: "zh" });
 
   assert.match(String(volumeMessages[0].content), /plannedChapterOrders 如果填写，必须是正整数数组/);
   assert.match(String(volumeMessages[0].content), /绝不能输出 null、\[null\] 或字符串数组/);

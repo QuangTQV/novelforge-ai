@@ -4,7 +4,7 @@ import type { PayoffLedgerResponse } from "@ai-novel/shared/types/payoffLedger";
 import { isPayoffOverdueAtChapter } from "../payoff/payoffLedgerShared";
 import { buildPlannerStyleContractSummaryText } from "../styleEngine/styleContractText";
 import { buildStoryModePromptBlock, normalizeStoryModeOutput } from "../storyMode/storyModeProfile";
-import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
+import { resolveNovelLanguage, resolvePromptLanguage, type PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { characterDynamicsQueryService } from "../novel/dynamics/CharacterDynamicsQueryService";
 
 export type PlannerStoryModeRow = {
@@ -65,28 +65,44 @@ export function buildPlannerStoryModeBlock(input: {
   });
 }
 
-export function buildStoryMacroSummary(plan: StoryMacroPlan | null): string {
+export function buildStoryMacroSummary(plan: StoryMacroPlan | null, lang: PromptLanguage = "zh"): string {
+  const pick = (zh: string, vi: string, en: string): string => (lang === "vi" ? vi : lang === "en" ? en : zh);
+  const none = pick("无", "không có", "none");
   if (!plan) {
-    return "无";
+    return none;
   }
+  const sep = pick("；", "; ", "; ");
+  const label = {
+    premise: pick("扩展 premise：", "Premise mở rộng: ", "Expanded premise: "),
+    protagonist: pick("主角核心：", "Lõi nhân vật chính: ", "Protagonist core: "),
+    selling: pick("卖点拆解：", "Điểm bán được bóc tách: ", "Selling point breakdown: "),
+    conflict: pick("核心冲突：", "Xung đột cốt lõi: ", "Core conflict: "),
+    hook: pick("主钩子：", "Hook chính: ", "Main hook: "),
+    loop: pick("推进回路：", "Vòng lặp đẩy truyện: ", "Progression loop: "),
+    growth: pick("成长路径：", "Lộ trình trưởng thành: ", "Growth path: "),
+    payoffs: pick("关键兑现：", "Các cú tất toán then chốt: ", "Key payoffs: "),
+    ending: pick("结尾风味：", "Dư vị hồi kết: ", "Ending flavor: "),
+    hard: pick("硬约束：", "Ràng buộc cứng: ", "Hard constraints: "),
+    phases: pick("阶段模型：", "Mô hình các pha: ", "Phase model: "),
+  };
   const lines = [
-    plan.expansion?.expanded_premise ? `扩展 premise：${plan.expansion.expanded_premise}` : "",
-    plan.expansion?.protagonist_core ? `主角核心：${plan.expansion.protagonist_core}` : "",
-    plan.decomposition?.selling_point ? `卖点拆解：${plan.decomposition.selling_point}` : "",
-    plan.decomposition?.core_conflict ? `核心冲突：${plan.decomposition.core_conflict}` : "",
-    plan.decomposition?.main_hook ? `主钩子：${plan.decomposition.main_hook}` : "",
-    plan.decomposition?.progression_loop ? `推进回路：${plan.decomposition.progression_loop}` : "",
-    plan.decomposition?.growth_path ? `成长路径：${plan.decomposition.growth_path}` : "",
+    plan.expansion?.expanded_premise ? `${label.premise}${plan.expansion.expanded_premise}` : "",
+    plan.expansion?.protagonist_core ? `${label.protagonist}${plan.expansion.protagonist_core}` : "",
+    plan.decomposition?.selling_point ? `${label.selling}${plan.decomposition.selling_point}` : "",
+    plan.decomposition?.core_conflict ? `${label.conflict}${plan.decomposition.core_conflict}` : "",
+    plan.decomposition?.main_hook ? `${label.hook}${plan.decomposition.main_hook}` : "",
+    plan.decomposition?.progression_loop ? `${label.loop}${plan.decomposition.progression_loop}` : "",
+    plan.decomposition?.growth_path ? `${label.growth}${plan.decomposition.growth_path}` : "",
     plan.decomposition?.major_payoffs?.length
-      ? `关键兑现：${plan.decomposition.major_payoffs.join("；")}`
+      ? `${label.payoffs}${plan.decomposition.major_payoffs.join(sep)}`
       : "",
-    plan.decomposition?.ending_flavor ? `结尾风味：${plan.decomposition.ending_flavor}` : "",
-    plan.constraints.length > 0 ? `硬约束：${plan.constraints.join("；")}` : "",
+    plan.decomposition?.ending_flavor ? `${label.ending}${plan.decomposition.ending_flavor}` : "",
+    plan.constraints.length > 0 ? `${label.hard}${plan.constraints.join(sep)}` : "",
     plan.constraintEngine?.phase_model?.length
-      ? `阶段模型：${plan.constraintEngine.phase_model.map((item) => `${item.name}:${item.goal}`).join(" | ")}`
+      ? `${label.phases}${plan.constraintEngine.phase_model.map((item) => `${item.name}:${item.goal}`).join(" | ")}`
       : "",
   ].filter(Boolean);
-  return lines.join("\n") || "无";
+  return lines.join("\n") || none;
 }
 
 export function buildCurrentVolumeWindowSummary(

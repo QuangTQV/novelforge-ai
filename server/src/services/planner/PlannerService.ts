@@ -586,7 +586,7 @@ export class PlannerService {
       replanConflictLevelAnchors: options.replanContext
         ? buildPlannerConflictLevelAnchorContext(plannerVolumes, options.replanContext.affectedChapterOrders)
         : "",
-      storyMacroSummary: buildStoryMacroSummary(storyMacroPlan),
+      storyMacroSummary: buildStoryMacroSummary(storyMacroPlan, chapterPlanLang),
       currentVolumeWindow: buildCurrentVolumeWindowSummary(plannerVolumes, chapter.order),
       payoffLedgerSummary: buildPlannerPayoffLedgerContext(payoffLedger, chapter.order),
       storyModeBlock,

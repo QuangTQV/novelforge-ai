@@ -468,6 +468,12 @@ export const chapterCharacterHardFactSchema = z.object({
 });
 
 export const chapterWriteContextSchema = z.object({
+  /**
+   * Output language for this novel — drives the language of every derived
+   * context label rendered into the chapter writer / review / repair prompt.
+   * Defaults to "zh" so legacy callers and stored contexts stay unchanged.
+   */
+  promptLanguage: z.enum(["vi", "zh", "en"]).default("zh"),
   bookContract: bookContractContextSchema,
   productionFoundationPrompt: z.string().default(""),
   macroConstraints: macroConstraintContextSchema.nullable(),

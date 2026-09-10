@@ -7,6 +7,19 @@ import {
   normalizeReaderExperienceContract,
   type ReaderExperienceContract,
 } from "@ai-novel/shared/types/novel/readerExperience";
+import type { PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
+
+const PROTAGONIST_ROLE_ALIASES = new Set(["主角", "nhân vật chính", "protagonist", "main character"]);
+
+function pick(lang: PromptLanguage, zh: string, vi: string, en: string): string {
+  if (lang === "vi") {
+    return vi;
+  }
+  if (lang === "en") {
+    return en;
+  }
+  return zh;
+}
 
 const EMPTY_OBLIGATION_CONTRACT: ChapterExecutionObligationContract = {
   mustHitNow: [],
@@ -23,6 +36,7 @@ export function normalizeChapterWriteContext(writeContext: ChapterWriteContext):
     obligationContract?: Partial<ChapterExecutionObligationContract> | null;
   };
   const obligationContract = legacyContext.obligationContract ?? {};
+  const lang: PromptLanguage = writeContext.promptLanguage ?? "zh";
   const storedReaderExperience = normalizeReaderExperienceContract(writeContext.readerExperience);
   const compatibleReaderExperience: ReaderExperienceContract = hasReaderExperienceContractValue(storedReaderExperience)
     ? storedReaderExperience
@@ -31,15 +45,25 @@ export function normalizeChapterWriteContext(writeContext: ChapterWriteContext):
       promisedReward: writeContext.chapterStateGoal?.targetPayoffs[0]
         || writeContext.chapterMission.expectation,
       rewardLevel: writeContext.chapterMission.planRole === "payoff" ? "major" : "partial",
-      protagonistWant: writeContext.participants.find((item) => item.role === "主角")?.currentGoal
+      protagonistWant: writeContext.participants.find((item) => PROTAGONIST_ROLE_ALIASES.has(item.role?.trim().toLowerCase() ?? ""))?.currentGoal
         || writeContext.participants[0]?.currentGoal
         || writeContext.chapterMission.objective,
       primaryResistance: writeContext.openConflictSummaries[0]
         || writeContext.chapterMission.mustAdvance[0]
-        || "完成本章任务时必须面对具体阻力与代价。",
+        || pick(
+          lang,
+          "完成本章任务时必须面对具体阻力与代价。",
+          "Khi hoàn thành nhiệm vụ chương này phải đối mặt với trở lực và cái giá cụ thể.",
+          "Completing this chapter's mission must involve a concrete obstacle and cost.",
+        ),
       keyTurn: writeContext.chapterBoundary?.exclusiveEvent || writeContext.chapterMission.objective,
       emotionalShift: writeContext.chapterMission.expectation,
-      informationReveal: "本章只交付任务允许的必要信息。",
+      informationReveal: pick(
+        lang,
+        "本章只交付任务允许的必要信息。",
+        "Chương này chỉ giao đúng thông tin cần thiết mà nhiệm vụ cho phép.",
+        "This chapter delivers only the necessary information the mission allows.",
+      ),
       netChange: writeContext.chapterBoundary?.endingState || writeContext.chapterMission.expectation,
       inheritedHookResponsibilities: [],
       endingHook: writeContext.chapterMission.hookTarget,

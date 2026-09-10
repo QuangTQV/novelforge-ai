@@ -59,6 +59,7 @@ async function loadPreviewNovelAndChapter(input: {
         pacePreference: true,
         emotionIntensity: true,
         styleTone: true,
+        novelLanguage: true,
         estimatedChapterCount: true,
         writingPlatformSnapshotJson: true,
         characters: {

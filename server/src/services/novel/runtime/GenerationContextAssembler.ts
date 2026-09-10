@@ -538,6 +538,7 @@ export class GenerationContextAssembler {
       narrativeProgressHint: buildNarrativeProgressHint(
         chapter.order,
         novel.estimatedChapterCount,
+        foundationPromptLanguage,
       ),
       canonicalState,
       nextAction: resolvedStateDrivenContext.nextAction,
@@ -599,6 +600,7 @@ export class GenerationContextAssembler {
       productionFoundationPrompt,
       macroConstraints,
       volumeWindow,
+      promptLanguage: foundationPromptLanguage,
       contextPackage: {
         ...sharedFields,
         ragContext: "",

@@ -58,7 +58,7 @@ function detectRole(message: BaseMessage): "system" | AnthropicRole {
   return "user";
 }
 
-function normalizeBaseURL(baseURL: string): string {
+export function normalizeBaseURL(baseURL: string): string {
   const trimmed = baseURL.trim().replace(/\/+$/u, "");
   return trimmed.endsWith("/v1") ? trimmed : `${trimmed}/v1`;
 }
@@ -91,7 +91,7 @@ function convertMessages(messages: BaseMessage[]): { system?: string; messages: 
   };
 }
 
-function extractTextContent(payload: unknown): string {
+export function extractTextContent(payload: unknown): string {
   if (!payload || typeof payload !== "object") {
     return "";
   }

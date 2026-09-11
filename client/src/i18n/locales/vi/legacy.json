@@ -8419,5 +8419,8 @@
   "群像": "Quần thể nhân vật",
   "日常": "Đời thường",
   "治愈": "Chữa lành",
-  "职场": "Công sở"
+  "职场": "Công sở",
+  "参考作品（可选）": "Tác phẩm tham khảo (không bắt buộc)",
+  "例如：进击的巨人、来自深渊（用逗号或换行分隔多个作品）": "Ví dụ: Attack on Titan, Made in Abyss (cách nhau bằng dấu phẩy hoặc xuống dòng)",
+  "AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。": "AI sẽ dùng kiến thức sẵn có, hoặc tìm kiếm trên web khi cần, để tìm hiểu các tác phẩm này — chỉ dùng để tham khảo cấu trúc và tông giọng, không sao chép nguyên văn nội dung gốc."
 }

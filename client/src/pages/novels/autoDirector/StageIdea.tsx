@@ -22,6 +22,8 @@ import type { FoundationConstellationOption } from "./ideaConstellation/ideaCons
 interface StageIdeaProps {
   idea: string;
   onIdeaChange: (value: string) => void;
+  referenceWorkTitlesText: string;
+  onReferenceWorkTitlesTextChange: (value: string) => void;
   ideaInspirations: DirectorIdeaInspiration[];
   isGeneratingIdeaInspirations: boolean;
   onGenerateIdeaInspirations: () => void;
@@ -85,6 +87,8 @@ function buildFoundationCloudOptions(
 export default function StageIdea({
   idea,
   onIdeaChange,
+  referenceWorkTitlesText,
+  onReferenceWorkTitlesTextChange,
   ideaInspirations,
   isGeneratingIdeaInspirations,
   onGenerateIdeaInspirations,
@@ -326,6 +330,20 @@ export default function StageIdea({
               })}
             </div>
             <div className="mt-1 text-xs text-muted-foreground">{translateUi("Có thể chọn nhiều thể loại. Thể loại đầu tiên được dùng làm thể loại chính.")}</div>
+          </div>
+          <div className="mt-3 rounded-md bg-background/65 p-3 ring-1 ring-border/70">
+            <div className="mb-1 text-xs font-medium text-muted-foreground">{translateUi("参考作品（可选）")}</div>
+            <input
+              type="text"
+              className="w-full rounded-md bg-background px-3 py-2 text-sm outline-none ring-1 ring-border/70 transition focus-visible:ring-2 focus-visible:ring-primary/40"
+              value={referenceWorkTitlesText}
+              onChange={(event) => onReferenceWorkTitlesTextChange(event.target.value)}
+              placeholder={translateUi("例如：进击的巨人、来自深渊（用逗号或换行分隔多个作品）")}
+              disabled={isGenerating || isUpdatingFoundation}
+            />
+            <div className="mt-1 text-xs text-muted-foreground">
+              {translateUi("AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。")}
+            </div>
           </div>
           {(genreError || storyModeError) ? (
             <div className="mt-2 text-xs text-muted-foreground">

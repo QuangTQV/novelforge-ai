@@ -465,6 +465,8 @@ function AutoDirectorCreatePage() {
         <StageIdea
           idea={controller.idea}
           onIdeaChange={controller.setIdea}
+          referenceWorkTitlesText={controller.referenceWorkTitlesText}
+          onReferenceWorkTitlesTextChange={controller.setReferenceWorkTitlesText}
           ideaInspirations={controller.ideaInspirations}
           isGeneratingIdeaInspirations={controller.isGeneratingIdeaInspirations}
           onGenerateIdeaInspirations={controller.generateIdeaInspirations}

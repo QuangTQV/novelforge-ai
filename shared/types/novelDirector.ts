@@ -654,6 +654,8 @@ export type DirectorWorldSetupMode = NonNullable<DirectorProjectContextInput["wo
 export interface DirectorCandidatesRequest extends DirectorProjectContextInput, DirectorLLMOptions {
   idea: string;
   workflowTaskId?: string;
+  /** Tên tác phẩm khác (manga/anime/tiểu thuyết...) để AI tham khảo cấu trúc/tông giọng, không sao chép nguyên văn. */
+  referenceWorkTitles?: string[];
 }
 
 export interface DirectorIdeaContextRequest extends DirectorProjectContextInput, DirectorLLMOptions {

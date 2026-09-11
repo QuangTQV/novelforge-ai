@@ -8208,5 +8208,8 @@
   "群像": "Ensemble cast",
   "日常": "Slice of life",
   "治愈": "Healing",
-  "职场": "Workplace"
+  "职场": "Workplace",
+  "参考作品（可选）": "Reference works (optional)",
+  "例如：进击的巨人、来自深渊（用逗号或换行分隔多个作品）": "e.g. Attack on Titan, Made in Abyss (separate multiple titles with a comma or newline)",
+  "AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to learn about these works — used only for structural and tonal reference, never to copy the original content verbatim."
 }

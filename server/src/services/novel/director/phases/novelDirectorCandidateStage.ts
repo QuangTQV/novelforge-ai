@@ -16,6 +16,7 @@ import {
 } from "@ai-novel/shared/types/novelDirector";
 import type { TitleFactorySuggestion } from "@ai-novel/shared/types/title";
 import type { NovelCreateResourceRecommendation } from "@ai-novel/shared/types/novelResourceRecommendation";
+import { DEFAULT_NOVEL_LANGUAGE, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { runStructuredPrompt } from "../../../../prompting/core/promptRunner";
 import { novelCreateResourceRecommendationService } from "../../NovelCreateResourceRecommendationService";
 import {
@@ -26,6 +27,7 @@ import {
 import { titleGenerationService } from "../../../title/TitleGenerationService";
 import { isNearDuplicateTitle } from "../../../title/titleGeneration.shared";
 import type { NovelWorkflowService } from "../../workflow/NovelWorkflowService";
+import { buildReferenceWorkContextBlock } from "../idea/referenceWorkResearch";
 import {
   buildRefinementSummary,
   buildWorkflowSeedPayload,
@@ -272,36 +274,43 @@ export class NovelDirectorCandidateStageService {
   async generateCandidates(input: DirectorCandidatesRequest): Promise<DirectorCandidatesResponse> {
     const marketBriefPrompt = await marketRadarService.getBriefPromptBlock(input.marketBriefId);
     const { novelReferenceService } = await import("../../NovelReferenceService");
-    const referenceAnalysisPrompt = await novelReferenceService.buildReferenceFromAnalysisId(
-      input.writingMode === "continuation" ? input.continuationBookAnalysisId : input.referenceBookAnalysisId,
-      "outline",
-      input.writingMode === "continuation"
-        ? input.continuationBookAnalysisSections
-        : input.referenceBookAnalysisSections,
-    );
-    const foundation = await novelCreateResourceRecommendationService.resolveRequired({
-      marketBriefPrompt,
-      title: input.title,
-      description: input.description || input.idea,
-      targetAudience: input.targetAudience,
-      bookSellingPoint: input.bookSellingPoint,
-      competingFeel: input.competingFeel,
-      first30ChapterPromise: input.first30ChapterPromise,
-      commercialTags: input.commercialTags,
-      genreId: input.genreId,
-      primaryStoryModeId: input.primaryStoryModeId,
-      secondaryStoryModeId: input.secondaryStoryModeId,
-      writingMode: input.writingMode,
-      projectMode: input.projectMode,
-      narrativePov: input.narrativePov,
-      pacePreference: input.pacePreference,
-      styleTone: input.styleTone,
-      emotionIntensity: input.emotionIntensity,
-      aiFreedom: input.aiFreedom,
-      provider: input.provider,
-      model: input.model,
-      temperature: input.temperature,
-    });
+    const [referenceAnalysisPrompt, referenceWorkPrompt, foundation] = await Promise.all([
+      novelReferenceService.buildReferenceFromAnalysisId(
+        input.writingMode === "continuation" ? input.continuationBookAnalysisId : input.referenceBookAnalysisId,
+        "outline",
+        input.writingMode === "continuation"
+          ? input.continuationBookAnalysisSections
+          : input.referenceBookAnalysisSections,
+      ),
+      buildReferenceWorkContextBlock(
+        input.referenceWorkTitles,
+        { provider: input.provider, model: input.model },
+        resolvePromptLanguage(input.novelLanguage ?? DEFAULT_NOVEL_LANGUAGE),
+      ),
+      novelCreateResourceRecommendationService.resolveRequired({
+        marketBriefPrompt,
+        title: input.title,
+        description: input.description || input.idea,
+        targetAudience: input.targetAudience,
+        bookSellingPoint: input.bookSellingPoint,
+        competingFeel: input.competingFeel,
+        first30ChapterPromise: input.first30ChapterPromise,
+        commercialTags: input.commercialTags,
+        genreId: input.genreId,
+        primaryStoryModeId: input.primaryStoryModeId,
+        secondaryStoryModeId: input.secondaryStoryModeId,
+        writingMode: input.writingMode,
+        projectMode: input.projectMode,
+        narrativePov: input.narrativePov,
+        pacePreference: input.pacePreference,
+        styleTone: input.styleTone,
+        emotionIntensity: input.emotionIntensity,
+        aiFreedom: input.aiFreedom,
+        provider: input.provider,
+        model: input.model,
+        temperature: input.temperature,
+      }),
+    ]);
     const resolvedInput: DirectorCandidatesRequest = {
       ...input,
       marketBriefPrompt,
@@ -315,6 +324,7 @@ export class NovelDirectorCandidateStageService {
             ? `续写来源约束：保留原作既有事实、角色关系、世界规则和未完线索。\n${referenceAnalysisPrompt}`
             : `结构参考：只借鉴结构机制、节奏和写法，禁止沿用原作专名、角色、世界事实和具体剧情。\n${referenceAnalysisPrompt}`
           : "",
+        referenceWorkPrompt,
       ].filter(Boolean).join("\n\n"),
     };
     if (resolvedInput.workflowTaskId?.trim()) {

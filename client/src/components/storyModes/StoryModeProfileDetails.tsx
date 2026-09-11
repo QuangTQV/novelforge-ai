@@ -46,6 +46,7 @@ const twistMechanismLabel: Record<StoryModeTwistMechanism, string> = {
   unreliable_narrator: translateUi("叙述不可靠"),
   false_death: translateUi("诈死"),
   reality_break: translateUi("现实/时间线破坏"),
+  other: translateUi("其他（AI 自由发挥）"),
 };
 
 function ContractList({ title, items, emptyText }: { title: string; items: string[]; emptyText: string }) {

@@ -30,14 +30,18 @@ export type StoryModeTwistScope =
   | "faction_politics"
   | "worldview_shattering";
 
-/** Cơ chế lật được phép dùng cho mode này. */
+/**
+ * Cơ chế lật được phép dùng cho mode này. `other` là van xả: AI được phép
+ * bịa thêm cơ chế ngoài danh sách cố định, miễn vẫn khớp intensity/fairness/scope.
+ */
 export type StoryModeTwistMechanism =
   | "identity_concealment"
   | "betrayal"
   | "hidden_motive"
   | "unreliable_narrator"
   | "false_death"
-  | "reality_break";
+  | "reality_break"
+  | "other";
 
 /** Seed cài cắm được giữ bao lâu trước khi trả. */
 export type StoryModeForeshadowHold = "short" | "arc" | "cross_arc";
@@ -100,6 +104,7 @@ export const STORY_MODE_TWIST_MECHANISMS: readonly StoryModeTwistMechanism[] = [
   "unreliable_narrator",
   "false_death",
   "reality_break",
+  "other",
 ] as const;
 
 export const STORY_MODE_ENDING_HOOK_STYLES: readonly StoryModeEndingHookStyle[] = [

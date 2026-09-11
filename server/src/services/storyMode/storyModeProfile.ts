@@ -50,7 +50,7 @@ export const storyModeProfileSchema = z.object({
   twistIntensity: z.enum(STORY_MODE_TWIST_INTENSITIES as unknown as [string, ...string[]]).default("moderate"),
   twistFairness: z.enum(STORY_MODE_TWIST_FAIRNESS_LEVELS as unknown as [string, ...string[]]).default("mixed"),
   twistScope: z.enum(STORY_MODE_TWIST_SCOPES as unknown as [string, ...string[]]).default("relationship_betrayal"),
-  allowedTwistMechanisms: z.array(z.enum(STORY_MODE_TWIST_MECHANISMS as unknown as [string, ...string[]])).max(6).default(["hidden_motive", "betrayal"]),
+  allowedTwistMechanisms: z.array(z.enum(STORY_MODE_TWIST_MECHANISMS as unknown as [string, ...string[]])).max(7).default(["hidden_motive", "betrayal"]),
   foreshadowHold: z.enum(STORY_MODE_FORESHADOW_HOLDS as unknown as [string, ...string[]]).default("arc"),
   endingHookStyle: z.enum(STORY_MODE_ENDING_HOOK_STYLES as unknown as [string, ...string[]]).default("cliffhanger"),
 }).strict();
@@ -135,7 +135,7 @@ function normalizeEnumList<T extends string>(value: unknown, allowed: readonly T
   }
   const normalized = Array.from(new Set(
     value.filter((item): item is T => typeof item === "string" && (allowed as readonly string[]).includes(item)),
-  )).slice(0, 6);
+  )).slice(0, allowed.length);
   return normalized.length > 0 ? normalized : fallback;
 }
 
@@ -324,6 +324,7 @@ const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
       unreliable_narrator: "unreliable_narrator（叙述视角本身不可靠）",
       false_death: "false_death（诈死/伪装死亡）",
       reality_break: "reality_break（时间线或现实规则被打破）",
+      other: "other（放开限制，允许 AI 自由发挥列表之外的反转手法）",
     },
     hold: {
       short: "short（数章内兑现）",
@@ -409,6 +410,7 @@ const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
       unreliable_narrator: "unreliable_narrator (bản thân góc kể không đáng tin)",
       false_death: "false_death (giả chết)",
       reality_break: "reality_break (dòng thời gian hoặc luật thực tại bị phá vỡ)",
+      other: "other (mở giới hạn, cho phép AI tự sáng tạo cơ chế lật ngoài danh sách)",
     },
     hold: {
       short: "short (trả trong vài chương)",
@@ -494,6 +496,7 @@ const STORY_MODE_BLOCK_LABELS: Record<PromptLanguage, StoryModeBlockLabels> = {
       unreliable_narrator: "unreliable_narrator (the narrating viewpoint itself is untrustworthy)",
       false_death: "false_death (faked death)",
       reality_break: "reality_break (the timeline or the rules of reality are broken)",
+      other: "other (lift the restriction — let the AI freely invent twist mechanisms outside the list)",
     },
     hold: {
       short: "short (paid off within a few chapters)",

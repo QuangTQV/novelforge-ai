@@ -8173,5 +8173,6 @@
   "决定每次反转改变多少：severe 会颠覆对整个故事的理解，mild 只是一次不影响大局的小意外。": "Sets how much each twist changes: severe overturns the understanding of the whole story, mild is a small surprise that doesn't affect the big picture.",
   "决定反转前是否必须提前埋下线索让读者有机会猜到：clued 必须埋线索，blindside 可以完全不铺垫直接揭晓。": "Sets whether a clue must be planted beforehand so the reader has a chance to guess: clued requires planting a clue, blindside can hide it completely and reveal it out of nowhere.",
   "决定反转主要冲击哪一层：一个人的秘密、一段关系里的背叛、阵营/组织的立场，还是整个世界观。": "Sets which layer the main twist hits: one person's secret, a betrayal within a relationship, a faction/organization's stance, or the whole worldview.",
-  "AI 只能使用这里勾选的反转手法；不勾选就等于禁止使用。": "The AI may only use the twist mechanisms checked here; leaving one unchecked forbids that mechanism."
+  "AI 只能使用这里勾选的反转手法；不勾选就等于禁止使用。": "The AI may only use the twist mechanisms checked here; leaving one unchecked forbids that mechanism.",
+  "其他（AI 自由发挥）": "Other (AI may invent)"
 }

@@ -12,8 +12,30 @@ const NATIVE_WEB_SEARCH_KIND_BY_PROVIDER: Partial<Record<LLMProvider, NativeWebS
   gemini: "gemini_native",
 };
 
-export function getNativeWebSearchKind(provider: LLMProvider): NativeWebSearchKind | null {
-  return NATIVE_WEB_SEARCH_KIND_BY_PROVIDER[provider] ?? null;
+/**
+ * Azure OpenAI (qua endpoint hợp nhất mới `.../openai/v1`, ví dụ dạng
+ * `https://<resource>.services.ai.azure.com/openai/v1` hoặc
+ * `https://<resource>.openai.azure.com/openai/v1`) tương thích trực tiếp với
+ * Responses API + tool `web_search_preview` của OpenAI (cùng dạng
+ * `${baseURL}/responses`, xác thực Bearer) — miễn resource có bật Grounding
+ * with Bing Search. Đây thường là "custom provider" người dùng tự khai báo,
+ * không phải provider tên "openai", nên phải nhận diện qua baseURL.
+ */
+function isAzureOpenAIBaseUrl(baseURL: string): boolean {
+  try {
+    const host = new URL(baseURL).hostname.toLowerCase();
+    return host.endsWith(".azure.com");
+  } catch {
+    return false;
+  }
+}
+
+export function getNativeWebSearchKind(provider: LLMProvider, baseURL: string): NativeWebSearchKind | null {
+  const byProvider = NATIVE_WEB_SEARCH_KIND_BY_PROVIDER[provider];
+  if (byProvider) {
+    return byProvider;
+  }
+  return isAzureOpenAIBaseUrl(baseURL) ? "openai_responses" : null;
 }
 
 export const UNKNOWN_REFERENCE_WORK_MARKER = "UNKNOWN_WORK";
@@ -187,22 +209,28 @@ async function lookupViaPlainKnowledge(input: LookupInput): Promise<string | nul
   }
 }
 
+function isUnknownWorkAnswer(result: string): boolean {
+  return result.trim().toUpperCase().includes(UNKNOWN_REFERENCE_WORK_MARKER);
+}
+
 /**
- * Tra cứu một tác phẩm tham khảo. Với các provider hỗ trợ tool tìm kiếm web gốc
- * (OpenAI/Anthropic/Gemini), model tự quyết định có cần tìm kiếm hay không dựa
- * trên độ tự tin về kiến thức sẵn có. Với provider khác, chỉ trả lời theo kiến
- * thức sẵn có (không tìm kiếm thật). Trả về `null` nếu thất bại hoặc model báo
+ * Tra cứu một tác phẩm tham khảo. Với các provider/endpoint hỗ trợ tool tìm
+ * kiếm web gốc (OpenAI, Azure OpenAI qua endpoint `/openai/v1`, Anthropic,
+ * Gemini), model tự quyết định có cần tìm kiếm hay không dựa trên độ tự tin
+ * về kiến thức sẵn có. Nếu lệnh gọi search gốc thất bại về mặt kỹ thuật (vd.
+ * deployment không bật tool này), sẽ tự rơi về trả lời theo kiến thức sẵn có
+ * thay vì bỏ cuộc. Trả về `null` nếu cả hai đều thất bại hoặc model xác nhận
  * không nhận diện được tác phẩm.
  */
 export async function lookupReferenceWork(input: LookupInput): Promise<string | null> {
-  const kind = getNativeWebSearchKind(input.provider);
-  const result = await (
-    kind === "openai_responses" ? lookupViaOpenAIResponses(input)
-      : kind === "anthropic_tool" ? lookupViaAnthropicTool(input)
-        : kind === "gemini_native" ? lookupViaGeminiNative(input)
-          : lookupViaPlainKnowledge(input)
-  );
-  if (!result || result.trim().toUpperCase().includes(UNKNOWN_REFERENCE_WORK_MARKER)) {
+  const kind = getNativeWebSearchKind(input.provider, input.baseURL);
+  const nativeResult = kind === "openai_responses" ? await lookupViaOpenAIResponses(input)
+    : kind === "anthropic_tool" ? await lookupViaAnthropicTool(input)
+      : kind === "gemini_native" ? await lookupViaGeminiNative(input)
+        : null;
+
+  const result = nativeResult ?? await lookupViaPlainKnowledge(input);
+  if (!result || isUnknownWorkAnswer(result)) {
     return null;
   }
   return result;

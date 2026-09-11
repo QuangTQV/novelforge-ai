@@ -1,9 +1,10 @@
-import type {
-  StoryModeConflictCeiling,
-  StoryModeEndingHookStyle,
-  StoryModeForeshadowHold,
-  StoryModeProfile,
-  StoryModeTwistCadence,
+import {
+  deriveTwistDefaultsFromCadence,
+  type StoryModeConflictCeiling,
+  type StoryModeEndingHookStyle,
+  type StoryModeForeshadowHold,
+  type StoryModeProfile,
+  type StoryModeTwistCadence,
 } from "@ai-novel/shared/types/storyMode";
 
 export interface StoryModeSeedNode {
@@ -39,6 +40,8 @@ function engineDefaultsFor(ceiling: StoryModeConflictCeiling): {
 function buildProfile(input: Partial<StoryModeProfile> & Pick<StoryModeProfile, "coreDrive" | "readerReward">): StoryModeProfile {
   const conflictCeiling = input.conflictCeiling ?? "medium";
   const engine = engineDefaultsFor(conflictCeiling);
+  const resolvedTwistCadence = input.twistCadence ?? engine.twistCadence;
+  const twist = deriveTwistDefaultsFromCadence(resolvedTwistCadence);
   return {
     coreDrive: input.coreDrive,
     readerReward: input.readerReward,
@@ -58,7 +61,11 @@ function buildProfile(input: Partial<StoryModeProfile> & Pick<StoryModeProfile, 
       "Có thông tin mới hoặc sửa một phán đoán sai",
       "Mức rủi ro hoặc cái giá phải trả tăng lên",
     ],
-    twistCadence: input.twistCadence ?? engine.twistCadence,
+    twistCadence: resolvedTwistCadence,
+    twistIntensity: input.twistIntensity ?? twist.twistIntensity,
+    twistFairness: input.twistFairness ?? twist.twistFairness,
+    twistScope: input.twistScope ?? twist.twistScope,
+    allowedTwistMechanisms: input.allowedTwistMechanisms ?? twist.allowedTwistMechanisms,
     foreshadowHold: input.foreshadowHold ?? engine.foreshadowHold,
     endingHookStyle: input.endingHookStyle ?? engine.endingHookStyle,
   };

@@ -61,6 +61,10 @@ function createEmptyProfile(): StoryModeProfileDraft {
     momentumSource: "goal_pursuit",
     perChapterChangeMenu: [],
     twistCadence: "periodic",
+    twistIntensity: "moderate",
+    twistFairness: "mixed",
+    twistScope: "relationship_betrayal",
+    allowedTwistMechanisms: ["hidden_motive", "betrayal"],
     foreshadowHold: "arc",
     endingHookStyle: "cliffhanger",
   };
@@ -123,6 +127,10 @@ function normalizeProfileInput(profile: StoryModeDialogState["profile"]): StoryM
     momentumSource: profile.momentumSource,
     perChapterChangeMenu: profile.perChapterChangeMenu,
     twistCadence: profile.twistCadence,
+    twistIntensity: profile.twistIntensity,
+    twistFairness: profile.twistFairness,
+    twistScope: profile.twistScope,
+    allowedTwistMechanisms: profile.allowedTwistMechanisms,
     foreshadowHold: profile.foreshadowHold,
     endingHookStyle: profile.endingHookStyle,
   };

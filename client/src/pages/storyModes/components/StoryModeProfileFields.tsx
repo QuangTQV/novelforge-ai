@@ -1,6 +1,49 @@
 import { translateUi } from "@/i18n/legacy";
-import type { StoryModeProfile } from "@ai-novel/shared/types/storyMode";
+import {
+  STORY_MODE_TWIST_CADENCES,
+  STORY_MODE_TWIST_FAIRNESS_LEVELS,
+  STORY_MODE_TWIST_INTENSITIES,
+  STORY_MODE_TWIST_MECHANISMS,
+  STORY_MODE_TWIST_SCOPES,
+  type StoryModeProfile,
+  type StoryModeTwistMechanism,
+} from "@ai-novel/shared/types/storyMode";
 import SelectControl from "@/components/common/SelectControl";
+
+const TWIST_CADENCE_LABELS: Record<StoryModeProfile["twistCadence"], string> = {
+  none: translateUi("无反转（none）"),
+  rare: translateUi("偶尔反转（rare）"),
+  periodic: translateUi("阶段性反转（periodic）"),
+  dense: translateUi("高密度反转（dense）"),
+};
+
+const TWIST_INTENSITY_LABELS: Record<StoryModeProfile["twistIntensity"], string> = {
+  mild: translateUi("轻微意外（mild）"),
+  moderate: translateUi("中等改写（moderate）"),
+  severe: translateUi("颠覆认知（severe）"),
+};
+
+const TWIST_FAIRNESS_LABELS: Record<StoryModeProfile["twistFairness"], string> = {
+  clued: translateUi("提前埋线索（clued）"),
+  mixed: translateUi("部分埋线索（mixed）"),
+  blindside: translateUi("纯粹意外（blindside）"),
+};
+
+const TWIST_SCOPE_LABELS: Record<StoryModeProfile["twistScope"], string> = {
+  personal_secret: translateUi("个人秘密"),
+  relationship_betrayal: translateUi("关系背叛"),
+  faction_politics: translateUi("阵营/组织"),
+  worldview_shattering: translateUi("世界观颠覆"),
+};
+
+const TWIST_MECHANISM_LABELS: Record<StoryModeTwistMechanism, string> = {
+  identity_concealment: translateUi("身份隐藏"),
+  betrayal: translateUi("背叛倒戈"),
+  hidden_motive: translateUi("隐藏动机"),
+  unreliable_narrator: translateUi("叙述不可靠"),
+  false_death: translateUi("诈死"),
+  reality_break: translateUi("现实/时间线破坏"),
+};
 
 function linesToList(value: string): string[] {
   return value
@@ -33,6 +76,13 @@ export default function StoryModeProfileFields({
   };
 
   const textareaClassName = "w-full rounded-md border bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
+
+  const toggleTwistMechanism = (mechanism: StoryModeTwistMechanism, checked: boolean) => {
+    const next = checked
+      ? Array.from(new Set([...value.allowedTwistMechanisms, mechanism]))
+      : value.allowedTwistMechanisms.filter((item) => item !== mechanism);
+    onChange({ ...value, allowedTwistMechanisms: next });
+  };
 
   return (
     <div className="space-y-7">
@@ -174,6 +224,79 @@ export default function StoryModeProfileFields({
               onChange={(event) => updateList("antiSignals", event.target.value)}
             />
           </label>
+        </div>
+      </section>
+
+      <section className="border-t border-border pt-6">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">{translateUi("情节反转设置")}</h3>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">{translateUi("控制这个模式允许多强、多密、多公平的反转，以及可以用哪些反转手法。")}</p>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{translateUi("反转/揭示密度")}</span>
+            <SelectControl
+              className="w-full"
+              value={value.twistCadence}
+              onChange={(event) => onChange({ ...value, twistCadence: event.target.value as StoryModeProfile["twistCadence"] })}
+            >
+              {STORY_MODE_TWIST_CADENCES.map((option) => (
+                <option key={option} value={option}>{TWIST_CADENCE_LABELS[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{translateUi("反转力度")}</span>
+            <SelectControl
+              className="w-full"
+              value={value.twistIntensity}
+              onChange={(event) => onChange({ ...value, twistIntensity: event.target.value as StoryModeProfile["twistIntensity"] })}
+            >
+              {STORY_MODE_TWIST_INTENSITIES.map((option) => (
+                <option key={option} value={option}>{TWIST_INTENSITY_LABELS[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{translateUi("反转公平度")}</span>
+            <SelectControl
+              className="w-full"
+              value={value.twistFairness}
+              onChange={(event) => onChange({ ...value, twistFairness: event.target.value as StoryModeProfile["twistFairness"] })}
+            >
+              {STORY_MODE_TWIST_FAIRNESS_LEVELS.map((option) => (
+                <option key={option} value={option}>{TWIST_FAIRNESS_LABELS[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+          <label className="space-y-2 text-sm">
+            <span className="font-medium text-foreground">{translateUi("反转波及层级")}</span>
+            <SelectControl
+              className="w-full"
+              value={value.twistScope}
+              onChange={(event) => onChange({ ...value, twistScope: event.target.value as StoryModeProfile["twistScope"] })}
+            >
+              {STORY_MODE_TWIST_SCOPES.map((option) => (
+                <option key={option} value={option}>{TWIST_SCOPE_LABELS[option]}</option>
+              ))}
+            </SelectControl>
+          </label>
+        </div>
+        <div className="mt-4 space-y-2 text-sm">
+          <span className="font-medium text-foreground">{translateUi("允许的反转手法")}</span>
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
+            {STORY_MODE_TWIST_MECHANISMS.map((mechanism) => (
+              <label key={mechanism} className="flex items-center gap-1.5 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-input"
+                  checked={value.allowedTwistMechanisms.includes(mechanism)}
+                  onChange={(event) => toggleTwistMechanism(mechanism, event.target.checked)}
+                />
+                {TWIST_MECHANISM_LABELS[mechanism]}
+              </label>
+            ))}
+          </div>
         </div>
       </section>
     </div>

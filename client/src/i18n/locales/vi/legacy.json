@@ -8379,5 +8379,10 @@
   "诈死": "Giả chết",
   "现实/时间线破坏": "Phá vỡ thực tại / dòng thời gian",
   "尚未定义反转手法": "Chưa định nghĩa cơ chế lật",
-  "控制这个模式允许多强、多密、多公平的反转，以及可以用哪些反转手法。": "Kiểm soát mode này cho phép cú lật mạnh tới đâu, dày tới đâu, công bằng tới đâu, và được dùng cơ chế lật nào."
+  "控制这个模式允许多强、多密、多公平的反转，以及可以用哪些反转手法。": "Kiểm soát mode này cho phép cú lật mạnh tới đâu, dày tới đâu, công bằng tới đâu, và được dùng cơ chế lật nào.",
+  "决定每个 arc 里发生几次反转；选「dense」可以做出多层真相式的悬念（类似进击的巨人）。": "Quyết định mỗi arc xảy ra mấy lần đảo chiều; chọn \"dense\" để làm kiểu sự thật nhiều tầng giống Attack on Titan.",
+  "决定每次反转改变多少：severe 会颠覆对整个故事的理解，mild 只是一次不影响大局的小意外。": "Quyết định mỗi lần lật thay đổi bao nhiêu: severe sẽ lật đổ cách hiểu về cả câu chuyện, mild chỉ là một bất ngờ nhỏ không ảnh hưởng đại cục.",
+  "决定反转前是否必须提前埋下线索让读者有机会猜到：clued 必须埋线索，blindside 可以完全不铺垫直接揭晓。": "Quyết định trước khi lật có bắt buộc cài mồi để người đọc có cơ hội đoán trước hay không: clued bắt buộc cài mồi, blindside có thể giấu kín hoàn toàn rồi bung bất ngờ.",
+  "决定反转主要冲击哪一层：一个人的秘密、一段关系里的背叛、阵营/组织的立场，还是整个世界观。": "Quyết định cú lật chính đánh vào tầng nào: bí mật của một người, sự phản bội trong một mối quan hệ, lập trường phe phái/tổ chức, hay cả thế giới quan.",
+  "AI 只能使用这里勾选的反转手法；不勾选就等于禁止使用。": "AI chỉ được dùng những cơ chế lật đã tick ở đây; bỏ tick nghĩa là cấm dùng cơ chế đó."
 }

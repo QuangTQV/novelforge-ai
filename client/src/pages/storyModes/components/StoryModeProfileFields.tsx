@@ -235,6 +235,7 @@ export default function StoryModeProfileFields({
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <label className="space-y-2 text-sm">
             <span className="font-medium text-foreground">{translateUi("反转/揭示密度")}</span>
+            <p className="text-xs leading-5 text-muted-foreground">{translateUi("决定每个 arc 里发生几次反转；选「dense」可以做出多层真相式的悬念（类似进击的巨人）。")}</p>
             <SelectControl
               className="w-full"
               value={value.twistCadence}
@@ -247,6 +248,7 @@ export default function StoryModeProfileFields({
           </label>
           <label className="space-y-2 text-sm">
             <span className="font-medium text-foreground">{translateUi("反转力度")}</span>
+            <p className="text-xs leading-5 text-muted-foreground">{translateUi("决定每次反转改变多少：severe 会颠覆对整个故事的理解，mild 只是一次不影响大局的小意外。")}</p>
             <SelectControl
               className="w-full"
               value={value.twistIntensity}
@@ -259,6 +261,7 @@ export default function StoryModeProfileFields({
           </label>
           <label className="space-y-2 text-sm">
             <span className="font-medium text-foreground">{translateUi("反转公平度")}</span>
+            <p className="text-xs leading-5 text-muted-foreground">{translateUi("决定反转前是否必须提前埋下线索让读者有机会猜到：clued 必须埋线索，blindside 可以完全不铺垫直接揭晓。")}</p>
             <SelectControl
               className="w-full"
               value={value.twistFairness}
@@ -271,6 +274,7 @@ export default function StoryModeProfileFields({
           </label>
           <label className="space-y-2 text-sm">
             <span className="font-medium text-foreground">{translateUi("反转波及层级")}</span>
+            <p className="text-xs leading-5 text-muted-foreground">{translateUi("决定反转主要冲击哪一层：一个人的秘密、一段关系里的背叛、阵营/组织的立场，还是整个世界观。")}</p>
             <SelectControl
               className="w-full"
               value={value.twistScope}
@@ -284,6 +288,7 @@ export default function StoryModeProfileFields({
         </div>
         <div className="mt-4 space-y-2 text-sm">
           <span className="font-medium text-foreground">{translateUi("允许的反转手法")}</span>
+          <p className="text-xs leading-5 text-muted-foreground">{translateUi("AI 只能使用这里勾选的反转手法；不勾选就等于禁止使用。")}</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {STORY_MODE_TWIST_MECHANISMS.map((mechanism) => (
               <label key={mechanism} className="flex items-center gap-1.5 text-sm text-foreground">

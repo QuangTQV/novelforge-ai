@@ -12,6 +12,12 @@ const MANUAL_STRUCTURED_HINT_PATTERNS = [
   "结构固定如下",
   "输出格式必须严格为",
   "结构只能是 {",
+  // vi / en equivalents — a prompt that ships its own JSON skeleton in any
+  // language must suppress the (Chinese) auto-skeleton, not just the zh one.
+  "cấu trúc json:",
+  "định dạng đầu ra bắt buộc phải đúng là",
+  "json structure:",
+  "the output format must be exactly",
 ];
 
 type AnySchema = z.ZodType<unknown>;

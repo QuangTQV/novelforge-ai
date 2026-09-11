@@ -2,22 +2,34 @@ import type {
   ChapterWriteContext,
   GenerationContextPackage,
 } from "@ai-novel/shared/types/chapterRuntime";
+import type { PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { compactText, takeUnique } from "./chapterLayeredContextShared";
+
+function pick(lang: PromptLanguage, zh: string, vi: string, en: string): string {
+  if (lang === "vi") {
+    return vi;
+  }
+  if (lang === "en") {
+    return en;
+  }
+  return zh;
+}
 
 function buildVisibleProfileSummary(
   character: GenerationContextPackage["characterRoster"][number] | undefined,
+  lang: PromptLanguage,
 ): string | null {
   if (!character) {
     return null;
   }
   const parts = takeUnique([
     character.appearance || character.physique
-      ? `样貌/体态=${compactText([character.appearance, character.physique].filter(Boolean).join("；"))}`
+      ? `${pick(lang, "样貌/体态=", "Diện mạo/vóc dáng=", "Appearance/physique=")}${compactText([character.appearance, character.physique].filter(Boolean).join(pick(lang, "；", "; ", "; ")))}`
       : "",
-    character.attireStyle ? `常见穿着=${compactText(character.attireStyle)}` : "",
-    character.signatureDetail ? `标志=${compactText(character.signatureDetail)}` : "",
-    character.voiceTexture ? `声音=${compactText(character.voiceTexture)}` : "",
-    character.presenceImpression ? `登场印象=${compactText(character.presenceImpression)}` : "",
+    character.attireStyle ? `${pick(lang, "常见穿着=", "Trang phục thường thấy=", "Usual attire=")}${compactText(character.attireStyle)}` : "",
+    character.signatureDetail ? `${pick(lang, "标志=", "Đặc trưng=", "Signature=")}${compactText(character.signatureDetail)}` : "",
+    character.voiceTexture ? `${pick(lang, "声音=", "Giọng nói=", "Voice=")}${compactText(character.voiceTexture)}` : "",
+    character.presenceImpression ? `${pick(lang, "登场印象=", "Ấn tượng xuất hiện=", "Presence impression=")}${compactText(character.presenceImpression)}` : "",
   ], 6);
   return parts.length > 0 ? parts.join(" | ") : null;
 }
@@ -28,6 +40,7 @@ function absenceRiskRank(risk: "none" | "info" | "warn" | "high"): number {
 
 export function buildDynamicCharacterGuidance(
   contextPackage: GenerationContextPackage,
+  lang: PromptLanguage = "zh",
 ): Pick<ChapterWriteContext, "characterBehaviorGuides" | "activeRelationStages" | "pendingCandidateGuards"> {
   const overview = contextPackage.characterDynamics;
   if (!overview) {
@@ -123,7 +136,7 @@ export function buildDynamicCharacterGuidance(
           volumeResponsibility: item.volumeResponsibility ?? null,
           currentGoal: roster?.currentGoal ?? item.currentGoal ?? null,
           currentState: roster?.currentState ?? item.currentState ?? null,
-          visibleProfileSummary: buildVisibleProfileSummary(roster),
+          visibleProfileSummary: buildVisibleProfileSummary(roster, lang),
           factionLabel: item.factionLabel ?? null,
           stanceLabel: item.stanceLabel ?? null,
           relationStageLabels: takeUnique(
@@ -145,8 +158,8 @@ export function buildDynamicCharacterGuidance(
           absenceSpan: item.absenceSpan,
           isCoreInVolume: item.isCoreInVolume,
           shouldPreferAppearance,
-          mindGuidance: buildMindGuidance(mindByCharacterId.get(item.characterId)),
-          authorInfluenceGuidance: buildDialogueInfluenceGuidance(dialogueGuidanceByCharacterId.get(item.characterId)),
+          mindGuidance: buildMindGuidance(mindByCharacterId.get(item.characterId), lang),
+          authorInfluenceGuidance: buildDialogueInfluenceGuidance(dialogueGuidanceByCharacterId.get(item.characterId), lang),
         },
       };
     })
@@ -184,30 +197,34 @@ export function buildDynamicCharacterGuidance(
   };
 }
 
-function buildMindGuidance(mind: GenerationContextPackage["characterMindStates"][number] | undefined): string | null {
+function buildMindGuidance(
+  mind: GenerationContextPackage["characterMindStates"][number] | undefined,
+  lang: PromptLanguage,
+): string | null {
   if (!mind) {
     return null;
   }
   const parts = takeUnique([
-    mind.currentInterpretation ? `角色理解：${compactText(mind.currentInterpretation)}` : "",
-    mind.activePlan ? `倾向行动：${compactText(mind.activePlan)}` : "",
-    mind.actionTendency ? `受压反应：${compactText(mind.actionTendency)}` : "",
-    mind.misbeliefs[0] ? `可能误判：${compactText(mind.misbeliefs[0])}` : "",
+    mind.currentInterpretation ? `${pick(lang, "角色理解：", "Cách nhân vật hiểu: ", "Character's read: ")}${compactText(mind.currentInterpretation)}` : "",
+    mind.activePlan ? `${pick(lang, "倾向行动：", "Hành động thiên về: ", "Leaning action: ")}${compactText(mind.activePlan)}` : "",
+    mind.actionTendency ? `${pick(lang, "受压反应：", "Phản ứng khi bị ép: ", "Under-pressure reaction: ")}${compactText(mind.actionTendency)}` : "",
+    mind.misbeliefs[0] ? `${pick(lang, "可能误判：", "Có thể phán đoán sai: ", "Possible misjudgment: ")}${compactText(mind.misbeliefs[0])}` : "",
   ], 3);
   return parts.length > 0 ? parts.join(" | ") : null;
 }
 
 function buildDialogueInfluenceGuidance(
   influence: NonNullable<GenerationContextPackage["characterDialogueGuidances"]>[number] | undefined,
+  lang: PromptLanguage,
 ): string | null {
   if (!influence) {
     return null;
   }
   const parts = takeUnique([
-    influence.behaviorGuidance ? `行动倾向：${compactText(influence.behaviorGuidance)}` : "",
-    influence.emotionalGuidance ? `情绪倾向：${compactText(influence.emotionalGuidance)}` : "",
-    influence.relationTension ? `关系张力：${compactText(influence.relationTension)}` : "",
-    influence.summary ? `对话沉淀：${compactText(influence.summary)}` : "",
+    influence.behaviorGuidance ? `${pick(lang, "行动倾向：", "Xu hướng hành động: ", "Action tendency: ")}${compactText(influence.behaviorGuidance)}` : "",
+    influence.emotionalGuidance ? `${pick(lang, "情绪倾向：", "Xu hướng cảm xúc: ", "Emotional tendency: ")}${compactText(influence.emotionalGuidance)}` : "",
+    influence.relationTension ? `${pick(lang, "关系张力：", "Căng thẳng quan hệ: ", "Relationship tension: ")}${compactText(influence.relationTension)}` : "",
+    influence.summary ? `${pick(lang, "对话沉淀：", "Đọng lại sau đối thoại: ", "Dialogue takeaway: ")}${compactText(influence.summary)}` : "",
   ], 3);
   return parts.length > 0 ? parts.join(" | ") : null;
 }

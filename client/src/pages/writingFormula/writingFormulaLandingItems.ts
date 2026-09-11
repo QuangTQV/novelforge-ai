@@ -1,4 +1,4 @@
-import { translateUi } from "@/i18n/legacy";
+import { translateResourceText, translateUi } from "@/i18n/legacy";
 import {
   buildStyleIntentSummary,
   type StyleBinding,
@@ -154,9 +154,10 @@ export function buildLandingProfileItems(params: BuildLandingProfileItemsParams)
       const characterEntries = buildReadableRuleEntries("characterRules", profile.characterRules);
       const dialogueEntry = characterEntries.find((entry) => entry.key === "dialogueStyle");
       const emotionEntry = characterEntries.find((entry) => entry.key === "emotionExpression");
+      const readingFeelText = firstNonEmptyText(profile.description, profileSummary?.readingFeel);
       const detailLines = [
-        firstNonEmptyText(profile.description, profileSummary?.readingFeel)
-          ? translateUi("读感承诺：{{v0}}", { v0: firstNonEmptyText(profile.description, profileSummary?.readingFeel) })
+        readingFeelText
+          ? translateUi("读感承诺：{{v0}}", { v0: translateResourceText(readingFeelText) })
           : "",
         translateUi("语言质感：{{v0}}", { v0: buildLanguageSummary(profile) }),
         dialogueEntry ? translateUi("对白风格：{{v0}}", { v0: dialogueEntry.value }) : "",
@@ -177,15 +178,19 @@ export function buildLandingProfileItems(params: BuildLandingProfileItemsParams)
         id: profile.id,
         name: profile.name,
         originLabel: getStyleProfileOriginLabel(profile),
-        summaryLine: detailLines[0] ?? profile.description ?? translateUi("暂无写法摘要。"),
+        summaryLine: detailLines[0] ?? translateResourceText(profile.description) ?? translateUi("暂无写法摘要。"),
         detailLines,
-        description: firstNonEmptyText(profile.description, profileSummary?.readingFeel, translateUi("这套写法还没有写清楚读感定位。")),
+        description: readingFeelText
+          ? translateResourceText(readingFeelText)
+          : translateUi("这套写法还没有写清楚读感定位。"),
         recentNovelTitle: recentNovelBinding
           ? (novelTitleMap[recentNovelBinding.targetId] ?? recentNovelBinding.targetId)
           : null,
-        category: profile.category,
-        tags: Array.from(new Set([...profile.tags, ...profile.applicableGenres].filter(Boolean))).slice(0, 6),
-        applicableGenres: profile.applicableGenres.filter(Boolean),
+        category: profile.category ? translateResourceText(profile.category) : profile.category,
+        tags: Array.from(new Set([...profile.tags, ...profile.applicableGenres].filter(Boolean)))
+          .slice(0, 6)
+          .map((tag) => translateResourceText(tag)),
+        applicableGenres: profile.applicableGenres.filter(Boolean).map((genre) => translateResourceText(genre)),
         narrativeSummary: buildNarrativeSummary(profile),
         characterSummary: buildCharacterSummary(profile),
         languageSummary: buildLanguageSummary(profile),

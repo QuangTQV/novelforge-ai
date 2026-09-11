@@ -9,6 +9,7 @@ export type PreviewNovelRow = {
   pacePreference?: string | null;
   emotionIntensity?: string | null;
   styleTone?: string | null;
+  novelLanguage?: string | null;
   estimatedChapterCount?: number | null;
   writingPlatformSnapshotJson?: string | null;
   characters?: PreviewCharacterRow[];

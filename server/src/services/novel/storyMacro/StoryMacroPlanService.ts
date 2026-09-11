@@ -1,4 +1,9 @@
 import type { LLMProvider } from "@ai-novel/shared/types/llm";
+import {
+  resolveNovelLanguage,
+  resolvePromptLanguage,
+  type PromptLanguage,
+} from "@ai-novel/shared/utils/novelLanguage";
 import type {
   StoryDecomposition,
   StoryExpansion,
@@ -135,6 +140,7 @@ export class StoryMacroPlanService {
       lockedFields?: StoryMacroLocks;
       constraintEngine?: ReturnType<typeof buildStoryConstraintEngine> | null;
       state?: StoryMacroState;
+      lang?: PromptLanguage;
     },
   ): Promise<StoryMacroPlan> {
     const previousRow = await this.getRow(novelId);
@@ -145,6 +151,7 @@ export class StoryMacroPlanService {
     const nextConstraintEngine = input.constraintEngine !== undefined
       ? input.constraintEngine
       : (previousPlan?.constraintEngine ?? null);
+    const payloadLang: PromptLanguage = input.lang ?? "zh";
     const row = await prisma.storyMacroPlan.upsert({
       where: { novelId },
       create: {
@@ -157,6 +164,7 @@ export class StoryMacroPlanService {
         constraintEngineJson: serializeConstraintPayload({
           constraints: nextConstraints,
           constraintEngine: nextConstraintEngine,
+          lang: payloadLang,
         }),
         stateJson: JSON.stringify(input.state ?? EMPTY_STATE),
       },
@@ -171,6 +179,7 @@ export class StoryMacroPlanService {
               constraintEngineJson: serializeConstraintPayload({
                 constraints: nextConstraints,
                 constraintEngine: nextConstraintEngine,
+                lang: payloadLang,
               }),
             }
           : {}),
@@ -283,6 +292,7 @@ export class StoryMacroPlanService {
 
   async decompose(novelId: string, storyInput: string, options: LLMOptions = {}): Promise<StoryMacroPlan> {
     const novel = await this.getNovelContext(novelId);
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
     const row = await this.getRow(novelId);
     const previousPlan = row ? mapRowToPlan(row) : null;
     const normalizedInput = storyInput.trim();
@@ -303,7 +313,7 @@ export class StoryMacroPlanService {
     const locks = previousPlan?.lockedFields ?? {};
     const merged = mergeLockedFields(generated.plan, previousPlan ? toEditablePlan(previousPlan) : null, locks);
     const constraintEngine = isDecompositionComplete(merged.decomposition)
-      ? buildStoryConstraintEngine(merged)
+      ? buildStoryConstraintEngine(merged, lang)
       : null;
     return this.savePlan(novelId, {
       storyInput: normalizedInput,
@@ -314,11 +324,13 @@ export class StoryMacroPlanService {
       lockedFields: locks,
       constraintEngine,
       state: previousPlan?.state ?? EMPTY_STATE,
+      lang,
     });
   }
 
   async regenerateField(novelId: string, field: StoryMacroField, options: LLMOptions = {}): Promise<StoryMacroPlan> {
     const novel = await this.getNovelContext(novelId);
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
     const plan = await this.getPlan(novelId);
     if (!plan?.storyInput || !plan.decomposition) {
       throw new Error("请先完成故事引擎拆解。");
@@ -339,7 +351,7 @@ export class StoryMacroPlanService {
     );
     const nextPlan = setEditablePlanFieldValue(editablePlan, field, nextFieldValue);
     const constraintEngine = isDecompositionComplete(nextPlan.decomposition)
-      ? buildStoryConstraintEngine(nextPlan)
+      ? buildStoryConstraintEngine(nextPlan, lang)
       : null;
     return this.savePlan(novelId, {
       storyInput: plan.storyInput,
@@ -350,11 +362,13 @@ export class StoryMacroPlanService {
       lockedFields: plan.lockedFields,
       constraintEngine,
       state: plan.state,
+      lang,
     });
   }
 
   async buildConstraintEngine(novelId: string): Promise<StoryMacroPlan> {
-    await this.getNovelContext(novelId);
+    const novel = await this.getNovelContext(novelId);
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
     const plan = await this.getPlan(novelId);
     if (!plan?.decomposition || !isDecompositionComplete(plan.decomposition)) {
       throw new Error("请先完成故事引擎拆解，再构建约束引擎。");
@@ -367,8 +381,9 @@ export class StoryMacroPlanService {
       constraints: editablePlan.constraints,
       issues: plan.issues,
       lockedFields: plan.lockedFields,
-      constraintEngine: buildStoryConstraintEngine(editablePlan),
+      constraintEngine: buildStoryConstraintEngine(editablePlan, lang),
       state: plan.state,
+      lang,
     });
   }
 
@@ -384,7 +399,8 @@ export class StoryMacroPlanService {
       lockedFields?: StoryMacroLocks;
     },
   ): Promise<StoryMacroPlan> {
-    await this.getNovelContext(novelId);
+    const novel = await this.getNovelContext(novelId);
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
     const row = await this.getRow(novelId);
     const previousPlan = row ? mapRowToPlan(row) : null;
     const nextStoryInput = input.storyInput !== undefined
@@ -411,7 +427,7 @@ export class StoryMacroPlanService {
     const nextExpansion = hasMeaningfulExpansion(nextEditablePlan.expansion) ? nextEditablePlan.expansion : null;
     const nextDecomposition = hasMeaningfulDecomposition(nextEditablePlan.decomposition) ? nextEditablePlan.decomposition : null;
     const nextConstraintEngine = nextDecomposition && isDecompositionComplete(nextDecomposition) && nextExpansion
-      ? buildStoryConstraintEngine(nextEditablePlan)
+      ? buildStoryConstraintEngine(nextEditablePlan, lang)
       : (previousPlan?.constraintEngine ?? null);
 
     return this.savePlan(novelId, {
@@ -423,6 +439,7 @@ export class StoryMacroPlanService {
       lockedFields: nextLockedFields,
       constraintEngine: nextConstraintEngine,
       state: previousPlan?.state ?? EMPTY_STATE,
+      lang,
     });
   }
 
@@ -430,7 +447,8 @@ export class StoryMacroPlanService {
     novelId: string,
     state: Partial<StoryMacroState>,
   ): Promise<StoryMacroState> {
-    await this.getNovelContext(novelId);
+    const novel = await this.getNovelContext(novelId);
+    const lang = resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage));
     const plan = await this.getPlan(novelId);
     const constraintEngine = plan?.constraintEngine ?? null;
     const phaseCount = constraintEngine?.phase_model.length ?? 5;
@@ -448,6 +466,7 @@ export class StoryMacroPlanService {
       lockedFields: plan?.lockedFields ?? {},
       constraintEngine,
       state: nextState,
+      lang,
     });
     return nextState;
   }

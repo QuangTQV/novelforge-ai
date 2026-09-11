@@ -103,6 +103,7 @@ export async function extractSnapshotWithAI(input: StateSnapshotExtractionInput)
         provider: input.options.provider,
         model: input.options.model,
         temperature: input.options.temperature ?? 0.2,
+        novelId: input.novelId,
       },
     });
     const parsed = result.output;

@@ -5,6 +5,7 @@ import type {
   StoryMacroPlan,
   StoryMacroState,
 } from "@ai-novel/shared/types/storyMacro";
+import type { PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import {
   EMPTY_STATE,
   buildConstraintEngine,
@@ -36,6 +37,11 @@ export interface PersistedPlanRow {
 interface PersistedConstraintPayload {
   constraints?: unknown;
   engine?: unknown;
+  lang?: unknown;
+}
+
+function pickPromptLanguage(value: unknown): PromptLanguage {
+  return value === "vi" || value === "en" ? value : "zh";
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -114,13 +120,14 @@ function deriveConstraintEngine(
   decomposition: StoryDecomposition | null,
   constraints: string[],
   persistedEngine: unknown,
+  lang: PromptLanguage,
 ): StoryConstraintEngine | null {
   if (expansion && decomposition && isDecompositionComplete(decomposition)) {
     return buildConstraintEngine({
       expansion,
       decomposition,
       constraints,
-    });
+    }, lang);
   }
   if (!isRecord(persistedEngine)) {
     return null;
@@ -163,10 +170,12 @@ function deriveConstraintEngine(
 export function serializeConstraintPayload(input: {
   constraints: string[];
   constraintEngine: StoryConstraintEngine | null;
+  lang?: PromptLanguage;
 }): string {
   return JSON.stringify({
     constraints: input.constraints,
     engine: input.constraintEngine,
+    lang: input.lang ?? "zh",
   });
 }
 
@@ -174,6 +183,7 @@ export function mapRowToPlan(row: PersistedPlanRow): StoryMacroPlan {
   const rawExpansion = safeParseJSON<unknown>(row.expansionJson, null);
   const rawDecomposition = safeParseJSON<unknown>(row.decompositionJson, null);
   const rawConstraintPayload = parseConstraintPayload(row.constraintEngineJson);
+  const lang = pickPromptLanguage(rawConstraintPayload.lang);
   const expansion = deriveExpansion(rawExpansion, rawDecomposition, rawConstraintPayload);
   const decomposition = deriveDecomposition(rawDecomposition);
   const constraints = normalizeConstraints(rawConstraintPayload.constraints);
@@ -186,7 +196,7 @@ export function mapRowToPlan(row: PersistedPlanRow): StoryMacroPlan {
     constraints,
     issues: normalizeIssues(safeParseJSON(row.issuesJson, [])),
     lockedFields: normalizeLockedFields(safeParseJSON(row.lockedFieldsJson, {})),
-    constraintEngine: deriveConstraintEngine(expansion, decomposition, constraints, rawConstraintPayload.engine),
+    constraintEngine: deriveConstraintEngine(expansion, decomposition, constraints, rawConstraintPayload.engine, lang),
     state: safeParseJSON<StoryMacroState>(row.stateJson, EMPTY_STATE),
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),

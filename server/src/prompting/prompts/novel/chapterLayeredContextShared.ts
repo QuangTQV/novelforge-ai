@@ -5,7 +5,24 @@ import type {
   MacroConstraintContext,
 } from "@ai-novel/shared/types/chapterRuntime";
 import { resolveLengthBudgetContract } from "@ai-novel/shared/types/chapterLengthControl";
+import type { PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import { buildPlannerStyleContractSummaryText } from "../../../services/styleEngine/styleContractText";
+
+/**
+ * Every helper here renders *derived* context straight into the chapter
+ * writer / review / repair prompt. The label text must follow the novel's
+ * output language (carried on `ChapterWriteContext.promptLanguage`) so a
+ * Vietnamese novel does not get a Vietnamese/Chinese mixed prompt.
+ */
+function pick(lang: PromptLanguage, zh: string, vi: string, en: string): string {
+  if (lang === "vi") {
+    return vi;
+  }
+  if (lang === "en") {
+    return en;
+  }
+  return zh;
+}
 
 export function compactText(value: string | null | undefined, fallback = ""): string {
   return value?.replace(/\s+/g, " ").trim() || fallback;
@@ -44,63 +61,78 @@ export function toListBlock(title: string, values: string[], emptyLabel = "none"
   return [title, ...values.map((value) => `- ${value}`)].join("\n");
 }
 
-function displayPromptValue(value: string | null | undefined, fallback = "未指定"): string {
+function displayPromptValue(
+  value: string | null | undefined,
+  lang: PromptLanguage,
+  fallback = pick(lang, "未指定", "chưa xác định", "not specified"),
+): string {
   const normalized = compactText(value);
   const labels: Record<string, string> = {
     unknown: fallback,
     "not specified": fallback,
-    none: "无",
-    first_person: "第一人称",
-    third_person: "第三人称",
-    omniscient: "全知视角",
-    fast: "快节奏",
-    balanced: "均衡节奏",
-    slow: "慢节奏",
-    low: "低",
-    medium: "中",
-    high: "高",
+    none: pick(lang, "无", "không có", "none"),
+    first_person: pick(lang, "第一人称", "ngôi thứ nhất", "first person"),
+    third_person: pick(lang, "第三人称", "ngôi thứ ba", "third person"),
+    omniscient: pick(lang, "全知视角", "góc nhìn toàn tri", "omniscient"),
+    fast: pick(lang, "快节奏", "nhịp nhanh", "fast pace"),
+    balanced: pick(lang, "均衡节奏", "nhịp cân bằng", "balanced pace"),
+    slow: pick(lang, "慢节奏", "nhịp chậm", "slow pace"),
+    low: pick(lang, "低", "thấp", "low"),
+    medium: pick(lang, "中", "trung bình", "medium"),
+    high: pick(lang, "高", "cao", "high"),
   };
   return labels[normalized] ?? (normalized || fallback);
 }
 
-export function renderBookContractText(contract: BookContractContext): string {
+export function renderBookContractText(contract: BookContractContext, lang: PromptLanguage = "zh"): string {
+  const dv = (value: string | null | undefined): string => displayPromptValue(value, lang);
+  const undecided = pick(lang, "未定", "chưa định", "TBD");
+  const targetWord = pick(lang, "目标", "mục tiêu", "target");
   return [
-    `标题：${displayPromptValue(contract.title)}`,
-    `题材：${displayPromptValue(contract.genre)}`,
-    `目标读者：${displayPromptValue(contract.targetAudience)}`,
-    `核心卖点：${displayPromptValue(contract.sellingPoint)}`,
-    `${contract.promiseScope === "whole_book" ? "全书核心承诺" : "前 30 章承诺"}：${displayPromptValue(contract.first30ChapterPromise)}`,
+    `${pick(lang, "标题：", "Tiêu đề: ", "Title: ")}${dv(contract.title)}`,
+    `${pick(lang, "题材：", "Thể loại: ", "Genre: ")}${dv(contract.genre)}`,
+    `${pick(lang, "目标读者：", "Độc giả mục tiêu: ", "Target audience: ")}${dv(contract.targetAudience)}`,
+    `${pick(lang, "核心卖点：", "Điểm bán cốt lõi: ", "Core selling point: ")}${dv(contract.sellingPoint)}`,
+    `${contract.promiseScope === "whole_book"
+      ? pick(lang, "全书核心承诺：", "Cam kết cốt lõi toàn sách: ", "Whole-book core promise: ")
+      : pick(lang, "前 30 章承诺：", "Cam kết 30 chương đầu: ", "First-30-chapter promise: ")}${dv(contract.first30ChapterPromise)}`,
     contract.completionMode === "compact_book"
-      ? `紧凑全书合同：目标 ${contract.targetChapterCount ?? "未定"} 章，结局最迟第 ${contract.endingRequiredBy ?? "目标"} 章完成；终章不得开启必须续写的新主线。`
+      ? pick(
+        lang,
+        `紧凑全书合同：目标 ${contract.targetChapterCount ?? "未定"} 章，结局最迟第 ${contract.endingRequiredBy ?? "目标"} 章完成；终章不得开启必须续写的新主线。`,
+        `Hợp đồng sách gọn: mục tiêu ${contract.targetChapterCount ?? undecided} chương, hồi kết phải hoàn tất chậm nhất ở chương ${contract.endingRequiredBy ?? targetWord}; chương cuối không được mở tuyến chính mới bắt buộc viết tiếp.`,
+        `Compact whole-book contract: target ${contract.targetChapterCount ?? undecided} chapters, ending must land by chapter ${contract.endingRequiredBy ?? targetWord}; the final chapter must not open a new main line that requires a sequel.`,
+      )
       : "",
-    contract.readingPromise ? `阅读承诺：${displayPromptValue(contract.readingPromise)}` : "",
-    contract.protagonistFantasy ? `主角幻想：${displayPromptValue(contract.protagonistFantasy)}` : "",
-    contract.coreSellingPoint ? `合同核心卖点：${displayPromptValue(contract.coreSellingPoint)}` : "",
-    contract.chapter3Payoff ? `第 3 章兑现：${displayPromptValue(contract.chapter3Payoff)}` : "",
-    contract.chapter10Payoff ? `第 10 章兑现：${displayPromptValue(contract.chapter10Payoff)}` : "",
-    contract.chapter30Payoff ? `第 30 章兑现：${displayPromptValue(contract.chapter30Payoff)}` : "",
-    contract.escalationLadder ? `升级阶梯：${displayPromptValue(contract.escalationLadder)}` : "",
-    contract.relationshipMainline ? `关系主线：${displayPromptValue(contract.relationshipMainline)}` : "",
+    contract.readingPromise ? `${pick(lang, "阅读承诺：", "Cam kết trải nghiệm đọc: ", "Reading promise: ")}${dv(contract.readingPromise)}` : "",
+    contract.protagonistFantasy ? `${pick(lang, "主角幻想：", "Ảo tưởng nhân vật chính: ", "Protagonist fantasy: ")}${dv(contract.protagonistFantasy)}` : "",
+    contract.coreSellingPoint ? `${pick(lang, "合同核心卖点：", "Điểm bán cốt lõi của hợp đồng: ", "Contract core selling point: ")}${dv(contract.coreSellingPoint)}` : "",
+    contract.chapter3Payoff ? `${pick(lang, "第 3 章兑现：", "Tất toán chương 3: ", "Chapter 3 payoff: ")}${dv(contract.chapter3Payoff)}` : "",
+    contract.chapter10Payoff ? `${pick(lang, "第 10 章兑现：", "Tất toán chương 10: ", "Chapter 10 payoff: ")}${dv(contract.chapter10Payoff)}` : "",
+    contract.chapter30Payoff ? `${pick(lang, "第 30 章兑现：", "Tất toán chương 30: ", "Chapter 30 payoff: ")}${dv(contract.chapter30Payoff)}` : "",
+    contract.escalationLadder ? `${pick(lang, "升级阶梯：", "Thang leo thang: ", "Escalation ladder: ")}${dv(contract.escalationLadder)}` : "",
+    contract.relationshipMainline ? `${pick(lang, "关系主线：", "Tuyến quan hệ chính: ", "Relationship main line: ")}${dv(contract.relationshipMainline)}` : "",
     (contract.activeMilestonePayoffs?.length ?? 0) > 0
-      ? `当前阶段必须关注的兑现：${contract.activeMilestonePayoffs.join(" | ")}`
+      ? `${pick(lang, "当前阶段必须关注的兑现：", "Các cú tất toán phải chú ý ở giai đoạn này: ", "Payoffs to watch in the current stage: ")}${contract.activeMilestonePayoffs.join(" | ")}`
       : "",
-    `叙事视角：${displayPromptValue(contract.narrativePov)}`,
-    `节奏偏好：${displayPromptValue(contract.pacePreference)}`,
-    `情绪强度：${displayPromptValue(contract.emotionIntensity)}`,
-    contract.toneGuardrails.length > 0 ? `语气护栏：${contract.toneGuardrails.join(" | ")}` : "",
-    contract.hardConstraints.length > 0 ? `硬性约束：${contract.hardConstraints.join(" | ")}` : "",
+    `${pick(lang, "叙事视角：", "Góc nhìn trần thuật: ", "Narrative POV: ")}${dv(contract.narrativePov)}`,
+    `${pick(lang, "节奏偏好：", "Nhịp ưa thích: ", "Pace preference: ")}${dv(contract.pacePreference)}`,
+    `${pick(lang, "情绪强度：", "Cường độ cảm xúc: ", "Emotion intensity: ")}${dv(contract.emotionIntensity)}`,
+    contract.toneGuardrails.length > 0 ? `${pick(lang, "语气护栏：", "Rào chắn giọng văn: ", "Tone guardrails: ")}${contract.toneGuardrails.join(" | ")}` : "",
+    contract.hardConstraints.length > 0 ? `${pick(lang, "硬性约束：", "Ràng buộc cứng: ", "Hard constraints: ")}${contract.hardConstraints.join(" | ")}` : "",
   ].filter(Boolean).join("\n");
 }
 
-export function renderStoryMacroText(macro: MacroConstraintContext): string {
+export function renderStoryMacroText(macro: MacroConstraintContext, lang: PromptLanguage = "zh"): string {
+  const dv = (value: string | null | undefined): string => displayPromptValue(value, lang);
   return [
-    `核心卖点：${displayPromptValue(macro.sellingPoint)}`,
-    `核心冲突：${displayPromptValue(macro.coreConflict)}`,
-    `主钩子：${displayPromptValue(macro.mainHook)}`,
-    `推进循环：${displayPromptValue(macro.progressionLoop)}`,
-    `成长路径：${displayPromptValue(macro.growthPath)}`,
-    `结局味道：${displayPromptValue(macro.endingFlavor)}`,
-    macro.hardConstraints.length > 0 ? `硬性约束：${macro.hardConstraints.join(" | ")}` : "",
+    `${pick(lang, "核心卖点：", "Điểm bán cốt lõi: ", "Core selling point: ")}${dv(macro.sellingPoint)}`,
+    `${pick(lang, "核心冲突：", "Xung đột cốt lõi: ", "Core conflict: ")}${dv(macro.coreConflict)}`,
+    `${pick(lang, "主钩子：", "Hook chính: ", "Main hook: ")}${dv(macro.mainHook)}`,
+    `${pick(lang, "推进循环：", "Vòng lặp đẩy truyện: ", "Progression loop: ")}${dv(macro.progressionLoop)}`,
+    `${pick(lang, "成长路径：", "Lộ trình trưởng thành: ", "Growth path: ")}${dv(macro.growthPath)}`,
+    `${pick(lang, "结局味道：", "Dư vị hồi kết: ", "Ending flavor: ")}${dv(macro.endingFlavor)}`,
+    macro.hardConstraints.length > 0 ? `${pick(lang, "硬性约束：", "Ràng buộc cứng: ", "Hard constraints: ")}${macro.hardConstraints.join(" | ")}` : "",
   ].filter(Boolean).join("\n");
 }
 
@@ -124,7 +156,15 @@ export function resolveTargetWordRange(targetWordCount: number | null | undefine
   };
 }
 
-export function summarizeStateSnapshot(contextPackage: GenerationContextPackage): string {
+export function summarizeStateSnapshot(
+  contextPackage: GenerationContextPackage,
+  lang: PromptLanguage = "zh",
+): string {
+  const goalLabel = pick(lang, "目标：", "mục tiêu: ", "goal: ");
+  const stateLabel = pick(lang, "状态：", "trạng thái: ", "state: ");
+  const emotionLabel = pick(lang, "情绪：", "cảm xúc: ", "emotion: ");
+  const readerKnows = pick(lang, "（读者已知）", " (người đọc đã biết)", " (reader knows)");
+  const unnamed = pick(lang, "未命名角色", "nhân vật chưa đặt tên", "unnamed character");
   if (contextPackage.canonicalState) {
     const snapshot = contextPackage.canonicalState;
     const fragments = takeUnique([
@@ -133,9 +173,9 @@ export function summarizeStateSnapshot(contextPackage: GenerationContextPackage)
         .slice(0, 3)
         .map((state) => {
           const parts = takeUnique([
-            state.currentGoal ? `目标：${state.currentGoal}` : "",
-            state.currentState ? `状态：${state.currentState}` : "",
-            state.emotion ? `情绪：${state.emotion}` : "",
+            state.currentGoal ? `${goalLabel}${state.currentGoal}` : "",
+            state.currentState ? `${stateLabel}${state.currentState}` : "",
+            state.emotion ? `${emotionLabel}${state.emotion}` : "",
             state.summary,
           ]);
           if (parts.length === 0) {
@@ -145,13 +185,18 @@ export function summarizeStateSnapshot(contextPackage: GenerationContextPackage)
         }),
       ...snapshot.narrative.publicKnowledge
         .slice(0, 2)
-        .map((fact) => `${fact}（读者已知）`),
+        .map((fact) => `${fact}${readerKnows}`),
     ], 6);
-    return fragments.join("\n") || "暂无上一轮权威状态快照。";
+    return fragments.join("\n") || pick(
+      lang,
+      "暂无上一轮权威状态快照。",
+      "Chưa có snapshot trạng thái chính thức của vòng trước.",
+      "No authoritative state snapshot from the previous round yet.",
+    );
   }
 
   const characterNameById = new Map(
-    contextPackage.characterRoster.map((character) => [character.id, character.name.trim() || "未命名角色"]),
+    contextPackage.characterRoster.map((character) => [character.id, character.name.trim() || unnamed]),
   );
   const fragments = takeUnique([
     contextPackage.stateSnapshot?.summary,
@@ -159,21 +204,26 @@ export function summarizeStateSnapshot(contextPackage: GenerationContextPackage)
       .slice(0, 3)
       .map((state) => {
         const parts = takeUnique([
-          state.currentGoal ? `目标：${state.currentGoal}` : "",
-          state.emotion ? `情绪：${state.emotion}` : "",
-          state.summary ? `状态：${state.summary}` : "",
+          state.currentGoal ? `${goalLabel}${state.currentGoal}` : "",
+          state.emotion ? `${emotionLabel}${state.emotion}` : "",
+          state.summary ? `${stateLabel}${state.summary}` : "",
         ]);
         if (parts.length === 0) {
           return "";
         }
-        const characterName = characterNameById.get(state.characterId) ?? "未命名角色";
-        return `${characterName}：${parts.join(" | ")}`;
+        const characterName = characterNameById.get(state.characterId) ?? unnamed;
+        return `${characterName}${pick(lang, "：", ": ", ": ")}${parts.join(" | ")}`;
       }) ?? [],
     ...contextPackage.stateSnapshot?.informationStates
       .slice(0, 2)
-      .map((info) => `${info.fact}（状态：${info.status}）`) ?? [],
+      .map((info) => `${info.fact}${pick(lang, `（状态：${info.status}）`, ` (trạng thái: ${info.status})`, ` (status: ${info.status})`)}`) ?? [],
   ], 6);
-  return fragments.join("\n") || "暂无上一轮状态快照。";
+  return fragments.join("\n") || pick(
+    lang,
+    "暂无上一轮状态快照。",
+    "Chưa có snapshot trạng thái của vòng trước.",
+    "No state snapshot from the previous round yet.",
+  );
 }
 
 export function summarizeOpenConflicts(contextPackage: GenerationContextPackage): string[] {
@@ -204,7 +254,10 @@ export function summarizeOpenConflicts(contextPackage: GenerationContextPackage)
     .filter(Boolean);
 }
 
-export function summarizeWorldRules(contextPackage: GenerationContextPackage): string[] {
+export function summarizeWorldRules(
+  contextPackage: GenerationContextPackage,
+  lang: PromptLanguage = "zh",
+): string[] {
   const worldSlice = contextPackage.storyWorldSlice;
   if (worldSlice) {
     return takeUnique([
@@ -219,11 +272,15 @@ export function summarizeWorldRules(contextPackage: GenerationContextPackage): s
     return [];
   }
   const world = contextPackage.canonicalState.worldState;
+  const continuityRecord = pick(lang, "连续性记录：", "Ghi nhận tính liên tục: ", "Continuity record: ");
+  const ruleRecord = pick(lang, "连续性规则记录：", "Ghi nhận luật liên tục: ", "Continuity rule record: ");
+  const tabooRecord = pick(lang, "连续性禁忌记录：", "Ghi nhận điều cấm kỵ liên tục: ", "Continuity taboo record: ");
+  const worldStateRecord = pick(lang, "当前世界状态记录：", "Ghi nhận trạng thái thế giới hiện tại: ", "Current world-state record: ");
   return takeUnique([
-    world.summary ? `连续性记录：${world.summary}` : "",
-    ...world.rules.slice(0, 3).map((rule) => `连续性规则记录：${rule}`),
-    ...world.tabooRules.slice(0, 2).map((rule) => `连续性禁忌记录：${rule}`),
-    world.currentSituation ? `当前世界状态记录：${world.currentSituation}` : "",
+    world.summary ? `${continuityRecord}${world.summary}` : "",
+    ...world.rules.slice(0, 3).map((rule) => `${ruleRecord}${rule}`),
+    ...world.tabooRules.slice(0, 2).map((rule) => `${tabooRecord}${rule}`),
+    world.currentSituation ? `${worldStateRecord}${world.currentSituation}` : "",
   ], 6);
 }
 
@@ -248,10 +305,16 @@ export function summarizeStyleConstraints(contextPackage: GenerationContextPacka
   );
 }
 
-export function summarizeContinuationConstraints(contextPackage: GenerationContextPackage): string[] {
+export function summarizeContinuationConstraints(
+  contextPackage: GenerationContextPackage,
+  lang: PromptLanguage = "zh",
+): string[] {
   if (!contextPackage.continuation.enabled) {
     return [];
   }
+  // NOTE: the section labels below match the upstream continuation `humanBlock`,
+  // which is still authored in Chinese — localizing them here would break the
+  // parse. Only the derived output prefix follows `lang`.
   const humanBlock = contextPackage.continuation.humanBlock ?? "";
   const sourceLine = takeUnique([
     findInlineValue(humanBlock, "续写来源"),
@@ -268,7 +331,9 @@ export function summarizeContinuationConstraints(contextPackage: GenerationConte
   ];
   return takeUnique([
     compactText(contextPackage.continuation.systemRule),
-    sourceLine.length > 0 ? `续写来源约束：${sourceLine.join(" / ")}` : "",
+    sourceLine.length > 0
+      ? `${pick(lang, "续写来源约束：", "Ràng buộc nguồn viết tiếp: ", "Continuation source constraint: ")}${sourceLine.join(" / ")}`
+      : "",
     ...sectionLines,
   ], 12);
 }
@@ -317,15 +382,15 @@ function extractContinuationSectionLines(source: string, sectionLabel: string, l
   return takeUnique(results, limit);
 }
 
-function formatLedgerWindow(start?: number | null, end?: number | null): string {
+function formatLedgerWindow(start: number | null | undefined, end: number | null | undefined, lang: PromptLanguage): string {
   if (typeof start === "number" && typeof end === "number") {
-    return `目标窗口=${start}-${end}`;
+    return pick(lang, `目标窗口=${start}-${end}`, `cửa sổ mục tiêu=${start}-${end}`, `target window=${start}-${end}`);
   }
   if (typeof end === "number") {
-    return `目标窗口截止第${end}章`;
+    return pick(lang, `目标窗口截止第${end}章`, `cửa sổ mục tiêu đến chương ${end}`, `target window ends at chapter ${end}`);
   }
   if (typeof start === "number") {
-    return `目标窗口起于第${start}章`;
+    return pick(lang, `目标窗口起于第${start}章`, `cửa sổ mục tiêu bắt đầu từ chương ${start}`, `target window starts at chapter ${start}`);
   }
   return "";
 }
@@ -333,108 +398,157 @@ function formatLedgerWindow(start?: number | null, end?: number | null): string 
 export function buildLedgerItemLine(
   item: GenerationContextPackage["ledgerPendingItems"][number],
   label: string,
+  lang: PromptLanguage = "zh",
 ): string {
   return takeUnique([
     `${label}: ${item.title}`,
     item.summary,
-    formatLedgerWindow(item.targetStartChapterOrder, item.targetEndChapterOrder),
+    formatLedgerWindow(item.targetStartChapterOrder, item.targetEndChapterOrder, lang),
     item.statusReason ?? "",
   ], 4).join(" | ");
 }
 
 export function buildParticipantText(writeContext: ChapterWriteContext): string {
+  const lang = writeContext.promptLanguage;
+  const none = pick(lang, "无", "không có", "none");
   if (writeContext.participants.length === 0) {
-    return "出场角色：无";
+    return `${pick(lang, "出场角色", "Nhân vật xuất hiện", "Participants")}: ${none}`;
   }
+  const authorInfluenceLabel = pick(
+    lang,
+    "角色对话后确认的软性行为倾向（非客观事实）：",
+    "Xu hướng hành vi mềm đã xác nhận sau đối thoại nhân vật (không phải sự thật khách quan): ",
+    "Soft behavioral tendency confirmed after character dialogue (not objective fact): ",
+  );
+  const absenceRiskLabel = (risk: string, span: number): string => pick(
+    lang,
+    `缺席风险：${risk}（跨度 ${span}）`,
+    `Rủi ro vắng mặt: ${risk} (khoảng ${span})`,
+    `Absence risk: ${risk} (span ${span})`,
+  );
   const guideByCharacterId = new Map(
     writeContext.characterBehaviorGuides.map((guide) => [guide.characterId, guide]),
   );
   return [
-    "出场角色：",
+    `${pick(lang, "出场角色", "Nhân vật xuất hiện", "Participants")}:`,
     ...writeContext.participants.map((character) => {
       const guide = guideByCharacterId.get(character.id);
       const visibleProfile = takeUnique([
         character.appearance || character.physique
-          ? `外观：${compactText([character.appearance, character.physique].filter(Boolean).join("；"))}`
+          ? `${pick(lang, "外观：", "Ngoại hình: ", "Appearance: ")}${compactText([character.appearance, character.physique].filter(Boolean).join(pick(lang, "；", "; ", "; ")))}`
           : "",
-        character.attireStyle ? `常见穿着：${compactText(character.attireStyle)}` : "",
-        character.signatureDetail ? `标志细节：${compactText(character.signatureDetail)}` : "",
-        character.voiceTexture ? `声音：${compactText(character.voiceTexture)}` : "",
-        character.presenceImpression ? `登场印象：${compactText(character.presenceImpression)}` : "",
+        character.attireStyle ? `${pick(lang, "常见穿着：", "Trang phục thường thấy: ", "Usual attire: ")}${compactText(character.attireStyle)}` : "",
+        character.signatureDetail ? `${pick(lang, "标志细节：", "Chi tiết đặc trưng: ", "Signature detail: ")}${compactText(character.signatureDetail)}` : "",
+        character.voiceTexture ? `${pick(lang, "声音：", "Giọng nói: ", "Voice: ")}${compactText(character.voiceTexture)}` : "",
+        character.presenceImpression ? `${pick(lang, "登场印象：", "Ấn tượng khi xuất hiện: ", "Presence impression: ")}${compactText(character.presenceImpression)}` : "",
       ], 3).join(" | ");
       const parts = takeUnique([
         character.role,
         visibleProfile,
-        guide?.volumeRoleLabel ? `卷内定位：${guide.volumeRoleLabel}` : "",
-        guide?.volumeResponsibility ? `卷内职责：${guide.volumeResponsibility}` : "",
+        guide?.volumeRoleLabel ? `${pick(lang, "卷内定位：", "Định vị trong tập: ", "Volume role: ")}${guide.volumeRoleLabel}` : "",
+        guide?.volumeResponsibility ? `${pick(lang, "卷内职责：", "Trách nhiệm trong tập: ", "Volume responsibility: ")}${guide.volumeResponsibility}` : "",
         character.personality,
-        character.currentState ? `状态：${character.currentState}` : "",
-        character.currentGoal ? `目标：${character.currentGoal}` : "",
-        guide?.relationStageLabels.length ? `关系阶段：${guide.relationStageLabels.join(" / ")}` : "",
-        guide?.mindGuidance ? `主观倾向：${guide.mindGuidance}` : "",
-        guide?.authorInfluenceGuidance ? `角色对话后确认的软性行为倾向（非客观事实）：${guide.authorInfluenceGuidance}` : "",
+        character.currentState ? `${pick(lang, "状态：", "Trạng thái: ", "State: ")}${character.currentState}` : "",
+        character.currentGoal ? `${pick(lang, "目标：", "Mục tiêu: ", "Goal: ")}${character.currentGoal}` : "",
+        guide?.relationStageLabels.length ? `${pick(lang, "关系阶段：", "Giai đoạn quan hệ: ", "Relation stage: ")}${guide.relationStageLabels.join(" / ")}` : "",
+        guide?.mindGuidance ? `${pick(lang, "主观倾向：", "Xu hướng chủ quan: ", "Subjective tendency: ")}${guide.mindGuidance}` : "",
+        guide?.authorInfluenceGuidance ? `${authorInfluenceLabel}${guide.authorInfluenceGuidance}` : "",
         guide?.absenceRisk && guide.absenceRisk !== "none"
-          ? `缺席风险：${guide.absenceRisk}（跨度 ${guide.absenceSpan}）`
+          ? absenceRiskLabel(guide.absenceRisk, guide.absenceSpan)
           : "",
       ], 4);
-      return `- ${character.name}：${parts.join(" | ")}`;
+      return `- ${character.name}: ${parts.join(" | ")}`;
     }),
   ].join("\n");
 }
 
 export function buildCharacterGuidanceText(writeContext: ChapterWriteContext): string {
+  const lang = writeContext.promptLanguage;
+  const none = pick(lang, "无", "không có", "none");
+  const title = pick(lang, "角色行为指导", "Hướng dẫn hành vi nhân vật", "Character behavior guidance");
   if (writeContext.characterBehaviorGuides.length === 0) {
-    return "角色行为指导：无";
+    return `${title}: ${none}`;
   }
+  const mindLabel = pick(lang, "主观倾向（非客观事实）：", "Xu hướng chủ quan (không phải sự thật khách quan): ", "Subjective tendency (not objective fact): ");
+  const authorInfluenceLabel = pick(
+    lang,
+    "角色对话后确认的软性行为倾向（非客观事实）：",
+    "Xu hướng hành vi mềm đã xác nhận sau đối thoại nhân vật (không phải sự thật khách quan): ",
+    "Soft behavioral tendency confirmed after character dialogue (not objective fact): ",
+  );
   return [
-    "角色行为指导：",
+    `${title}:`,
     ...writeContext.characterBehaviorGuides.map((guide) => {
       const parts = takeUnique([
-        guide.isCoreInVolume ? "本卷核心角色" : "本卷辅助角色",
-        guide.mindGuidance ? `主观倾向（非客观事实）：${guide.mindGuidance}` : "",
-        guide.authorInfluenceGuidance ? `角色对话后确认的软性行为倾向（非客观事实）：${guide.authorInfluenceGuidance}` : "",
-        guide.visibleProfileSummary ? `可见表现：${guide.visibleProfileSummary}` : "",
-        guide.volumeRoleLabel ? `卷内定位：${guide.volumeRoleLabel}` : "",
-        guide.volumeResponsibility ? `职责：${guide.volumeResponsibility}` : "",
-        guide.currentGoal ? `目标：${guide.currentGoal}` : "",
-        guide.currentState ? `状态：${guide.currentState}` : "",
-        guide.relationStageLabels.length ? `关系阶段：${guide.relationStageLabels.join(" / ")}` : "",
-        guide.absenceRisk !== "none" ? `缺席风险：${guide.absenceRisk}（跨度 ${guide.absenceSpan}）` : "",
-        guide.factionLabel ? `阵营：${guide.factionLabel}` : "",
-        guide.stanceLabel ? `立场：${guide.stanceLabel}` : "",
-        guide.shouldPreferAppearance ? "本章优先使用外观细节" : "",
+        guide.isCoreInVolume
+          ? pick(lang, "本卷核心角色", "Nhân vật cốt lõi của tập này", "Core character of this volume")
+          : pick(lang, "本卷辅助角色", "Nhân vật phụ trợ của tập này", "Supporting character of this volume"),
+        guide.mindGuidance ? `${mindLabel}${guide.mindGuidance}` : "",
+        guide.authorInfluenceGuidance ? `${authorInfluenceLabel}${guide.authorInfluenceGuidance}` : "",
+        guide.visibleProfileSummary ? `${pick(lang, "可见表现：", "Biểu hiện nhìn thấy được: ", "Visible profile: ")}${guide.visibleProfileSummary}` : "",
+        guide.volumeRoleLabel ? `${pick(lang, "卷内定位：", "Định vị trong tập: ", "Volume role: ")}${guide.volumeRoleLabel}` : "",
+        guide.volumeResponsibility ? `${pick(lang, "职责：", "Trách nhiệm: ", "Responsibility: ")}${guide.volumeResponsibility}` : "",
+        guide.currentGoal ? `${pick(lang, "目标：", "Mục tiêu: ", "Goal: ")}${guide.currentGoal}` : "",
+        guide.currentState ? `${pick(lang, "状态：", "Trạng thái: ", "State: ")}${guide.currentState}` : "",
+        guide.relationStageLabels.length ? `${pick(lang, "关系阶段：", "Giai đoạn quan hệ: ", "Relation stage: ")}${guide.relationStageLabels.join(" / ")}` : "",
+        guide.absenceRisk !== "none"
+          ? pick(
+            lang,
+            `缺席风险：${guide.absenceRisk}（跨度 ${guide.absenceSpan}）`,
+            `Rủi ro vắng mặt: ${guide.absenceRisk} (khoảng ${guide.absenceSpan})`,
+            `Absence risk: ${guide.absenceRisk} (span ${guide.absenceSpan})`,
+          )
+          : "",
+        guide.factionLabel ? `${pick(lang, "阵营：", "Phe: ", "Faction: ")}${guide.factionLabel}` : "",
+        guide.stanceLabel ? `${pick(lang, "立场：", "Lập trường: ", "Stance: ")}${guide.stanceLabel}` : "",
+        guide.shouldPreferAppearance
+          ? pick(lang, "本章优先使用外观细节", "Chương này ưu tiên dùng chi tiết ngoại hình", "Prefer appearance details in this chapter")
+          : "",
       ], 6);
-      return `- ${guide.name}：${parts.join(" | ")}`;
+      return `- ${guide.name}: ${parts.join(" | ")}`;
     }),
   ].join("\n");
 }
 
 export function buildRelationStageText(writeContext: ChapterWriteContext): string {
+  const lang = writeContext.promptLanguage;
+  const title = pick(lang, "活跃关系阶段", "Giai đoạn quan hệ đang hoạt động", "Active relation stages");
   if (writeContext.activeRelationStages.length === 0) {
-    return "活跃关系阶段：无";
+    return `${title}: ${pick(lang, "无", "không có", "none")}`;
   }
+  const nextTurnLabel = pick(lang, "下一转折：", "Chuyển biến kế tiếp: ", "Next turn: ");
   return [
-    "活跃关系阶段：",
+    `${title}:`,
     ...writeContext.activeRelationStages.map((relation) => (
-      `- ${relation.sourceCharacterName} -> ${relation.targetCharacterName}：${relation.stageLabel} | ${relation.stageSummary}${relation.nextTurnPoint ? ` | 下一转折：${relation.nextTurnPoint}` : ""}`
+      `- ${relation.sourceCharacterName} -> ${relation.targetCharacterName}: ${relation.stageLabel} | ${relation.stageSummary}${relation.nextTurnPoint ? ` | ${nextTurnLabel}${relation.nextTurnPoint}` : ""}`
     )),
   ].join("\n");
 }
 
 export function buildPendingCandidateGuardText(writeContext: ChapterWriteContext): string {
+  const lang = writeContext.promptLanguage;
+  const title = pick(lang, "候选角色护栏", "Rào chắn nhân vật ứng viên", "Pending candidate guardrails");
   if (writeContext.pendingCandidateGuards.length === 0) {
-    return "候选角色护栏：无";
+    return `${title}: ${pick(lang, "无", "không có", "none")}`;
   }
-  return [
+  const heading = pick(
+    lang,
     "候选角色护栏（只读，不要直接写入正文）：",
+    "Rào chắn nhân vật ứng viên (chỉ đọc, không viết thẳng vào chính văn):",
+    "Pending candidate guardrails (read-only, do not write straight into the prose):",
+  );
+  return [
+    heading,
     ...writeContext.pendingCandidateGuards.map((candidate) => {
       const parts = takeUnique([
-        candidate.proposedRole ? `定位：${candidate.proposedRole}` : "",
+        candidate.proposedRole ? `${pick(lang, "定位：", "Định vị: ", "Role: ")}${candidate.proposedRole}` : "",
         candidate.summary ?? "",
-        candidate.sourceChapterOrder != null ? `来源章节：第 ${candidate.sourceChapterOrder} 章` : "",
+        candidate.sourceChapterOrder != null
+          ? pick(lang, `来源章节：第 ${candidate.sourceChapterOrder} 章`, `Chương nguồn: chương ${candidate.sourceChapterOrder}`, `Source chapter: chapter ${candidate.sourceChapterOrder}`)
+          : "",
         ...candidate.evidence.slice(0, 2),
       ], 4);
-      return `- ${candidate.proposedName}：${parts.join(" | ")}`;
+      return `- ${candidate.proposedName}: ${parts.join(" | ")}`;
     }),
   ].join("\n");
 }

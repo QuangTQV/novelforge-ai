@@ -1,4 +1,4 @@
-import { translateUi } from "@/i18n/legacy";
+import { translateResourceText, translateUi } from "@/i18n/legacy";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
@@ -102,16 +102,16 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
         onKeyDown={(event) => handleSelectableKeyDown(event, () => onSelectProfile(profile.id))}
         className={`rounded-3xl border px-5 py-4 text-left transition duration-200 ${isSelected ? selectedStyle : idleStyle}`}
       >
-        <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
-          <div className="min-w-0 flex-1 space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="text-base font-semibold text-foreground">{translateUi(profile.name)}</div>
+        <div className="flex min-w-0 flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
+          <div className="min-w-0 flex-1 space-y-2 xl:min-w-[280px]">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
+              <div className="min-w-0 max-w-full break-words text-base font-semibold leading-6 text-foreground">{translateUi(profile.name)}</div>
               <Badge variant={profile.isStarter ? "outline" : (isSelected ? "default" : "secondary")} className={badgeClassName}>
                 {profile.originLabel}
               </Badge>
               {profile.category ? (
                 <Badge variant="outline" className="h-6">
-                  {profile.category}
+                  {translateResourceText(profile.category)}
                 </Badge>
               ) : null}
               <Badge variant="outline" className="h-6">
@@ -124,7 +124,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
             <div className="flex flex-wrap gap-2">
               {profile.tags.slice(0, 4).map((tag) => (
                 <Badge key={`${profile.id}-${tag}`} variant="outline" className="h-6">
-                  {tag}
+                  {translateResourceText(tag)}
                 </Badge>
               ))}
               {profile.recentNovelTitle ? (
@@ -135,7 +135,7 @@ export default function WritingFormulaLanding(props: WritingFormulaLandingProps)
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 xl:justify-end">
+          <div className="flex flex-wrap gap-2 xl:max-w-[min(100%,520px)] xl:shrink xl:justify-end">
             <Button
               type="button"
               size="sm"

@@ -91,6 +91,7 @@ export class StyleDetectionService {
         provider: input.provider,
         model: input.model,
         temperature: input.temperature ?? 0.2,
+        novelId: input.novelId,
       },
     });
     const parsed = result.output;

@@ -55,6 +55,7 @@ export class StyleRewriteService {
         provider: input.provider ?? "deepseek",
         model: input.model,
         temperature: input.temperature ?? 0.5,
+        novelId: input.novelId,
       },
     });
 

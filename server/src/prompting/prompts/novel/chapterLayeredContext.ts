@@ -16,6 +16,7 @@ import {
 import { sanitizeCreativeMustAdvanceItems } from "@ai-novel/shared/types/chapterCreativeContract";
 import type { ReviewIssue } from "@ai-novel/shared/types/novel";
 import type { StoryMacroPlan } from "@ai-novel/shared/types/storyMacro";
+import type { PromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import {
   hasReaderExperienceContractValue,
   normalizeReaderExperienceContract,
@@ -61,6 +62,16 @@ export {
 export type { ChapterWriterBlockMode } from "./context/chapterContextBlocks";
 
 export { resolveTargetWordRange } from "./chapterLayeredContextShared";
+
+function pick(lang: PromptLanguage, zh: string, vi: string, en: string): string {
+  if (lang === "vi") {
+    return vi;
+  }
+  if (lang === "en") {
+    return en;
+  }
+  return zh;
+}
 
 type RuntimeVolumeSeed = {
   currentVolume?: {
@@ -184,12 +195,14 @@ function buildCompatibleReaderExperienceContract(input: {
   scenePlan: ChapterWriteContext["scenePlan"];
   participants: ChapterWriteContext["participants"];
   openConflictSummaries: string[];
+  lang: PromptLanguage;
 }): ReaderExperienceContract {
   const stored = normalizeReaderExperienceContract(input.scenePlan?.readerExperience);
   if (hasReaderExperienceContractValue(stored)) {
     return stored;
   }
-  const protagonist = input.participants.find((item) => item.role === "主角") ?? input.participants[0] ?? null;
+  const protagonistRoles = new Set(["主角", "nhân vật chính", "protagonist", "main character"]);
+  const protagonist = input.participants.find((item) => protagonistRoles.has(item.role?.trim().toLowerCase() ?? "")) ?? input.participants[0] ?? null;
   const sceneTurns = input.scenePlan?.scenes.map((scene) => scene.turn).filter(Boolean) ?? [];
   const sceneEmotionShifts = input.scenePlan?.scenes.map((scene) => scene.emotionalShift).filter(Boolean) ?? [];
   const sceneReaderValues = input.scenePlan?.scenes.map((scene) => scene.readerValue).filter(Boolean) ?? [];
@@ -205,12 +218,22 @@ function buildCompatibleReaderExperienceContract(input: {
     protagonistWant: protagonist?.currentGoal || input.chapterMission.objective,
     primaryResistance: input.openConflictSummaries[0]
       || input.chapterMission.mustAdvance[0]
-      || "完成本章任务时必须面对具体阻力与代价。",
+      || pick(
+        input.lang,
+        "完成本章任务时必须面对具体阻力与代价。",
+        "Khi hoàn thành nhiệm vụ chương này phải đối mặt với trở lực và cái giá cụ thể.",
+        "Completing this chapter's mission must involve a concrete obstacle and cost.",
+      ),
     keyTurn: sceneTurns[0]
       || input.chapterBoundary?.exclusiveEvent
       || input.chapterMission.objective,
     emotionalShift: sceneEmotionShifts[0] || input.chapterMission.expectation,
-    informationReveal: input.contextPackage.plan?.reveals[0] || "本章只交付任务允许的必要信息。",
+    informationReveal: input.contextPackage.plan?.reveals[0] || pick(
+      input.lang,
+      "本章只交付任务允许的必要信息。",
+      "Chương này chỉ giao đúng thông tin cần thiết mà nhiệm vụ cho phép.",
+      "This chapter delivers only the necessary information the mission allows.",
+    ),
     netChange: endingState,
     inheritedHookResponsibilities: [],
     endingHook: input.chapterMission.hookTarget,
@@ -253,25 +276,54 @@ export function buildChapterMissionContext(contextPackage: GenerationContextPack
 export function buildNarrativeProgressHint(
   currentOrder: number,
   estimatedTotal: number | null | undefined,
+  lang: PromptLanguage = "zh",
 ): string | null {
   if (!estimatedTotal || estimatedTotal <= 0) return null;
   const progress = currentOrder / estimatedTotal;
   const remaining = estimatedTotal - currentOrder;
+  const pct = Math.round(progress * 100);
+  const head = pick(
+    lang,
+    `【叙事进度】第 ${currentOrder} 章 / 预计共 ${estimatedTotal} 章（${pct}%）`,
+    `[Tiến độ trần thuật] Chương ${currentOrder} / dự kiến tổng ${estimatedTotal} chương (${pct}%)`,
+    `[Narrative progress] Chapter ${currentOrder} / est. ${estimatedTotal} chapters total (${pct}%)`,
+  );
   if (progress < 0.25) {
-    return `【叙事进度】第 ${currentOrder} 章 / 预计共 ${estimatedTotal} 章（${Math.round(progress * 100)}%）\n开局阶段：可自由展开世界与人物，建立读者期待。`;
+    return `${head}\n${pick(
+      lang,
+      "开局阶段：可自由展开世界与人物，建立读者期待。",
+      "Giai đoạn mở màn: được tự do mở rộng thế giới và nhân vật, dựng kỳ vọng nơi người đọc.",
+      "Opening stage: freely expand the world and characters, build reader expectation.",
+    )}`;
   }
   if (progress < 0.75) {
-    return `【叙事进度】第 ${currentOrder} 章 / 预计共 ${estimatedTotal} 章（${Math.round(progress * 100)}%）\n发展阶段：推进既有线索，谨慎开新支线，保持伏笔密度。`;
+    return `${head}\n${pick(
+      lang,
+      "发展阶段：推进既有线索，谨慎开新支线，保持伏笔密度。",
+      "Giai đoạn phát triển: đẩy các tuyến đã có, mở tuyến phụ mới một cách thận trọng, giữ mật độ mồi cài.",
+      "Development stage: advance existing threads, open new subplots cautiously, keep foreshadowing density.",
+    )}`;
   }
   if (progress < 0.90) {
-    return `【叙事进度】第 ${currentOrder} 章 / 预计共 ${estimatedTotal} 章（${Math.round(progress * 100)}%）\n收敛阶段：优先兑现已埋伏笔，避免新开主线，距结束还有约 ${remaining} 章。`;
+    return `${head}\n${pick(
+      lang,
+      `收敛阶段：优先兑现已埋伏笔，避免新开主线，距结束还有约 ${remaining} 章。`,
+      `Giai đoạn hội tụ: ưu tiên tất toán mồi đã cài, tránh mở tuyến chính mới, còn khoảng ${remaining} chương là kết.`,
+      `Convergence stage: prioritize paying off planted foreshadowing, avoid new main lines, ~${remaining} chapters to the end.`,
+    )}`;
   }
-  return `【叙事进度】第 ${currentOrder} 章 / 预计共 ${estimatedTotal} 章（${Math.round(progress * 100)}%）\n尾声阶段：收束所有主线，为全书收尾，禁止开新支线。`;
+  return `${head}\n${pick(
+    lang,
+    "尾声阶段：收束所有主线，为全书收尾，禁止开新支线。",
+    "Giai đoạn vĩ thanh: khép mọi tuyến chính, kết thúc toàn sách, cấm mở tuyến phụ mới.",
+    "Finale stage: close all main lines, wrap the whole book, no new subplots.",
+  )}`;
 }
 
 function buildChapterBoundaryContract(
   contextPackage: GenerationContextPackage,
   scenePlan: ReturnType<typeof parseChapterScenePlan>,
+  lang: PromptLanguage,
 ): ChapterWriteContext["chapterBoundary"] {
   const scenes = scenePlan?.scenes ?? [];
   const firstScene = scenes[0] ?? null;
@@ -280,12 +332,17 @@ function buildChapterBoundaryContract(
     ...(contextPackage.protectedSecrets ?? []),
     ...(contextPackage.chapterStateGoal?.protectedSecrets ?? []),
   ], 8);
+  const noEarlyReveal = pick(lang, "不得提前揭露：", "Không được hé lộ sớm: ", "Do not reveal early: ");
   const doNotCross = takeUnique([
     compactText(contextPackage.chapter.mustAvoid),
-    ...protectedReveals.map((item) => `不得提前揭露：${item}`),
+    ...protectedReveals.map((item) => `${noEarlyReveal}${item}`),
     ...scenes.flatMap((scene) => scene.forbiddenExpansion ?? []),
-    lastScene?.exitState ? `不得越过本章结束态：${lastScene.exitState}` : "",
-    contextPackage.chapter.hook ? `不得直接展开钩子之后的后续事件：${contextPackage.chapter.hook}` : "",
+    lastScene?.exitState
+      ? `${pick(lang, "不得越过本章结束态：", "Không được vượt qua trạng thái kết thúc chương này: ", "Do not cross this chapter's ending state: ")}${lastScene.exitState}`
+      : "",
+    contextPackage.chapter.hook
+      ? `${pick(lang, "不得直接展开钩子之后的后续事件：", "Không được triển khai thẳng các sự kiện sau hook: ", "Do not directly unfold events that come after the hook: ")}${contextPackage.chapter.hook}`
+      : "",
   ], 12).filter(Boolean);
 
   return {
@@ -313,8 +370,10 @@ export function buildChapterWriteContext(input: {
   macroConstraints: MacroConstraintContext | null;
   volumeWindow: VolumeWindowContext | null;
   contextPackage: GenerationContextPackage;
+  promptLanguage?: PromptLanguage;
 }): ChapterWriteContext {
-  const dynamicCharacterGuidance = buildDynamicCharacterGuidance(input.contextPackage);
+  const lang: PromptLanguage = input.promptLanguage ?? "zh";
+  const dynamicCharacterGuidance = buildDynamicCharacterGuidance(input.contextPackage, lang);
   const participants = buildParticipants(input.contextPackage, dynamicCharacterGuidance.characterBehaviorGuides);
   const participantIds = new Set(participants.map((character) => character.id));
   const characterBehaviorGuides = dynamicCharacterGuidance.characterBehaviorGuides.map((guide) => (
@@ -332,7 +391,7 @@ export function buildChapterWriteContext(input: {
     targetWordCount: input.contextPackage.chapter.targetWordCount ?? undefined,
   });
   const chapterMission = buildChapterMissionContext(input.contextPackage);
-  const chapterBoundary = buildChapterBoundaryContract(input.contextPackage, scenePlan);
+  const chapterBoundary = buildChapterBoundaryContract(input.contextPackage, scenePlan, lang);
   const openConflictSummaries = summarizeOpenConflicts(input.contextPackage);
   const readerExperience = buildCompatibleReaderExperienceContract({
     contextPackage: input.contextPackage,
@@ -341,8 +400,10 @@ export function buildChapterWriteContext(input: {
     scenePlan,
     participants,
     openConflictSummaries,
+    lang,
   });
   return {
+    promptLanguage: lang,
     bookContract: input.bookContract,
     productionFoundationPrompt: compactText(input.productionFoundationPrompt),
     macroConstraints: input.macroConstraints,
@@ -362,6 +423,7 @@ export function buildChapterWriteContext(input: {
       chapterBoundary,
       characterBehaviorGuides,
       ledgerPendingItems: input.contextPackage.ledgerPendingItems,
+      lang,
     }),
     chapterBoundary,
     lengthBudget: resolveLengthBudgetContract(input.contextPackage.chapter.targetWordCount),
@@ -372,7 +434,7 @@ export function buildChapterWriteContext(input: {
     characterBehaviorGuides,
     activeRelationStages: dynamicCharacterGuidance.activeRelationStages,
     pendingCandidateGuards: dynamicCharacterGuidance.pendingCandidateGuards,
-    localStateSummary: summarizeStateSnapshot(input.contextPackage),
+    localStateSummary: summarizeStateSnapshot(input.contextPackage, lang),
     openConflictSummaries,
     ledgerPendingItems: input.contextPackage.ledgerPendingItems,
     ledgerUrgentItems: input.contextPackage.ledgerUrgentItems,
@@ -385,7 +447,7 @@ export function buildChapterWriteContext(input: {
     openingAntiRepeatHint: compactText(input.contextPackage.openingHint, "No recent opening guidance."),
     styleContract: input.contextPackage.styleContext?.compiledBlocks?.contract ?? null,
     styleConstraints: summarizeStyleConstraints(input.contextPackage),
-    continuationConstraints: summarizeContinuationConstraints(input.contextPackage),
+    continuationConstraints: summarizeContinuationConstraints(input.contextPackage, lang),
     ragFacts: [],
     completedMilestones: [],
     recentScenePatterns: [],
@@ -405,6 +467,7 @@ function buildChapterExecutionObligationContract(input: {
   chapterBoundary: ChapterWriteContext["chapterBoundary"];
   characterBehaviorGuides: ChapterWriteContext["characterBehaviorGuides"];
   ledgerPendingItems: ChapterWriteContext["ledgerPendingItems"];
+  lang: PromptLanguage;
 }): ChapterWriteContext["obligationContract"] {
   return {
     mustHitNow: uniqueStrings(input.chapterMission.mustAdvance),
@@ -419,7 +482,12 @@ function buildChapterExecutionObligationContract(input: {
       ))
       .map((guide) => {
         if (guide.absenceRisk === "high" && guide.absenceSpan > 0) {
-          return `${guide.name}（已缺席 ${guide.absenceSpan} 章，宜自然带出）`;
+          return pick(
+            input.lang,
+            `${guide.name}（已缺席 ${guide.absenceSpan} 章，宜自然带出）`,
+            `${guide.name} (đã vắng ${guide.absenceSpan} chương, nên đưa trở lại một cách tự nhiên)`,
+            `${guide.name} (absent for ${guide.absenceSpan} chapters, bring back naturally)`,
+          );
         }
         return guide.name;
       })),
@@ -459,11 +527,11 @@ export function buildChapterReviewContext(
       ...(writeContext.characterResourceContext?.blockedItems ?? []).map((item) => `resource unavailable: ${item.name} is ${item.status}; do not use it without repair setup`),
       ...(writeContext.characterResourceContext?.highRiskCommittedItems ?? []).map((item) => `committed high-risk resource: ${item.name} / ${item.summary}; use cautiously`),
       ...(writeContext.characterResourceContext?.pendingProposalItems ?? []).map((item) => `unconfirmed resource proposal: ${item.summary}; do not treat as committed fact`),
-      ...writeContext.ledgerPendingItems.map((item) => buildLedgerItemLine(item, "pending payoff")),
-      ...writeContext.ledgerUrgentItems.map((item) => buildLedgerItemLine(item, "urgent payoff")),
-      ...writeContext.ledgerOverdueItems.map((item) => buildLedgerItemLine(item, "overdue payoff")),
+      ...writeContext.ledgerPendingItems.map((item) => buildLedgerItemLine(item, "pending payoff", writeContext.promptLanguage)),
+      ...writeContext.ledgerUrgentItems.map((item) => buildLedgerItemLine(item, "urgent payoff", writeContext.promptLanguage)),
+      ...writeContext.ledgerOverdueItems.map((item) => buildLedgerItemLine(item, "overdue payoff", writeContext.promptLanguage)),
     ], 32),
-    worldRules: summarizeWorldRules(contextPackage),
+    worldRules: summarizeWorldRules(contextPackage, writeContext.promptLanguage),
     historicalIssues: summarizeHistoricalIssues(contextPackage),
   };
 }
@@ -496,11 +564,11 @@ export function buildChapterRepairContext(input: {
         : "",
       ...(writeContext.characterResourceContext?.setupNeededItems ?? []).map((item) => `resource setup needed: ${item.name} / ${item.summary}`),
       ...(writeContext.characterResourceContext?.blockedItems ?? []).map((item) => `resource unavailable: ${item.name} is ${item.status}; patch locally before use`),
-      ...writeContext.ledgerPendingItems.map((item) => buildLedgerItemLine(item, "pending payoff")),
-      ...writeContext.ledgerUrgentItems.map((item) => buildLedgerItemLine(item, "urgent payoff")),
-      ...writeContext.ledgerOverdueItems.map((item) => buildLedgerItemLine(item, "overdue payoff")),
+      ...writeContext.ledgerPendingItems.map((item) => buildLedgerItemLine(item, "pending payoff", writeContext.promptLanguage)),
+      ...writeContext.ledgerUrgentItems.map((item) => buildLedgerItemLine(item, "urgent payoff", writeContext.promptLanguage)),
+      ...writeContext.ledgerOverdueItems.map((item) => buildLedgerItemLine(item, "overdue payoff", writeContext.promptLanguage)),
     ], 32),
-    worldRules: summarizeWorldRules(input.contextPackage),
+    worldRules: summarizeWorldRules(input.contextPackage, writeContext.promptLanguage),
     historicalIssues: summarizeHistoricalIssues(input.contextPackage),
     allowedEditBoundaries: takeUnique([
       "Keep the chapter's established objective, participants, and major outcome direction intact.",
@@ -514,7 +582,7 @@ export function buildChapterRepairContext(input: {
         : "",
       ...writeContext.ledgerPendingItems.map((item) => `Do not erase pending payoff setup: ${item.title}`),
       ...writeContext.ledgerUrgentItems.map((item) => `This chapter must visibly touch the urgent payoff thread: ${item.title}`),
-      ...writeContext.ledgerOverdueItems.map((item) => `You must either兑现 or explicitly explain the overdue payoff pressure: ${item.title}`),
+      ...writeContext.ledgerOverdueItems.map((item) => `You must either pay off or explicitly explain the overdue payoff pressure: ${item.title}`),
       ...(writeContext.characterResourceContext?.blockedItems ?? []).map((item) => `Patch resource continuity before using ${item.name}; current status is ${item.status}.`),
       ...(writeContext.characterResourceContext?.highRiskCommittedItems ?? []).map((item) => `Do not create a new irreversible resource fact from high-risk committed item: ${item.name}.`),
       ...(writeContext.characterResourceContext?.pendingProposalItems ?? []).map((item) => `Pending proposal is not committed yet; do not write it as fact: ${item.summary}.`),
@@ -548,7 +616,7 @@ export function getAllContextBlocks(contextPackage: GenerationContextPackage): P
       group: "book_contract",
       priority: 100,
       required: true,
-      content: renderBookContractText(writeContext.bookContract),
+      content: renderBookContractText(writeContext.bookContract, writeContext.promptLanguage),
     }),
     ...buildChapterWriterContextBlocks(writeContext),
   ];
@@ -557,7 +625,7 @@ export function getAllContextBlocks(contextPackage: GenerationContextPackage): P
       id: "story_macro",
       group: "story_macro",
       priority: 98,
-      content: renderStoryMacroText(writeContext.macroConstraints),
+      content: renderStoryMacroText(writeContext.macroConstraints, writeContext.promptLanguage),
     }));
   }
   if (contextPackage.ragContext.trim()) {

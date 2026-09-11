@@ -111,11 +111,14 @@ function buildBookContractBlock(writeContext: ChapterWriteContext): PromptContex
     group: "book_contract",
     priority: 100,
     required: true,
-    content: renderBookContractText(writeContext.bookContract),
+    content: renderBookContractText(writeContext.bookContract, writeContext.promptLanguage),
   });
 }
 
-function buildStoryMacroBlock(macro: MacroConstraintContext | null): PromptContextBlock | null {
+function buildStoryMacroBlock(
+  macro: MacroConstraintContext | null,
+  lang: ChapterWriteContext["promptLanguage"],
+): PromptContextBlock | null {
   if (!macro) {
     return null;
   }
@@ -123,7 +126,7 @@ function buildStoryMacroBlock(macro: MacroConstraintContext | null): PromptConte
     id: "story_macro",
     group: "story_macro",
     priority: 98,
-    content: renderStoryMacroText(macro),
+    content: renderStoryMacroText(macro, lang),
   });
 }
 
@@ -152,7 +155,7 @@ function buildChapterRuntimeBlocks(context: PromptExecutionContext): PromptConte
   }
 
   blocks.push(buildBookContractBlock(writeContext));
-  const storyMacroBlock = buildStoryMacroBlock(writeContext.macroConstraints);
+  const storyMacroBlock = buildStoryMacroBlock(writeContext.macroConstraints, writeContext.promptLanguage);
   if (storyMacroBlock) {
     blocks.push(storyMacroBlock);
   }

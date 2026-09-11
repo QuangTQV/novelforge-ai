@@ -2,6 +2,7 @@ import type {
   ChapterWriteContext,
   GenerationContextPackage,
 } from "@ai-novel/shared/types/chapterRuntime";
+import { resolveNovelLanguage, resolvePromptLanguage } from "@ai-novel/shared/utils/novelLanguage";
 import {
   buildBookContractContext,
   buildChapterWriteContext,
@@ -350,6 +351,7 @@ export function buildPreviewChapterWriteContext(input: {
     bookContract,
     macroConstraints: null,
     volumeWindow: null,
+    promptLanguage: resolvePromptLanguage(resolveNovelLanguage(novel.novelLanguage)),
     contextPackage,
   });
 }

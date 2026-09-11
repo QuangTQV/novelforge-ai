@@ -217,6 +217,7 @@ export class StyleRecommendationService {
         provider: input.provider,
         model: input.model,
         temperature: Math.min(input.temperature ?? 0.3, 0.5),
+        novelId: input.novelId,
       },
     });
     const parsed = result.output;

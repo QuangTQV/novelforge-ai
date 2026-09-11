@@ -4,24 +4,10 @@ import { normalizeCommercialTags } from "@ai-novel/shared/types/novelFraming";
 import type { DirectorRunMode, DirectorWorldSetupMode } from "@ai-novel/shared/types/novelDirector";
 import type { NovelBasicFormState } from "../novelBasicInfo.shared";
 
-const MAX_REFERENCE_WORK_TITLES = 5;
-const REFERENCE_WORK_TITLE_MAX_LENGTH = 120;
+const REFERENCE_WORK_NOTE_MAX_LENGTH = 1000;
 
-export function normalizeReferenceWorkTitles(input: string): string[] {
-  const seen = new Set<string>();
-  const normalized: string[] = [];
-  for (const raw of input.split(/[\n,，]/)) {
-    const title = raw.replace(/\s+/g, " ").trim().slice(0, REFERENCE_WORK_TITLE_MAX_LENGTH);
-    if (!title || seen.has(title.toLowerCase())) {
-      continue;
-    }
-    seen.add(title.toLowerCase());
-    normalized.push(title);
-    if (normalized.length >= MAX_REFERENCE_WORK_TITLES) {
-      break;
-    }
-  }
-  return normalized;
+export function normalizeReferenceWorkNote(input: string): string {
+  return input.trim().slice(0, REFERENCE_WORK_NOTE_MAX_LENGTH);
 }
 
 export interface DirectorRunModeOption {
@@ -79,7 +65,7 @@ export function buildAutoDirectorRequestPayload(
     styleProfileId?: string;
     worldSetupMode?: DirectorWorldSetupMode;
     marketBriefId?: string;
-    referenceWorkTitles?: string[];
+    referenceWorkNote?: string;
   },
 ) {
   const commercialTags = normalizeCommercialTags(basicForm.commercialTagsText);
@@ -87,9 +73,7 @@ export function buildAutoDirectorRequestPayload(
     idea: idea.trim(),
     workflowTaskId: workflowTaskId || undefined,
     marketBriefId: options?.marketBriefId?.trim() || undefined,
-    referenceWorkTitles: options?.referenceWorkTitles && options.referenceWorkTitles.length > 0
-      ? options.referenceWorkTitles
-      : undefined,
+    referenceWorkNote: options?.referenceWorkNote?.trim() || undefined,
     title: basicForm.title.trim() || undefined,
     description: basicForm.description.trim() || undefined,
     targetAudience: basicForm.targetAudience.trim() || undefined,

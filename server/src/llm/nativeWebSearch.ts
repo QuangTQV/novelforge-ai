@@ -38,36 +38,33 @@ export function getNativeWebSearchKind(provider: LLMProvider, baseURL: string): 
   return isAzureOpenAIBaseUrl(baseURL) ? "openai_responses" : null;
 }
 
-export const UNKNOWN_REFERENCE_WORK_MARKER = "UNKNOWN_WORK";
+export const NO_USEFUL_REFERENCE_MARKER = "NO_USEFUL_REFERENCE";
 
 const LOOKUP_TIMEOUT_MS = 20_000;
 
-function buildLookupPrompt(title: string, lang: PromptLanguage): string {
-  const safeTitle = title.trim();
+function buildReferenceNotePrompt(note: string, lang: PromptLanguage): string {
+  const safeNote = note.trim();
   if (lang === "vi") {
     return [
-      `Bạn có kiến thức đáng tin cậy về tác phẩm (manga/anime/tiểu thuyết/phim...) có tên "${safeTitle}" không?`,
-      "Nếu có, hãy trả lời trực tiếp từ kiến thức bạn đã có (không cần tìm kiếm).",
-      "Nếu không chắc chắn, hãy tìm kiếm trên web trước khi trả lời.",
-      "Tóm tắt trong tối đa 120 từ: thể loại, tiền đề cốt truyện cốt lõi, cơ chế/mấu chốt cấu trúc đáng chú ý, và tông giọng chung. Không cần liệt kê chi tiết toàn bộ cốt truyện.",
-      `Nếu bạn không thể tìm thấy hoặc không đủ tin cậy để nhận diện đúng tác phẩm này, hãy trả lời chính xác: ${UNKNOWN_REFERENCE_WORK_MARKER}`,
+      `Đây là ghi chú tham khảo của người dùng cho một truyện họ đang tạo: "${safeNote}"`,
+      "Nếu ghi chú nhắc tới tác phẩm cụ thể (manga/anime/tiểu thuyết/phim...), hãy nhận diện chúng: nếu bạn có kiến thức đáng tin cậy thì trả lời trực tiếp; nếu không chắc, hãy tìm kiếm trên web trước khi trả lời.",
+      "Tổng hợp lại thành một đoạn hướng dẫn tham khảo ngắn gọn (tối đa 150 từ): nên mượn điều gì (cấu trúc, nhịp độ, cơ chế, tông giọng...) từ tác phẩm nào, đúng theo cách người dùng mô tả muốn kết hợp/khác biệt. Nếu ghi chú không nhắc tác phẩm cụ thể mà chỉ mô tả cảm giác mong muốn, hãy giữ nguyên ý đó thành hướng dẫn.",
+      `Nếu ghi chú trống hoặc không chứa thông tin tham khảo hữu ích nào, hãy trả lời chính xác: ${NO_USEFUL_REFERENCE_MARKER}`,
     ].join("\n");
   }
   if (lang === "en") {
     return [
-      `Do you have reliable knowledge of the work (manga/anime/novel/film...) titled "${safeTitle}"?`,
-      "If yes, answer directly from what you already know (no need to search).",
-      "If you are not confident, search the web first before answering.",
-      "Summarize in at most 120 words: genre, core premise, notable structural hooks/mechanisms, and overall tone. No need to list the full plot.",
-      `If you cannot find or are not confident enough to correctly identify this work, reply exactly: ${UNKNOWN_REFERENCE_WORK_MARKER}`,
+      `This is a user's reference note for a story they are creating: "${safeNote}"`,
+      "If the note mentions specific existing works (manga/anime/novel/film...), identify them: answer directly if you have reliable knowledge, or search the web first if unsure.",
+      "Synthesize this into a short reference brief (at most 150 words): what to borrow (structure, pacing, mechanisms, tone...) from which work, exactly matching how the user describes wanting to combine or differentiate them. If the note doesn't mention a specific work and only describes a desired feeling, keep that intent as the brief.",
+      `If the note is empty or contains no useful reference information, reply exactly: ${NO_USEFUL_REFERENCE_MARKER}`,
     ].join("\n");
   }
   return [
-    `你是否掌握名为《${safeTitle}》的作品（漫画/动画/小说/影视等）的可靠信息？`,
-    "如果掌握，请直接基于已有知识回答（无需搜索）。",
-    "如果不确定，请先联网搜索再回答。",
-    "请在 120 字以内概括：题材类型、核心故事前提、值得注意的结构机制/看点，以及整体基调。无需列出完整剧情。",
-    `如果你找不到或没有足够把握准确识别这个作品，请准确回复：${UNKNOWN_REFERENCE_WORK_MARKER}`,
+    `这是用户为正在创作的故事写的参考说明："${safeNote}"`,
+    "如果说明中提到了具体作品（漫画/动画/小说/影视等），请识别它们：如果你有可靠知识就直接回答；如果不确定，请先联网搜索再回答。",
+    "把结果整理成一段简短的参考指引（不超过 150 字）：应该从哪个作品借鉴什么（结构、节奏、机制、基调等），并严格按用户描述的组合/差异化方式来写。如果说明没有提到具体作品、只是描述了想要的感觉，请直接保留这个意图作为指引。",
+    `如果说明为空或不包含任何有用的参考信息，请准确回复：${NO_USEFUL_REFERENCE_MARKER}`,
   ].join("\n");
 }
 
@@ -86,7 +83,7 @@ interface LookupInput {
   apiKey?: string;
   baseURL: string;
   model: string;
-  title: string;
+  note: string;
   lang: PromptLanguage;
 }
 
@@ -102,12 +99,12 @@ async function lookupViaOpenAIResponses(input: LookupInput): Promise<string | nu
       },
       body: JSON.stringify({
         model: input.model,
-        input: buildLookupPrompt(input.title, input.lang),
+        input: buildReferenceNotePrompt(input.note, input.lang),
         tools: [{ type: "web_search_preview" }],
       }),
     });
     if (!response.ok) {
-      console.warn(`[nativeWebSearch] OpenAI responses lookup failed (${response.status}) for "${input.title}"`);
+      console.warn(`[nativeWebSearch] OpenAI responses lookup failed (${response.status})`);
       return null;
     }
     const payload = await response.json() as { output?: Array<{ type?: string; content?: Array<{ type?: string; text?: string }> }> };
@@ -119,7 +116,7 @@ async function lookupViaOpenAIResponses(input: LookupInput): Promise<string | nu
       .trim();
     return text || null;
   } catch (error) {
-    console.warn(`[nativeWebSearch] OpenAI responses lookup error for "${input.title}":`, error);
+    console.warn("[nativeWebSearch] OpenAI responses lookup error:", error);
     return null;
   } finally {
     cancel();
@@ -142,18 +139,18 @@ async function lookupViaAnthropicTool(input: LookupInput): Promise<string | null
         max_tokens: 1024,
         temperature: 0.3,
         tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 3 }],
-        messages: [{ role: "user", content: buildLookupPrompt(input.title, input.lang) }],
+        messages: [{ role: "user", content: buildReferenceNotePrompt(input.note, input.lang) }],
       }),
     });
     if (!response.ok) {
-      console.warn(`[nativeWebSearch] Anthropic tool lookup failed (${response.status}) for "${input.title}"`);
+      console.warn(`[nativeWebSearch] Anthropic tool lookup failed (${response.status})`);
       return null;
     }
     const payload = await response.json();
     const text = extractTextContent(payload).trim();
     return text || null;
   } catch (error) {
-    console.warn(`[nativeWebSearch] Anthropic tool lookup error for "${input.title}":`, error);
+    console.warn("[nativeWebSearch] Anthropic tool lookup error:", error);
     return null;
   } finally {
     cancel();
@@ -170,13 +167,13 @@ async function lookupViaGeminiNative(input: LookupInput): Promise<string | null>
         signal,
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: buildLookupPrompt(input.title, input.lang) }] }],
+          contents: [{ role: "user", parts: [{ text: buildReferenceNotePrompt(input.note, input.lang) }] }],
           tools: [{ google_search: {} }],
         }),
       },
     );
     if (!response.ok) {
-      console.warn(`[nativeWebSearch] Gemini native lookup failed (${response.status}) for "${input.title}"`);
+      console.warn(`[nativeWebSearch] Gemini native lookup failed (${response.status})`);
       return null;
     }
     const payload = await response.json() as {
@@ -186,7 +183,7 @@ async function lookupViaGeminiNative(input: LookupInput): Promise<string | null>
     const text = parts.map((part) => part.text ?? "").join("").trim();
     return text || null;
   } catch (error) {
-    console.warn(`[nativeWebSearch] Gemini native lookup error for "${input.title}":`, error);
+    console.warn("[nativeWebSearch] Gemini native lookup error:", error);
     return null;
   } finally {
     cancel();
@@ -196,7 +193,7 @@ async function lookupViaGeminiNative(input: LookupInput): Promise<string | null>
 async function lookupViaPlainKnowledge(input: LookupInput): Promise<string | null> {
   try {
     const llm = await getLLM(input.provider, { model: input.model, apiKey: input.apiKey, baseURL: input.baseURL });
-    const response = await llm.invoke([new HumanMessage(buildLookupPrompt(input.title, input.lang))]);
+    const response = await llm.invoke([new HumanMessage(buildReferenceNotePrompt(input.note, input.lang))]);
     const text = typeof response.content === "string"
       ? response.content.trim()
       : Array.isArray(response.content)
@@ -204,25 +201,27 @@ async function lookupViaPlainKnowledge(input: LookupInput): Promise<string | nul
         : "";
     return text || null;
   } catch (error) {
-    console.warn(`[nativeWebSearch] Plain knowledge lookup error for "${input.title}":`, error);
+    console.warn("[nativeWebSearch] Plain knowledge lookup error:", error);
     return null;
   }
 }
 
-function isUnknownWorkAnswer(result: string): boolean {
-  return result.trim().toUpperCase().includes(UNKNOWN_REFERENCE_WORK_MARKER);
+function hasNoUsefulReference(result: string): boolean {
+  return result.trim().toUpperCase().includes(NO_USEFUL_REFERENCE_MARKER);
 }
 
 /**
- * Tra cứu một tác phẩm tham khảo. Với các provider/endpoint hỗ trợ tool tìm
- * kiếm web gốc (OpenAI, Azure OpenAI qua endpoint `/openai/v1`, Anthropic,
- * Gemini), model tự quyết định có cần tìm kiếm hay không dựa trên độ tự tin
- * về kiến thức sẵn có. Nếu lệnh gọi search gốc thất bại về mặt kỹ thuật (vd.
- * deployment không bật tool này), sẽ tự rơi về trả lời theo kiến thức sẵn có
- * thay vì bỏ cuộc. Trả về `null` nếu cả hai đều thất bại hoặc model xác nhận
- * không nhận diện được tác phẩm.
+ * Diễn giải một ghi chú tham khảo tự do (có thể nhắc tới nhiều tác phẩm, hoặc
+ * chỉ mô tả cảm giác mong muốn) thành một đoạn hướng dẫn tham khảo ngắn gọn.
+ * Với provider/endpoint hỗ trợ tool tìm kiếm web gốc (OpenAI, Azure OpenAI
+ * qua endpoint `/openai/v1`, Anthropic, Gemini), model tự quyết định có cần
+ * tìm kiếm hay không dựa trên độ tự tin về kiến thức sẵn có. Nếu lệnh gọi
+ * search gốc thất bại về mặt kỹ thuật (vd. deployment không bật tool này),
+ * sẽ tự rơi về trả lời theo kiến thức sẵn có thay vì bỏ cuộc. Trả về `null`
+ * nếu cả hai đều thất bại hoặc model xác nhận ghi chú không có thông tin
+ * tham khảo hữu ích.
  */
-export async function lookupReferenceWork(input: LookupInput): Promise<string | null> {
+export async function resolveReferenceNote(input: LookupInput): Promise<string | null> {
   const kind = getNativeWebSearchKind(input.provider, input.baseURL);
   const nativeResult = kind === "openai_responses" ? await lookupViaOpenAIResponses(input)
     : kind === "anthropic_tool" ? await lookupViaAnthropicTool(input)
@@ -230,7 +229,7 @@ export async function lookupReferenceWork(input: LookupInput): Promise<string | 
         : null;
 
   const result = nativeResult ?? await lookupViaPlainKnowledge(input);
-  if (!result || isUnknownWorkAnswer(result)) {
+  if (!result || hasNoUsefulReference(result)) {
     return null;
   }
   return result;

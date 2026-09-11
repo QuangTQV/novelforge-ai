@@ -283,7 +283,7 @@ export class NovelDirectorCandidateStageService {
           : input.referenceBookAnalysisSections,
       ),
       buildReferenceWorkContextBlock(
-        input.referenceWorkTitles,
+        input.referenceWorkNote,
         { provider: input.provider, model: input.model },
         resolvePromptLanguage(input.novelLanguage ?? DEFAULT_NOVEL_LANGUAGE),
       ),

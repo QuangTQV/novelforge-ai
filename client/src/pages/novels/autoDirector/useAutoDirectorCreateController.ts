@@ -47,7 +47,7 @@ import {
   buildAutoDirectorRequestPayload,
   buildInitialIdea,
   DEFAULT_VISIBLE_RUN_MODE,
-  normalizeReferenceWorkTitles,
+  normalizeReferenceWorkNote,
   RUN_MODE_OPTIONS,
 } from "../components/NovelAutoDirectorDialog.shared";
 import { useDirectorAutoApprovalDraft } from "../components/useDirectorAutoApprovalDraft";
@@ -118,7 +118,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
   const llm = useLLMStore();
   const queryClient = useQueryClient();
   const [idea, setIdea] = useState(initialDraft?.idea ?? "");
-  const [referenceWorkTitlesText, setReferenceWorkTitlesText] = useState("");
+  const [referenceWorkNote, setReferenceWorkNote] = useState("");
   const [feedback, setFeedback] = useState("");
   const [selectedPresets, setSelectedPresets] = useState<DirectorCorrectionPreset[]>([]);
   const [batches, setBatches] = useState<DirectorCandidateBatch[]>([]);
@@ -433,7 +433,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
         styleProfileId: selectedStyleProfileId,
         worldSetupMode,
         marketBriefId,
-        referenceWorkTitles: normalizeReferenceWorkTitles(referenceWorkTitlesText),
+        referenceWorkNote: normalizeReferenceWorkNote(referenceWorkNote),
       },
     );
   };
@@ -683,8 +683,8 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     directorBasicForm,
     idea,
     setIdea,
-    referenceWorkTitlesText,
-    setReferenceWorkTitlesText,
+    referenceWorkNote,
+    setReferenceWorkNote,
     ideaInspirations,
     isGeneratingIdeaInspirations: ideaInspirationMutation.isPending,
     generateIdeaInspirations: () => ideaInspirationMutation.mutate(),

@@ -8211,5 +8211,8 @@
   "职场": "Workplace",
   "参考作品（可选）": "Reference works (optional)",
   "例如：进击的巨人、来自深渊（用逗号或换行分隔多个作品）": "e.g. Attack on Titan, Made in Abyss (separate multiple titles with a comma or newline)",
-  "AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to learn about these works — used only for structural and tonal reference, never to copy the original content verbatim."
+  "AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to learn about these works — used only for structural and tonal reference, never to copy the original content verbatim.",
+  "参考说明（可选）": "Reference notes (optional)",
+  "例如：世界观和绝望感想参考进击的巨人，但节奏想更快，像电锯人那样每章都有强钩子。": "e.g.: want the worldbuilding and sense of despair like Attack on Titan, but faster paced with a strong hook every chapter like Chainsaw Man.",
+  "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to understand the works you mention, then borrow structure and tone the way you describe — never copying the original content verbatim."
 }

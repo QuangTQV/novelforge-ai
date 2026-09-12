@@ -41,6 +41,11 @@ export const RUN_MODE_OPTIONS: DirectorRunModeOption[] = [
     label: translateUi("只做规划，不写章节"),
     description: translateUi("AI 只准备书级规划、角色、卷章安排和章节执行资源，正文一章都不生成，之后由你决定如何生产。"),
   },
+  {
+    value: "stage_review",
+    label: translateUi("专业模式：分阶段审核"),
+    description: translateUi("每完成书级约定、角色阵容或分卷策略，AI 都会先停下等你确认；不满意可以直接写反馈，让 AI 按你的要求重新生成这一步，而不是自动全部通过。"),
+  },
 ];
 
 export const DEFAULT_VISIBLE_RUN_MODE: DirectorRunMode = "auto_to_execution";

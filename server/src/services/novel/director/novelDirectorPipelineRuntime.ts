@@ -565,8 +565,11 @@ export class NovelDirectorPipelineRuntime {
         stage?: string;
         itemKey?: string;
         entrypoint?: string;
+        guidance?: string;
       }) => {
-        const reusableOption = await this.findReusableDirectorCharacterCastOption(targetNovelId);
+        const reusableOption = options.guidance
+          ? null
+          : await this.findReusableDirectorCharacterCastOption(targetNovelId);
         if (reusableOption) {
           return reusableOption;
         }

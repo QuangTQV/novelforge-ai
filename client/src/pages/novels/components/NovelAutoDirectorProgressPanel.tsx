@@ -1,5 +1,6 @@
 import { translateUi } from "@/i18n/legacy";
 import { translateTaskProgressLabel } from "@/i18n/taskProgressLabel";
+import { useState } from "react";
 ﻿import type {
   NovelWorkflowMilestone,
   NovelWorkflowMilestoneType,
@@ -45,7 +46,16 @@ interface NovelAutoDirectorProgressPanelProps {
   onConfirmAndContinue?: () => void;
   isConfirmingAndContinuing?: boolean;
   quickRetryLabel?: string;
+  onRegenerateWithFeedback?: (feedback: string) => void;
+  isRegeneratingWithFeedback?: boolean;
 }
+
+const STAGE_REVIEW_CHECKPOINTS = new Set<string>([
+  "book_contract_ready",
+  "character_setup_required",
+  "volume_strategy_ready",
+  "step_review_required",
+]);
 
 type DirectorStepVisualStatus = DirectorPreparationStepStatus;
 type DirectorStepDefinition = {
@@ -290,7 +300,10 @@ export default function NovelAutoDirectorProgressPanel({
   onConfirmAndContinue,
   isConfirmingAndContinuing = false,
   quickRetryLabel,
+  onRegenerateWithFeedback,
+  isRegeneratingWithFeedback = false,
 }: NovelAutoDirectorProgressPanelProps) {
+  const [reviewFeedback, setReviewFeedback] = useState("");
   const taskChapterTitleWarning = resolveChapterTitleWarning(task);
   const chapterTitleRepairMutation = useDirectorChapterTitleRepair();
   const runtimeTaskId = task?.id ?? taskId;
@@ -447,6 +460,9 @@ export default function NovelAutoDirectorProgressPanel({
   const actions = dashboardActions.length > 0 || !quickRetryAction
     ? dashboardActions
     : [quickRetryAction];
+  const canRegenerateWithFeedback = Boolean(onRegenerateWithFeedback)
+    && task?.status === "waiting_approval"
+    && STAGE_REVIEW_CHECKPOINTS.has(task?.checkpointType ?? "");
 
   return (
     <div className="space-y-4">
@@ -474,6 +490,37 @@ export default function NovelAutoDirectorProgressPanel({
           onboardingStorageKey={`director-preparation-${onboardingNovelId}`}
           chapterProgress={chapterProgress}
         />
+
+        {canRegenerateWithFeedback ? (
+          <div className="mt-4 rounded-xl border border-border/70 bg-muted/[0.12] p-4">
+            <div className="text-sm font-medium text-foreground">{translateUi("不满意这一步？写下你的要求，AI 会重新生成")}</div>
+            <div className="mt-1 text-xs text-muted-foreground">
+              {translateUi("留空并点击「确认并继续」即可直接通过；写了要求再提交，AI 只会重做当前这一步。")}
+            </div>
+            <textarea
+              rows={3}
+              className="mt-3 w-full resize-none rounded-md bg-background px-3 py-2 text-sm outline-none ring-1 ring-border/70 transition focus-visible:ring-2 focus-visible:ring-primary/40"
+              value={reviewFeedback}
+              onChange={(event) => setReviewFeedback(event.target.value)}
+              placeholder={translateUi("例如：主角性格再鲜明一些，卖点不要太套路。")}
+              disabled={isRegeneratingWithFeedback}
+            />
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                disabled={!reviewFeedback.trim() || isRegeneratingWithFeedback}
+                onClick={() => {
+                  onRegenerateWithFeedback?.(reviewFeedback.trim());
+                  setReviewFeedback("");
+                }}
+              >
+                {isRegeneratingWithFeedback ? translateUi("正在重新生成...") : translateUi("按要求重新生成")}
+              </Button>
+            </div>
+          </div>
+        ) : null}
 
         {activityTags.length > 0 ? (
           <div className="mt-4">

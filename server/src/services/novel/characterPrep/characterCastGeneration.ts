@@ -43,6 +43,8 @@ export interface CharacterPrepOptions {
   stage?: string;
   itemKey?: string;
   entrypoint?: string;
+  /** Ghi chú người dùng muốn AI ưu tiên khi tạo lại dàn nhân vật (VD: qua bước "làm lại theo góp ý"). */
+  guidance?: string;
 }
 
 type CharacterCastGenerationContextBlocks = ReturnType<typeof buildCharacterCastContextBlocks>;
@@ -207,6 +209,7 @@ async function loadCastGenerationContext(
     constraintEngine: novel.storyMacroPlan?.constraintEngineJson ?? null,
     bookContract: novel.bookContract,
     existingCharacterNames: novel.characters.map((character) => character.name),
+    guidance: options.guidance ?? null,
   });
 
   return {

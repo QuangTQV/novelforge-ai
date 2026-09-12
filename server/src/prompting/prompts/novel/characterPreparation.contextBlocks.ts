@@ -72,6 +72,7 @@ export interface CharacterCastContextBlocksInput {
     relationshipMainline: string;
   } | null;
   existingCharacterNames?: string[];
+  guidance?: string | null;
 }
 
 function formatWorldFocusHints(input: {
@@ -99,6 +100,16 @@ export function buildCharacterCastContextBlocks(input: CharacterCastContextBlock
         "【故事输入】",
         input.storyInput,
       ]),
+    }),
+    createBlock({
+      id: "character_cast_guidance",
+      group: "guidance",
+      priority: 97,
+      content: input.guidance ? joinLines([
+        "【用户强调的重新生成要求】",
+        "以下是用户明确要求的修改方向，必须体现在新的角色阵容中，不能忽略：",
+        input.guidance,
+      ]) : null,
     }),
     createBlock({
       id: "character_cast_project_context",

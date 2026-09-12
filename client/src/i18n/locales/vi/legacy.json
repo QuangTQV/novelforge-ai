@@ -8428,5 +8428,15 @@
   "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "AI sẽ dùng kiến thức sẵn có, hoặc tìm kiếm trên web khi cần, để hiểu các tác phẩm bạn nhắc tới, rồi mượn cấu trúc và tông giọng theo đúng cách bạn mô tả — không sao chép nguyên văn nội dung gốc.",
   "想强调的重点（可选）": "Điểm muốn nhấn mạnh (không bắt buộc)",
   "例如：想多写人物心理而不是打斗场面，节奏可以慢一点，主角道德立场要模糊一些。": "Ví dụ: muốn viết nhiều về tâm lý nhân vật hơn là cảnh hành động, nhịp độ có thể chậm hơn, lập trường đạo đức của nhân vật chính nên mơ hồ hơn.",
-  "这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。": "Nội dung bạn ghi ở đây sẽ trở thành yêu cầu bắt buộc phải thể hiện — AI sẽ không bỏ qua khi phác thảo điểm bán, xung đột và con đường nhân vật chính."
+  "这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。": "Nội dung bạn ghi ở đây sẽ trở thành yêu cầu bắt buộc phải thể hiện — AI sẽ không bỏ qua khi phác thảo điểm bán, xung đột và con đường nhân vật chính.",
+  "专业模式：分阶段审核": "Chế độ chuyên nghiệp: duyệt theo từng giai đoạn",
+  "每完成书级约定、角色阵容或分卷策略，AI 都会先停下等你确认；不满意可以直接写反馈，让 AI 按你的要求重新生成这一步，而不是自动全部通过。": "Mỗi khi xong hợp đồng sách, dàn nhân vật hoặc chiến lược quyển, AI sẽ dừng lại chờ bạn xác nhận; nếu chưa hài lòng, bạn có thể viết góp ý để AI làm lại đúng bước đó, thay vì tự động thông qua tất cả.",
+  "不满意这一步？写下你的要求，AI 会重新生成": "Chưa hài lòng với bước này? Viết yêu cầu của bạn, AI sẽ tạo lại",
+  "留空并点击「确认并继续」即可直接通过；写了要求再提交，AI 只会重做当前这一步。": "Để trống và bấm \"Xác nhận và tiếp tục\" là thông qua ngay; nếu viết yêu cầu rồi gửi, AI chỉ làm lại đúng bước hiện tại.",
+  "例如：主角性格再鲜明一些，卖点不要太套路。": "Ví dụ: tính cách nhân vật chính rõ nét hơn, điểm bán đừng quá công thức.",
+  "正在重新生成...": "Đang tạo lại...",
+  "按要求重新生成": "Tạo lại theo yêu cầu",
+  "当前检查点不支持按要求重新生成。": "Điểm dừng hiện tại không hỗ trợ tạo lại theo yêu cầu.",
+  "已按你的要求重新生成，请检查结果。": "Đã tạo lại theo yêu cầu của bạn, hãy kiểm tra kết quả.",
+  "重新生成失败。": "Tạo lại thất bại."
 }

@@ -44,6 +44,7 @@ export interface DirectorPhaseDependencies {
       stage?: string;
       itemKey?: string;
       entrypoint?: string;
+      guidance?: string;
     }) => Promise<CharacterCastOption>;
     assessCharacterCastOptions: (
       castOptions: CharacterCastOption[],

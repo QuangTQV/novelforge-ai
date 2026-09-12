@@ -8217,5 +8217,15 @@
   "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to understand the works you mention, then borrow structure and tone the way you describe — never copying the original content verbatim.",
   "想强调的重点（可选）": "Points to emphasize (optional)",
   "例如：想多写人物心理而不是打斗场面，节奏可以慢一点，主角道德立场要模糊一些。": "e.g.: want more focus on character psychology than action scenes, pacing can be slower, the protagonist's moral stance should stay ambiguous.",
-  "这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。": "What you write here becomes a requirement the AI must reflect — it won't be ignored when shaping the selling point, conflict, and protagonist path."
+  "这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。": "What you write here becomes a requirement the AI must reflect — it won't be ignored when shaping the selling point, conflict, and protagonist path.",
+  "专业模式：分阶段审核": "Professional mode: stage-by-stage review",
+  "每完成书级约定、角色阵容或分卷策略，AI 都会先停下等你确认；不满意可以直接写反馈，让 AI 按你的要求重新生成这一步，而不是自动全部通过。": "Every time the book contract, character cast, or volume strategy is done, the AI pauses for your confirmation; if you're not satisfied, you can write feedback and have the AI redo just that step, instead of auto-approving everything.",
+  "不满意这一步？写下你的要求，AI 会重新生成": "Not happy with this step? Write your feedback and the AI will regenerate it",
+  "留空并点击「确认并继续」即可直接通过；写了要求再提交，AI 只会重做当前这一步。": "Leave it empty and click \"Confirm and continue\" to approve as-is; if you write feedback and submit, the AI only redoes the current step.",
+  "例如：主角性格再鲜明一些，卖点不要太套路。": "e.g.: make the protagonist's personality more distinctive, the selling point shouldn't feel too formulaic.",
+  "正在重新生成...": "Regenerating...",
+  "按要求重新生成": "Regenerate with feedback",
+  "当前检查点不支持按要求重新生成。": "The current checkpoint doesn't support regenerating with feedback.",
+  "已按你的要求重新生成，请检查结果。": "Regenerated based on your feedback — please check the result.",
+  "重新生成失败。": "Regeneration failed."
 }

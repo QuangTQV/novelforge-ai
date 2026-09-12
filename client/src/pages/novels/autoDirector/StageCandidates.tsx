@@ -42,6 +42,8 @@ export default function StageCandidates({
           onConfirmAndContinue={() => controller.continueMutation.mutate()}
           isConfirmingAndContinuing={controller.continueMutation.isPending}
           quickRetryLabel={translateUi("快速重试")}
+          onRegenerateWithFeedback={(feedback) => controller.regenerateStepMutation.mutate(feedback)}
+          isRegeneratingWithFeedback={controller.regenerateStepMutation.isPending}
         />
       </section>
     );

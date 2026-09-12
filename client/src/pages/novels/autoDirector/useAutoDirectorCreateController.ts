@@ -21,6 +21,7 @@ import {
 } from "@ai-novel/shared/types/novelDirector";
 import { bootstrapNovelWorkflow, continueNovelWorkflow } from "@/api/novelWorkflow";
 import {
+  calibrateDirectorStep,
   composeDirectorIdeaConstellation,
   confirmDirectorCandidate,
   generateDirectorIdeaInspirations,
@@ -87,6 +88,25 @@ interface UseAutoDirectorCreateControllerInput {
   restoredTask?: UnifiedTaskDetail | null;
   onWorkflowTaskChange?: (workflowTaskId: string) => void;
   onBasicFormChange: (patch: Partial<NovelBasicFormState>) => void;
+}
+
+const STAGE_REVIEW_CALIBRATION_STEP_ID_BY_CHECKPOINT: Record<string, string> = {
+  book_contract_ready: "book.contract.create",
+  character_setup_required: "character.cast.prepare",
+  volume_strategy_ready: "volume.strategy.plan",
+};
+
+function resolveStageReviewCalibrationStepId(task: UnifiedTaskDetail | null): string | null {
+  const checkpointType = task?.checkpointType ?? "";
+  const directStepId = STAGE_REVIEW_CALIBRATION_STEP_ID_BY_CHECKPOINT[checkpointType];
+  if (directStepId) {
+    return directStepId;
+  }
+  if (checkpointType === "step_review_required") {
+    const seedPayload = extractDirectorTaskSeedPayloadFromMeta(task?.meta);
+    return seedPayload?.stepReview?.stepId?.trim() || null;
+  }
+  return null;
 }
 
 function resolveIdeaFromCandidateBatches(batches: DirectorCandidateBatch[] | null | undefined): string {
@@ -573,6 +593,47 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     },
   });
 
+  const regenerateStepMutation = useMutation({
+    mutationFn: async (feedback: string) => {
+      const taskId = directorTask?.id || workflowTaskId;
+      if (!taskId) {
+        throw new Error(translateUi("当前没有可继续的自动导演任务。"));
+      }
+      const stepId = resolveStageReviewCalibrationStepId(directorTask);
+      if (!stepId) {
+        throw new Error(translateUi("当前检查点不支持按要求重新生成。"));
+      }
+      return calibrateDirectorStep(taskId, {
+        stepId,
+        action: "regenerate",
+        instruction: feedback,
+      });
+    },
+    onSuccess: async () => {
+      const invalidations = [
+        queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+      ];
+      if (workflowTaskId) {
+        invalidations.push(
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.tasks.detail("novel_workflow", workflowTaskId),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.tasks.directorTaskSnapshot(workflowTaskId),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.tasks.directorRuntime(workflowTaskId),
+          }),
+        );
+      }
+      await Promise.allSettled(invalidations);
+      toast.success(translateUi("已按你的要求重新生成，请检查结果。"));
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : translateUi("重新生成失败。"));
+    },
+  });
+
   const togglePreset = (preset: DirectorCorrectionPreset) => {
     setSelectedPresets((prev) => toggleDirectorCorrectionPreset(prev, preset));
   };
@@ -741,6 +802,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     deleteCandidateMutation,
     confirmMutation,
     continueMutation,
+    regenerateStepMutation,
     onBasicFormChange,
     applyCandidateTitleOption,
     handleConfirmCandidate,

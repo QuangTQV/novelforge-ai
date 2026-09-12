@@ -106,7 +106,10 @@ export async function runDirectorCharacterSetupPhase(input: {
     }),
   });
   const storyInput = buildStoryInput(request, toBookSpec(request.candidate, request.idea, request.estimatedChapterCount));
-  const reusableOption = await dependencies.characterPreparationService.findReusableCharacterCastOption?.(novelId) ?? null;
+  const calibrationInstruction = request.stepCalibrationInstruction?.trim() || undefined;
+  const reusableOption = calibrationInstruction
+    ? null
+    : await dependencies.characterPreparationService.findReusableCharacterCastOption?.(novelId) ?? null;
   const targetOption = reusableOption ?? await runDirectorTrackedStep({
     taskId,
     stage: "character_setup",
@@ -124,6 +127,7 @@ export async function runDirectorCharacterSetupPhase(input: {
       stage: "character_setup",
       itemKey: "character_setup",
       entrypoint: "auto_director",
+      guidance: calibrationInstruction,
     }),
   });
   if (reusableOption) {
@@ -286,6 +290,7 @@ export async function runDirectorVolumeStrategyPhase(input: {
       provider: request.provider,
       model: request.model,
       temperature: request.temperature,
+      guidance: request.stepCalibrationInstruction ?? undefined,
       scope: "strategy",
       taskId,
       entrypoint: "auto_director",
@@ -311,6 +316,7 @@ export async function runDirectorVolumeStrategyPhase(input: {
       provider: request.provider,
       model: request.model,
       temperature: request.temperature,
+      guidance: request.stepCalibrationInstruction ?? undefined,
       scope: "strategy_critique",
       taskId,
       entrypoint: "auto_director",
@@ -337,6 +343,7 @@ export async function runDirectorVolumeStrategyPhase(input: {
       provider: request.provider,
       model: request.model,
       temperature: request.temperature,
+      guidance: request.stepCalibrationInstruction ?? undefined,
       scope: "skeleton",
       taskId,
       entrypoint: "auto_director",

@@ -5,9 +5,14 @@ import type { DirectorRunMode, DirectorWorldSetupMode } from "@ai-novel/shared/t
 import type { NovelBasicFormState } from "../novelBasicInfo.shared";
 
 const REFERENCE_WORK_NOTE_MAX_LENGTH = 1000;
+const EMPHASIS_NOTE_MAX_LENGTH = 1000;
 
 export function normalizeReferenceWorkNote(input: string): string {
   return input.trim().slice(0, REFERENCE_WORK_NOTE_MAX_LENGTH);
+}
+
+export function normalizeEmphasisNote(input: string): string {
+  return input.trim().slice(0, EMPHASIS_NOTE_MAX_LENGTH);
 }
 
 export interface DirectorRunModeOption {
@@ -66,6 +71,7 @@ export function buildAutoDirectorRequestPayload(
     worldSetupMode?: DirectorWorldSetupMode;
     marketBriefId?: string;
     referenceWorkNote?: string;
+    emphasisNote?: string;
   },
 ) {
   const commercialTags = normalizeCommercialTags(basicForm.commercialTagsText);
@@ -74,6 +80,7 @@ export function buildAutoDirectorRequestPayload(
     workflowTaskId: workflowTaskId || undefined,
     marketBriefId: options?.marketBriefId?.trim() || undefined,
     referenceWorkNote: options?.referenceWorkNote?.trim() || undefined,
+    emphasisNote: options?.emphasisNote?.trim() || undefined,
     title: basicForm.title.trim() || undefined,
     description: basicForm.description.trim() || undefined,
     targetAudience: basicForm.targetAudience.trim() || undefined,

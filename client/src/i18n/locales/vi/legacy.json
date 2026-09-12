@@ -8425,5 +8425,8 @@
   "AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。": "AI sẽ dùng kiến thức sẵn có, hoặc tìm kiếm trên web khi cần, để tìm hiểu các tác phẩm này — chỉ dùng để tham khảo cấu trúc và tông giọng, không sao chép nguyên văn nội dung gốc.",
   "参考说明（可选）": "Ghi chú tham khảo (không bắt buộc)",
   "例如：世界观和绝望感想参考进击的巨人，但节奏想更快，像电锯人那样每章都有强钩子。": "Ví dụ: muốn thế giới quan và cảm giác tuyệt vọng giống Attack on Titan, nhưng nhịp độ nhanh hơn, mỗi chương đều có cú hook mạnh như Chainsaw Man.",
-  "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "AI sẽ dùng kiến thức sẵn có, hoặc tìm kiếm trên web khi cần, để hiểu các tác phẩm bạn nhắc tới, rồi mượn cấu trúc và tông giọng theo đúng cách bạn mô tả — không sao chép nguyên văn nội dung gốc."
+  "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "AI sẽ dùng kiến thức sẵn có, hoặc tìm kiếm trên web khi cần, để hiểu các tác phẩm bạn nhắc tới, rồi mượn cấu trúc và tông giọng theo đúng cách bạn mô tả — không sao chép nguyên văn nội dung gốc.",
+  "想强调的重点（可选）": "Điểm muốn nhấn mạnh (không bắt buộc)",
+  "例如：想多写人物心理而不是打斗场面，节奏可以慢一点，主角道德立场要模糊一些。": "Ví dụ: muốn viết nhiều về tâm lý nhân vật hơn là cảnh hành động, nhịp độ có thể chậm hơn, lập trường đạo đức của nhân vật chính nên mơ hồ hơn.",
+  "这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。": "Nội dung bạn ghi ở đây sẽ trở thành yêu cầu bắt buộc phải thể hiện — AI sẽ không bỏ qua khi phác thảo điểm bán, xung đột và con đường nhân vật chính."
 }

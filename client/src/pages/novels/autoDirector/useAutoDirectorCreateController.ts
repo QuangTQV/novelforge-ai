@@ -47,6 +47,7 @@ import {
   buildAutoDirectorRequestPayload,
   buildInitialIdea,
   DEFAULT_VISIBLE_RUN_MODE,
+  normalizeEmphasisNote,
   normalizeReferenceWorkNote,
   RUN_MODE_OPTIONS,
 } from "../components/NovelAutoDirectorDialog.shared";
@@ -119,6 +120,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
   const queryClient = useQueryClient();
   const [idea, setIdea] = useState(initialDraft?.idea ?? "");
   const [referenceWorkNote, setReferenceWorkNote] = useState("");
+  const [emphasisNote, setEmphasisNote] = useState("");
   const [feedback, setFeedback] = useState("");
   const [selectedPresets, setSelectedPresets] = useState<DirectorCorrectionPreset[]>([]);
   const [batches, setBatches] = useState<DirectorCandidateBatch[]>([]);
@@ -434,6 +436,7 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
         worldSetupMode,
         marketBriefId,
         referenceWorkNote: normalizeReferenceWorkNote(referenceWorkNote),
+        emphasisNote: normalizeEmphasisNote(emphasisNote),
       },
     );
   };
@@ -685,6 +688,8 @@ export function useAutoDirectorCreateController(input: UseAutoDirectorCreateCont
     setIdea,
     referenceWorkNote,
     setReferenceWorkNote,
+    emphasisNote,
+    setEmphasisNote,
     ideaInspirations,
     isGeneratingIdeaInspirations: ideaInspirationMutation.isPending,
     generateIdeaInspirations: () => ideaInspirationMutation.mutate(),

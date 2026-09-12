@@ -656,6 +656,8 @@ export interface DirectorCandidatesRequest extends DirectorProjectContextInput, 
   workflowTaskId?: string;
   /** Ghi chú tự do mô tả muốn tham khảo/khác biệt ra sao so với tác phẩm khác, để AI tham khảo cấu trúc/tông giọng, không sao chép nguyên văn. */
   referenceWorkNote?: string;
+  /** Ghi chú tự do về điểm người dùng muốn AI ưu tiên nhấn mạnh (VD: tâm lý nhân vật hơn hành động, nhịp chậm...) khi phác thảo phương án. */
+  emphasisNote?: string;
 }
 
 export interface DirectorIdeaContextRequest extends DirectorProjectContextInput, DirectorLLMOptions {

@@ -24,6 +24,8 @@ interface StageIdeaProps {
   onIdeaChange: (value: string) => void;
   referenceWorkNote: string;
   onReferenceWorkNoteChange: (value: string) => void;
+  emphasisNote: string;
+  onEmphasisNoteChange: (value: string) => void;
   ideaInspirations: DirectorIdeaInspiration[];
   isGeneratingIdeaInspirations: boolean;
   onGenerateIdeaInspirations: () => void;
@@ -89,6 +91,8 @@ export default function StageIdea({
   onIdeaChange,
   referenceWorkNote,
   onReferenceWorkNoteChange,
+  emphasisNote,
+  onEmphasisNoteChange,
   ideaInspirations,
   isGeneratingIdeaInspirations,
   onGenerateIdeaInspirations,
@@ -343,6 +347,20 @@ export default function StageIdea({
             />
             <div className="mt-1 text-xs text-muted-foreground">
               {translateUi("AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。")}
+            </div>
+          </div>
+          <div className="mt-3 rounded-md bg-background/65 p-3 ring-1 ring-border/70">
+            <div className="mb-1 text-xs font-medium text-muted-foreground">{translateUi("想强调的重点（可选）")}</div>
+            <textarea
+              rows={2}
+              className="w-full resize-none rounded-md bg-background px-3 py-2 text-sm outline-none ring-1 ring-border/70 transition focus-visible:ring-2 focus-visible:ring-primary/40"
+              value={emphasisNote}
+              onChange={(event) => onEmphasisNoteChange(event.target.value)}
+              placeholder={translateUi("例如：想多写人物心理而不是打斗场面，节奏可以慢一点，主角道德立场要模糊一些。")}
+              disabled={isGenerating || isUpdatingFoundation}
+            />
+            <div className="mt-1 text-xs text-muted-foreground">
+              {translateUi("这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。")}
             </div>
           </div>
           {(genreError || storyModeError) ? (

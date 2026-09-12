@@ -152,6 +152,7 @@ const candidatesSchema = projectContextSchema.extend({
   idea: z.string().trim().min(1),
   workflowTaskId: z.string().trim().optional(),
   referenceWorkNote: z.string().trim().max(1000).optional(),
+  emphasisNote: z.string().trim().max(1000).optional(),
 }).merge(llmOptionsSchema);
 
 const ideaContextRequestSchema = projectContextSchema.extend({

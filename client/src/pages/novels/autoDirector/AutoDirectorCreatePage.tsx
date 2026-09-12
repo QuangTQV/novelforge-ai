@@ -467,6 +467,8 @@ function AutoDirectorCreatePage() {
           onIdeaChange={controller.setIdea}
           referenceWorkNote={controller.referenceWorkNote}
           onReferenceWorkNoteChange={controller.setReferenceWorkNote}
+          emphasisNote={controller.emphasisNote}
+          onEmphasisNoteChange={controller.setEmphasisNote}
           ideaInspirations={controller.ideaInspirations}
           isGeneratingIdeaInspirations={controller.isGeneratingIdeaInspirations}
           onGenerateIdeaInspirations={controller.generateIdeaInspirations}

@@ -4,6 +4,7 @@ import { resolveLLMClientOptions } from "../../../../llm/factory";
 import { resolveReferenceNote } from "../../../../llm/nativeWebSearch";
 
 const MAX_REFERENCE_NOTE_LENGTH = 1000;
+const MAX_EMPHASIS_NOTE_LENGTH = 1000;
 
 function pick(lang: PromptLanguage, zh: string, vi: string, en: string): string {
   if (lang === "vi") return vi;
@@ -61,4 +62,27 @@ export async function buildReferenceWorkContextBlock(
   );
 
   return [heading, guidance].join("\n");
+}
+
+/**
+ * Gói ghi chú "điểm muốn nhấn mạnh" của người dùng (VD: "muốn tâm lý nhân vật
+ * hơn hành động", "nhịp chậm, xây dựng thế giới trước") thành một khối văn
+ * bản ưu tiên cao để chèn vào `productionFoundationPrompt`. Không cần gọi
+ * LLM — đây là ý người dùng tự viết, chỉ cần đóng khung rõ là ưu tiên bắt
+ * buộc, không phải gợi ý có thể bỏ qua.
+ */
+export function buildEmphasisNoteContextBlock(note: string | undefined, lang: PromptLanguage): string {
+  const normalizedNote = note?.trim().slice(0, MAX_EMPHASIS_NOTE_LENGTH);
+  if (!normalizedNote) {
+    return "";
+  }
+
+  const heading = pick(
+    lang,
+    "用户强调的优先项：以下内容是用户明确要求的重点，生成卖点、冲突、主角路径时必须体现，不能忽略或弱化。",
+    "Điểm ưu tiên người dùng nhấn mạnh: nội dung dưới đây là yêu cầu trọng tâm người dùng đã nêu rõ, bắt buộc phải thể hiện khi phác thảo điểm bán, xung đột và con đường nhân vật chính — không được bỏ qua hay làm nhẹ đi.",
+    "User-emphasized priority: the note below is an explicit priority from the user — it must show up when shaping the selling point, core conflict, and protagonist path, not be ignored or softened.",
+  );
+
+  return [heading, normalizedNote].join("\n");
 }

@@ -8214,5 +8214,8 @@
   "AI 会用已有知识，或在必要时联网搜索来了解这些作品，仅用于借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to learn about these works — used only for structural and tonal reference, never to copy the original content verbatim.",
   "参考说明（可选）": "Reference notes (optional)",
   "例如：世界观和绝望感想参考进击的巨人，但节奏想更快，像电锯人那样每章都有强钩子。": "e.g.: want the worldbuilding and sense of despair like Attack on Titan, but faster paced with a strong hook every chapter like Chainsaw Man.",
-  "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to understand the works you mention, then borrow structure and tone the way you describe — never copying the original content verbatim."
+  "AI 会用已有知识，或在必要时联网搜索来理解你提到的作品，按你描述的方式借鉴结构和气质，不会照搬原作内容。": "The AI will use its existing knowledge, or search the web if needed, to understand the works you mention, then borrow structure and tone the way you describe — never copying the original content verbatim.",
+  "想强调的重点（可选）": "Points to emphasize (optional)",
+  "例如：想多写人物心理而不是打斗场面，节奏可以慢一点，主角道德立场要模糊一些。": "e.g.: want more focus on character psychology than action scenes, pacing can be slower, the protagonist's moral stance should stay ambiguous.",
+  "这里写的重点会作为必须体现的要求，AI 生成卖点、冲突和主角路径时不会忽略。": "What you write here becomes a requirement the AI must reflect — it won't be ignored when shaping the selling point, conflict, and protagonist path."
 }

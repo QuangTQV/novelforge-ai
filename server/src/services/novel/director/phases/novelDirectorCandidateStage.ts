@@ -27,7 +27,7 @@ import {
 import { titleGenerationService } from "../../../title/TitleGenerationService";
 import { isNearDuplicateTitle } from "../../../title/titleGeneration.shared";
 import type { NovelWorkflowService } from "../../workflow/NovelWorkflowService";
-import { buildReferenceWorkContextBlock } from "../idea/referenceWorkResearch";
+import { buildEmphasisNoteContextBlock, buildReferenceWorkContextBlock } from "../idea/referenceWorkResearch";
 import {
   buildRefinementSummary,
   buildWorkflowSeedPayload,
@@ -274,6 +274,8 @@ export class NovelDirectorCandidateStageService {
   async generateCandidates(input: DirectorCandidatesRequest): Promise<DirectorCandidatesResponse> {
     const marketBriefPrompt = await marketRadarService.getBriefPromptBlock(input.marketBriefId);
     const { novelReferenceService } = await import("../../NovelReferenceService");
+    const promptLanguage = resolvePromptLanguage(input.novelLanguage ?? DEFAULT_NOVEL_LANGUAGE);
+    const emphasisNotePrompt = buildEmphasisNoteContextBlock(input.emphasisNote, promptLanguage);
     const [referenceAnalysisPrompt, referenceWorkPrompt, foundation] = await Promise.all([
       novelReferenceService.buildReferenceFromAnalysisId(
         input.writingMode === "continuation" ? input.continuationBookAnalysisId : input.referenceBookAnalysisId,
@@ -285,7 +287,7 @@ export class NovelDirectorCandidateStageService {
       buildReferenceWorkContextBlock(
         input.referenceWorkNote,
         { provider: input.provider, model: input.model },
-        resolvePromptLanguage(input.novelLanguage ?? DEFAULT_NOVEL_LANGUAGE),
+        promptLanguage,
       ),
       novelCreateResourceRecommendationService.resolveRequired({
         marketBriefPrompt,
@@ -325,6 +327,7 @@ export class NovelDirectorCandidateStageService {
             : `结构参考：只借鉴结构机制、节奏和写法，禁止沿用原作专名、角色、世界事实和具体剧情。\n${referenceAnalysisPrompt}`
           : "",
         referenceWorkPrompt,
+        emphasisNotePrompt,
       ].filter(Boolean).join("\n\n"),
     };
     if (resolvedInput.workflowTaskId?.trim()) {

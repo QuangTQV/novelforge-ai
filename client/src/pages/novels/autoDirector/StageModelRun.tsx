@@ -119,7 +119,7 @@ export default function StageModelRun({
               {translateUi("建议先试写前几章检查质量，满意后再继续往下写。")}
             </div>
           </div>
-          <div className="grid min-w-0 gap-3 sm:grid-cols-3">
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {runModeOptions.map((option) => {
               const active = option.value === runMode;
               return (
